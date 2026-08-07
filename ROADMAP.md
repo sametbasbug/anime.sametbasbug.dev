@@ -43,7 +43,9 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Şifresiz kimlik doğrulama ve kullanıcı profili arayüzünü ekle.
 - [x] Yerel listeyi tombstone destekli biçimde hesaplar arasında senkronize et.
 - [x] Profil ve liste görünürlüğü tercihlerini ekle; temel tabloları sahip kullanıcıyla sınırla.
-- [ ] Supabase projesini oluştur, migration'ı uygula ve özel SMTP'yi yapılandır.
+- [x] Supabase Free projesini Frankfurt bölgesinde oluştur ve RLS migration'ını uygula.
+- [x] Magic-link, profil yazma ve liste birleştirmeyi iki bağımsız tarayıcı profiliyle doğrula.
+- [ ] Ürün domain'i kesinleşince Resend alan adını doğrula ve özel SMTP'yi yapılandır.
 - [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
@@ -68,4 +70,4 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşamanın yerel uygulama katmanı hazır: şifresiz hesap ekranı, profil/gizlilik tercihleri, RLS migration'ı ve mevcut tarayıcı listesini koruyan local-first senkronizasyon eklendi. Aşamanın kapanması için harici Supabase projesinin oluşturulması, migration ve SMTP yapılandırması ile iki gerçek cihaz doğrulaması gerekiyor.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. Aşamanın kapanması için ürün domain'i kesinleştikten sonra Resend özel SMTP kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor.

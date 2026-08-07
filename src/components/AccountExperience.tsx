@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type SyntheticEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
-import { readPersonalList } from "../lib/personal-list";
+import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
 import { getSupabaseClient } from "../lib/supabase";
 
 type Visibility = "PRIVATE" | "UNLISTED" | "PUBLIC";
@@ -28,7 +28,12 @@ export default function AccountExperience() {
   const [localCount, setLocalCount] = useState(0);
 
   useEffect(() => {
-    setLocalCount(Object.keys(readPersonalList().entries).length);
+    const refreshLocalCount = () => setLocalCount(Object.keys(readPersonalList().entries).length);
+    refreshLocalCount();
+    return subscribeToPersonalList(refreshLocalCount);
+  }, []);
+
+  useEffect(() => {
     if (!client) return;
     let active = true;
 

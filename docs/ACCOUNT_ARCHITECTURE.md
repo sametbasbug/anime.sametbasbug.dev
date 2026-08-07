@@ -46,6 +46,16 @@ PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 
 Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_lists.sql`.
 
+## Kurulu geliştirme ortamı
+
+- Supabase organizasyonu: `Equinox`; proje: `Rota`.
+- Plan ve bölge: Free, Central EU (Frankfurt).
+- Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
+- Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
+- Auth site URL'si `http://localhost:4321`; `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
+- Magic-link, profil yazma ve bir liste kaydının ikinci bağımsız tarayıcı profiline indirilmesi gerçek servis üzerinde doğrulanmıştır.
+- Resend hesabı hazırdır fakat doğrulanmış domain yoktur. Ürün domain'i kesinleşmeden DNS veya özel SMTP yapılandırılmaz.
+
 ## Ücretsiz plan sınırı
 
 Free plan geliştirme ve soft alpha için yeterlidir. Düşük aktivitede otomatik duraklama ve otomatik yedek eksikliği nedeniyle kesintisiz public üretim için yükseltme kararı yayın aşamasında yeniden değerlendirilir. Ücretli plana otomatik geçilmez.
