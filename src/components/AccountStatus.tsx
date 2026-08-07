@@ -4,11 +4,14 @@ import { syncPersonalList } from "../lib/cloud-sync";
 import { subscribeToPersonalList } from "../lib/personal-list";
 import { getSupabaseClient } from "../lib/supabase";
 
-type SyncState = "local" | "syncing" | "synced" | "error";
+// `partial`, sunucunun bazı kayıtları reddettiği ama geri kalanının gönderildiği
+// durumdur. `synced` göstermek yanıltıcı, `error` göstermek yanlış olurdu.
+type SyncState = "local" | "syncing" | "synced" | "partial" | "error";
 
 export default function AccountStatus() {
   const [session, setSession] = useState<Session | null>(null);
   const [syncState, setSyncState] = useState<SyncState>("local");
+  const [rejectedCount, setRejectedCount] = useState(0);
   const sessionRef = useRef<Session | null>(null);
   const timerRef = useRef<number | null>(null);
 
@@ -30,10 +33,16 @@ export default function AccountStatus() {
       syncing = true;
       setSyncState("syncing");
       try {
-        await syncPersonalList(client, current.user.id);
-        if (active) setSyncState("synced");
+        const result = await syncPersonalList(client, current.user.id);
+        if (active) {
+          setRejectedCount(result.rejected.length);
+          setSyncState(result.rejected.length > 0 ? "partial" : "synced");
+        }
       } catch {
-        if (active) setSyncState("error");
+        if (active) {
+          setRejectedCount(0);
+          setSyncState("error");
+        }
       } finally {
         syncing = false;
         if (queued) {
@@ -73,13 +82,13 @@ export default function AccountStatus() {
     };
   }, []);
 
-  const statusLabel = syncState === "syncing"
-    ? "Senkronize ediliyor"
-    : syncState === "error"
-      ? "Senkronizasyon bekliyor"
-      : syncState === "synced"
-        ? "Bulutla eşitlendi"
-        : "Yerel liste";
+  const statusLabel: string = {
+    local: "Yerel liste",
+    syncing: "Senkronize ediliyor",
+    synced: "Bulutla eşitlendi",
+    partial: `${rejectedCount} kayıt eşitlenemedi, bu cihazda duruyor`,
+    error: "Senkronizasyon bekliyor",
+  }[syncState];
 
   return (
     <a className="account-status" href="/hesap" title={statusLabel}>

@@ -54,6 +54,7 @@ a { color: inherit; text-decoration: none; }
 .account-status__dot { width: 6px; height: 6px; border-radius: 50%; background: #aaa49c; }
 .account-status__dot.is-syncing { background: var(--acid); animation: account-pulse 1s ease-in-out infinite; }
 .account-status__dot.is-synced { background: #8fc36f; }
+.account-status__dot.is-partial { background: #f0a24b; }
 .account-status__dot.is-error { background: var(--coral); }
 @keyframes account-pulse { 50% { opacity: .35; } }
 
