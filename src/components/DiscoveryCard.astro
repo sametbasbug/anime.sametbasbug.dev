@@ -1,0 +1,22 @@
+---
+import AnimeArtwork from "./AnimeArtwork";
+import { displayTags, seasonLabels, statusLabels, typeLabels, visualFor, type CatalogueAnime } from "../lib/catalogue";
+
+interface Props { anime: CatalogueAnime }
+const { anime } = Astro.props;
+const visual = visualFor(anime.id);
+const tags = displayTags(anime.tags);
+---
+
+<a class="catalogue-card" href={`/anime/${anime.slug}`}>
+  <AnimeArtwork art={visual.art} palette={visual.palette} />
+  <div class="catalogue-card__body">
+    <div class="catalogue-card__kicker">
+      <span>{seasonLabels[anime.season.season]} {anime.season.year}</span>
+      {anime.status !== "UPCOMING" && anime.score && <strong>★ {anime.score.toFixed(1)}</strong>}
+    </div>
+    <h2>{anime.title}</h2>
+    <p>{typeLabels[anime.type]} · {anime.episodes || "?"} bölüm · {statusLabels[anime.status]}</p>
+    <div>{tags.map((tag) => <span>{tag}</span>)}</div>
+  </div>
+</a>

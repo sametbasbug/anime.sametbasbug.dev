@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import AccountExperience from "../components/AccountExperience";
+---
+
+<BaseLayout title="Hesap — Rota" description="Rota hesabını, cihazlar arası senkronizasyonu ve liste gizliliğini yönet.">
+  <SiteHeader active="account" />
+  <main class="account-page">
+    <section class="account-hero">
+      <p class="eyebrow">HESAP · SENKRONİZASYON · GİZLİLİK</p>
+      <h1>Arşivin,<br /><em>seninle.</em></h1>
+      <p>Yerel hızdan vazgeçmeden animelerini cihazların arasında taşı. Hesap açmak isteğe bağlıdır; kişisel notların varsayılan olarak özeldir.</p>
+    </section>
+    <section class="account-experience">
+      <AccountExperience client:load />
+    </section>
+  </main>
+</BaseLayout>

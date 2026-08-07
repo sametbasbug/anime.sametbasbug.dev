@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import DataAttribution from "../../components/DataAttribution.astro";
+import { animeForGenre, genres } from "../../lib/exploration";
+
+const genreCards = genres
+  .map((genre) => ({ ...genre, count: animeForGenre(genre).length }))
+  .filter((genre) => genre.count > 0)
+  .sort((a, b) => b.count - a.count);
+---
+
+<BaseLayout title="Anime türleri — Rota" description="Aksiyon, dram, fantastik, komedi ve daha fazla anime türünü Türkçe katalogda keşfet.">
+  <SiteHeader active="search" />
+  <main class="discovery-page">
+    <section class="discovery-hero">
+      <p class="eyebrow">TÜR HARİTASI · {genreCards.length} ROTA</p>
+      <h1>Hikâyeni<br /><em>hissinden seç.</em></h1>
+      <p>Açık katalogdaki yapımları anlatı türlerine göre incele. Bir yapım birden fazla rotada yer alabilir.</p>
+      <div class="discovery-switch"><a class="is-active" href="/tur">Türler</a><a href="/studyo">Stüdyolar</a></div>
+    </section>
+
+    <section class="facet-index" aria-label="Anime türleri">
+      {genreCards.map((genre, index) => (
+        <a href={`/tur/${genre.slug}`}>
+          <small>{String(index + 1).padStart(2, "0")}</small>
+          <h2>{genre.label}</h2>
+          <span>{genre.count} yapım <b>↗</b></span>
+        </a>
+      ))}
+    </section>
+    <DataAttribution />
+  </main>
+</BaseLayout>

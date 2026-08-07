@@ -1,0 +1,146 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import AnimeArtwork from "../../components/AnimeArtwork";
+import DataAttribution from "../../components/DataAttribution.astro";
+import DiscoveryCard from "../../components/DiscoveryCard.astro";
+import ListEditor from "../../components/ListEditor";
+import {
+  catalogue,
+  durationLabel,
+  displayTags,
+  preferredAliases,
+  seasonLabels,
+  sourceLabel,
+  statusLabels,
+  typeLabels,
+  visualFor,
+  type CatalogueAnime,
+} from "../../lib/catalogue";
+import { editorialForAnime } from "../../lib/editorial";
+import { genresForAnime, relatedAnime, studiosForAnime } from "../../lib/exploration";
+
+export function getStaticPaths() {
+  return catalogue.map((anime) => ({ params: { slug: anime.slug }, props: { anime } }));
+}
+
+interface Props { anime: CatalogueAnime }
+const { anime } = Astro.props;
+const visual = visualFor(anime.id);
+const primaryTags = displayTags(anime.tags, 10);
+const aliases = preferredAliases(anime.synonyms);
+const genreLinks = genresForAnime(anime);
+const linkedGenreLabels = new Set(genreLinks.map((genre) => genre.label));
+const secondaryTags = primaryTags.filter((tag) => !linkedGenreLabels.has(tag));
+const studioLinks = studiosForAnime(anime);
+const related = relatedAnime(anime);
+const editorial = editorialForAnime(anime.id);
+const usefulSources = anime.sources
+  .filter((source) => !source.includes("anilist.co"))
+  .slice(0, 6);
+---
+
+<BaseLayout title={`${anime.title} — Rota`} description={editorial?.summary ?? `${anime.title} için bölüm, stüdyo, sezon ve tür bilgileri.`}>
+  <SiteHeader active="search" />
+  <main class="detail-page">
+    <a class="detail-back" href="/ara">← Kataloğa dön</a>
+    <section class="detail-hero">
+      <div class="detail-art">
+        <AnimeArtwork art={visual.art} palette={visual.palette} />
+        <span>ROTA / {anime.id}</span>
+      </div>
+      <div class="detail-copy">
+        <p class="eyebrow"><a href={`/ara?type=${anime.type}`}>{typeLabels[anime.type]}</a> · {seasonLabels[anime.season.season]} {anime.season.year}</p>
+        <h1>{anime.title}</h1>
+        {aliases[0] && <p class="detail-alias">{aliases.join(" · ")}</p>}
+        <ListEditor animeId={anime.id} title={anime.title} episodes={anime.episodes} client:load />
+        <dl class="detail-facts">
+          <div><dt>Puan</dt><dd>{anime.score ? `★ ${anime.score.toFixed(1)}` : "—"}</dd></div>
+          <div><dt>Bölüm</dt><dd>{anime.episodes || "—"}</dd></div>
+          <div><dt>Süre</dt><dd>{durationLabel(anime.durationSeconds)}</dd></div>
+          <div><dt>Durum</dt><dd>{statusLabels[anime.status]}</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="detail-body">
+      <article class="detail-section">
+        {editorial ? (
+          <>
+            <div class="editorial-heading">
+              <div>
+                <p class="eyebrow">ROTA EDİTORYA · SPOILER İÇERMEZ</p>
+                <h2>{editorial.headline}</h2>
+              </div>
+              <span><b>✓</b> Editoryal kontrolden geçti</span>
+            </div>
+            <p class="editorial-summary">{editorial.summary}</p>
+            <div class="editorial-panels">
+              <section class="editorial-reasons">
+                <p class="eyebrow">NEDEN İZLENİR?</p>
+                <ol>
+                  {editorial.whyWatch.map((reason, index) => (
+                    <li><span>0{index + 1}</span><p>{reason}</p></li>
+                  ))}
+                </ol>
+              </section>
+              <section class="editorial-verdict">
+                <p class="eyebrow">KISA DEĞERLENDİRME</p>
+                <blockquote>{editorial.verdict}</blockquote>
+                <div>
+                  <strong>KİME GÖRE?</strong>
+                  <p>{editorial.audience}</p>
+                </div>
+              </section>
+            </div>
+          </>
+        ) : (
+          <>
+            <p class="eyebrow">YAPIM PROFİLİ</p>
+            <h2>Bu anime nasıl bir rota çiziyor?</h2>
+            <p class="detail-placeholder">
+              Türkçe editoryal özet henüz hazırlanmadı. Rota, kaynak açıklamalarını kopyalamak yerine özgün ve spoiler kontrollü metinler yayımlayacak.
+            </p>
+          </>
+        )}
+        <div class="detail-tags">
+          {genreLinks.map((genre) => <a href={`/tur/${genre.slug}`}>{genre.label} ↗</a>)}
+          {secondaryTags.map((tag) => <span>{tag}</span>)}
+        </div>
+      </article>
+
+      <aside class="detail-sidebar">
+        <div>
+          <p class="eyebrow">STÜDYO</p>
+          {studioLinks.length ? (
+            <div class="detail-studios">
+              {studioLinks.map((studio) => <a href={`/studyo/${studio.slug}`}>{studio.name} <span>↗</span></a>)}
+            </div>
+          ) : <h3>{anime.studios.length ? anime.studios.join(", ") : "Henüz doğrulanmadı"}</h3>}
+        </div>
+        <div>
+          <p class="eyebrow">KAYNAKLAR</p>
+          <ul>
+            {usefulSources.map((source) => (
+              <li><a href={source} target="_blank" rel="noreferrer">{sourceLabel(source)} <span>↗</span></a></li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    {related.length > 0 && (
+      <section class="related-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">BENZER ROTALAR</p><h2>Bundan sonra ne?</h2></div>
+          <a href="/tur">Tüm türler <span>→</span></a>
+        </div>
+        <div class="discovery-grid discovery-grid--related">
+          {related.map((item) => <DiscoveryCard anime={item} />)}
+        </div>
+      </section>
+    )}
+
+    <DataAttribution />
+  </main>
+</BaseLayout>

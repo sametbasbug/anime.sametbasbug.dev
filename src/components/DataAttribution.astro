@@ -1,0 +1,12 @@
+---
+import { catalogueMeta } from "../lib/catalogue";
+---
+
+<aside class="data-attribution">
+  <span>AÇIK VERİ</span>
+  <p>
+    Katalog, <a href={catalogueMeta.source} target="_blank" rel="noreferrer">anime-offline-database</a>
+    {" "}sürüm {catalogueMeta.release} verisinden türetilmiştir. {catalogueMeta.license.name}.
+  </p>
+  <small>Veri tarihi: {catalogueMeta.lastUpdate} · Rota indeksi: {catalogueMeta.entryCount} kayıt</small>
+</aside>

@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import DataAttribution from "../../components/DataAttribution.astro";
+import { studios } from "../../lib/exploration";
+
+const featuredStudios = studios.slice(0, 96);
+---
+
+<BaseLayout title="Anime stüdyoları — Rota" description="Anime stüdyolarını ve katalogdaki yapımlarını keşfet.">
+  <SiteHeader active="search" />
+  <main class="discovery-page">
+    <section class="discovery-hero">
+      <p class="eyebrow">STÜDYO HARİTASI · {studios.length} STÜDYO</p>
+      <h1>Perdenin<br /><em>arkasına bak.</em></h1>
+      <p>Aynı görsel dili ve üretim mirasını paylaşan yapımları stüdyoları üzerinden keşfet.</p>
+      <div class="discovery-switch"><a href="/tur">Türler</a><a class="is-active" href="/studyo">Stüdyolar</a></div>
+    </section>
+
+    <section class="facet-index facet-index--studios" aria-label="Anime stüdyoları">
+      {featuredStudios.map((studio, index) => (
+        <a href={`/studyo/${studio.slug}`}>
+          <small>{String(index + 1).padStart(2, "0")}</small>
+          <h2>{studio.name}</h2>
+          <span>{studio.anime.length} yapım <b>↗</b></span>
+        </a>
+      ))}
+    </section>
+    <DataAttribution />
+  </main>
+</BaseLayout>

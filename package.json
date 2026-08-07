@@ -1,0 +1,30 @@
+{
+  "name": "rota-anime",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run check && astro build",
+    "preview": "astro preview",
+    "check": "npm run content:check && npm run sync:check && astro check",
+    "content:check": "node scripts/check-editorial.mjs",
+    "sync:check": "tsx scripts/check-personal-list-sync.ts",
+    "data:refresh": "node scripts/refresh-catalogue.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.2",
+    "@supabase/supabase-js": "^2.112.2",
+    "astro": "^7.1.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tsx": "^4.23.10",
+    "typescript": "^5.9.3"
+  }
+}

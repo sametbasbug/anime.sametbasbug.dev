@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import DataAttribution from "../../components/DataAttribution.astro";
+import DiscoveryCard from "../../components/DiscoveryCard.astro";
+import { animeForGenre, genres, rankAnime, type GenreDefinition } from "../../lib/exploration";
+
+export function getStaticPaths() {
+  return genres.map((genre) => ({ params: { slug: genre.slug }, props: { genre } }));
+}
+
+interface Props { genre: GenreDefinition }
+const { genre } = Astro.props;
+const allAnime = animeForGenre(genre);
+const anime = rankAnime(allAnime).slice(0, 48);
+---
+
+<BaseLayout title={`${genre.label} animeleri — Rota`} description={`${genre.label} türündeki animeleri puan, sezon ve yayın durumlarıyla keşfet.`}>
+  <SiteHeader active="search" />
+  <main class="discovery-page">
+    <a class="detail-back" href="/tur">← Tür haritasına dön</a>
+    <section class="discovery-hero discovery-hero--compact">
+      <p class="eyebrow">TÜR ROTASI · {allAnime.length} YAPIM</p>
+      <h1>{genre.label}</h1>
+      <p>Kaynak kapsamı, yayın durumu ve katalog puanıyla öne çıkan ilk {anime.length} yapım.</p>
+      <div class="discovery-switch"><a class="is-active" href={`/tur/${genre.slug}`}>{genre.label}</a><a href={`/ara?q=${encodeURIComponent(genre.label)}`}>Katalogda ara</a></div>
+    </section>
+    <section class="discovery-grid" aria-label={`${genre.label} animeleri`}>
+      {anime.map((item) => <DiscoveryCard anime={item} />)}
+    </section>
+    <DataAttribution />
+  </main>
+</BaseLayout>

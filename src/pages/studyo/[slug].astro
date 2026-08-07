@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import DataAttribution from "../../components/DataAttribution.astro";
+import DiscoveryCard from "../../components/DiscoveryCard.astro";
+import { rankAnime, studios, type StudioGroup } from "../../lib/exploration";
+
+export function getStaticPaths() {
+  return studios.map((studio) => ({ params: { slug: studio.slug }, props: { studio } }));
+}
+
+interface Props { studio: StudioGroup }
+const { studio } = Astro.props;
+const anime = rankAnime(studio.anime).slice(0, 48);
+---
+
+<BaseLayout title={`${studio.name} animeleri — Rota`} description={`${studio.name} tarafından hazırlanan animeleri keşfet.`}>
+  <SiteHeader active="search" />
+  <main class="discovery-page">
+    <a class="detail-back" href="/studyo">← Stüdyo haritasına dön</a>
+    <section class="discovery-hero discovery-hero--compact">
+      <p class="eyebrow">STÜDYO ROTASI · {studio.anime.length} YAPIM</p>
+      <h1>{studio.name}</h1>
+      <p>Katalogda bu stüdyoyla ilişkilendirilen yapımlardan kaynak kapsamıyla öne çıkan ilk {anime.length} kayıt.</p>
+      {studio.aliases.length > 1 && <p class="discovery-aliases">Kaynak adları: {studio.aliases.join(" · ")}</p>}
+    </section>
+    <section class="discovery-grid" aria-label={`${studio.name} animeleri`}>
+      {anime.map((item) => <DiscoveryCard anime={item} />)}
+    </section>
+    <DataAttribution />
+  </main>
+</BaseLayout>

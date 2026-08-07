@@ -1,0 +1,34 @@
+---
+import AccountStatus from "./AccountStatus";
+
+interface Props {
+  active?: "discover" | "search" | "map" | "lists" | "account";
+}
+
+const { active = "discover" } = Astro.props;
+---
+
+<header class="site-header">
+  <a href="/" class="brand" aria-label="Rota ana sayfa">
+    <svg viewBox="0 0 44 44" aria-hidden="true">
+      <circle cx="22" cy="22" r="19" />
+      <path d="M13 27.5c4.2-10.6 10.9-15 20-13.2-8.6 1.5-13.8 7.2-15.5 17.2" />
+      <circle cx="31.5" cy="13.8" r="2.7" />
+    </svg>
+    <span>ROTA<small>anime rehberi</small></span>
+  </a>
+
+  <nav aria-label="Ana menü">
+    <a class:list={{ "is-active": active === "discover" }} href="/">Keşfet</a>
+    <a class:list={{ "is-active": active === "search" }} href="/ara">Katalog</a>
+    <a class:list={{ "is-active": active === "map" }} href="/#harita">Harita</a>
+    <a class:list={{ "is-active": active === "lists" }} href="/listem">Listem</a>
+  </nav>
+
+  <div class="header-actions">
+    <a class="icon-button" href="/ara" aria-label="Anime ara">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
+    </a>
+    <AccountStatus client:load />
+  </div>
+</header>

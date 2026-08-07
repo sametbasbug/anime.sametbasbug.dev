@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SearchExperience from "../components/SearchExperience";
+import DataAttribution from "../components/DataAttribution.astro";
+import { catalogueMeta } from "../lib/catalogue";
+---
+
+<BaseLayout title="Anime kataloğu — Rota" description="Anime adı, tür, stüdyo veya yıla göre Türkçe katalogda ara.">
+  <SiteHeader active="search" />
+  <main class="catalogue-page">
+    <section class="catalogue-hero">
+      <p class="eyebrow">AÇIK KATALOG · {catalogueMeta.entryCount} YAPIM</p>
+      <h1>Ne arıyorsan,<br /><em>rotası burada.</em></h1>
+      <p>Anime adı, alternatif başlık, tür, stüdyo veya yayın yılıyla ara. Sonuçlar açık lisanslı veri indeksimizden gelir.</p>
+      <div class="catalogue-hero__links"><a href="/tur">Türlere göz at ↗</a><a href="/studyo">Stüdyoları keşfet ↗</a></div>
+    </section>
+    <SearchExperience dataVersion={catalogueMeta.generatedAt} client:load />
+    <DataAttribution />
+  </main>
+</BaseLayout>

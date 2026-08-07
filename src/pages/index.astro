@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import AnimeArtwork from "../components/AnimeArtwork";
+import SeasonShelf from "../components/SeasonShelf";
+import {
+  catalogue,
+  catalogueMeta,
+  displayTags,
+  preferredAliases,
+  seasonLabels,
+  statusLabels,
+  typeLabels,
+  visualFor,
+  type CatalogueAnime,
+} from "../lib/catalogue";
+
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentSeason = now.getMonth() < 3 ? "WINTER" : now.getMonth() < 6 ? "SPRING" : now.getMonth() < 9 ? "SUMMER" : "FALL";
+
+function statusSelection(status: CatalogueAnime["status"]) {
+  const seen = new Set<string>();
+  return catalogue
+    .filter((anime) => anime.season.year === currentYear && anime.status === status && ["TV", "ONA", "MOVIE"].includes(anime.type))
+    .sort((a, b) => (b.sources.length * 2 + (b.score ?? 0)) - (a.sources.length * 2 + (a.score ?? 0)))
+    .filter((anime) => {
+      const key = anime.title.toLocaleLowerCase("tr-TR");
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 4);
+}
+
+const homepageAnime = ["ONGOING", "FINISHED", "UPCOMING"].flatMap((status) => statusSelection(status));
+const featured = statusSelection("ONGOING")[0] ?? homepageAnime[0] ?? catalogue[0];
+const featuredVisual = visualFor(featured.id);
+const featuredAlias = preferredAliases(featured.synonyms, 1)[0];
+const featuredTags = displayTags(featured.tags, 2);
+const studioCount = new Set(catalogue.flatMap((anime) => anime.studios.map((studio) => studio.toLocaleLowerCase("en-US")))).size;
+const countBy = (field: "type" | "status", value: string) => catalogue.filter((anime) => anime[field] === value).length;
+const catalogueOverview = [
+  { label: "TV serisi", value: countBy("type", "TV"), href: "/ara?type=TV" },
+  { label: "Film", value: countBy("type", "MOVIE"), href: "/ara?type=MOVIE" },
+  { label: "OVA", value: countBy("type", "OVA"), href: "/ara?type=OVA" },
+  { label: "ONA", value: countBy("type", "ONA"), href: "/ara?type=ONA" },
+  { label: "Özel bölüm", value: countBy("type", "SPECIAL"), href: "/ara?type=SPECIAL" },
+  { label: "Devam ediyor", value: countBy("status", "ONGOING"), href: "/ara?status=ONGOING" },
+  { label: "Yakında", value: countBy("status", "UPCOMING"), href: "/ara?status=UPCOMING" },
+];
+---
+
+<BaseLayout title="Rota — Anime yolculuğunun kaydı" description="Animeleri keşfet, takip et ve kendi rotanı oluştur.">
+  <SiteHeader active="discover" />
+
+  <main>
+    <section class="hero" id="kesfet">
+      <div class="hero__copy">
+        <p class="eyebrow"><span>{seasonLabels[currentSeason]} {currentYear}</span> Açık katalog seçkisi</p>
+        <h1>Sıradaki hikâyeni<br /><em>bul.</em></h1>
+        <p class="hero__lede">Ne izleyeceğine karar vermek, izlemekten uzun sürmesin. Sana uyan animeleri keşfet, listeni kur, kaldığın yeri unutma.</p>
+        <div class="hero__actions">
+          <a class="primary-button" href="/ara?status=ONGOING">Devam edenleri keşfet <span>↗</span></a>
+          <a class="text-button" href="#listeler"><span class="play">▶</span> Nasıl çalışır?</a>
+        </div>
+        <dl class="hero__stats">
+          <div><dt>{catalogueMeta.entryCount.toLocaleString("tr-TR")}</dt><dd>katalog kaydı</dd></div>
+          <div><dt>{studioCount.toLocaleString("tr-TR")}</dt><dd>stüdyo</dd></div>
+          <div><dt>{catalogueMeta.release}</dt><dd>veri sürümü</dd></div>
+        </dl>
+      </div>
+
+      <div class="hero__visual">
+        <a class="feature-card" href={`/anime/${featured.slug}`} aria-label={`${featured.title} detayına git`}>
+          <AnimeArtwork art={featuredVisual.art} palette={featuredVisual.palette} />
+          <div class="feature-card__shade"></div>
+          <div class="feature-card__top">
+            <span class="airing"><i></i> {statusLabels[featured.status]}</span>
+            {featured.score && <span class="feature-score">★ {featured.score.toFixed(1)}</span>}
+          </div>
+          <div class="feature-card__copy">
+            <p>{featuredAlias ?? `${typeLabels[featured.type]} · ${seasonLabels[featured.season.season]} ${featured.season.year}`}</p>
+            <h2>{featured.title}</h2>
+            <div>{featuredTags.map((tag) => <span>{tag}</span>)}<span>{featured.episodes || "?"} BÖLÜM</span></div>
+          </div>
+        </a>
+        <div class="floating-note floating-note--top"><span>{catalogueMeta.release}</span><small>açık veri</small></div>
+        <div class="floating-note floating-note--bottom"><b>{featured.episodes || "?"}</b><span><strong>bölüm</strong><small>{typeLabels[featured.type]}</small></span></div>
+        <span class="hero__stamp">今<br />週</span>
+      </div>
+    </section>
+
+    <section class="schedule" id="harita">
+      <div class="section-heading">
+        <div><p class="eyebrow">KATALOG HARİTASI</p><h2>{catalogueMeta.entryCount} yapımın içinde ne var?</h2></div>
+        <a href="/ara">Kataloğu aç <span>→</span></a>
+      </div>
+      <div class="catalogue-strip">
+        {catalogueOverview.map((item) => (
+          <a href={item.href}>
+            <strong>{item.value}</strong><span>{item.label}</span><small>incele ↗</small>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="season" id="sezon">
+      <div class="section-heading section-heading--season">
+        <div><p class="eyebrow">{currentYear} SEÇKİSİ</p><h2>Yeni rotalar</h2></div>
+        <p class="section-intro">Açık katalogdaki güncel yapımlardan durum ve kaynak kapsamına göre hazırlanan gerçek veri seçkisi.</p>
+      </div>
+      <SeasonShelf items={homepageAnime} client:load />
+    </section>
+
+    <section class="manifesto" id="listeler">
+      <p class="eyebrow">KENDİ ROTAN</p>
+      <h2>Bir liste değil,<br /><em>senin anime hafızan.</em></h2>
+      <div class="manifesto__grid">
+        <article><span>01</span><h3>Takip et</h3><p>Bölüm ilerlemeni tek dokunuşla kaydet. Nerede kaldığını düşünme.</p></article>
+        <article><span>02</span><h3>Keşfet</h3><p>Tempo, atmosfer ve anlatı özellikleriyle gerçekten sana uyan yapımları bul.</p></article>
+        <article><span>03</span><h3>Hatırla</h3><p>Puanların, notların ve anıların zaman içinde kişisel arşivine dönüşsün.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand brand--footer">
+      <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19" /><path d="M13 27.5c4.2-10.6 10.9-15 20-13.2-8.6 1.5-13.8 7.2-15.5 17.2" /><circle cx="31.5" cy="13.8" r="2.7" /></svg>
+      <span>ROTA<small>anime rehberi</small></span>
+    </div>
+    <p>Anime yolculuğunun Türkçe kaydı.</p>
+    <small>Bir Nyx projesi · 2026</small>
+  </footer>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import MyListExperience from "../components/MyListExperience";
+import DataAttribution from "../components/DataAttribution.astro";
+import { catalogueMeta } from "../lib/catalogue";
+---
+
+<BaseLayout title="Listem — Rota" description="İzlediğin, tamamladığın ve daha sonra izlemek istediğin animeleri kişisel arşivinde tut.">
+  <SiteHeader active="lists" />
+  <main class="my-list-page">
+    <section class="my-list-hero">
+      <div>
+        <p class="eyebrow">KİŞİSEL ARŞİV · LOCAL-FIRST</p>
+        <h1>Senin<br /><em>rotan.</em></h1>
+      </div>
+      <p>İzlediklerini, sıradakileri ve yarım kalanları tek yerde tut. Kayıtlar önce bu cihazda saklanır; hesabın varsa güvenli biçimde cihazların arasında eşitlenir.</p>
+    </section>
+    <section class="my-list-experience">
+      <MyListExperience dataVersion={catalogueMeta.generatedAt} client:load />
+    </section>
+    <DataAttribution />
+  </main>
+</BaseLayout>
