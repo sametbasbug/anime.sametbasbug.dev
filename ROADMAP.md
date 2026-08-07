@@ -42,6 +42,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Supabase Auth + Postgres + RLS mimarisini ve local-first güven sınırını kilitle.
 - [x] Şifresiz kimlik doğrulama ve kullanıcı profili arayüzünü ekle.
 - [x] Yerel listeyi tombstone destekli biçimde hesaplar arasında senkronize et.
+- [x] Senkronizasyonu biçim ve kısıt hatalarına karşı sağlamlaştır; kısmi reddi başlık rozetinde ayırt et.
 - [x] Profil ve liste görünürlüğü tercihlerini ekle; temel tabloları sahip kullanıcıyla sınırla.
 - [x] Supabase Free projesini Frankfurt bölgesinde oluştur ve RLS migration'ını uygula.
 - [x] Magic-link, profil yazma ve liste birleştirmeyi iki bağımsız tarayıcı profiliyle doğrula.
@@ -73,4 +74,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. GitHub Pages, `anime.sametbasbug.dev` ve `Rota <giris@anime.sametbasbug.dev>` kararları kilitlendi; uygulama yarına bırakıldı. Aşamanın kapanması için push/deploy, DNS/Resend özel SMTP kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. GitHub Pages, `anime.sametbasbug.dev` ve `Rota <giris@anime.sametbasbug.dev>` kararları kilitlendi; uygulama yarına bırakıldı.
+
+Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
+
+Aşamanın kapanması için push/deploy, DNS/Resend özel SMTP kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda iki şeye ayrıca bakılacak: ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesi ve kısmi red bildiriminin gerçek oturumdaki görünümü.
