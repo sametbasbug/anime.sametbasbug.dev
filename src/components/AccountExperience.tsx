@@ -107,7 +107,9 @@ export default function AccountExperience() {
     try {
       const result = await syncPersonalList(client, session.user.id);
       setSyncResult(result);
-      setMessage("Yerel arşivin bulutla eşitlendi.");
+      setMessage(result.rejected.length > 0
+        ? `Eşitleme tamamlandı; ${result.rejected.length} kayıt sunucu tarafından reddedildi ve bu cihazda korunuyor.`
+        : "Yerel arşivin bulutla eşitlendi.");
     } catch (error) {
       setMessage(`Senkronizasyon tamamlanamadı: ${error instanceof Error ? error.message : "Bilinmeyen hata"}`);
     } finally {

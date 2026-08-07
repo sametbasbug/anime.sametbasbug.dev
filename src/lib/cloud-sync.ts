@@ -22,10 +22,28 @@ type UploadRow = CloudListRow & { user_id: string };
 export type SyncResult = {
   downloaded: number;
   uploaded: number;
+  /** Sunucunun kısıtları nedeniyle reddettiği kayıtların anime kimlikleri. */
+  rejected: string[];
 };
+
+/**
+ * Tek istekte gönderilen kayıt sayısı. Büyük arşivlerde tek bir dev upsert
+ * yerine parçalı gönderim, hem istek boyutunu hem de bir reddin etkilediği
+ * kayıt kümesini sınırlar.
+ */
+const UPLOAD_CHUNK_SIZE = 200;
 
 function localVersion(store: PersonalListStore, animeId: string) {
   return store.entries[animeId]?.updatedAt ?? store.tombstones[animeId] ?? null;
+}
+
+// Yerel kayıt `2026-08-07T11:00:00.000Z`, PostgREST ise aynı anı
+// `2026-08-07T11:00:00+00:00` biçiminde döndürür. Metin karşılaştırması bu iki
+// biçimi hiçbir zaman eşit görmez; sürümler anlık değere çevrilerek kıyaslanır.
+function versionTime(value: string | null): number | null {
+  if (!value) return null;
+  const time = Date.parse(value);
+  return Number.isNaN(time) ? null : time;
 }
 
 function uploadFromLocal(store: PersonalListStore, animeId: string, userId: string): UploadRow | null {
@@ -76,6 +94,51 @@ function applyRemote(store: PersonalListStore, row: CloudListRow) {
   delete store.tombstones[row.anime_id];
 }
 
+/**
+ * Postgres veri (22xxx) ve kısıt (23xxx) hataları tek bir satırdan kaynaklanır.
+ * Ağ, JWT ve RLS hataları ise isteğin tamamını ilgilendirir; onları satır satır
+ * yeniden denemek yalnızca istek sayısını artırır, bu yüzden yukarı fırlatılır.
+ */
+function isRowRejection(error: unknown): boolean {
+  const code = (error as { code?: unknown } | null)?.code;
+  return typeof code === "string" && (code.startsWith("22") || code.startsWith("23"));
+}
+
+async function upsertRows(client: SupabaseClient, rows: UploadRow[]) {
+  const { error } = await client
+    .from("personal_list_entries")
+    .upsert(rows, { onConflict: "user_id,anime_id" });
+  return error;
+}
+
+async function uploadRows(client: SupabaseClient, rows: UploadRow[]) {
+  const rejected: string[] = [];
+  let uploaded = 0;
+
+  for (let start = 0; start < rows.length; start += UPLOAD_CHUNK_SIZE) {
+    const chunk = rows.slice(start, start + UPLOAD_CHUNK_SIZE);
+    const chunkError = await upsertRows(client, chunk);
+
+    if (!chunkError) {
+      uploaded += chunk.length;
+      continue;
+    }
+
+    if (!isRowRejection(chunkError)) throw chunkError;
+
+    // Kısıtı çiğneyen kaydı yalıtıp geri kalanı göndermeye devam eder; tek bir
+    // bozuk satır kullanıcının tüm arşivinin eşitlenmesini engellemez.
+    for (const row of chunk) {
+      const rowError = await upsertRows(client, [row]);
+      if (!rowError) uploaded += 1;
+      else if (isRowRejection(rowError)) rejected.push(row.anime_id);
+      else throw rowError;
+    }
+  }
+
+  return { uploaded, rejected };
+}
+
 export async function syncPersonalList(client: SupabaseClient, userId: string): Promise<SyncResult> {
   const local = readPersonalList();
   const { data, error } = await client
@@ -97,7 +160,6 @@ export async function syncPersonalList(client: SupabaseClient, userId: string): 
 
   for (const animeId of animeIds) {
     const remote = remoteById.get(animeId);
-    const localUpdatedAt = localVersion(local, animeId);
 
     if (!remote) {
       const upload = uploadFromLocal(local, animeId, userId);
@@ -105,25 +167,26 @@ export async function syncPersonalList(client: SupabaseClient, userId: string): 
       continue;
     }
 
-    if (!localUpdatedAt || remote.client_updated_at > localUpdatedAt) {
+    const localTime = versionTime(localVersion(local, animeId));
+    const remoteTime = versionTime(remote.client_updated_at);
+
+    if (localTime === null || (remoteTime !== null && remoteTime > localTime)) {
       applyRemote(local, remote);
       downloaded += 1;
       continue;
     }
 
-    if (remote.client_updated_at === localUpdatedAt) continue;
+    if (remoteTime === localTime) continue;
 
     const upload = uploadFromLocal(local, animeId, userId);
     if (upload) uploads.push(upload);
   }
 
-  if (uploads.length > 0) {
-    const { error: uploadError } = await client
-      .from("personal_list_entries")
-      .upsert(uploads, { onConflict: "user_id,anime_id" });
-    if (uploadError) throw uploadError;
-  }
-
+  // İndirilen kayıtlar gönderimden önce yazılır; gönderim yarıda kesilse bile
+  // uzaktan alınan değişiklikler kaybolmaz.
   if (downloaded > 0) replacePersonalList(local);
-  return { downloaded, uploaded: uploads.length };
+  if (uploads.length === 0) return { downloaded, uploaded: 0, rejected: [] };
+
+  const { uploaded, rejected } = await uploadRows(client, uploads);
+  return { downloaded, uploaded, rejected };
 }

@@ -27,6 +27,11 @@ export type PersonalListStore = {
 
 const statuses = new Set<PersonalStatus>(Object.keys(personalStatusLabels) as PersonalStatus[]);
 
+// `personal_list_entries.progress` sütunundaki üst sınırla aynı tutulur; aksi
+// halde tek bir uç değer, toplu upsert'i ve dolayısıyla tüm senkronizasyonu
+// reddettirir.
+export const MAX_PROGRESS = 100000;
+
 function emptyStore(): PersonalListStore {
   return { version: 2, entries: {}, tombstones: {} };
 }
@@ -37,7 +42,9 @@ function sanitizeEntry(value: unknown): PersonalListEntry | null {
   if (typeof candidate.animeId !== "string" || !candidate.animeId) return null;
   if (!candidate.status || !statuses.has(candidate.status)) return null;
 
-  const progress = Number.isFinite(candidate.progress) ? Math.max(0, Math.floor(candidate.progress ?? 0)) : 0;
+  const progress = Number.isFinite(candidate.progress)
+    ? Math.min(MAX_PROGRESS, Math.max(0, Math.floor(candidate.progress ?? 0)))
+    : 0;
   const rawScore = candidate.score === null ? null : Number(candidate.score);
   const score = rawScore !== null && Number.isFinite(rawScore) && rawScore >= 1 && rawScore <= 10
     ? Math.round(rawScore)
