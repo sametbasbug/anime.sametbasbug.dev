@@ -47,7 +47,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Son commitler
 
+- `d1099a6` — `chore: ignore .claude`
+- `2d4e8da` — `feat: tell partial sync apart in the header badge`
+- `fede3c4` — `docs: record sync hardening and ownership in status`
 - `a9f534d` — `fix: make personal list sync resilient to format and constraint errors`
-- `4c400e6` — `docs: include Hemera in Rota`
-- `f5f5ea9` — `docs: lock Rota publication decisions`
-- `2da6a78` — `docs: record Rota status and public domain`
