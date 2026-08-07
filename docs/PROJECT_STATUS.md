@@ -8,10 +8,12 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 - Geçici ürün adı: **Rota**.
 - Yayın domain'i: **`anime.sametbasbug.dev`**.
+- Statik yayın hedefi: **GitHub Pages**.
+- İşlem e-postası göndericisi: **`Rota <giris@anime.sametbasbug.dev>`**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
-- İşlem e-postası: ürün domain'i doğrulandıktan sonra Resend custom SMTP.
+- İşlem e-postası: `anime.sametbasbug.dev` Resend'de doğrulandıktan sonra custom SMTP.
 
 ## Tamamlananlar
 
@@ -26,18 +28,22 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. `anime.sametbasbug.dev` için yayın hedefini seç ve DNS kaydını oluştur.
-2. Domain'i Resend'de doğrula; Supabase custom SMTP ve üretim Auth URL'lerini yapılandır.
-3. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
-4. Yayından önce Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+1. Repo görünürlüğünü doğrula; GitHub remote ve ilk push'u açık onayla oluştur.
+2. GitHub Actions tabanlı Astro build ve GitHub Pages yayınını yapılandır.
+3. `anime.sametbasbug.dev` DNS kaydını GitHub Pages'e bağla.
+4. Domain'i Resend'de doğrula; `giris@anime.sametbasbug.dev` göndericisini, Supabase custom SMTP'yi ve üretim Auth URL'lerini yapılandır.
+5. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
+6. Yayından önce Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı
 
-- Domain seçilmiştir; **DNS, deploy, push ve SMTP yapılandırması henüz yapılmamıştır**.
+- Hosting, domain ve gönderici seçilmiştir; **DNS, deploy, push ve SMTP yapılandırması henüz yapılmamıştır**.
+- Repo görünürlüğü ayrıca doğrulanmadan kaynak kodu public yapılmaz.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 
 ## Son commitler
 
+- `2da6a78` — `docs: record Rota status and public domain`
 - `6acff41` — `fix: verify Supabase accounts and refresh sync count`
 - `bcd311f` — `feat: build Rota catalogue and local-first accounts`
