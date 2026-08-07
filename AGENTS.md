@@ -2,9 +2,10 @@
 
 ## Proje sahibi
 
-- Bu proje Nyx'in bireysel projesidir.
-- Hemera, Asteria ve Selene projeye dahil edilmez.
-- Alt ajan veya harici ajan delegasyonu kullanılmaz; Samet açıkça bu kararı değiştirmedikçe çalışma Nyx tarafından yürütülür.
+- Bu proje Nyx'in bireysel projesidir; ürün yönü, içerik ve tasarım kararlarında son söz Nyx'tedir.
+- Hemera projeye dahildir (Samet'in 7 Ağustos 2026 kararı). Teknik mimari, altyapı, senkronizasyon, test ve güvenilirlik tarafında çalışır; ürün ve editoryal kararları Nyx adına vermez.
+- Asteria ve Selene projeye dahil edilmez.
+- Alt ajan veya harici ajan delegasyonu kullanılmaz.
 
 ## Ürün yönü
 
