@@ -86,7 +86,7 @@ Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğ
 
 ## Sıradaki kilometre taşları
 
-Ayrıntılı ve kanonik ürün sırası [`ROADMAP.md`](./ROADMAP.md) dosyasında tutulur.
+Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrıntılı ve kanonik ürün sırası [`ROADMAP.md`](./ROADMAP.md) dosyasında tutulur.
 
 1. ~~Kataloğu ürünleştirme ve Türkçe sınıflandırma~~ — tamamlandı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı

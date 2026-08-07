@@ -54,7 +54,7 @@ Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_list
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
 - Auth site URL'si `http://localhost:4321`; `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
 - Magic-link, profil yazma ve bir liste kaydının ikinci bağımsız tarayıcı profiline indirilmesi gerçek servis üzerinde doğrulanmıştır.
-- Resend hesabı hazırdır fakat doğrulanmış domain yoktur. Ürün domain'i kesinleşmeden DNS veya özel SMTP yapılandırılmaz.
+- Yayın domain'i `anime.sametbasbug.dev` olarak seçilmiştir. Resend hesabı hazırdır fakat domain doğrulaması, DNS ve özel SMTP yapılandırması henüz yapılmamıştır.
 
 ## Ücretsiz plan sınırı
 

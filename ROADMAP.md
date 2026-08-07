@@ -45,7 +45,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Profil ve liste görünürlüğü tercihlerini ekle; temel tabloları sahip kullanıcıyla sınırla.
 - [x] Supabase Free projesini Frankfurt bölgesinde oluştur ve RLS migration'ını uygula.
 - [x] Magic-link, profil yazma ve liste birleştirmeyi iki bağımsız tarayıcı profiliyle doğrula.
-- [ ] Ürün domain'i kesinleşince Resend alan adını doğrula ve özel SMTP'yi yapılandır.
+- [x] Yayın domain'ini `anime.sametbasbug.dev` olarak seç.
+- [ ] `anime.sametbasbug.dev` alan adını Resend'de doğrula ve özel SMTP'yi yapılandır.
 - [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
@@ -70,4 +71,4 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. Aşamanın kapanması için ürün domain'i kesinleştikten sonra Resend özel SMTP kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. Yayın domain'i `anime.sametbasbug.dev` olarak seçildi; aşamanın kapanması için DNS/Resend özel SMTP kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor.
