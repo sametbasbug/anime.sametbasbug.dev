@@ -4,6 +4,8 @@
 
 Rota, Türkiye'deki anime izleyicileri için modern bir keşif, takip ve kişisel arşiv ürünüdür. Video barındırmaz ve korsan yayın bağlantısı sunmaz. İlk iki prototip; ürün dilini, görsel yönü ve gerçek katalog üzerinde arama ile detay deneyimini doğrulamak için hazırlanmıştır.
 
+Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
+
 ## Bugünkü durum
 
 - Mobil öncelikli, responsive ana sayfa

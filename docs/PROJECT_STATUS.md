@@ -32,26 +32,27 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Senkronizasyon sağlamlaştırması: sürümler metin yerine anlık değer olarak karşılaştırılır, gönderim 200'lük parçalara bölünür, sunucunun reddettiği satır yalıtılıp cihazda korunur, indirilen kayıtlar gönderimden önce yazılır.
 - Başlık rozetinde ayrı `partial` durumu: kısmi red artık "eşitlendi" gibi görünmüyor, kehribar noktayla ve reddedilen kayıt sayısıyla bildiriliyor.
 - Public depo için kod, içerik/marka ve katalog veri lisansı kapsamları ayrıldı.
+- Public GitHub deposu oluşturuldu ve `main` ilk kez push edildi: `sametbasbug/anime.sametbasbug.dev`.
+- GitHub Actions build + Pages deploy hattı kuruldu; `anime.sametbasbug.dev` doğrulanmış özel domain ve zorunlu HTTPS ile canlıya alındı.
+- GitHub Actions'a yalnız Supabase publishable URL/key repo değişkenleri tanımlandı; service-role veya secret eklenmedi.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
 
 ## Açık işler
 
-1. Public `sametbasbug/anime.sametbasbug.dev` reposunu oluştur; remote ve ilk push'u yap.
-2. GitHub Actions tabanlı Astro build ve GitHub Pages yayınını yapılandır.
-3. `anime.sametbasbug.dev` DNS kaydını GitHub Pages'e bağla.
-4. Domain'i Resend'de doğrula; `giris@anime.sametbasbug.dev` göndericisini, Supabase custom SMTP'yi ve üretim Auth URL'lerini yapılandır.
-5. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu turda iki şeye ayrıca bakılacak: ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesi ve reddedilen kayıt mesajının gerçek oturumdaki görünümü.
-6. Yayından önce Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+1. Domain'i Resend'de doğrula; `giris@anime.sametbasbug.dev` göndericisini, Supabase custom SMTP'yi ve üretim Auth URL'lerini yapılandır.
+2. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu turda iki şeye ayrıca bakılacak: ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesi ve reddedilen kayıt mesajının gerçek oturumdaki görünümü.
+3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı
 
-- Hosting, domain ve gönderici seçilmiştir; **DNS, deploy, push ve SMTP yapılandırması henüz yapılmamıştır**.
-- Repo public olacaktır; henüz GitHub'da oluşturulmamış ve push yapılmamıştır.
+- Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
+- Resend domain doğrulaması, özel SMTP ve Supabase üretim Auth URL yapılandırması henüz yapılmamıştır.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 
 ## Son commitler
 
+- `c512f37` — `chore: prepare public Rota repository [skip ci]`
 - `d1099a6` — `chore: ignore .claude`
 - `2d4e8da` — `feat: tell partial sync apart in the header badge`
 - `fede3c4` — `docs: record sync hardening and ownership in status`
