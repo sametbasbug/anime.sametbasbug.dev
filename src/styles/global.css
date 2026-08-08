@@ -437,6 +437,8 @@ footer > small { justify-self: end; color: var(--muted); font-size: 9px; text-tr
 .account-form label { grid-column: 1 / -1; margin-bottom: 8px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .account-form input, .account-settings > label input { min-width: 0; height: 52px; padding: 0 15px; border: 1px solid var(--line); border-radius: 0; outline: 0; background: var(--paper); color: var(--ink); font: inherit; }
 .account-form input:focus, .account-settings > label input:focus { border-color: var(--ink); }
+.account-turnstile { grid-column: 1 / -1; width: min(100%, 300px); min-height: 65px; margin: 14px 0; }
+.account-security-error { grid-column: 1 / -1; margin: 14px 0; color: var(--coral); font-size: 10px; }
 .account-form button { min-width: 196px; border: 0; background: var(--ink); color: white; font-size: 10px; font-weight: 800; cursor: pointer; }
 .account-form button span { margin-left: 22px; color: var(--acid); }
 .account-form button:disabled, .account-save:disabled, .account-sync button:disabled { cursor: wait; opacity: .58; }

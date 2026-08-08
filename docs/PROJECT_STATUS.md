@@ -34,10 +34,11 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Public depo için kod, içerik/marka ve katalog veri lisansı kapsamları ayrıldı.
 - Public GitHub deposu oluşturuldu ve `main` ilk kez push edildi: `sametbasbug/anime.sametbasbug.dev`.
 - GitHub Actions build + Pages deploy hattı kuruldu; `anime.sametbasbug.dev` doğrulanmış özel domain ve zorunlu HTTPS ile canlıya alındı.
-- GitHub Actions'a yalnız Supabase publishable URL/key repo değişkenleri tanımlandı; service-role veya secret eklenmedi.
+- GitHub Actions'a yalnız Supabase publishable URL/key ve Turnstile public site key repo değişkenleri tanımlandı; service-role, CAPTCHA secret veya başka secret eklenmedi.
 - Supabase production Site URL ve `/hesap` dönüş adresi yapılandırıldı; yerel geliştirme dönüş adresleri korundu.
 - `Rota <giris@sametbasbug.dev>` göndericisiyle Resend özel SMTP kuruldu; ayrı ve yalnız gönderim yetkili anahtarın değeri repoda tutulmadı.
 - Gerçek magic-link e-postası teslim edildi ve production oturum açma tamamlandı; SPF, DKIM ve DMARC geçti. Türkçe konu ve gövde şablonu kaydedildi.
+- Magic-link kötüye kullanımına karşı Cloudflare Turnstile zorunlu kılındı; Supabase sunucu kotası 5 e-posta/saat ve 10 kayıt-giriş isteği/5 dakika/IP değerlerine düşürüldü. İstemci tek kullanımlık CAPTCHA token'ını Supabase'e taşır ve başarılı gönderimden sonra 60 saniyelik yeniden gönderim beklemesi gösterir.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
 
 ## Açık işler

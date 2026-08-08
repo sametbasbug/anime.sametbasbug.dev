@@ -44,6 +44,7 @@ Gerekli public değerler:
 ```text
 PUBLIC_SUPABASE_URL=
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+PUBLIC_TURNSTILE_SITE_KEY=
 ```
 
 Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_lists.sql`.
@@ -58,6 +59,8 @@ Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_list
 - Magic-link, profil yazma ve bir liste kaydının ikinci bağımsız tarayıcı profiline indirilmesi gerçek servis üzerinde doğrulanmıştır.
 - Yayın domain'i `anime.sametbasbug.dev`; işlem e-postası göndericisi `Rota <giris@sametbasbug.dev>` olarak yapılandırılmıştır. Resend'de doğrulanmış kök domain, yalnız gönderim yetkili ayrı anahtar ve Supabase özel SMTP kullanılır; anahtar değeri repoda tutulmaz.
 - Gerçek magic-link teslimatı ve production oturum açma doğrulanmıştır. SPF, DKIM ve DMARC geçmiştir; `Rota giriş bağlantın` başlıklı Türkçe şablon kaydedilmiştir.
+- Auth giriş ve kayıt endpoint'lerinde Cloudflare Turnstile zorunludur. Supabase'in sunucu tarafı proje kotası saatte en fazla 5 e-posta, IP başına kayıt/giriş kotası 5 dakikada 10 istek olarak ayarlanmıştır. Aynı hedefe yeniden gönderim için Supabase'in sunucu bekleme süresine ek olarak arayüzde 60 saniyelik bekleme gösterilir.
+- Turnstile secret yalnız Cloudflare ve Supabase yapılandırmasında tutulur. Tarayıcıya ve GitHub Actions'a yalnız public site key verilir.
 
 ## Ücretsiz plan sınırı
 

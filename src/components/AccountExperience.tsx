@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type SyntheticEvent } from "react";
+import { Turnstile } from "@marsidev/react-turnstile";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
 import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
@@ -16,6 +17,8 @@ const visibilityLabels: Record<Visibility, { title: string; detail: string }> = 
   PUBLIC: { title: "Herkese açık", detail: "Paylaşım sayfası açıldığında profilin herkese görünür olabilir." },
 };
 
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+
 export default function AccountExperience() {
   const client = useMemo(() => getSupabaseClient(), []);
   const [session, setSession] = useState<Session | null>(null);
@@ -23,6 +26,9 @@ export default function AccountExperience() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
+  const [cooldown, setCooldown] = useState(0);
   const [profile, setProfile] = useState<Profile>({ display_name: "", list_visibility: "PRIVATE" });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
@@ -32,6 +38,12 @@ export default function AccountExperience() {
     refreshLocalCount();
     return subscribeToPersonalList(refreshLocalCount);
   }, []);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = window.setInterval(() => setCooldown((seconds) => Math.max(0, seconds - 1)), 1000);
+    return () => window.clearInterval(timer);
+  }, [cooldown]);
 
   useEffect(() => {
     if (!client) return;
@@ -69,6 +81,10 @@ export default function AccountExperience() {
   const sendMagicLink = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!client || !email.trim()) return;
+    if (!captchaToken) {
+      setMessage("Devam etmek için güvenlik doğrulamasını tamamla.");
+      return;
+    }
     setBusy(true);
     setMessage("");
     const { error } = await client.auth.signInWithOtp({
@@ -76,10 +92,28 @@ export default function AccountExperience() {
       options: {
         emailRedirectTo: `${window.location.origin}/hesap`,
         shouldCreateUser: true,
+        captchaToken,
       },
     });
     setBusy(false);
-    setMessage(error ? `Bağlantı gönderilemedi: ${error.message}` : "Giriş bağlantısı e-posta adresine gönderildi.");
+    setCaptchaToken(null);
+    setCaptchaKey((key) => key + 1);
+
+    if (!error) {
+      setCooldown(60);
+      setMessage("Giriş bağlantısı e-posta adresine gönderildi.");
+      return;
+    }
+
+    if (error.code === "over_email_send_rate_limit") {
+      setMessage("Saatlik güvenli gönderim sınırına ulaşıldı. Bir süre sonra yeniden dene.");
+    } else if (error.code === "over_request_rate_limit") {
+      setMessage("Çok fazla deneme yapıldı. Birkaç dakika sonra yeniden dene.");
+    } else if (error.code === "captcha_failed") {
+      setMessage("Güvenlik doğrulaması başarısız oldu. Yeniden deneyebilirsin.");
+    } else {
+      setMessage("Giriş bağlantısı gönderilemedi. Lütfen biraz sonra yeniden dene.");
+    }
   };
 
   const saveProfile = async (next: Profile) => {
@@ -139,7 +173,26 @@ export default function AccountExperience() {
           <form className="account-form" onSubmit={sendMagicLink}>
             <label htmlFor="account-email">E-posta adresi</label>
             <input id="account-email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
-            <button disabled={busy}>{busy ? "Gönderiliyor…" : "Giriş bağlantısı gönder"}<span>→</span></button>
+            {turnstileSiteKey ? (
+              <div className="account-turnstile" aria-label="Güvenlik doğrulaması">
+                <Turnstile
+                  key={captchaKey}
+                  siteKey={turnstileSiteKey}
+                  onSuccess={setCaptchaToken}
+                  onExpire={() => setCaptchaToken(null)}
+                  onError={() => {
+                    setCaptchaToken(null);
+                    setMessage("Güvenlik doğrulaması yüklenemedi. Sayfayı yenileyip yeniden dene.");
+                  }}
+                  options={{ language: "tr", size: "flexible", theme: "light" }}
+                />
+              </div>
+            ) : (
+              <p className="account-security-error">Güvenlik doğrulaması yapılandırılmamış.</p>
+            )}
+            <button disabled={busy || cooldown > 0 || !captchaToken}>
+              {busy ? "Gönderiliyor…" : cooldown > 0 ? `Yeniden gönder (${cooldown})` : "Giriş bağlantısı gönder"}<span>→</span>
+            </button>
           </form>
           {message && <p className="account-message" role="status">{message}</p>}
         </section>
