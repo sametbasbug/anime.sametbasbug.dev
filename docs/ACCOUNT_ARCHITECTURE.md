@@ -54,9 +54,10 @@ Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_list
 - Plan ve bölge: Free, Central EU (Frankfurt).
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
-- Auth site URL'si `http://localhost:4321`; `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
+- Auth site URL'si `https://anime.sametbasbug.dev`; production `/hesap` ile `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
 - Magic-link, profil yazma ve bir liste kaydının ikinci bağımsız tarayıcı profiline indirilmesi gerçek servis üzerinde doğrulanmıştır.
-- Yayın domain'i `anime.sametbasbug.dev`, işlem e-postası göndericisi `Rota <giris@anime.sametbasbug.dev>` olarak seçilmiştir. Resend hesabı hazırdır fakat domain doğrulaması, DNS ve özel SMTP yapılandırması henüz yapılmamıştır.
+- Yayın domain'i `anime.sametbasbug.dev`; işlem e-postası göndericisi `Rota <giris@sametbasbug.dev>` olarak yapılandırılmıştır. Resend'de doğrulanmış kök domain, yalnız gönderim yetkili ayrı anahtar ve Supabase özel SMTP kullanılır; anahtar değeri repoda tutulmaz.
+- Gerçek magic-link teslimatı ve production oturum açma doğrulanmıştır. SPF, DKIM ve DMARC geçmiştir; `Rota giriş bağlantın` başlıklı Türkçe şablon kaydedilmiştir.
 
 ## Ücretsiz plan sınırı
 

@@ -67,7 +67,7 @@ Kişisel liste local-first çalışır: her değişiklik önce sürümlü `rota.
 
 İsteğe bağlı hesap açıldığında yalnız profil ve kişisel liste verisi Supabase'e eşitlenir. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır; `PUBLIC`/`UNLISTED` tercihi tek başına kişisel notlara dış erişim vermez.
 
-Yerel yapılandırma için `.env.example` dosyasını `.env` olarak kopyala ve Supabase publishable değerlerini ekle. Migration ile güvenlik ayrıntıları [`docs/ACCOUNT_ARCHITECTURE.md`](./docs/ACCOUNT_ARCHITECTURE.md) içinde belgelenmiştir. Geliştirme projesi Supabase Free üzerinde kurulmuştur; ortam değerleri yoksa uygulama güvenli biçimde yerel modda kalır. Resend hesabı hazırdır, ancak özel SMTP alan adı ürün domain'i kesinleştiğinde bağlanacaktır.
+Yerel yapılandırma için `.env.example` dosyasını `.env` olarak kopyala ve Supabase publishable değerlerini ekle. Migration ile güvenlik ayrıntıları [`docs/ACCOUNT_ARCHITECTURE.md`](./docs/ACCOUNT_ARCHITECTURE.md) içinde belgelenmiştir. Geliştirme projesi Supabase Free üzerinde kurulmuştur; ortam değerleri yoksa uygulama güvenli biçimde yerel modda kalır. Üretimde Supabase Auth URL'leri ve Resend özel SMTP, `Rota <giris@sametbasbug.dev>` göndericisiyle yapılandırılmıştır.
 
 ## Editoryal içerik
 
@@ -93,7 +93,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 1. ~~Kataloğu ürünleştirme ve Türkçe sınıflandırma~~ — tamamlandı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı
 3. ~~Türkçe editoryal içerik~~ — tamamlandı
-4. **Hesap ve kalıcı veri** — Supabase üzerinde çalışıyor, fiziksel cihaz ve özel SMTP doğrulaması bekliyor
+4. **Hesap ve kalıcı veri** — Supabase ve özel SMTP üretimde çalışıyor, fiziksel cihaz doğrulaması bekliyor
 5. MAL/AniList içe aktarma fizibilitesi ve izinleri
 6. Topluluk ve moderasyon
 7. Marka ve yayın

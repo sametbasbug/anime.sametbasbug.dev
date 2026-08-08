@@ -48,8 +48,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Magic-link, profil yazma ve liste birleştirmeyi iki bağımsız tarayıcı profiliyle doğrula.
 - [x] Yayın domain'ini `anime.sametbasbug.dev` olarak seç.
 - [x] Statik yayın hedefini GitHub Pages olarak seç.
-- [x] İşlem e-postası göndericisini `Rota <giris@anime.sametbasbug.dev>` olarak seç.
-- [ ] `anime.sametbasbug.dev` alan adını Resend'de doğrula ve özel SMTP'yi yapılandır.
+- [x] İşlem e-postası göndericisini `Rota <giris@sametbasbug.dev>` olarak seç.
+- [x] Resend'de doğrulanmış `sametbasbug.dev` alan adıyla özel SMTP'yi ve üretim Auth URL'lerini yapılandır.
 - [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
@@ -77,12 +77,12 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. GitHub Pages, `anime.sametbasbug.dev` ve `Rota <giris@anime.sametbasbug.dev>` kararları kilitlendi; uygulama yarına bırakıldı.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. GitHub Pages ve `anime.sametbasbug.dev` canlıdır; üretim Auth URL'leri ile `Rota <giris@sametbasbug.dev>` üzerinden Resend özel SMTP yapılandırılıp gerçek teslimat ve oturum açma testi geçirilmiştir.
 
 Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
 
-Aşamanın kapanması için Resend özel SMTP ve üretim Auth URL kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda iki şeye ayrıca bakılacak: ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesi ve kısmi red bildiriminin gerçek oturumdaki görünümü.
+Aşamanın kapanması için iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine, kısmi red bildiriminin gerçek oturumdaki görünümüne ve ilk testte spam'e düşen yeni göndericinin teslimatına ayrıca bakılacak. SPF, DKIM ve DMARC doğrulamaları geçmiştir; markalı Türkçe magic-link şablonu kaydedilmiştir.
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 
-`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır; özel SMTP ve üretim Auth URL ayarları açık kalır.
+`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır; özel SMTP ve üretim Auth URL ayarları da canlıdır.

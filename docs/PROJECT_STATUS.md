@@ -9,7 +9,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Geçici ürün adı: **Rota**.
 - Yayın domain'i: **`anime.sametbasbug.dev`**.
 - Statik yayın hedefi: **GitHub Pages**.
-- İşlem e-postası göndericisi: **`Rota <giris@anime.sametbasbug.dev>`**.
+- İşlem e-postası göndericisi: **`Rota <giris@sametbasbug.dev>`**.
 - GitHub deposu: **public**.
 - Kanonik GitHub deposu: **`sametbasbug/anime.sametbasbug.dev`**.
 - Lisans modeli: uygulama kaynak kodu **AGPL-3.0-only**; özgün içerik, görsel kimlik ve marka unsurları korumalı; katalog verisi ODbL/DbCL koşullarında.
@@ -18,7 +18,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
-- İşlem e-postası: `anime.sametbasbug.dev` Resend'de doğrulandıktan sonra custom SMTP.
+- İşlem e-postası: Resend'de doğrulanmış `sametbasbug.dev` üzerinden custom SMTP.
 
 ## Tamamlananlar
 
@@ -35,18 +35,21 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Public GitHub deposu oluşturuldu ve `main` ilk kez push edildi: `sametbasbug/anime.sametbasbug.dev`.
 - GitHub Actions build + Pages deploy hattı kuruldu; `anime.sametbasbug.dev` doğrulanmış özel domain ve zorunlu HTTPS ile canlıya alındı.
 - GitHub Actions'a yalnız Supabase publishable URL/key repo değişkenleri tanımlandı; service-role veya secret eklenmedi.
+- Supabase production Site URL ve `/hesap` dönüş adresi yapılandırıldı; yerel geliştirme dönüş adresleri korundu.
+- `Rota <giris@sametbasbug.dev>` göndericisiyle Resend özel SMTP kuruldu; ayrı ve yalnız gönderim yetkili anahtarın değeri repoda tutulmadı.
+- Gerçek magic-link e-postası teslim edildi ve production oturum açma tamamlandı; SPF, DKIM ve DMARC geçti. Türkçe konu ve gövde şablonu kaydedildi.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
 
 ## Açık işler
 
-1. Domain'i Resend'de doğrula; `giris@anime.sametbasbug.dev` göndericisini, Supabase custom SMTP'yi ve üretim Auth URL'lerini yapılandır.
-2. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu turda iki şeye ayrıca bakılacak: ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesi ve reddedilen kayıt mesajının gerçek oturumdaki görünümü.
+1. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine, reddedilen kayıt mesajının gerçek oturumdaki görünümüne ve yeni göndericinin teslimatına ayrıca bakılacak.
+2. İlk test e-postası SPF, DKIM ve DMARC geçmesine rağmen spam'e düştü; markalı Türkçe şablonla farklı alıcılardaki teslimatı izle.
 3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı
 
 - Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
-- Resend domain doğrulaması, özel SMTP ve Supabase üretim Auth URL yapılandırması henüz yapılmamıştır.
+- Resend özel SMTP ve Supabase üretim Auth URL yapılandırması canlıdır; gizli SMTP anahtarı repoya yazılmaz.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 
