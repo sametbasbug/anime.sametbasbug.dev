@@ -16,9 +16,10 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Korunan içerik ve marka katmanının hak sahibi: **Samet Başbuğ**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
+- Kalıcı giriş kararı: yalnız **Google OAuth**; Discord, e-posta/parola ve magic-link sunulmayacak. Hesapsız local-first kullanım korunacak.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
-- İşlem e-postası: Resend'de doğrulanmış `sametbasbug.dev` üzerinden custom SMTP.
+- Geçici işlem e-postası: Resend'de doğrulanmış `sametbasbug.dev` üzerinden custom SMTP; Google OAuth geçişi tamamlanana kadar mevcut magic-link akışına hizmet eder.
 
 ## Tamamlananlar
 
@@ -39,23 +40,30 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - `Rota <giris@sametbasbug.dev>` göndericisiyle Resend özel SMTP kuruldu; ayrı ve yalnız gönderim yetkili anahtarın değeri repoda tutulmadı.
 - Gerçek magic-link e-postası teslim edildi ve production oturum açma tamamlandı; SPF, DKIM ve DMARC geçti. Türkçe konu ve gövde şablonu kaydedildi.
 - Magic-link kötüye kullanımına karşı Cloudflare Turnstile zorunlu kılındı; Supabase sunucu kotası 5 e-posta/saat ve 10 kayıt-giriş isteği/5 dakika/IP değerlerine düşürüldü. İstemci tek kullanımlık CAPTCHA token'ını Supabase'e taşır ve başarılı gönderimden sonra 60 saniyelik yeniden gönderim beklemesi gösterir.
+- İki fiziksel cihazda production girişi tamamlandı ve kişisel liste sayısının iki cihazda aynı olduğu doğrulandı.
+- Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte e-posta tüketen magic-link modelinin public ürün için sürdürülebilir olmadığı kararlaştırıldı. Hedef mimari yalnız Google OAuth olarak kilitlendi; Discord ve diğer giriş yöntemleri kapsam dışı bırakıldı.
+- Turnstile sonrası bozulan masaüstü giriş düğmesi dikey form düzeniyle düzeltildi; masaüstü ve 390 px mobil görünüm production üzerinde doğrulandı.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
 
 ## Açık işler
 
-1. İki fiziksel cihazda giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine, reddedilen kayıt mesajının gerçek oturumdaki görünümüne ve yeni göndericinin teslimatına ayrıca bakılacak.
-2. İlk test e-postası SPF, DKIM ve DMARC geçmesine rağmen spam'e düştü; markalı Türkçe şablonla farklı alıcılardaki teslimatı izle.
-3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+1. Google OAuth'u Supabase ve hesap arayüzünde uygula; mevcut kullanıcının kimliğini/listesini koruduğunu doğruladıktan sonra magic-link ile e-posta girişini kaldır.
+2. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. İkinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesini ve kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
+3. Magic-link kapatıldıktan sonra yalnız bu akış için kullanılan Turnstile ve Resend bağımlılıklarını temizle; Resend'i gelecekteki işlem e-postalarından bağımsız değerlendir.
+4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı
 
 - Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
-- Resend özel SMTP ve Supabase üretim Auth URL yapılandırması canlıdır; gizli SMTP anahtarı repoya yazılmaz.
+- Resend özel SMTP ve Supabase üretim Auth URL yapılandırması bugün canlıdır fakat geçiş durumundadır; gizli SMTP anahtarı repoya yazılmaz.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 
 ## Son commitler
 
+- `072756f` — `fix: restore account form button layout`
+- `76bc25a` — `feat: protect magic-link emails from abuse`
+- `217eda8` — `docs: record production auth and SMTP setup`
 - `c512f37` — `chore: prepare public Rota repository [skip ci]`
 - `d1099a6` — `chore: ignore .claude`
 - `2d4e8da` — `feat: tell partial sync apart in the header badge`

@@ -50,6 +50,9 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Statik yayın hedefini GitHub Pages olarak seç.
 - [x] İşlem e-postası göndericisini `Rota <giris@sametbasbug.dev>` olarak seç.
 - [x] Resend'de doğrulanmış `sametbasbug.dev` alan adıyla özel SMTP'yi ve üretim Auth URL'lerini yapılandır.
+- [x] İki fiziksel cihazda production girişini ve liste sayısı eşitliğini doğrula.
+- [x] Kalıcı giriş yöntemini yalnız Google OAuth olarak kilitle; Discord, e-posta/parola ve magic-link'i hedef mimariden çıkar.
+- [ ] Google OAuth'u uygula, mevcut kullanıcının verisini koruduğunu doğrula ve magic-link akışını kaldır.
 - [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
@@ -77,11 +80,13 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. GitHub Pages ve `anime.sametbasbug.dev` canlıdır; üretim Auth URL'leri ile `Rota <giris@sametbasbug.dev>` üzerinden Resend özel SMTP yapılandırılıp gerçek teslimat ve oturum açma testi geçirilmiştir.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. İki fiziksel cihazda production girişi tamamlandı ve liste sayısı eşitliği görüldü. GitHub Pages ve `anime.sametbasbug.dev` canlıdır; üretim Auth URL'leri ile `Rota <giris@sametbasbug.dev>` üzerinden Resend özel SMTP yapılandırılıp gerçek teslimat ve oturum açma testi geçirilmiştir.
 
 Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
 
-Aşamanın kapanması için iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine, kısmi red bildiriminin gerçek oturumdaki görünümüne ve ilk testte spam'e düşen yeni göndericinin teslimatına ayrıca bakılacak. SPF, DKIM ve DMARC doğrulamaları geçmiştir; markalı Türkçe magic-link şablonu kaydedilmiştir.
+Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüketen magic-link modelinin kalıcı public kimlik doğrulama yöntemi olmayacağı kararlaştırıldı. Hedef yalnız Google OAuth'tur; Discord, e-posta/parola ve magic-link sunulmayacak, hesapsız local-first kullanım korunacaktır. Mevcut magic-link ve Turnstile koruması Google OAuth uygulanıp mevcut kullanıcı verisinin korunduğu doğrulanana kadar geçici olarak canlı kalır.
+
+Aşamanın kapanması için Google OAuth geçişi ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine ve kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 
