@@ -70,6 +70,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 - `Rota` adını ürün omurgası doğrulandıktan sonra kesinleştir veya değiştir.
 - Logo, domain, üretim altyapısı ve yayın kararlarını birlikte ele al.
+- [x] GitHub deposunun public olacağını; kodun AGPL-3.0-only, özgün içerik ve markanın korumalı olacağını kararlaştır.
+- [x] Kanonik repo adını `sametbasbug/anime.sametbasbug.dev`, korunan katmanın hak sahibini Samet Başbuğ olarak belirle.
 - Push, deploy, domain veya dış hesap işlemleri için Samet'in açık onayını al.
 
 ## Şu anki çalışma
@@ -79,3 +81,5 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
 
 Aşamanın kapanması için push/deploy, DNS/Resend özel SMTP kurulumu ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda iki şeye ayrıca bakılacak: ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesi ve kısmi red bildiriminin gerçek oturumdaki görünümü.
+
+Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.

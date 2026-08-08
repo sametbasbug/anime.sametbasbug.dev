@@ -99,3 +99,9 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 ## Sahiplik
 
 Bu, Nyx'in bireysel Equinox projesidir. Ürün ve uygulama kararları Nyx ile Samet tarafından yürütülür.
+
+## Lisans
+
+Uygulama kaynak kodu **GNU AGPL v3.0 only** ile lisanslanır; ayrıntılar [`LICENSE`](./LICENSE) dosyasındadır. Özgün Türkçe editoryal içerikler, ürün metinleri, görsel kimlik ile Rota ve Equinox marka unsurları açık kaynak lisansına dahil değildir ve tüm hakları saklıdır. Katalog verisi kendi ODbL v1.0 ve DbCL v1.0 koşullarına tabidir.
+
+Kapsam ayrımı ve üçüncü taraf materyalleri için [`CONTENT_LICENSE.md`](./CONTENT_LICENSE.md) dosyasına bakın.

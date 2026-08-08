@@ -1,6 +1,6 @@
 # Rota proje durumu
 
-Son güncelleme: 7 Ağustos 2026
+Son güncelleme: 8 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -10,6 +10,10 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Yayın domain'i: **`anime.sametbasbug.dev`**.
 - Statik yayın hedefi: **GitHub Pages**.
 - İşlem e-postası göndericisi: **`Rota <giris@anime.sametbasbug.dev>`**.
+- GitHub deposu: **public**.
+- Kanonik GitHub deposu: **`sametbasbug/anime.sametbasbug.dev`**.
+- Lisans modeli: uygulama kaynak kodu **AGPL-3.0-only**; özgün içerik, görsel kimlik ve marka unsurları korumalı; katalog verisi ODbL/DbCL koşullarında.
+- Korunan içerik ve marka katmanının hak sahibi: **Samet Başbuğ**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
@@ -27,11 +31,12 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Magic-link, profil yazma ve bir liste kaydını boş ikinci tarayıcı profiline indirme testi.
 - Senkronizasyon sağlamlaştırması: sürümler metin yerine anlık değer olarak karşılaştırılır, gönderim 200'lük parçalara bölünür, sunucunun reddettiği satır yalıtılıp cihazda korunur, indirilen kayıtlar gönderimden önce yazılır.
 - Başlık rozetinde ayrı `partial` durumu: kısmi red artık "eşitlendi" gibi görünmüyor, kehribar noktayla ve reddedilen kayıt sayısıyla bildiriliyor.
+- Public depo için kod, içerik/marka ve katalog veri lisansı kapsamları ayrıldı.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
 
 ## Açık işler
 
-1. Repo görünürlüğünü doğrula; GitHub remote ve ilk push'u açık onayla oluştur.
+1. Public `sametbasbug/anime.sametbasbug.dev` reposunu oluştur; remote ve ilk push'u yap.
 2. GitHub Actions tabanlı Astro build ve GitHub Pages yayınını yapılandır.
 3. `anime.sametbasbug.dev` DNS kaydını GitHub Pages'e bağla.
 4. Domain'i Resend'de doğrula; `giris@anime.sametbasbug.dev` göndericisini, Supabase custom SMTP'yi ve üretim Auth URL'lerini yapılandır.
@@ -41,7 +46,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 ## Değişiklik sınırı
 
 - Hosting, domain ve gönderici seçilmiştir; **DNS, deploy, push ve SMTP yapılandırması henüz yapılmamıştır**.
-- Repo görünürlüğü ayrıca doğrulanmadan kaynak kodu public yapılmaz.
+- Repo public olacaktır; henüz GitHub'da oluşturulmamış ve push yapılmamıştır.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 

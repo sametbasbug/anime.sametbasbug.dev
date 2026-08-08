@@ -31,3 +31,4 @@
 - Arayüz değişikliği ilgili masaüstü ve mobil viewport'ta gerçek ekran görüntüsüyle incelenir.
 - Push, deploy, domain, dış hesap veya kalıcı altyapı değişikliği Samet'in açık onayını gerektirir.
 - Public ürün metni veya veri kaynağı değiştiğinde README etkisi kontrol edilir.
+- GitHub deposu public olacaktır. Uygulama kaynak kodu `AGPL-3.0-only`; özgün içerik, görsel kimlik ve marka unsurları korumalıdır. Katalog verisinin ODbL/DbCL koşulları ayrı tutulur.
