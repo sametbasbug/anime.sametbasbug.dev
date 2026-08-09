@@ -11,7 +11,8 @@
     "check": "npm run content:check && npm run sync:check && astro check",
     "content:check": "node scripts/check-editorial.mjs",
     "sync:check": "tsx scripts/check-personal-list-sync.ts",
-    "data:refresh": "node scripts/refresh-catalogue.mjs"
+    "data:refresh": "node scripts/refresh-catalogue.mjs",
+    "posters:refresh": "node scripts/refresh-tmdb-posters.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",

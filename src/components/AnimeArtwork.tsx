@@ -2,9 +2,14 @@ type Props = {
   art: "moon" | "blade" | "city" | "signal" | "garden" | "ember";
   palette: string;
   compact?: boolean;
+  posterPath?: string;
+  title?: string;
+  priority?: boolean;
 };
 
-export default function AnimeArtwork({ art, palette, compact = false }: Props) {
+const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
+
+export default function AnimeArtwork({ art, palette, compact = false, posterPath, title, priority = false }: Props) {
   const captions = {
     moon: "夢 · dream",
     blade: "勇 · brave",
@@ -15,7 +20,21 @@ export default function AnimeArtwork({ art, palette, compact = false }: Props) {
   } as const;
 
   return (
-    <div className={`art art--${palette} ${compact ? "art--compact" : ""}`} aria-hidden="true">
+    <div
+      className={`art art--${palette} ${compact ? "art--compact" : ""} ${posterPath ? "art--poster" : ""}`}
+      aria-hidden={posterPath ? undefined : "true"}
+    >
+      {posterPath && (
+        <img
+          className="art__poster"
+          src={`${TMDB_IMAGE_BASE}${posterPath}`}
+          alt={`${title ?? "Anime"} poster görseli`}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          referrerPolicy="no-referrer"
+        />
+      )}
       <span className="art__grain" />
       <span className="art__spark art__spark--one">✦</span>
       <span className="art__spark art__spark--two">✧</span>

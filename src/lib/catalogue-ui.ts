@@ -12,6 +12,12 @@ export type CatalogueAnime = {
   studios: string[];
   tags: string[];
   sources: string[];
+  poster?: {
+    provider: "tmdb";
+    path: string;
+    tmdbId: number;
+    mediaType: "movie" | "tv";
+  };
 };
 
 export const statusLabels: Record<string, string> = {

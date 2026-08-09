@@ -170,7 +170,7 @@ export default function MyListExperience({ dataVersion }: Props) {
                   <div className="completion-burst" aria-live="polite"><span>✦</span><strong>TAMAMLANDI!</strong><i>♡</i></div>
                 </>}
                 <a className="my-list-card__art" href={`/anime/${anime.slug}`} aria-label={`${anime.title} detayını aç`}>
-                  <AnimeArtwork art={visual.art} palette={visual.palette} compact />
+                  <AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} compact />
                 </a>
                 <div className="my-list-card__body">
                   <div className="my-list-card__heading">

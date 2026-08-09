@@ -38,7 +38,7 @@ export default function AnimeCard({ anime }: Props) {
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 3.5h10.4c.7 0 1.3.6 1.3 1.3v16l-6.5-4-6.5 4v-16c0-.7.6-1.3 1.3-1.3Z" /></svg>
       </button>
       <a className="anime-card__link" href={`/anime/${anime.slug}`}>
-        <AnimeArtwork art={visual.art} palette={visual.palette} />
+        <AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} />
         <div className="anime-card__body">
           <div className="anime-card__meta">
             <span className="score">{anime.status !== "UPCOMING" && anime.score ? <><span>★</span> {anime.score.toFixed(1)}</> : `${seasonLabels[anime.season.season]} ${anime.season.year}`}</span>

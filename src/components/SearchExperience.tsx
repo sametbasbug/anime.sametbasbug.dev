@@ -147,7 +147,7 @@ export default function SearchExperience({ dataVersion }: Props) {
             const visual = visualFor(anime.id);
             return (
               <a className="catalogue-card" href={`/anime/${anime.slug}`} key={anime.slug}>
-                <AnimeArtwork art={visual.art} palette={visual.palette} />
+                <AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} />
                 <div className="catalogue-card__body">
                   <div className="catalogue-card__kicker">
                     <span>{seasonLabels[anime.season.season]} {anime.season.year}</span>

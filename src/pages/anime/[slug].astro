@@ -49,7 +49,7 @@ const usefulSources = anime.sources
       <div class="detail-art-wrap">
         <span class="detail-volume">VOL. {anime.season.year || "∞"}</span>
         <div class="detail-art">
-          <AnimeArtwork art={visual.art} palette={visual.palette} />
+          <AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} priority />
           <span>ROTA / {anime.id}</span>
         </div>
         <i class="detail-tape detail-tape--top" aria-hidden="true"></i>

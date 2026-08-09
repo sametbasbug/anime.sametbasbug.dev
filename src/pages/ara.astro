@@ -4,7 +4,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SearchExperience from "../components/SearchExperience";
 import RotaCompanion from "../components/RotaCompanion";
 import DataAttribution from "../components/DataAttribution.astro";
-import { catalogueMeta } from "../lib/catalogue";
+import { catalogueMeta, posterMeta } from "../lib/catalogue";
 ---
 
 <BaseLayout title="Anime kataloğu — Equinox Rota" description="Anime adı, tür, stüdyo veya yıla göre Türkçe katalogda ara.">
@@ -17,7 +17,7 @@ import { catalogueMeta } from "../lib/catalogue";
       <p>Ruh halini, sevdiğin türü veya aklındaki animeyi yaz. Rota sana uygun rafı açsın.</p>
       <div class="catalogue-hero__links"><a href="/tur">Türlere göz at ↗</a><a href="/studyo">Stüdyoları keşfet ↗</a></div>
     </section>
-    <SearchExperience dataVersion={catalogueMeta.generatedAt} client:load />
+    <SearchExperience dataVersion={`${catalogueMeta.generatedAt}-${posterMeta.generatedAt}`} client:load />
     <DataAttribution />
   </main>
 </BaseLayout>

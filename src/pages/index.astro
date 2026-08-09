@@ -75,7 +75,7 @@ const moodRoutes = [
         <span class="hero-doodle hero-doodle--star" aria-hidden="true">✦</span>
         <span class="hero-doodle hero-doodle--heart" aria-hidden="true">♡</span>
         <a class="feature-card" href={`/anime/${featured.slug}`} aria-label={`${featured.title} detayına git`}>
-          <AnimeArtwork art={featuredVisual.art} palette={featuredVisual.palette} />
+          <AnimeArtwork art={featuredVisual.art} palette={featuredVisual.palette} posterPath={featured.poster?.path} title={featured.title} priority />
           <div class="feature-card__shade"></div>
           <div class="feature-card__top">
             <span class="airing"><i></i> HAFTANIN ROTASI</span>

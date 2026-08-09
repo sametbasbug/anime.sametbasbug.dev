@@ -67,7 +67,7 @@ Komut en güncel GitHub sürümünü indirir, beklenen lisansı doğrular ve `sr
 
 AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan veri kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. MAL veya başka siteler de scrape edilmez.
 
-Harici poster URL'leri kaynakta bulunsa da kullanım hakları ayrıca netleştirilmeden gösterilmez; mevcut görseller proje içinde üretilen CSS kompozisyonlarıdır. Türkçe açıklamalar doğrudan kopyalanmaz, özgün editoryal metin olarak hazırlanacaktır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
+Posterler, önce kesin başlık-yıl-tür eşleşmesiyle; açıkça devam sezonu olarak adlandırılan yapımlarda ise kesin ana seri eşleşmesi ve varsa TMDB sezon posteriyle TMDB'nin resmî API/CDN hizmetinden gösterilir. Zorunlu TMDB atfı globaldir. Güvenli eşleşme kurulamayan yapımlar proje içinde üretilen Rota CSS kompozisyonlarını korur; anime-offline-database içindeki üçüncü taraf poster URL'leri kullanılmaz. Türkçe açıklamalar doğrudan kopyalanmaz, özgün editoryal metin olarak hazırlanacaktır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
 
 ## Kişisel liste ve hesap verisi
 
