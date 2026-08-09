@@ -58,7 +58,7 @@ Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_list
 - Supabase Google sağlayıcısı yalnız `email` ve `profile` kapsamlarıyla kullanılır; dönüş Supabase Auth callback'i üzerinden `/hesap` sayfasına yapılır.
 - Hesap ekranı yalnız Google ile giriş sunar; hesapsız yerel kullanım korunur.
 - Eski iki magic-link hesabı ve verisi taşınmaz; bu temiz başlangıç ürün sahibi tarafından onaylanmıştır.
-- Nyx hesabıyla localhost üzerinde gerçek OAuth onayı, oturum açma ve yerel liste birleştirme testi geçmiştir.
+- Nyx hesabıyla localhost ve production üzerinde gerçek OAuth onayı, oturum açma ve yerel liste birleştirme testi geçmiştir.
 
 Google OAuth geçişi katalog ve editoryal veri modelini veya mevcut RLS politikalarını değiştirmez. Gelecekte zorunlu işlem e-postası gerekirse giriş akışından bağımsız değerlendirilir.
 
@@ -69,7 +69,7 @@ Google OAuth geçişi katalog ve editoryal veri modelini veya mevcut RLS politik
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
 - Auth site URL'si `https://anime.sametbasbug.dev`; production `/hesap` ile `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
-- Google OAuth, profil yazma ve yerel liste birleştirme gerçek servis üzerinde doğrulanmıştır.
+- Google OAuth, profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir.
 - İki fiziksel cihazda production girişi tamamlanmış ve kişisel liste sayısının iki cihazda eşit olduğu doğrulanmıştır. Çevrimdışı düzenleme ve silme senaryolarının Google OAuth geçişinden sonra yeniden doğrulanması beklenir.
 - Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalıdır. Rota'ya özel Resend API anahtarı ile Cloudflare Turnstile bileşeni silinmiştir; ortak `sametbasbug.dev` alan adına ve Orbit anahtarına dokunulmamıştır.
 

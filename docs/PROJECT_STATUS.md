@@ -36,7 +36,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - GitHub Actions'a yalnız Supabase publishable URL/key repo değişkenleri tanımlandı; service-role veya başka secret eklenmedi.
 - Supabase production Site URL ve `/hesap` dönüş adresi yapılandırıldı; yerel geliştirme dönüş adresleri korundu.
 - Google Cloud projesi, external production OAuth uygulaması ve Supabase Google sağlayıcısı yapılandırıldı; kullanıcı destek ve geliştirici iletişim adresi Nyx e-postasıdır.
-- Nyx hesabıyla localhost üzerinde gerçek Google onayı, oturum açma ve yerel liste birleştirme testi geçti. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
+- Nyx hesabıyla localhost ve production üzerinde gerçek Google onayı, oturum açma ve yerel liste birleştirme testi geçti. Tekrarlanan eşitleme sıfır kayıt gönderdi. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
 - Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapatıldı. Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni kaldırıldı; Orbit anahtarı ile ortak alan adı korundu.
 - İki fiziksel cihazda production girişi tamamlandı ve kişisel liste sayısının iki cihazda aynı olduğu doğrulandı.
 - Google ile giriş arayüzü masaüstü ve 390 px mobil görünümde doğrulandı.
@@ -44,7 +44,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. İkinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesini ve kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
+1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
 2. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı

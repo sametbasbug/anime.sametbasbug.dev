@@ -80,13 +80,13 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme doğrulandı. Kalıcı giriş yalnız Google OAuth'tur; istemci ve Supabase sağlayıcısı yapılandırıldı, Nyx hesabıyla yerel uçtan uca giriş testi geçti. Google uygulaması production durumundadır. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme doğrulandı. Kalıcı giriş yalnız Google OAuth'tur; istemci ve Supabase sağlayıcısı yapılandırıldı, Nyx hesabıyla production uçtan uca giriş ve senkronizasyon testi geçti. Google uygulaması production durumundadır. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
 
 Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
 
 Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüketen magic-link modeli kaldırıldı. Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA koruması kapatıldı; Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni silindi. Hesapsız local-first kullanım korunur.
 
-Aşamanın kapanması için Google OAuth ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine ve kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
+Aşamanın kapanması için Google OAuth ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. Production'da ikinci eşitlemenin sıfır kayıt göndermesi doğrulandı; kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 
