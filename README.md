@@ -9,7 +9,7 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 ## Bugünkü durum
 
 - Mobil öncelikli, responsive ana sayfa
-- Koyu sinematik kişisel arşiv tasarım sistemi; masaüstü üst menüsü ve mobil alt gezinme
+- Açık ve kawaii **Soft Celestial Otaku** tasarım sistemi; manga editoryali, masaüstü üst menüsü ve mobil alt gezinme
 - Ana sayfada doğrudan katalog araması ve yerel kişisel arşiv özeti
 - Gerçek katalogdan üretilen güncel ana sayfa seçkisi ve katalog haritası
 - Duruma göre çalışan anime kartı filtreleri
@@ -23,7 +23,11 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Statik üretilmiş 900 anime detay sayfası
 - Dört durumlu, tarayıcıda yerel olarak saklanan kişisel anime listesi
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
-- Sayaçlar, durum filtreleri ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
+- Durumlara ayrılan koleksiyon rafları, sayaçlar, filtreler ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
+- Manga açılımı ritmine sahip anime detayları ve otaku köşesi olarak tasarlanan hesap ekranı
+- Boş, yükleme, hata, senkronizasyon ve kutlama hâlleriyle yaşayan özgün göksel yoldaş
+- Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve karakterli sayfa geçişleri
+- Özgün favicon ile 1200×630 Open Graph/Twitter paylaşım kartı
 - Sekiz popüler yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
 - İsteğe bağlı, doğrudan Google Identity Services ID-token girişi; profil ve liste görünürlüğü ekranı
@@ -101,7 +105,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 5. MAL/AniList içe aktarma fizibilitesi ve izinleri
 6. Topluluk ve moderasyon
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
-8. ~~Ürün deneyimi ve görsel sistem~~ — sinematik kişisel arşiv yönüyle tamamlandı
+8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı
 
 ## Sahiplik
 

@@ -74,6 +74,49 @@ body.design-otaku::after {
 :focus-visible { outline: 3px solid var(--lavender); outline-offset: 3px; }
 input, select, textarea, button { color-scheme: light; }
 
+/* Cross-page manga wink: a tiny celestial panel travels with navigation. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: rota-page-out .22s ease both; }
+::view-transition-new(root) { animation: rota-page-in .46s cubic-bezier(.2,.75,.25,1) both; }
+.page-transition-wink {
+  position: fixed;
+  z-index: 1000;
+  top: 88px;
+  left: 0;
+  width: 82px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 2px solid var(--ink);
+  border-radius: 15px 22px 22px 15px;
+  color: var(--ink);
+  background: var(--season-accent);
+  box-shadow: 4px 4px 0 var(--ink);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-110px) rotate(-7deg);
+  animation: rota-wink-pass .72s cubic-bezier(.55,.05,.3,1) both;
+}
+.page-transition-wink::after { content: ""; position: absolute; right: 72px; width: 76px; height: 2px; background: linear-gradient(90deg,transparent,var(--coral)); }
+.page-transition-wink span { color: var(--sun); text-shadow: 1px 1px 0 var(--ink); font-size: 18px; }
+.page-transition-wink i { color: var(--coral); font-size: 14px; font-style: normal; }
+.page-transition-wink b { width: 21px; height: 21px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: #fff; font-family: var(--display); font-size: 9px; }
+.rota-route--ara .page-transition-wink { background: var(--sky); }
+.rota-route--listem .page-transition-wink { background: var(--sun); }
+.rota-route--hesap .page-transition-wink { background: var(--sakura); }
+.rota-route--anime .page-transition-wink { background: var(--lavender); }
+
+@keyframes rota-page-out { to { opacity: .25; transform: translateY(-8px) scale(.985); filter: blur(4px); } }
+@keyframes rota-page-in { from { opacity: .25; transform: translateY(12px) scale(.99); filter: blur(5px); } }
+@keyframes rota-wink-pass {
+  0% { opacity: 0; transform: translateX(-110px) rotate(-7deg); }
+  18% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(calc(100vw + 110px)) rotate(5deg); }
+}
+
 /* Header and navigation */
 body.design-otaku .site-header {
   border-bottom: 1px solid rgba(52, 43, 74, .12);
@@ -218,7 +261,7 @@ body.design-otaku .home-hero .feature-score { margin-right: 54px; }
 
 /* Rota's original celestial companion */
 .rota-companion { position: absolute; z-index: 12; width: 126px; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 10px 18px rgba(73,52,105,.14)); animation: rota-float 3.4s ease-in-out infinite; }
-.rota-companion__bubble { position: relative; margin-bottom: 10px; padding: 8px 11px; border: 2px solid var(--ink); border-radius: 14px 14px 14px 5px; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 var(--ink); font-size: 8px; font-weight: 900; white-space: nowrap; }
+.rota-companion__bubble { position: relative; z-index: 4; margin-bottom: 10px; padding: 8px 11px; border: 2px solid var(--ink); border-radius: 14px 14px 14px 5px; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 var(--ink); font-size: 8px; font-weight: 900; white-space: nowrap; }
 .rota-companion__bubble::after { content: ""; position: absolute; left: 15px; bottom: -8px; width: 12px; height: 12px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: #fff; transform: rotate(45deg); }
 .rota-companion__body { position: relative; width: 76px; height: 64px; display: block; border: 2px solid var(--ink); border-radius: 48% 48% 42% 42%; background: linear-gradient(145deg,#c9afff,#9575dc); box-shadow: 4px 5px 0 var(--ink); }
 .rota-companion__body::before { content: ""; position: absolute; z-index: -1; top: -21px; left: 4px; width: 64px; height: 34px; background: linear-gradient(135deg,#d8c5ff,#9b7ae1); clip-path: polygon(0 100%,14% 0,38% 76%,62% 76%,86% 0,100% 100%); }
@@ -228,13 +271,26 @@ body.design-otaku .home-hero .feature-score { margin-right: 54px; }
 .rota-companion__blush { position: absolute; top: 37px; left: 11px; width: 13px; height: 6px; border-radius: 50%; background: rgba(255,140,164,.66); box-shadow: 40px 0 0 rgba(255,140,164,.66); }
 .rota-companion__mouth { position: absolute; top: 35px; left: 34px; width: 9px; height: 7px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); border-radius: 0 0 8px; transform: rotate(45deg); }
 .rota-companion__body b { position: absolute; right: -9px; top: -11px; color: var(--sun); text-shadow: 1px 1px 0 var(--ink); font-size: 18px; }
+.rota-companion__body em { position: absolute; z-index: 2; font-style: normal; font-weight: 950; }
 .rota-companion--sleepy .rota-companion__eyes { height: 5px; border-bottom: 2px solid var(--ink); border-radius: 50%; background: transparent; box-shadow: 29px 0 0 -1px transparent; }
 .rota-companion--sleepy .rota-companion__eyes::after { width: 7px; height: 5px; border-bottom: 2px solid var(--ink); border-radius: 50%; background: transparent; box-shadow: 29px 0 0 -1px transparent; }
+.rota-companion--syncing .rota-companion__body { background: linear-gradient(145deg,#c8f3ff,#78c8e6); }
+.rota-companion__orbit { inset: -13px -15px -12px -15px; display: grid; place-items: end center; border: 2px dashed var(--lavender-deep); border-radius: 50%; color: var(--lavender-deep); font-size: 13px; animation: rota-orbit 1.05s linear infinite; }
+.rota-companion--celebrating .rota-companion__body { background: linear-gradient(145deg,#ffe8a1,#f5b764); animation: rota-companion-party .48s ease-in-out alternate infinite; }
+.rota-companion__confetti { top: -25px; left: -17px; width: 110px; color: var(--coral); font-size: 17px; letter-spacing: .34em; transform: rotate(-7deg); animation: rota-confetti .62s ease-in-out alternate infinite; }
+.rota-companion--error .rota-companion__body { background: linear-gradient(145deg,#ffd7df,#e98da4); }
+.rota-companion--error .rota-companion__eyes { height: 2px; border-radius: 0; transform: rotate(9deg); }
+.rota-companion--error .rota-companion__eyes::after { display: none; }
+.rota-companion--error .rota-companion__mouth { width: 12px; height: 6px; border: 2px solid var(--ink); border-bottom: 0; border-radius: 9px 9px 0 0; transform: rotate(0); }
+.rota-companion__bandage { top: -8px; left: 24px; width: 28px; height: 12px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 3px; color: var(--coral); background: #fff7dc; font-size: 8px; transform: rotate(-9deg); }
 .rota-companion--hero { left: -89px; bottom: 23px; transform: rotate(-5deg); }
 .rota-companion--catalogue { top: 7px; right: 90px; transform: rotate(5deg); }
 
 @keyframes rota-float { 50% { translate: 0 -7px; } }
 @keyframes rota-twinkle { 0%,100% { opacity: .45; transform: scale(.78) rotate(-8deg); } 50% { opacity: 1; transform: scale(1.2) rotate(8deg); } }
+@keyframes rota-orbit { to { transform: rotate(360deg); } }
+@keyframes rota-companion-party { to { transform: translateY(-5px) rotate(3deg) scale(1.04); } }
+@keyframes rota-confetti { to { transform: translateY(-5px) rotate(7deg) scale(1.08); } }
 
 /* Personal shelf summary */
 body.design-otaku .library-summary {
@@ -510,6 +566,9 @@ body.design-otaku .list-shelf .my-list-card:nth-child(even) { transform: rotate(
 body.design-otaku .my-list-card.is-celebrating { z-index: 3; border-color: var(--lavender-deep); box-shadow: 7px 7px 0 var(--sun); animation: rota-card-celebrate .48s ease both; }
 .completion-burst { position: absolute; z-index: 20; inset: -14px -11px auto auto; min-width: 126px; padding: 11px 12px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 2px solid var(--ink); color: var(--ink); background: var(--sun); box-shadow: 4px 4px 0 var(--ink); font-size: 8px; transform: rotate(4deg); animation: rota-burst .42s cubic-bezier(.2,.8,.2,1.2) both; }
 .completion-burst span, .completion-burst i { color: var(--coral); font-size: 17px; font-style: normal; }
+.rota-companion--celebration { top: -105px; right: 112px; transform: scale(.72) rotate(-5deg); animation-duration: 1.3s; }
+.rota-companion--celebration .rota-companion__bubble { background: #fff9dc; }
+.rota-companion--celebration .rota-companion__bubble::after { background: #fff9dc; }
 .companion-state, body.design-otaku .my-list-empty { position: relative; }
 .rota-companion--state { top: 50%; right: 11%; transform: translateY(-45%) rotate(5deg) scale(.82); }
 .rota-companion--empty { top: 44px; right: 11%; transform: rotate(5deg); }
@@ -536,7 +595,10 @@ body.design-otaku .account-hero::before { content: "♡"; position: absolute; ri
   background: #fff;
   box-shadow: 6px 6px 0 rgba(52,43,74,.15);
 }
-.account-profile-card { background: linear-gradient(135deg, #fff 0 72%, #f1e8ff 72%); }
+.account-profile-card { position: relative; background: linear-gradient(135deg, #fff 0 72%, #f1e8ff 72%); }
+.account-dashboard--signed-in .account-profile-card { padding-right: 145px; }
+.rota-companion--account-sync { top: 35px; right: 12px; transform: scale(.72) rotate(4deg); }
+.rota-companion--account-sync .rota-companion__bubble { max-width: 132px; white-space: normal; text-align: center; }
 .account-card__topline { margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; color: var(--lavender-deep); font-size: 8px; font-weight: 900; letter-spacing: .13em; }
 .account-card__topline b { color: var(--coral); font-size: 24px; }
 .account-profile-card h2 { max-width: 700px; margin: 0; font-family: var(--display); font-size: clamp(38px,4vw,58px); line-height: 1; letter-spacing: -.045em; }
@@ -654,6 +716,8 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .rota-companion--empty .rota-companion__bubble { display: none; }
   .rota-companion--state { right: 0; transform: translateY(-45%) scale(.66) rotate(5deg); }
   .rota-companion--state .rota-companion__bubble { display: none; }
+  .rota-companion--celebration { top: -78px; right: 53px; transform: scale(.58) rotate(-5deg); }
+  .rota-companion--celebration .rota-companion__bubble { display: none; }
   body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
   body.design-otaku .account-hero { grid-template-columns: 1fr; }
   body.design-otaku .account-hero::before { right: 10px; bottom: 4px; font-size: 60px; }
@@ -662,6 +726,9 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .account-settings-card,
   .account-shelf-card { padding: 23px 19px; border-radius: 18px; box-shadow: 4px 4px 0 rgba(52,43,74,.14); }
   .account-profile-card { background: #fff; }
+  .account-dashboard--signed-in .account-profile-card { padding-right: 19px; padding-top: 104px; }
+  .rota-companion--account-sync { top: 3px; right: 1px; transform: scale(.62) rotate(4deg); }
+  .rota-companion--account-sync .rota-companion__bubble { max-width: 118px; }
   .account-profile-card h2 { font-size: 36px; }
   .account-benefits { margin-top: 22px; }
   .account-shelf-card { min-height: 340px; }
@@ -676,5 +743,7 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .brand__spark, .completion-burst, .my-list-card.is-celebrating { animation: none !important; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .01ms !important; }
+  .page-transition-wink { display: none; }
+  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .rota-companion__body, .rota-companion__body em, .brand__spark, .completion-burst, .my-list-card.is-celebrating { animation: none !important; }
 }

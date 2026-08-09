@@ -6,9 +6,22 @@ import SiteFooter from "../components/SiteFooter.astro";
 interface Props {
   title: string;
   description: string;
+  image?: string;
+  imageAlt?: string;
+  type?: "website" | "article";
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  image = "/social/equinox-rota-share.png",
+  imageAlt = "Equinox Rota göksel yoldaşı ve kişisel anime köşesi",
+  type = "website",
+} = Astro.props;
+const origin = "https://anime.sametbasbug.dev";
+const canonicalUrl = new URL(Astro.url.pathname, origin);
+const socialImageUrl = new URL(image, origin);
+const route = Astro.url.pathname.split("/").filter(Boolean)[0] || "ana";
 const month = new Date().getMonth();
 const season = month === 11 || month < 2
   ? "winter"
@@ -26,10 +39,27 @@ const season = month === 11 || month < 2
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#fff9f4" />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content="Equinox Rota" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
     <title>{title}</title>
   </head>
-  <body class:list={["design-otaku", `rota-season--${season}`]}>
+  <body class:list={["design-otaku", `rota-season--${season}`, `rota-route--${route}`]}>
+    <div class="page-transition-wink" aria-hidden="true"><span>✦</span><i>♡</i><b>R</b></div>
     <slot />
     <SiteFooter />
   </body>

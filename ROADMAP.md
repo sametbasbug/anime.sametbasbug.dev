@@ -81,10 +81,13 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ### 8. Ürün deneyimi ve görsel sistem — tamamlandı
 
-- [x] Tasarım yönünü **sinematik kişisel anime arşivi** olarak kilitle ve `docs/DESIGN_DIRECTION.md` içinde belgele.
+- [x] Tasarım yönünü **Soft Celestial Otaku** olarak kilitle ve `docs/DESIGN_DIRECTION.md` içinde belgele.
 - [x] Masaüstü üst menüsünü ve mobil alt gezinmeyi yeni bilgi mimarisine taşı.
 - [x] Ana sayfayı arama, kişisel dönüş ve güncel seçkiler etrafında yeniden kur.
-- [x] Katalog, anime detayı ve kişisel listeyi işlem öncelikli arayüze geçir.
+- [x] Katalog, manga açılımlı anime detayı, koleksiyon rafları ve otaku köşesi hesabını yeni görsel sisteme geçir.
+- [x] Göksel yoldaşın boş, yükleme, hata, senkronizasyon ve kutlama hâllerini uygula.
+- [x] Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve sayfa geçişleri ekle.
+- [x] Favicon ile Open Graph/Twitter paylaşım görseli sistemini marka kimliğine taşı.
 - [x] Masaüstü ve mobil görsel regresyon turunu tamamla.
 
 **Tamamlanma ölçütü:** Arama, listeye dönüş, animeyi değerlendirme ve bölüm ilerletme temel görevleri masaüstü ve mobilde tanıtım/dekor katmanına takılmadan gerçekleştirilebilir.
@@ -99,7 +102,7 @@ Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüke
 
 Aşamanın kapanması için Google OAuth ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. Production'da ikinci eşitlemenin sıfır kayıt göndermesi doğrulandı; kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
 
-Ürün deneyimi baştan aşağı yenilendi: koyu sinematik arşiv görsel sistemi, masaüstü üst menüsü ve mobil alt gezinme eklendi. Ana sayfada arama ile yerel arşiv özeti ilk görüş alanına taşındı; katalog dört filtre/sıralama kontrolüyle yoğunlaştırıldı; anime detayında mobil liste eylemi görselin önüne alındı; kişisel liste kompakt hızlı düzenleme yüzeyine dönüştürüldü. Kanonik tasarım ilkeleri `docs/DESIGN_DIRECTION.md` içindedir.
+Ürün deneyimi baştan aşağı **Soft Celestial Otaku** sistemine geçirildi: açık manga editoryali, kontrollü asimetri, koleksiyon rafları, otaku köşesi hesap ekranı ve yaşayan göksel yoldaş eklendi. Ana sayfada arama ile kişisel dönüş ilk görüş alanında; katalog Türkçe filtrelerle, anime detayı manga açılımıyla, Listem ise durumlara ayrılan raflarla çalışır. Mevsimsel renk katmanı, erişilebilir mikro animasyonlar, sayfa geçişleri, favicon ve paylaşım kartı aynı marka dilini taşır. Kanonik tasarım ilkeleri `docs/DESIGN_DIRECTION.md` içindedir.
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 

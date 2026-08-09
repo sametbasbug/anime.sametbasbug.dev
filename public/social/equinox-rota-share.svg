@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Equinox Rota</title>
+  <desc id="desc">Göksel yoldaşın eşlik ettiği pastel manga panelli kişisel anime köşesi</desc>
+  <defs>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.4" fill="#342b4a" opacity=".12"/>
+    </pattern>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#e5f7ff"/>
+      <stop offset="1" stop-color="#d8c5ff"/>
+    </linearGradient>
+    <linearGradient id="companion" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#d8c5ff"/>
+      <stop offset="1" stop-color="#9575dc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#fff9f4"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <circle cx="1080" cy="65" r="230" fill="#ffd1dc" opacity=".72"/>
+  <circle cx="70" cy="600" r="250" fill="#8ed7ef" opacity=".34"/>
+
+  <g transform="translate(62 58) rotate(-1)">
+    <rect x="0" y="0" width="660" height="510" rx="42" fill="#fff" stroke="#342b4a" stroke-width="6"/>
+    <rect x="15" y="15" width="630" height="480" rx="31" fill="none" stroke="#a88bea" stroke-width="3" stroke-dasharray="9 12"/>
+    <text x="52" y="92" fill="#7657bd" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="21" font-weight="900" letter-spacing="5">KİŞİSEL ANİME KÖŞEN</text>
+    <text x="48" y="210" fill="#342b4a" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="94" font-weight="900">Equinox</text>
+    <text x="48" y="303" fill="#342b4a" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="112" font-weight="900">Rota</text>
+    <path d="M50 331c137 35 310 33 495-5" fill="none" stroke="#ff7f91" stroke-width="17" stroke-linecap="round"/>
+    <text x="52" y="395" fill="#746b84" font-family="Arial, sans-serif" font-size="27">Keşfet · kaydet · kendi rotanı çiz.</text>
+    <g transform="translate(51 430)">
+      <rect width="175" height="48" rx="24" fill="#ffe875" stroke="#342b4a" stroke-width="3"/>
+      <text x="87.5" y="31" text-anchor="middle" fill="#342b4a" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="17" font-weight="900">ROTA BY EQUINOX</text>
+    </g>
+    <text x="560" y="458" fill="#ff7f91" font-family="Arial, sans-serif" font-size="45">♡</text>
+    <text x="595" y="91" fill="#ffe875" stroke="#342b4a" stroke-width="1" font-family="Arial, sans-serif" font-size="43">✦</text>
+  </g>
+
+  <g transform="translate(763 96) rotate(3)">
+    <path d="M5 83 32 3l50 57 55-55 30 80Z" fill="#c9afff" stroke="#342b4a" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="0" y="66" width="178" height="155" rx="72" fill="url(#companion)" stroke="#342b4a" stroke-width="6"/>
+    <ellipse cx="51" cy="132" rx="11" ry="15" fill="#342b4a"/>
+    <ellipse cx="127" cy="132" rx="11" ry="15" fill="#342b4a"/>
+    <circle cx="47" cy="127" r="3.5" fill="#fff"/>
+    <circle cx="123" cy="127" r="3.5" fill="#fff"/>
+    <ellipse cx="35" cy="166" rx="18" ry="8" fill="#ff8ca4" opacity=".75"/>
+    <ellipse cx="143" cy="166" rx="18" ry="8" fill="#ff8ca4" opacity=".75"/>
+    <path d="M78 163q11 15 23 0" fill="none" stroke="#342b4a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M170 160c60 4 78-54 34-80 18 39 3 60-34 58" fill="#ffe875" stroke="#342b4a" stroke-width="6" stroke-linejoin="round"/>
+    <text x="161" y="40" fill="#ff7f91" stroke="#342b4a" stroke-width="1" font-family="Arial, sans-serif" font-size="54">✦</text>
+  </g>
+
+  <g transform="translate(815 350) rotate(-4)">
+    <rect width="320" height="176" rx="28" fill="url(#sky)" stroke="#342b4a" stroke-width="6"/>
+    <path d="M42 126c46-79 105-83 176-15 24-35 49-38 72-10" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" opacity=".72"/>
+    <rect x="24" y="22" width="145" height="40" rx="20" fill="#fff" stroke="#342b4a" stroke-width="3"/>
+    <text x="96" y="48" text-anchor="middle" fill="#342b4a" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="15" font-weight="900">BİR BÖLÜM DAHA?</text>
+    <text x="245" y="73" fill="#ff7f91" font-family="Arial, sans-serif" font-size="47">♡</text>
+    <text x="54" y="151" fill="#7657bd" font-family="Arial, sans-serif" font-size="39">✦</text>
+  </g>
+</svg>

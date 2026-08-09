@@ -115,7 +115,7 @@ export default function MyListExperience({ dataVersion }: Props) {
   }
 
   if (loadState === "error") {
-    return <div className="catalogue-empty companion-state"><RotaCompanion message="Bir şey ters gitti…" mood="sleepy" className="rota-companion--state" /><span>!</span><h2>Arşiv şu anda açılamadı.</h2><p>Katalog bağlantısını kontrol edip sayfayı yenile.</p></div>;
+    return <div className="catalogue-empty companion-state"><RotaCompanion message="Bir şey ters gitti…" mood="error" className="rota-companion--state" /><span>!</span><h2>Arşiv şu anda açılamadı.</h2><p>Katalog bağlantısını kontrol edip sayfayı yenile.</p></div>;
   }
 
   if (records.length === 0) {
@@ -165,7 +165,10 @@ export default function MyListExperience({ dataVersion }: Props) {
                   const isCelebrating = celebratingId === anime.id;
                   return (
               <article className={`my-list-card${isCelebrating ? " is-celebrating" : ""}`} key={anime.id}>
-                {isCelebrating && <div className="completion-burst" aria-live="polite"><span>✦</span><strong>TAMAMLANDI!</strong><i>♡</i></div>}
+                {isCelebrating && <>
+                  <RotaCompanion message="Son bölüm de tamam!" mood="celebrating" className="rota-companion--celebration" />
+                  <div className="completion-burst" aria-live="polite"><span>✦</span><strong>TAMAMLANDI!</strong><i>♡</i></div>
+                </>}
                 <a className="my-list-card__art" href={`/anime/${anime.slug}`} aria-label={`${anime.title} detayını aç`}>
                   <AnimeArtwork art={visual.art} palette={visual.palette} compact />
                 </a>

@@ -3,6 +3,7 @@ import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
 import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
 import { getSupabaseClient } from "../lib/supabase";
+import RotaCompanion from "./RotaCompanion";
 
 type Visibility = "PRIVATE" | "UNLISTED" | "PUBLIC";
 type Profile = {
@@ -244,6 +245,15 @@ export default function AccountExperience() {
     : "";
   const displayName = profile.display_name.trim() || googleName || "Anime yolcusu";
   const profileInitial = displayName.charAt(0).toLocaleUpperCase("tr-TR");
+  const syncHasError = message.startsWith("Senkronizasyon tamamlanamadı");
+  const syncIsPartial = (syncResult?.rejected.length ?? 0) > 0;
+  const companionState = busy
+    ? { mood: "syncing" as const, message: "Rafları buluşturuyorum…" }
+    : syncHasError || syncIsPartial
+      ? { mood: "error" as const, message: syncIsPartial ? "Bir kayda bakmalıyız." : "Bağlantı biraz huysuz." }
+      : syncResult
+        ? { mood: "celebrating" as const, message: "Rafların buluştu!" }
+        : { mood: "happy" as const, message: "Rafın hazır!" };
 
   if (!client) {
     return (
@@ -294,6 +304,7 @@ export default function AccountExperience() {
   return (
     <div className="account-dashboard account-dashboard--signed-in" key="signed-in">
       <section className="account-profile-card">
+        <RotaCompanion {...companionState} className="rota-companion--account-sync" />
         <div className="account-identity">
           <div className="account-avatar">{profileInitial}<span aria-hidden="true">✦</span></div>
           <div>

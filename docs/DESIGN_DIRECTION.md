@@ -109,4 +109,19 @@ Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanıl
 - Viewport'u kaplayan marka manifestoları
 - İşlevsiz dekor, düşük kontrast ve küçük dokunma hedefleri
 
+## Yaşayan Rota sistemi
+
+- Göksel yoldaşın temel hâlleri `happy`, `curious`, `sleepy`, `syncing`, `celebrating` ve `error` olarak tanımlıdır.
+- Yoldaş; boş raf, yükleme, hata, hesap senkronizasyonu ve anime tamamlama anlarında bağlama göre tepki verir. Durum iletisini destekler, tek başına durumun tek göstergesi olmaz.
+- Sayfa geçişleri kısa bir göksel manga işareti ve yumuşak içerik geçişi kullanır. Desteklenmeyen tarayıcılarda normal gezinme korunur.
+- Mevsim katmanı yalnız vurgu rengi ve arka plan ışıltısını değiştirir; içerik düzeni veya okunabilirlik mevsime göre değişmez.
+- `prefers-reduced-motion` açıkken yoldaş, kutlama ve sayfa geçişi animasyonları durur.
+
+## Paylaşım kimliği
+
+- Varsayılan Open Graph/Twitter kartı `public/social/equinox-rota-share.png` dosyasıdır; düzenlenebilir kaynak SVG aynı klasörde tutulur.
+- Tüm sayfalar kanonik URL, Türkçe açıklama, 1200×630 paylaşım görseli ve erişilebilir görsel açıklaması üretir.
+- Paylaşım kartı göksel yoldaşı, manga panelini ve açık pastel kimliği birlikte taşır; anime kapağı kullanım hakkı doğrulanmadan harici görsel kullanmaz.
+- Yeni özel paylaşım görselleri `BaseLayout` üzerindeki `image`, `imageAlt` ve `type` alanlarıyla tanımlanır.
+
 Bu belge, tüm yeni arayüz kararlarının kanonik kaynağıdır. Ürün aşamaları `ROADMAP.md`, hesap güvenliği ise `docs/ACCOUNT_ARCHITECTURE.md` tarafından yönetilir.

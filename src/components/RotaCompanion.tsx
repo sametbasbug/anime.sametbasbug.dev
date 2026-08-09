@@ -1,6 +1,6 @@
 type Props = {
   message?: string;
-  mood?: "happy" | "curious" | "sleepy";
+  mood?: "happy" | "curious" | "sleepy" | "syncing" | "celebrating" | "error";
   className?: string;
 };
 
@@ -20,6 +20,9 @@ export default function RotaCompanion({
         <i className="rota-companion__blush" />
         <i className="rota-companion__mouth" />
         <b>✦</b>
+        {mood === "syncing" && <em className="rota-companion__orbit">↻</em>}
+        {mood === "celebrating" && <em className="rota-companion__confetti">✦♡✦</em>}
+        {mood === "error" && <em className="rota-companion__bandage">×</em>}
       </span>
     </div>
   );
