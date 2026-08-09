@@ -2,74 +2,111 @@
 
 **Durum:** Onaylandı  
 **Karar tarihi:** 9 Ağustos 2026  
-**Kanonik yön:** Sinematik kişisel anime arşivi
+**Kanonik yön:** Soft Celestial Otaku — manga editoryali ile kişisel anime köşesi
+
+## Ürün cümlesi
+
+Equinox Rota sıradan bir film kataloğu değil; kullanıcının anime yolculuğunu keşfettiği, kaydettiği ve sahiplenebildiği kişisel otaku köşesidir.
+
+Tasarımın başarı testi şudur:
+
+> Anime görselleri geçici olarak kaldırıldığında bile arayüz bir film/veri tabanı sitesine değil, anime ve manga kültürüne ait hissettirmelidir.
 
 ## Ürün hissi
 
-Equinox Rota bir editoryal afiş veya katalog vitrini gibi değil, her gün kullanılabilen kişisel bir anime arşivi gibi davranmalıdır. Arayüz sinematik ve karakterli kalırken temel işlemler dekoratif anlatının önüne geçer.
+- Varsayılan deneyim açık, ferah, sıcak ve neşelidir. Karanlık tema ana kimlik değildir.
+- Görsel dil modern manga editoryali, koleksiyon rafı ve yumuşak göksel motifleri birleştirir.
+- Sevimlilik; yuvarlak formlar, canlı renkler, küçük sürprizler ve samimi metinlerle kurulur. Çocukça veya yapay “kawaii” klişesine dönüşmez.
+- Anime görselleri dekor değil, içerik hiyerarşisinin başrolüdür.
+- Arayüz canlıdır ama kullanıcının arama, kaydetme ve bölüm ilerletme işlerini geciktirmez.
 
-- Ana zemin koyu grafit; içerik yüzeyleri daha açık grafit tonlarında kurulur.
-- Mercan, Equinox Rota'nın kalıcı marka vurgusudur. Asit sarısı yalnız durum ve güçlü eylemlerde kullanılır.
-- Anime kartları tek bir bej şablona sıkışmaz; mevcut hakları güvenli temsili görsel sistemi yapım başına değişen renk ve atmosfer üretir.
-- Büyük tipografi kısa marka anlarında kullanılır. Uzun başlıklar, açıklamalar ve kontroller öncelikle okunabilir olmalıdır.
-- Keskin editoryal çizgiler korunur; fakat boşluk, ölçek ve tipografi kullanıcının işini geciktiremez.
+## İfade seviyesi — cesur kawaii
 
-## Ürün öncelikleri
+- Kawaii seviyesi bilinçli biçimde yüksektir; sevimlilik yalnız küçük ikonlara değil kompozisyonun kendisine taşınır.
+- Klasik web sitesi kalıpları zorunlu değildir. Kontrollü asimetri, üst üste binen kartlar, manga efektleri, sticker katmanları ve alışılmadık bölüm geçişleri teşvik edilir.
+- Her ana ekranda kullanıcıya “bunu başka bir sitede görmedim” dedirtecek en az bir karakterli an bulunmalıdır.
+- Rota'nın özgün göksel yoldaşı arayüzde rehber ve duygu işareti olarak kullanılabilir; maskot işlevin veya anime içeriğinin önüne geçmez.
+- Hareket kısa, neşeli ve amaçlıdır. `prefers-reduced-motion` her zaman korunur.
+- Yüksek ifade, düşük kullanılabilirlik bahanesi değildir: metin kontrastı, 44 piksel dokunma hedefleri ve hızlı tarama korunur.
 
-1. Kullanıcı ilk bakışta anime arayabilmeli veya kişisel listesine dönebilmelidir.
-2. Giriş yapan kullanıcıya ana sayfada listesi ve devam edebileceği yapımlar görünmelidir.
-3. Katalogda arama ve filtreler sayfanın ilk işlevsel alanıdır; tanıtım metni ikincildir.
-4. Anime detayında kapak, kısa bağlam, puan, bölüm, durum ve `Listeme ekle` aynı görüş alanında bulunmalıdır.
-5. Kişisel listede durum ve bölüm ilerlemesi doğrudan, hızlı ve dokunmatik kullanıma uygun düzenlenmelidir.
+## Görsel sistem
+
+### Renk
+
+- **Süt beyazı / sıcak kâğıt:** ana zemin
+- **Mürekkep moru:** metin ve güçlü kontur
+- **Equinox lavantası:** marka ve birincil eylemler
+- **Sakura mercanı:** duygu, favori ve sıcak vurgu
+- **Gökyüzü mavisi, mint ve güneş sarısı:** kategori ve durum renkleri
+- Koyu yüzeyler yalnız kontrast gereken küçük alanlarda veya ileride isteğe bağlı gece temasında kullanılır.
+
+### Biçim
+
+- Manga panellerini çağrıştıran belirgin ama yumuşatılmış çerçeveler
+- Sticker/rozet gibi davranan etiketler
+- İnce benek, yıldız, hız çizgisi ve konuşma balonu detayları
+- Yuvarlatılmış kartlar; kontrollü asimetri ve hafif dönüşler
+- Büyük siyah sinema blokları, ağır cam efekti ve kurumsal dashboard kutuları kullanılmaz.
+
+### Tipografi ve metin
+
+- Başlıklarda dost canlısı, yuvarlak ve enerjik bir ritim
+- Uzun anime adlarında okunabilir ölçek ve doğal satır kırılımı
+- Japonca yalnız gerçek içerik veya küçük atmosfer detayı olarak kullanılır; anlamsız karakter süslemesi yapılmaz.
+- Metinler “kullanıcı hesabı” gibi kurumsal değil, “senin köşen / sıradaki bölüm / koleksiyonun” gibi kişisel konuşur.
 
 ## Bilgi mimarisi
 
 Ana gezinme dört kalıcı hedef taşır:
 
-- **Ana Sayfa:** kişisel özet ve güncel seçkiler
-- **Keşfet:** arama, filtreleme, türler ve stüdyolar
-- **Listem:** kişisel arşiv ve hızlı ilerleme kontrolleri
-- **Hesap:** Google girişi, senkronizasyon ve gizlilik tercihleri
+- **Ana:** kişisel dönüş, güncel sezon ve keşif
+- **Keşfet:** arama, tür, format, durum ve stüdyo yolları
+- **Listem:** koleksiyon rafı, bölüm ilerlemesi ve kişisel notlar
+- **Hesap:** otaku profili, cihaz özeti, senkronizasyon ve gizlilik
 
-Masaüstünde bu hedefler üst menüde; mobilde erişilebilir bir alt gezinme çubuğunda bulunur. Belirsiz `Harita` etiketi ana gezinmeden çıkarılır; tür ve stüdyo yolları Keşfet altında kalır.
+Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanılır.
 
 ## Ekran ilkeleri
 
 ### Ana sayfa
 
-- İlk ekranda arama, tek güçlü seçki ve kişisel listeye dönüş bulunur.
-- Marka anlatısı kısa tutulur.
-- Katalog istatistikleri yardımcı bilgidir; ana eylem değildir.
-- Sezon seçkileri yatay veya yoğun kart düzeniyle hızlı taranır.
+- İlk ekranda güçlü anime kimliği, arama ve tek bir güncel keşif bulunur.
+- Kullanıcının kişisel listesi “arşiv özeti” değil, geri dönmek isteyeceği kişisel bir köşe gibi sunulur.
+- Türler kuru sayılarla değil, ruh hali ve izleme isteği üzerinden keşfedilir.
 
 ### Keşfet
 
-- Arama ilk görünümde ve belirgin olmalıdır.
-- Filtreler aramanın hemen yanında veya altında bulunur.
-- Kartlar okunabilir başlık, durum, puan ve tür bilgisi taşır.
-- Tür ve stüdyo keşif yolları ikincil ama görünürdür.
+- Arama ilk görüş alanındadır.
+- Filtreler kolay, Türkçe ve dokunmatik kullanıma uygundur.
+- Kartlar poster ızgarası gibi anonim durmaz; renk, etiket ve mikro detaylarla koleksiyon hissi verir.
 
 ### Anime detayı
 
-- Başlık viewport'u ele geçirmez; uzun adlar kontrollü kırılır.
-- Kişisel liste eylemi ana eylemdir.
-- Temel bilgiler tek bakışta okunur.
-- Editoryal içerik, stüdyo ve kaynaklar aşağıdaki içerik katmanında ilerler.
+- Yapımın atmosferi, temel bilgileri ve `Listeme ekle` eylemi aynı kompozisyonda görünür.
+- İçerik manga sayfası ritmiyle bölünür; veri dökümü görünümünden kaçınılır.
+- Mobilde başlık ve kişisel liste eylemi görselden önce gelir.
 
 ### Listem
 
-- Kayıtlar istatistiklerden önce gelir.
-- Filtreler kompakt ve yapışkan davranabilir.
-- Bölüm artırma/azaltma ile durum değiştirme dokunmatik hedefleri en az 44 piksel olmalıdır.
-- Boş durum doğrudan kataloğa yönlendirir.
+- Bir yönetim tablosu değil, kullanıcının anime rafıdır.
+- Durum renkleri, bölüm ilerlemesi ve notlar hızlı taranır.
+- Temel kontroller en az 44 piksel dokunma hedefi taşır.
+
+### Hesap
+
+- Kuru ayar ve giriş ekranı değildir; kullanıcının “otaku köşesi”dir.
+- Giriş yapmadan önce cihazdaki koleksiyon ve local-first güven görünürdür.
+- Giriş yaptıktan sonra profil, kayıt sayısı, senkronizasyon durumu ve gizlilik tek bakışta anlaşılır.
+- E-posta yardımcı kimlik bilgisidir; ekranın ana başlığı yapılmaz.
 
 ## Kaçınılacaklar
 
-- Viewport'un çoğunu kaplayan dekoratif başlıklar
-- Mobilde kaybolan ana navigasyon
-- Aynı ağırlıktaki çok sayıda CTA
-- İnce, düşük kontrastlı ve küçük kontrol metinleri
-- Anime içeriğini ikinci plana atan marka manifestoları
-- Yalnız estetik gerekçeyle eklenen büyük boşluklar
+- Netflix/Letterboxd benzeri karanlık sinema estetiği
+- Kurumsal admin paneli veya soğuk veri tabanı görünümü
+- Anime kapaklarını sıradan film posterleri gibi dizmek
+- Her yere pembe, neon veya anlamsız Japonca basmak
+- Aşırı maskotlaştırma ve yapay “senpai/kawaii” dili
+- Viewport'u kaplayan marka manifestoları
+- İşlevsiz dekor, düşük kontrast ve küçük dokunma hedefleri
 
-Bu belge, arayüz revizyonlarında görsel ve davranışsal kararların kanonik kaynağıdır. Ürün aşamaları `ROADMAP.md`, hesap güvenliği ise `docs/ACCOUNT_ARCHITECTURE.md` tarafından yönetilmeye devam eder.
+Bu belge, tüm yeni arayüz kararlarının kanonik kaynağıdır. Ürün aşamaları `ROADMAP.md`, hesap güvenliği ise `docs/ACCOUNT_ARCHITECTURE.md` tarafından yönetilir.

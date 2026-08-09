@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import "../styles/design-v2.css";
+import "../styles/design-otaku.css";
 import SiteFooter from "../components/SiteFooter.astro";
 
 interface Props {
@@ -17,11 +17,11 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0b0c10" />
+    <meta name="theme-color" content="#fff9f4" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
   </head>
-  <body class="design-v2">
+  <body class="design-otaku">
     <slot />
     <SiteFooter />
   </body>

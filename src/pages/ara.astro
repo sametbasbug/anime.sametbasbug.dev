@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SearchExperience from "../components/SearchExperience";
+import RotaCompanion from "../components/RotaCompanion.astro";
 import DataAttribution from "../components/DataAttribution.astro";
 import { catalogueMeta } from "../lib/catalogue";
 ---
@@ -10,9 +11,10 @@ import { catalogueMeta } from "../lib/catalogue";
   <SiteHeader active="search" />
   <main class="catalogue-page">
     <section class="catalogue-hero">
-      <p class="eyebrow">AÇIK KATALOG · {catalogueMeta.entryCount} YAPIM</p>
-      <h1>Bugün ne izlemek istersin?</h1>
-      <p>Anime adıyla ara veya tür, yayın durumu ve format filtreleriyle seçenekleri daralt.</p>
+      <RotaCompanion message="Ne arıyoruz?" mood="curious" className="rota-companion--catalogue" />
+      <p class="eyebrow">KEŞİF MODU · {catalogueMeta.entryCount} ANİME</p>
+      <h1>Yeni bir dünyaya dal ✦</h1>
+      <p>Ruh halini, sevdiğin türü veya aklındaki animeyi yaz. Rota sana uygun rafı açsın.</p>
       <div class="catalogue-hero__links"><a href="/tur">Türlere göz at ↗</a><a href="/studyo">Stüdyoları keşfet ↗</a></div>
     </section>
     <SearchExperience dataVersion={catalogueMeta.generatedAt} client:load />

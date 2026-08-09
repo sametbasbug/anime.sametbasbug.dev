@@ -4,13 +4,12 @@ import SiteHeader from "../components/SiteHeader.astro";
 import AnimeArtwork from "../components/AnimeArtwork";
 import SeasonShelf from "../components/SeasonShelf";
 import HomeLibrarySummary from "../components/HomeLibrarySummary";
+import RotaCompanion from "../components/RotaCompanion.astro";
 import {
   catalogue,
-  catalogueMeta,
   displayTags,
   preferredAliases,
   seasonLabels,
-  statusLabels,
   typeLabels,
   visualFor,
   type CatalogueAnime,
@@ -39,16 +38,12 @@ const featured = statusSelection("ONGOING")[0] ?? homepageAnime[0] ?? catalogue[
 const featuredVisual = visualFor(featured.id);
 const featuredAlias = preferredAliases(featured.synonyms, 1)[0];
 const featuredTags = displayTags(featured.tags, 2);
-const studioCount = new Set(catalogue.flatMap((anime) => anime.studios.map((studio) => studio.toLocaleLowerCase("en-US")))).size;
-const countBy = (field: "type" | "status", value: string) => catalogue.filter((anime) => anime[field] === value).length;
-const catalogueOverview = [
-  { label: "TV serisi", value: countBy("type", "TV"), href: "/ara?type=TV" },
-  { label: "Film", value: countBy("type", "MOVIE"), href: "/ara?type=MOVIE" },
-  { label: "OVA", value: countBy("type", "OVA"), href: "/ara?type=OVA" },
-  { label: "ONA", value: countBy("type", "ONA"), href: "/ara?type=ONA" },
-  { label: "Özel bölüm", value: countBy("type", "SPECIAL"), href: "/ara?type=SPECIAL" },
-  { label: "Devam ediyor", value: countBy("status", "ONGOING"), href: "/ara?status=ONGOING" },
-  { label: "Yakında", value: countBy("status", "UPCOMING"), href: "/ara?status=UPCOMING" },
+const moodRoutes = [
+  { icon: "♡", label: "Kalp çarptıran", note: "Romantizm", href: "/ara?q=romantizm", tone: "pink" },
+  { icon: "✦", label: "Başka dünyalar", note: "Isekai & fantazi", href: "/ara?q=fantazi", tone: "violet" },
+  { icon: "☀", label: "İç ısıtan", note: "Gündelik yaşam", href: "/ara?q=gündelik yaşam", tone: "yellow" },
+  { icon: "⚡", label: "Nabız yükselten", note: "Aksiyon", href: "/ara?q=aksiyon", tone: "blue" },
+  { icon: "☾", label: "Geceye gizem", note: "Gizem & gerilim", href: "/ara?q=gizem", tone: "mint" },
 ];
 ---
 
@@ -58,31 +53,32 @@ const catalogueOverview = [
   <main>
     <section class="hero home-hero" id="kesfet">
       <div class="hero__copy">
-        <p class="eyebrow"><span>{seasonLabels[currentSeason]} {currentYear}</span> TÜRKÇE ANİME KEŞİF VE KİŞİSEL ARŞİV</p>
-        <h1>Yeni bir dünyaya<br /><em>rota çiz.</em></h1>
-        <p class="hero__lede">Ne izleyeceğine daha hızlı karar ver. Animeleri keşfet, bölüm ilerlemeni tut ve kendi arşivini oluştur.</p>
+        <p class="eyebrow"><span>{seasonLabels[currentSeason]} {currentYear}</span> SENİN ANİME YOLCULUĞUN</p>
+        <h1>Sıradaki favorini <em>bul.</em></h1>
+        <p class="hero__lede">Yeni dünyalar keşfet, izlediklerini kendi rafına ekle ve kaldığın bölümü bir daha unutma.</p>
         <form class="home-search" action="/ara" method="get" role="search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
           <input name="q" type="search" placeholder="Anime, tür veya stüdyo ara" aria-label="Anime ara" />
-          <button type="submit">Ara <span>→</span></button>
+          <button type="submit">Keşfet <span>✦</span></button>
         </form>
-        <div class="hero__actions">
-          <a class="primary-button" href="/ara?status=ONGOING">Bu sezon yayında <span>→</span></a>
-          <a class="text-button" href="/listem">Listeme dön</a>
+        <div class="hero__quick-links" aria-label="Hızlı keşif">
+          <span>Şu an ne izlesek?</span>
+          <a href="/ara?q=romantizm">Romantizm</a>
+          <a href="/ara?q=aksiyon">Aksiyon</a>
+          <a href="/ara?q=fantazi">Fantazi</a>
         </div>
-        <dl class="hero__stats">
-          <div><dt>{catalogueMeta.entryCount.toLocaleString("tr-TR")}</dt><dd>katalog kaydı</dd></div>
-          <div><dt>{studioCount.toLocaleString("tr-TR")}</dt><dd>stüdyo</dd></div>
-          <div><dt>{catalogueMeta.release}</dt><dd>veri sürümü</dd></div>
-        </dl>
       </div>
 
       <div class="hero__visual">
+        <RotaCompanion message="Bir bölüm daha?" mood="happy" className="rota-companion--hero" />
+        <span class="hero-sticker hero-sticker--top">YENİ<br />KEŞİF!</span>
+        <span class="hero-doodle hero-doodle--star" aria-hidden="true">✦</span>
+        <span class="hero-doodle hero-doodle--heart" aria-hidden="true">♡</span>
         <a class="feature-card" href={`/anime/${featured.slug}`} aria-label={`${featured.title} detayına git`}>
           <AnimeArtwork art={featuredVisual.art} palette={featuredVisual.palette} />
           <div class="feature-card__shade"></div>
           <div class="feature-card__top">
-            <span class="airing"><i></i> {statusLabels[featured.status]}</span>
+            <span class="airing"><i></i> HAFTANIN ROTASI</span>
             {featured.score && <span class="feature-score">★ {featured.score.toFixed(1)}</span>}
           </div>
           <div class="feature-card__copy">
@@ -96,15 +92,15 @@ const catalogueOverview = [
 
     <HomeLibrarySummary client:load />
 
-    <section class="schedule" id="harita">
+    <section class="schedule mood-section" id="harita">
       <div class="section-heading">
-        <div><p class="eyebrow">KEŞİF YOLLARI</p><h2>Nasıl bir şey arıyorsun?</h2></div>
+        <div><p class="eyebrow">RUH HALİNE GÖRE</p><h2>Bugün hangi dünyaya gidelim?</h2></div>
         <a href="/ara">Tüm kataloğu aç <span>→</span></a>
       </div>
-      <div class="catalogue-strip">
-        {catalogueOverview.slice(0, 5).map((item) => (
-          <a href={item.href}>
-            <strong>{item.value}</strong><span>{item.label}</span><small>incele ↗</small>
+      <div class="catalogue-strip mood-grid">
+        {moodRoutes.map((item) => (
+          <a href={item.href} class={`mood-card mood-card--${item.tone}`}>
+            <strong>{item.icon}</strong><span>{item.label}</span><small>{item.note} →</small>
           </a>
         ))}
       </div>
@@ -112,20 +108,20 @@ const catalogueOverview = [
 
     <section class="season" id="sezon">
       <div class="section-heading section-heading--season">
-        <div><p class="eyebrow">{currentYear} SEÇKİSİ</p><h2>Şimdi keşfet</h2></div>
-        <p class="section-intro">Devam edenler, yeni tamamlananlar ve yakında gelecek yapımlardan güncel bir seçki.</p>
+        <div><p class="eyebrow">SEZON RAFI · {currentYear}</p><h2>Radarımıza takılanlar ✦</h2></div>
+        <p class="section-intro">Devam edenler, yeni tamamlananlar ve yaklaşan dünyalardan taze bir seçki.</p>
       </div>
       <SeasonShelf items={homepageAnime} client:load />
     </section>
 
-    <section class="manifesto" id="listeler">
-      <div><p class="eyebrow">ROTA BY EQUINOX</p><h2>İzlediklerin kaybolmasın.</h2></div>
+    <section class="manifesto fan-space" id="listeler">
+      <div><p class="eyebrow">SENİN OTAKU KÖŞEN</p><h2>Listen, senin hikâyen.</h2><p class="fan-space__lede">Rota yalnız ne izlediğini değil, o dünyalarda nerede kaldığını da hatırlar.</p></div>
       <div class="manifesto__grid">
-        <article><span>01</span><h3>Tek dokunuşla ilerlet</h3><p>Bölümünü kaydet ve kaldığın yere doğrudan dön.</p></article>
-        <article><span>02</span><h3>Cihazlarında yanında</h3><p>Google hesabınla giriş yaparsan arşivin güvenli biçimde eşitlensin.</p></article>
-        <article><span>03</span><h3>Sana özel kalsın</h3><p>Puanların ve notların önce cihazında saklanır; kontrol sende kalır.</p></article>
+        <article><span>EP.01</span><b aria-hidden="true">▶</b><h3>Kaldığın bölüme dön</h3><p>İlerlemeni tek dokunuşla güncelle.</p></article>
+        <article><span>EP.02</span><b aria-hidden="true">☁</b><h3>Rafın yanında gelsin</h3><p>İstersen Google hesabınla cihazlarında eşitle.</p></article>
+        <article><span>EP.03</span><b aria-hidden="true">♡</b><h3>Notların sana kalsın</h3><p>Puanlarını ve anılarını kendi köşende tut.</p></article>
       </div>
-      <a class="manifesto__cta" href="/listem">Kişisel arşivimi aç <span>→</span></a>
+      <a class="manifesto__cta" href="/listem">Kendi rafımı aç <span>✦</span></a>
     </section>
   </main>
 

@@ -8,9 +8,16 @@ import AccountExperience from "../components/AccountExperience";
   <SiteHeader active="account" />
   <main class="account-page">
     <section class="account-hero">
-      <p class="eyebrow">HESAP · SENKRONİZASYON · GİZLİLİK</p>
-      <h1>Arşivin,<br /><em>seninle.</em></h1>
-      <p>Yerel hızdan vazgeçmeden animelerini cihazların arasında taşı. Hesap açmak isteğe bağlıdır; kişisel notların varsayılan olarak özeldir.</p>
+      <div>
+        <p class="eyebrow">PROFİL · RAF · SENKRONİZASYON</p>
+        <h1>Burası senin <em>köşen.</em></h1>
+        <p>Anime yolculuğunu kişiselleştir, rafını yanında taşı ve görünürlüğünü kendin seç.</p>
+      </div>
+      <div class="account-hero__badge" aria-hidden="true">
+        <span>✦</span>
+        <strong>ROTA CLUB</strong>
+        <small>LOCAL-FIRST MEMBER</small>
+      </div>
     </section>
     <section class="account-experience">
       <AccountExperience client:load />

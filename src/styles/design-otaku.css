@@ -1,0 +1,535 @@
+@import "./design-v2.css";
+
+/*
+ * Equinox Rota — Soft Celestial Otaku
+ * Canonical direction: docs/DESIGN_DIRECTION.md
+ *
+ * This layer keeps the proven responsive/product layout from design-v2 while
+ * replacing its cinematic skin with a light manga-editorial interface.
+ */
+
+:root {
+  --ink: #342b4a;
+  --paper: #fff9f4;
+  --paper-deep: #f8eff6;
+  --acid: #ffe875;
+  --coral: #ff7f91;
+  --muted: #746b84;
+  --line: rgba(52, 43, 74, .16);
+  --surface: rgba(255, 255, 255, .88);
+  --surface-raised: #ffffff;
+  --surface-soft: #f5effb;
+  --lavender: #a88bea;
+  --lavender-deep: #7657bd;
+  --sky: #8ed7ef;
+  --mint: #9ee4c8;
+  --sakura: #ffd1dc;
+  --sun: #ffe875;
+  --shadow: 0 18px 50px rgba(75, 54, 108, .10);
+  --manga-shadow: 5px 5px 0 #342b4a;
+  --display: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", var(--sans);
+  --page: min(1240px, calc(100% - 48px));
+}
+
+html { background: var(--paper); }
+body.design-otaku {
+  color: var(--ink);
+  color-scheme: light;
+  background:
+    radial-gradient(circle at 8% 5%, rgba(255, 209, 220, .60), transparent 23rem),
+    radial-gradient(circle at 95% 18%, rgba(142, 215, 239, .38), transparent 25rem),
+    radial-gradient(circle at 52% 62%, rgba(168, 139, 234, .10), transparent 36rem),
+    var(--paper);
+}
+body.design-otaku::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .42;
+  background-image: radial-gradient(rgba(52, 43, 74, .15) .7px, transparent .7px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, #000, transparent 78%);
+}
+::selection { color: var(--ink); background: var(--sun); }
+:focus-visible { outline: 3px solid var(--lavender); outline-offset: 3px; }
+input, select, textarea, button { color-scheme: light; }
+
+/* Header and navigation */
+body.design-otaku .site-header {
+  border-bottom: 1px solid rgba(52, 43, 74, .12);
+  background: rgba(255, 249, 244, .87);
+  box-shadow: 0 8px 28px rgba(83, 65, 111, .06);
+}
+body.design-otaku .brand { position: relative; }
+body.design-otaku .brand svg { color: var(--lavender-deep); stroke-width: 2; }
+body.design-otaku .brand svg circle:last-child { fill: var(--coral); }
+body.design-otaku .brand > span {
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 900;
+  letter-spacing: -.04em;
+}
+body.design-otaku .brand small { color: var(--lavender-deep); letter-spacing: .16em; }
+.brand__spark { margin: -23px 0 0 -5px; color: var(--coral); font-size: 10px; font-style: normal; animation: rota-twinkle 2.4s ease-in-out infinite; }
+body.design-otaku .site-header .desktop-nav {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .74);
+  box-shadow: 0 7px 20px rgba(77, 58, 106, .06);
+}
+body.design-otaku .site-header .desktop-nav a { color: var(--muted); }
+body.design-otaku .site-header .desktop-nav a:hover { color: var(--lavender-deep); }
+body.design-otaku .site-header .desktop-nav a.is-active {
+  color: #fff;
+  background: var(--lavender-deep);
+  box-shadow: 0 5px 13px rgba(118, 87, 189, .23);
+}
+body.design-otaku .header-search { border-color: var(--line); color: var(--muted); background: #fff; }
+body.design-otaku .header-search:hover { border-color: var(--lavender); color: var(--lavender-deep); }
+body.design-otaku .login-button,
+body.design-otaku .account-status {
+  color: #fff;
+  background: var(--coral);
+  box-shadow: 0 7px 16px rgba(255, 127, 145, .22);
+}
+body.design-otaku .login-button span,
+body.design-otaku .account-status b { color: #fff; }
+body.design-otaku .account-status__dot { background: rgba(255,255,255,.68); }
+
+/* Shared type and controls */
+body.design-otaku .eyebrow { color: var(--lavender-deep); font-weight: 900; }
+body.design-otaku .eyebrow span { color: var(--ink); background: var(--sun); }
+body.design-otaku .section-heading h2,
+body.design-otaku .catalogue-hero h1,
+body.design-otaku .discovery-hero h1,
+body.design-otaku .discovery-hero--compact h1,
+body.design-otaku .detail-copy h1,
+body.design-otaku .my-list-hero h1,
+body.design-otaku .account-hero h1,
+body.design-otaku .legal-page h1 {
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 850;
+}
+body.design-otaku .section-heading > a { color: var(--lavender-deep); font-weight: 800; }
+body.design-otaku .section-heading > a:hover { color: var(--coral); }
+body.design-otaku .primary-button {
+  color: #fff;
+  background: var(--lavender-deep);
+  box-shadow: 0 8px 18px rgba(118, 87, 189, .22);
+}
+body.design-otaku .primary-button span { color: var(--sun); }
+
+/* Home hero */
+body.design-otaku .hero.home-hero { position: relative; min-height: 680px; }
+body.design-otaku .hero.home-hero::before {
+  content: "✦";
+  position: absolute;
+  top: 55px;
+  left: -45px;
+  color: rgba(168, 139, 234, .22);
+  font-size: 84px;
+  transform: rotate(-12deg);
+}
+body.design-otaku .home-hero h1 {
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 900;
+  letter-spacing: -.065em;
+}
+body.design-otaku .home-hero h1 em {
+  position: relative;
+  display: inline-block;
+  color: var(--coral);
+  font-family: var(--display);
+  font-style: normal;
+}
+body.design-otaku .home-hero h1 em::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -7px;
+  left: 0;
+  height: 8px;
+  border-top: 3px solid var(--coral);
+  border-radius: 50%;
+  transform: rotate(-2deg);
+}
+body.design-otaku .home-hero .hero__lede { color: var(--muted); }
+.hero__quick-links { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.hero__quick-links span { margin-right: 3px; color: var(--muted); font-size: 10px; font-weight: 750; }
+.hero__quick-links a { padding: 6px 10px; border: 1px dashed rgba(118,87,189,.34); border-radius: 999px; color: var(--lavender-deep); background: rgba(255,255,255,.58); font-size: 9px; font-weight: 800; }
+.hero__quick-links a:hover { border-style: solid; background: #fff; transform: translateY(-1px); }
+body.design-otaku .home-search {
+  border: 2px solid var(--ink);
+  background: #fff;
+  box-shadow: var(--manga-shadow);
+}
+body.design-otaku .home-search:focus-within { border-color: var(--lavender-deep); box-shadow: 5px 5px 0 var(--lavender); }
+body.design-otaku .home-search input { color: var(--ink); }
+body.design-otaku .home-search input::placeholder { color: #9b92a7; }
+body.design-otaku .home-search button { color: #fff; background: var(--lavender-deep); }
+body.design-otaku .home-search button span { color: var(--sun); }
+body.design-otaku .home-hero .hero__visual { position: relative; }
+body.design-otaku .home-hero .hero__visual::before {
+  content: "";
+  position: absolute;
+  inset: -24px -28px 34px 35px;
+  border: 2px dashed rgba(118, 87, 189, .30);
+  border-radius: 48% 52% 45% 55%;
+  transform: rotate(-4deg);
+}
+body.design-otaku .home-hero .feature-card {
+  border: 3px solid var(--ink);
+  border-radius: 28px 28px 54px 28px;
+  box-shadow: 10px 12px 0 var(--sakura), 13px 15px 0 var(--ink);
+  transform: rotate(1.2deg);
+}
+body.design-otaku .home-hero .feature-card:hover { transform: rotate(-.35deg) translateY(-5px); box-shadow: 13px 16px 0 var(--sakura), 16px 19px 0 var(--ink); }
+body.design-otaku .home-hero .feature-card::after { color: rgba(255,255,255,.72); }
+.hero-sticker { position: absolute; z-index: 8; display: grid; place-items: center; color: var(--ink); font-size: 10px; font-weight: 950; line-height: 1.05; text-align: center; }
+.hero-sticker--top { top: -22px; right: -42px; width: 84px; aspect-ratio: 1; padding: 18px; background: var(--sun); border: 2px solid var(--ink); clip-path: polygon(50% 0,61% 17%,79% 7%,82% 28%,100% 31%,87% 50%,100% 66%,79% 72%,78% 94%,58% 83%,45% 100%,36% 80%,14% 90%,17% 68%,0 58%,18% 44%,4% 24%,28% 25%); transform: rotate(8deg); }
+.hero-doodle { position: absolute; z-index: 7; color: var(--coral); font-family: var(--display); font-weight: 900; }
+.hero-doodle--star { left: -28px; bottom: 86px; font-size: 42px; transform: rotate(-13deg); }
+.hero-doodle--heart { right: -29px; bottom: 100px; font-size: 36px; transform: rotate(13deg); }
+body.design-otaku .airing { color: #fff; background: rgba(52, 43, 74, .78); border-radius: 999px; }
+body.design-otaku .airing i { background: var(--mint); box-shadow: 0 0 0 4px rgba(158,228,200,.25); }
+body.design-otaku .feature-score { color: var(--ink); background: var(--sun); border-radius: 999px; }
+body.design-otaku .home-hero .feature-score { margin-right: 54px; }
+
+/* Rota's original celestial companion */
+.rota-companion { position: absolute; z-index: 12; width: 126px; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 10px 18px rgba(73,52,105,.14)); animation: rota-float 3.4s ease-in-out infinite; }
+.rota-companion__bubble { position: relative; margin-bottom: 10px; padding: 8px 11px; border: 2px solid var(--ink); border-radius: 14px 14px 14px 5px; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 var(--ink); font-size: 8px; font-weight: 900; white-space: nowrap; }
+.rota-companion__bubble::after { content: ""; position: absolute; left: 15px; bottom: -8px; width: 12px; height: 12px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: #fff; transform: rotate(45deg); }
+.rota-companion__body { position: relative; width: 76px; height: 64px; display: block; border: 2px solid var(--ink); border-radius: 48% 48% 42% 42%; background: linear-gradient(145deg,#c9afff,#9575dc); box-shadow: 4px 5px 0 var(--ink); }
+.rota-companion__body::before { content: ""; position: absolute; z-index: -1; top: -21px; left: 4px; width: 64px; height: 34px; background: linear-gradient(135deg,#d8c5ff,#9b7ae1); clip-path: polygon(0 100%,14% 0,38% 76%,62% 76%,86% 0,100% 100%); }
+.rota-companion__body::after { content: ""; position: absolute; right: -20px; bottom: 2px; width: 31px; height: 31px; border: 8px solid var(--sun); border-top-color: transparent; border-left-color: transparent; border-radius: 50%; transform: rotate(-20deg); }
+.rota-companion__eyes { position: absolute; top: 23px; left: 19px; width: 7px; height: 10px; border-radius: 50%; background: var(--ink); box-shadow: 29px 0 0 var(--ink); }
+.rota-companion__eyes::after { content: ""; position: absolute; top: 1px; left: 2px; width: 2px; height: 3px; border-radius: 50%; background: #fff; box-shadow: 29px 0 0 #fff; }
+.rota-companion__blush { position: absolute; top: 37px; left: 11px; width: 13px; height: 6px; border-radius: 50%; background: rgba(255,140,164,.66); box-shadow: 40px 0 0 rgba(255,140,164,.66); }
+.rota-companion__mouth { position: absolute; top: 35px; left: 34px; width: 9px; height: 7px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); border-radius: 0 0 8px; transform: rotate(45deg); }
+.rota-companion__body b { position: absolute; right: -9px; top: -11px; color: var(--sun); text-shadow: 1px 1px 0 var(--ink); font-size: 18px; }
+.rota-companion--sleepy .rota-companion__eyes { height: 5px; border-bottom: 2px solid var(--ink); border-radius: 50%; background: transparent; box-shadow: 29px 0 0 -1px transparent; }
+.rota-companion--sleepy .rota-companion__eyes::after { width: 7px; height: 5px; border-bottom: 2px solid var(--ink); border-radius: 50%; background: transparent; box-shadow: 29px 0 0 -1px transparent; }
+.rota-companion--hero { left: -89px; bottom: 23px; transform: rotate(-5deg); }
+.rota-companion--catalogue { top: 7px; right: 90px; transform: rotate(5deg); }
+
+@keyframes rota-float { 50% { translate: 0 -7px; } }
+@keyframes rota-twinkle { 0%,100% { opacity: .45; transform: scale(.78) rotate(-8deg); } 50% { opacity: 1; transform: scale(1.2) rotate(8deg); } }
+
+/* Personal shelf summary */
+body.design-otaku .library-summary {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: linear-gradient(115deg, #fff 0 52%, #f3eafd 52% 100%);
+  box-shadow: 7px 7px 0 var(--lavender);
+}
+body.design-otaku .library-summary::after { content: "♡"; position: absolute; right: 25%; bottom: -38px; color: rgba(168,139,234,.16); font-size: 116px; font-weight: 900; transform: rotate(-10deg); }
+body.design-otaku .section-kicker { color: var(--coral); }
+body.design-otaku .library-summary p { color: var(--muted); }
+body.design-otaku .library-summary__stats span { border-color: var(--line); color: var(--muted); }
+body.design-otaku .library-summary > a { z-index: 1; color: #fff; background: var(--lavender-deep); }
+
+/* Mood routes and anime shelves */
+body.design-otaku .schedule { border-top: 0; }
+body.design-otaku .catalogue-strip.mood-grid { overflow: visible; }
+body.design-otaku .mood-card {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--ink) !important;
+  border-radius: 20px;
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+body.design-otaku .mood-card::after { content: ""; position: absolute; right: -20px; bottom: -28px; width: 76px; height: 76px; border: 2px solid rgba(52,43,74,.15); border-radius: 50%; }
+body.design-otaku .mood-card:hover { color: var(--ink); transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
+body.design-otaku .mood-card strong { font-family: var(--display); }
+body.design-otaku .mood-card span { color: var(--ink); font-size: 11px; font-weight: 900; }
+body.design-otaku .mood-card small { color: rgba(52,43,74,.68); }
+.mood-card--pink { background: #ffe3ea !important; }
+.mood-card--violet { background: #e9ddff !important; }
+.mood-card--yellow { background: #fff2ad !important; }
+.mood-card--blue { background: #d9f3ff !important; }
+.mood-card--mint { background: #d9f7ea !important; }
+body.design-otaku .mood-card:nth-child(1) { transform: rotate(-1deg); }
+body.design-otaku .mood-card:nth-child(2) { transform: translateY(7px) rotate(.6deg); }
+body.design-otaku .mood-card:nth-child(3) { transform: rotate(-.4deg); }
+body.design-otaku .mood-card:nth-child(4) { transform: translateY(-5px) rotate(1deg); }
+body.design-otaku .mood-card:nth-child(5) { transform: rotate(-.7deg); }
+body.design-otaku .filter-bar button,
+body.design-otaku .list-filter button { border-color: var(--line); background: rgba(255,255,255,.72); color: var(--muted); }
+body.design-otaku .filter-bar button:hover,
+body.design-otaku .list-filter button:hover { color: var(--lavender-deep); border-color: var(--lavender); }
+body.design-otaku .filter-bar button.is-active,
+body.design-otaku .list-filter button.is-active { color: #fff; border-color: var(--lavender-deep); background: var(--lavender-deep); }
+
+body.design-otaku .anime-card__link > .art,
+body.design-otaku .catalogue-card > .art,
+body.design-otaku .discovery-card > .art {
+  border: 2px solid var(--ink);
+  border-radius: 18px 18px 34px 18px;
+  box-shadow: 4px 4px 0 rgba(52,43,74,.18);
+}
+body.design-otaku .anime-card:hover .anime-card__link > .art,
+body.design-otaku .catalogue-card:hover > .art,
+body.design-otaku .discovery-card:hover > .art { box-shadow: 7px 8px 0 var(--sakura); transform: translate(-2px,-3px) rotate(.35deg); }
+body.design-otaku .anime-card__save { border: 2px solid var(--ink); background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+body.design-otaku .anime-card__save svg { stroke: var(--ink); }
+body.design-otaku .anime-card__save.is-saved { background: var(--sakura); }
+body.design-otaku .anime-card h3,
+body.design-otaku .catalogue-card h2 { font-family: var(--display); font-weight: 850; }
+body.design-otaku .genre-list span,
+body.design-otaku .catalogue-card__body > div:last-child span { color: var(--lavender-deep); background: #eee6fb; }
+body.design-otaku .anime-grid .anime-card:nth-child(4n+2) .art,
+body.design-otaku .catalogue-grid .catalogue-card:nth-child(4n+2) .art { border-radius: 34px 18px 18px 18px; }
+body.design-otaku .anime-grid .anime-card:nth-child(4n+3) .art,
+body.design-otaku .catalogue-grid .catalogue-card:nth-child(4n+3) .art { border-radius: 18px 40px 18px 30px; }
+body.design-otaku .anime-grid .anime-card:nth-child(5n) .art,
+body.design-otaku .catalogue-grid .catalogue-card:nth-child(5n) .art { box-shadow: 5px 5px 0 var(--sky); }
+
+/* Artwork: brighter, expressive and intentionally illustrative */
+body.design-otaku .art--violet { background: linear-gradient(150deg, #e6d8ff 0%, #a88bea 54%, #7657bd 100%); }
+body.design-otaku .art--coral { background: linear-gradient(155deg, #ffe0e6 0%, #ff91a0 54%, #d65475 100%); }
+body.design-otaku .art--blue { background: linear-gradient(160deg, #d8f4ff 0%, #83cbe9 54%, #4f86c4 100%); }
+body.design-otaku .art--lime { background: linear-gradient(155deg, #e2fae8 0%, #92ddb6 54%, #4f9b7f 100%); }
+body.design-otaku .art--rose { background: linear-gradient(155deg, #ffe9f1 0%, #ecaac9 54%, #ae6caa 100%); }
+body.design-otaku .art--amber { background: linear-gradient(155deg, #fff1b8 0%, #ffc86e 54%, #e07b63 100%); }
+.art__spark { position: absolute; z-index: 7; color: rgba(255,255,255,.90); text-shadow: 0 2px 8px rgba(52,43,74,.13); }
+.art__spark--one { top: 15%; left: 10%; font-size: 18px; }
+.art__spark--two { top: 31%; right: 11%; font-size: 12px; }
+.art__caption { position: absolute; z-index: 9; right: 12px; bottom: 11px; padding: 5px 8px; border-radius: 999px; color: var(--ink); background: rgba(255,255,255,.74); font-size: 7px; font-weight: 900; letter-spacing: .08em; backdrop-filter: blur(5px); }
+.figure__eyes { position: absolute; z-index: 10; top: 5%; left: 27%; width: 42%; height: 13px; background: radial-gradient(circle, #fff 0 31%, #4f3a70 33% 46%, #231c32 48% 58%, transparent 61%) left center / 44% 100% no-repeat, radial-gradient(circle, #fff 0 31%, #4f3a70 33% 46%, #231c32 48% 58%, transparent 61%) right center / 44% 100% no-repeat; }
+.figure__blush { position: absolute; z-index: 9; top: 13%; left: 25%; width: 46%; height: 8px; border-left: 10px solid rgba(255,100,130,.42); border-right: 10px solid rgba(255,100,130,.42); border-radius: 50%; }
+
+/* Manga-style fan space */
+body.design-otaku .manifesto.fan-space {
+  position: relative;
+  overflow: hidden;
+  color: var(--ink);
+  background: linear-gradient(135deg, #f1e7ff 0 48%, #ffe4ec 48% 100%);
+  border-block: 3px solid var(--ink);
+}
+body.design-otaku .fan-space::before { content: "ROTA!"; position: absolute; right: -18px; top: -36px; color: rgba(255,255,255,.52); font-family: var(--display); font-size: 144px; font-weight: 950; transform: rotate(5deg); }
+body.design-otaku .fan-space .eyebrow { color: var(--lavender-deep); }
+body.design-otaku .fan-space h2 { color: var(--ink); font-family: var(--display); font-weight: 900; }
+.fan-space__lede { max-width: 410px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+body.design-otaku .manifesto__grid article { position: relative; color: var(--ink); border: 2px solid var(--ink); background: rgba(255,255,255,.72); box-shadow: 4px 4px 0 var(--ink); }
+body.design-otaku .manifesto__grid article:nth-child(2) { transform: rotate(1deg); }
+body.design-otaku .manifesto__grid article:nth-child(1) { transform: rotate(-.8deg) translateY(4px); }
+body.design-otaku .manifesto__grid article:nth-child(3) { transform: rotate(.6deg) translateY(-5px); }
+body.design-otaku .manifesto__grid article b { position: absolute; right: 18px; top: 14px; color: var(--coral); font-size: 24px; }
+body.design-otaku .manifesto__grid article span { color: var(--lavender-deep); }
+body.design-otaku .manifesto__grid h3 { color: var(--ink); font-family: var(--display); font-weight: 850; }
+body.design-otaku .manifesto__grid p { color: var(--muted); }
+body.design-otaku .manifesto__cta { color: #fff; background: var(--lavender-deep); box-shadow: 4px 4px 0 var(--ink); }
+body.design-otaku .manifesto__cta span { color: var(--sun); }
+
+/* Catalogue and discovery */
+body.design-otaku .catalogue-hero,
+body.design-otaku .discovery-hero { position: relative; }
+body.design-otaku .catalogue-hero::before { content: "DOKI DOKI"; position: absolute; z-index: -1; right: 0; bottom: -7px; color: rgba(255,127,145,.10); font-family: var(--display); font-size: clamp(56px,8vw,110px); font-weight: 950; letter-spacing: -.06em; transform: rotate(-3deg); }
+body.design-otaku .catalogue-hero::after { content: "✧"; position: absolute; right: 2%; top: 22px; color: var(--sky); font-size: 66px; font-weight: 900; transform: rotate(12deg); }
+body.design-otaku .catalogue-hero > p:not(.eyebrow) { color: var(--muted); }
+body.design-otaku .catalogue-hero__links a,
+body.design-otaku .discovery-switch a { border-color: var(--line); color: var(--lavender-deep); background: #fff; }
+body.design-otaku .catalogue-hero__links a:hover,
+body.design-otaku .discovery-switch a:hover,
+body.design-otaku .discovery-switch a.is-active { color: #fff; background: var(--lavender-deep); }
+body.design-otaku .catalogue-search {
+  border: 2px solid var(--ink);
+  background: #fff;
+  box-shadow: 5px 5px 0 var(--sky);
+}
+body.design-otaku .catalogue-search:focus-within { border-color: var(--lavender-deep); box-shadow: 5px 5px 0 var(--lavender); }
+body.design-otaku .catalogue-search input { color: var(--ink); }
+body.design-otaku .catalogue-search input::placeholder { color: #9b92a7; }
+body.design-otaku .catalogue-selects label { border-color: var(--line); background: rgba(255,255,255,.78); }
+body.design-otaku .catalogue-selects select { color: var(--ink); }
+body.design-otaku .load-more { border: 2px solid var(--ink); color: var(--ink); background: var(--sun); box-shadow: 4px 4px 0 var(--ink); }
+body.design-otaku .facet-index a { border: 2px solid var(--ink) !important; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 rgba(52,43,74,.16); }
+body.design-otaku .facet-index a:nth-child(4n+1) { background: #fff0f4; }
+body.design-otaku .facet-index a:nth-child(4n+2) { background: #eee6ff; }
+body.design-otaku .facet-index a:nth-child(4n+3) { background: #e7f8ff; }
+body.design-otaku .facet-index a:nth-child(4n) { background: #e8f9f1; }
+body.design-otaku .facet-index a:hover { color: var(--ink); transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+
+/* Anime detail */
+body.design-otaku .detail-art { border: 3px solid var(--ink); box-shadow: 9px 10px 0 var(--lavender); }
+body.design-otaku .detail-hero { position: relative; }
+body.design-otaku .detail-hero::after { content: "STORY MODE ✦"; position: absolute; right: 0; bottom: 22px; padding: 7px 11px; border: 2px solid var(--ink); border-radius: 999px; color: var(--ink); background: var(--sun); box-shadow: 3px 3px 0 var(--ink); font-size: 7px; font-weight: 950; letter-spacing: .11em; transform: rotate(-2deg); }
+body.design-otaku .detail-deck,
+body.design-otaku .editorial-summary { color: var(--muted); }
+body.design-otaku .detail-alias { color: #9b92a7; }
+body.design-otaku .list-editor__start > button { color: #fff; background: var(--lavender-deep); box-shadow: 3px 3px 0 var(--ink); }
+body.design-otaku .list-editor__start > button.is-saved { color: var(--ink); border-color: var(--ink); background: var(--mint); }
+body.design-otaku .list-editor__start > span { color: var(--muted); }
+body.design-otaku .list-editor__panel { border: 2px solid var(--ink); background: #fff; box-shadow: 5px 5px 0 var(--sakura); }
+body.design-otaku .list-editor select,
+body.design-otaku .list-editor input,
+body.design-otaku .list-editor textarea,
+body.design-otaku .progress-input button { border-color: var(--line); color: var(--ink); background: var(--surface-soft); }
+body.design-otaku .detail-facts div { border: 1px solid var(--line) !important; background: rgba(255,255,255,.75); }
+body.design-otaku .detail-section,
+body.design-otaku .detail-sidebar > div { border: 1px solid var(--line); background: rgba(255,255,255,.78); box-shadow: var(--shadow); }
+body.design-otaku .detail-studios a,
+body.design-otaku .detail-sidebar li a { color: var(--lavender-deep); }
+
+/* Personal anime shelf */
+body.design-otaku .my-list-hero,
+body.design-otaku .account-hero { border-bottom: 0; }
+body.design-otaku .my-list-hero { position: relative; }
+body.design-otaku .my-list-hero::after { content: "MY SHELF ♡"; position: absolute; right: 0; top: 34px; color: rgba(168,139,234,.16); font-family: var(--display); font-size: clamp(42px,7vw,82px); font-weight: 950; transform: rotate(4deg); }
+body.design-otaku .my-list-hero h1 em,
+body.design-otaku .account-hero h1 em { color: var(--coral); font-family: inherit; font-style: normal; }
+body.design-otaku .list-overview button { border: 2px solid var(--ink) !important; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 rgba(52,43,74,.14); }
+body.design-otaku .list-overview button:nth-child(1) { background: #e6f8f0; }
+body.design-otaku .list-overview button:nth-child(2) { background: #fff2b8; }
+body.design-otaku .list-overview button:nth-child(3) { background: #eee5ff; }
+body.design-otaku .list-overview button:nth-child(4) { background: #ffe8ee; }
+body.design-otaku .list-overview button:hover { color: var(--ink); transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+body.design-otaku .my-list-card,
+body.design-otaku .my-list-card:nth-child(odd),
+body.design-otaku .my-list-card:nth-child(even) { border: 2px solid var(--ink); background: #fff; box-shadow: 4px 4px 0 rgba(52,43,74,.14); }
+body.design-otaku .my-list-card:nth-child(even) { background: #fffbfe; }
+body.design-otaku .my-list-card__art .art { border: 1px solid var(--ink); }
+body.design-otaku .my-list-card__controls select,
+body.design-otaku .my-list-card__progress button { color: var(--ink); border-color: var(--line); background: var(--surface-soft); }
+body.design-otaku .progress-track { background: #eee8f3; }
+body.design-otaku .progress-track span { background: linear-gradient(90deg, var(--lavender), var(--coral)); }
+body.design-otaku .my-list-empty { border: 2px dashed var(--lavender); background: rgba(255,255,255,.72); }
+body.design-otaku .my-list-empty a { color: #fff; background: var(--lavender-deep); }
+
+/* Account as an otaku corner */
+body.design-otaku .account-hero { position: relative; grid-template-columns: minmax(0,1fr) auto; align-items: center; }
+body.design-otaku .account-hero .eyebrow { grid-column: auto; margin-bottom: 16px; }
+body.design-otaku .account-hero::before { content: "♡"; position: absolute; right: 180px; bottom: 8px; color: rgba(255,127,145,.18); font-size: 90px; font-weight: 900; transform: rotate(-12deg); }
+.account-hero__badge { width: 150px; aspect-ratio: 1; display: grid; place-content: center; justify-items: center; border: 2px solid var(--ink); border-radius: 50%; background: var(--sun); box-shadow: 5px 5px 0 var(--ink); transform: rotate(5deg); }
+.account-hero__badge span { color: var(--coral); font-size: 25px; line-height: 1; }
+.account-hero__badge strong { margin-top: 4px; font-family: var(--display); font-size: 14px; }
+.account-hero__badge small { margin-top: 4px; font-size: 6px; font-weight: 900; letter-spacing: .12em; }
+.account-dashboard { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(290px,.65fr); gap: 18px; }
+.account-profile-card,
+.account-settings-card,
+.account-shelf-card {
+  min-width: 0;
+  padding: 36px;
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 6px 6px 0 rgba(52,43,74,.15);
+}
+.account-profile-card { background: linear-gradient(135deg, #fff 0 72%, #f1e8ff 72%); }
+.account-card__topline { margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; color: var(--lavender-deep); font-size: 8px; font-weight: 900; letter-spacing: .13em; }
+.account-card__topline b { color: var(--coral); font-size: 24px; }
+.account-profile-card h2 { max-width: 700px; margin: 0; font-family: var(--display); font-size: clamp(38px,4vw,58px); line-height: 1; letter-spacing: -.045em; }
+.account-intro { max-width: 650px; margin: 18px 0 0; color: var(--muted); font-size: 13px; line-height: 1.72; }
+.account-benefits { margin: 28px 0 0; padding: 0; display: grid; gap: 8px; list-style: none; }
+.account-benefits li { padding: 12px; display: grid; grid-template-columns: 34px 1fr; gap: 11px; align-items: center; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.76); }
+.account-benefits i { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 50%; color: var(--lavender-deep); background: #eee6ff; font-size: 8px; font-style: normal; font-weight: 900; }
+.account-benefits span { display: flex; flex-direction: column; gap: 3px; }
+.account-benefits b { font-size: 11px; }
+.account-benefits small { color: var(--muted); font-size: 9px; }
+body.design-otaku .account-google { margin-top: 28px; }
+.account-shelf-card { position: relative; overflow: hidden; display: flex; flex-direction: column; background: #e8f7ff; }
+.account-shelf-card__art { position: relative; height: 125px; margin: -10px 0 18px; }
+.account-moon { position: absolute; right: 14px; top: 5px; width: 88px; aspect-ratio: 1; border: 2px solid var(--ink); border-radius: 50%; background: var(--sun); box-shadow: 4px 4px 0 var(--ink); }
+.account-moon i { position: absolute; right: -9px; top: -8px; width: 80px; aspect-ratio: 1; border-radius: 50%; background: #e8f7ff; }
+.account-star { position: absolute; color: var(--coral); }
+.account-star--one { left: 14px; top: 16px; font-size: 30px; }
+.account-star--two { left: 70px; top: 76px; font-size: 18px; }
+.account-shelf-card__label { color: var(--lavender-deep); font-size: 8px; font-weight: 900; letter-spacing: .13em; }
+.account-shelf-card > strong { margin-top: 8px; font-family: var(--display); font-size: 70px; line-height: .85; }
+.account-shelf-card h3 { margin: 5px 0 12px; font-family: var(--display); font-size: 24px; }
+.account-shelf-card p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.account-shelf-card > a { margin-top: auto; padding-top: 22px; color: var(--lavender-deep); font-size: 10px; font-weight: 900; }
+.account-shelf-card > a span { margin-left: 12px; }
+.account-identity { display: flex; align-items: center; gap: 18px; }
+.account-avatar { position: relative; flex: 0 0 auto; width: 74px; height: 74px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 28px 28px 38px 28px; color: #fff; background: var(--lavender); box-shadow: 4px 4px 0 var(--ink); font-family: var(--display); font-size: 32px; font-weight: 900; transform: rotate(-2deg); }
+.account-avatar span { position: absolute; right: -8px; top: -10px; color: var(--sun); text-shadow: 1px 1px 0 var(--ink); font-size: 20px; }
+.account-identity p { margin: 0 0 5px; color: var(--lavender-deep); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
+.account-identity h2 { font-size: clamp(30px,3vw,46px); }
+.account-identity small { display: block; margin-top: 6px; color: var(--muted); font-size: 9px; }
+.account-mini-stats { margin-top: 28px; display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); border-radius: 15px; overflow: hidden; background: rgba(255,255,255,.74); }
+.account-mini-stats div { min-height: 84px; padding: 14px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
+.account-mini-stats div:last-child { border: 0; }
+.account-mini-stats strong { font-family: var(--display); font-size: 25px; }
+.account-mini-stats span { margin-top: 3px; color: var(--muted); font-size: 8px; }
+body.design-otaku .account-sync { border-color: var(--line); }
+body.design-otaku .account-sync strong { font-family: var(--display); font-size: 17px; }
+body.design-otaku .account-sync button,
+body.design-otaku .account-save { color: #fff; background: var(--lavender-deep); box-shadow: 3px 3px 0 var(--ink); }
+.account-settings-card { background: #fff8ea; }
+.account-settings__heading { margin-bottom: 26px; display: flex; align-items: center; gap: 12px; }
+.account-settings__heading > span { width: 43px; height: 43px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; color: var(--coral); background: var(--sakura); font-size: 20px; }
+.account-settings__heading p { margin: 0 0 3px; color: var(--lavender-deep); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
+.account-settings__heading h3 { margin: 0; font-family: var(--display); font-size: 22px; }
+body.design-otaku .account-settings > label input { border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fff; }
+body.design-otaku .visibility-option { border-color: var(--line); }
+body.design-otaku .visibility-option input { accent-color: var(--lavender-deep); }
+body.design-otaku .account-notice { border: 2px dashed var(--lavender); border-radius: 22px; background: #fff; }
+
+/* Legal and footer */
+body.design-otaku .legal-page > header,
+body.design-otaku .legal-page article section { border-color: var(--line); }
+body.design-otaku .site-footer { color: var(--ink); background: linear-gradient(120deg, #eee4ff, #ffe7ed); border-top: 2px solid var(--ink); }
+body.design-otaku .site-footer > p,
+body.design-otaku .site-footer__meta a,
+body.design-otaku .site-footer__meta small { color: var(--muted); }
+
+@media (max-width: 1100px) {
+  .account-dashboard { grid-template-columns: 1fr; }
+  .account-dashboard--guest .account-shelf-card { min-height: 300px; }
+}
+
+@media (max-width: 760px) {
+  body.design-otaku { padding-bottom: 76px; }
+  body.design-otaku .site-header { background: rgba(255,249,244,.92); }
+  .brand__spark { display: none; }
+  body.design-otaku .mobile-nav {
+    border: 2px solid var(--ink);
+    background: rgba(255,255,255,.93);
+    box-shadow: 4px 5px 0 var(--ink);
+  }
+  body.design-otaku .mobile-nav a { color: var(--muted); }
+  body.design-otaku .mobile-nav a.is-active { color: #fff; background: var(--lavender-deep); }
+  body.design-otaku .hero.home-hero::before { display: none; }
+  body.design-otaku .home-hero .feature-card { box-shadow: 6px 7px 0 var(--sakura), 8px 9px 0 var(--ink); }
+  .hero-sticker--top { right: -7px; }
+  body.design-otaku .home-hero .feature-score { margin-right: 60px; }
+  .rota-companion--hero { left: auto; right: -10px; bottom: -27px; transform: scale(.82) rotate(5deg); }
+  .rota-companion--catalogue { top: 2px; right: -17px; transform: scale(.72) rotate(5deg); }
+  .rota-companion--catalogue .rota-companion__bubble { display: none; }
+  .hero-doodle--heart { right: -7px; }
+  body.design-otaku .library-summary { box-shadow: 5px 5px 0 var(--lavender); }
+  body.design-otaku .catalogue-strip.mood-grid { overflow-x: auto; }
+  body.design-otaku .manifesto__grid article:nth-child(n) { transform: none; }
+  body.design-otaku .catalogue-hero::after { top: 6px; right: 0; font-size: 38px; }
+  body.design-otaku .catalogue-hero::before { right: 0; bottom: 0; font-size: 51px; }
+  body.design-otaku .detail-hero::after { bottom: 16px; }
+  body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
+  body.design-otaku .account-hero { grid-template-columns: 1fr; }
+  body.design-otaku .account-hero::before { right: 10px; bottom: 4px; font-size: 60px; }
+  .account-hero__badge { display: none; }
+  .account-profile-card,
+  .account-settings-card,
+  .account-shelf-card { padding: 23px 19px; border-radius: 18px; box-shadow: 4px 4px 0 rgba(52,43,74,.14); }
+  .account-profile-card { background: #fff; }
+  .account-profile-card h2 { font-size: 36px; }
+  .account-benefits { margin-top: 22px; }
+  .account-shelf-card { min-height: 340px; }
+  .account-identity { align-items: flex-start; gap: 13px; }
+  .account-avatar { width: 58px; height: 58px; border-radius: 20px 20px 28px 20px; font-size: 25px; }
+  .account-identity h2 { font-size: 27px; }
+  .account-identity small { max-width: 190px; overflow-wrap: anywhere; }
+  .account-mini-stats { grid-template-columns: 1fr; }
+  .account-mini-stats div { min-height: 62px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .account-sync { align-items: stretch; flex-direction: column; }
+  .account-sync button { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .brand__spark { transform: none !important; animation: none !important; }
+}

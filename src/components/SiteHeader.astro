@@ -15,11 +15,12 @@ const { active = "discover" } = Astro.props;
       <path d="M13 27.5c4.2-10.6 10.9-15 20-13.2-8.6 1.5-13.8 7.2-15.5 17.2" />
       <circle cx="31.5" cy="13.8" r="2.7" />
     </svg>
-    <span>ROTA<small>BY EQUINOX</small></span>
+    <span>Rota<small>BY EQUINOX</small></span>
+    <i class="brand__spark" aria-hidden="true">✦</i>
   </a>
 
   <nav class="desktop-nav" aria-label="Ana menü">
-    <a class:list={{ "is-active": active === "discover" }} href="/">Ana Sayfa</a>
+    <a class:list={{ "is-active": active === "discover" }} href="/">Ana</a>
     <a class:list={{ "is-active": active === "search" }} href="/ara">Keşfet</a>
     <a class:list={{ "is-active": active === "lists" }} href="/listem">Listem</a>
   </nav>
@@ -36,7 +37,7 @@ const { active = "discover" } = Astro.props;
 <nav class="mobile-nav" aria-label="Mobil ana menü">
   <a class:list={{ "is-active": active === "discover" }} href="/">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3l8.5 7.5v9a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5Z" /><path d="M9 21v-7h6v7" /></svg>
-    <span>Ana Sayfa</span>
+      <span>Ana</span>
   </a>
   <a class:list={{ "is-active": active === "search" }} href="/ara">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>

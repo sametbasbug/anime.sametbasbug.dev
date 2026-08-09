@@ -113,6 +113,9 @@ export default function AccountExperience() {
   useEffect(() => {
     if (!client) return;
     let active = true;
+    const loadingTimer = window.setTimeout(() => {
+      if (active) setLoading(false);
+    }, 4000);
 
     const loadProfile = async (nextSession: Session | null) => {
       if (!nextSession) return;
@@ -136,6 +139,7 @@ export default function AccountExperience() {
 
     client.auth.getSession().then(({ data }) => {
       if (!active) return;
+      window.clearTimeout(loadingTimer);
       setSession(data.session);
       setLoading(false);
       void loadProfile(data.session);
@@ -153,6 +157,7 @@ export default function AccountExperience() {
 
     return () => {
       active = false;
+      window.clearTimeout(loadingTimer);
       listener.subscription.unsubscribe();
     };
   }, [client, syncForUser]);
@@ -234,11 +239,17 @@ export default function AccountExperience() {
     await syncForUser(session.user.id, true);
   };
 
+  const googleName = typeof session?.user.user_metadata?.full_name === "string"
+    ? session.user.user_metadata.full_name.trim()
+    : "";
+  const displayName = profile.display_name.trim() || googleName || "Anime yolcusu";
+  const profileInitial = displayName.charAt(0).toLocaleUpperCase("tr-TR");
+
   if (!client) {
     return (
       <div className="account-notice">
-        <span>YEREL MOD</span>
-        <h2>Bulut bağlantısı henüz etkin değil.</h2>
+        <span>✦ YEREL MOD</span>
+        <h2>Rafın bu cihazda güvende.</h2>
         <p>Hesap altyapısı hazır. Supabase projesinin URL ve publishable anahtarı tanımlanana kadar mevcut listen bu tarayıcıda güvenle çalışmaya devam eder.</p>
       </div>
     );
@@ -248,39 +259,64 @@ export default function AccountExperience() {
 
   if (!session) {
     return (
-      <div className="account-grid" key="signed-out">
-        <section className="account-card account-card--primary">
+      <div className="account-dashboard account-dashboard--guest" key="signed-out">
+        <section className="account-profile-card account-profile-card--guest">
+          <div className="account-card__topline"><span>ÜYELİK İSTEĞE BAĞLI</span><b aria-hidden="true">✦</b></div>
           <p className="eyebrow">GOOGLE İLE GÜVENLİ GİRİŞ</p>
-          <h2>Rotanı yanında taşı.</h2>
-          <p>Google hesabınla giriş yaptığında mevcut {localCount} yerel kaydın hesabınla birleştirilir. Equinox Rota, Google parolanı görmez veya saklamaz.</p>
+          <h2>Rafın, her cihazda seninle.</h2>
+          <p className="account-intro">Google hesabınla giriş yaptığında bu cihazdaki {localCount} kayıt hesabınla birleşir. Rota, Google parolanı görmez veya saklamaz.</p>
+
+          <ul className="account-benefits" aria-label="Hesap özellikleri">
+            <li><i>01</i><span><b>Önce cihazında</b><small>Değişikliklerin anında kaydolur.</small></span></li>
+            <li><i>02</i><span><b>Sonra bulutta</b><small>İstersen diğer cihazlarına taşınır.</small></span></li>
+            <li><i>03</i><span><b>Kontrol sende</b><small>Listen varsayılan olarak özeldir.</small></span></li>
+          </ul>
+
           <div className="account-google" ref={googleButtonRef} aria-busy={busy}></div>
           {message && <p className="account-message" role="status">{message}</p>}
         </section>
-        <aside className="account-card">
-          <span className="account-card__number">{localCount.toString().padStart(2, "0")}</span>
-          <h3>Yerel kayıt</h3>
-          <p>Hesap açmak zorunlu değil. Giriş yapmazsan Rota aynı cihazda yerel çalışmaya devam eder.</p>
+        <aside className="account-shelf-card">
+          <div className="account-shelf-card__art" aria-hidden="true">
+            <span className="account-moon"><i></i></span>
+            <span className="account-star account-star--one">✦</span>
+            <span className="account-star account-star--two">✧</span>
+          </div>
+          <span className="account-shelf-card__label">BU CİHAZDAKİ RAFIN</span>
+          <strong>{localCount.toString().padStart(2, "0")}</strong>
+          <h3>anime seni bekliyor</h3>
+          <p>Giriş yapmadan da kullanmaya devam edebilirsin. Kayıtların bu tarayıcıda kalır.</p>
+          <a href="/listem">Rafımı aç <span>→</span></a>
         </aside>
       </div>
     );
   }
 
   return (
-    <div className="account-grid account-grid--signed-in" key="signed-in">
-      <section className="account-card account-card--primary">
-        <p className="eyebrow">BAĞLI HESAP</p>
-        <h2>{session.user.email}</h2>
-        <p>Arşiv değişikliklerin yerelde anında kaydedilir ve bağlantı olduğunda Supabase hesabınla eşitlenir.</p>
+    <div className="account-dashboard account-dashboard--signed-in" key="signed-in">
+      <section className="account-profile-card">
+        <div className="account-identity">
+          <div className="account-avatar">{profileInitial}<span aria-hidden="true">✦</span></div>
+          <div>
+            <p>ROTA CLUB · BAĞLI HESAP</p>
+            <h2>{displayName}</h2>
+            <small>{session.user.email}</small>
+          </div>
+        </div>
+        <p className="account-intro">Anime rafındaki değişiklikler önce cihazında kaydolur, bağlantı olduğunda hesabınla eşitlenir.</p>
+        <div className="account-mini-stats">
+          <div><strong>{localCount}</strong><span>Bu cihazdaki anime</span></div>
+          <div><strong>{syncResult?.rejected.length ?? 0}</strong><span>Bekleyen sorun</span></div>
+          <div><strong>✓</strong><span>Local-first açık</span></div>
+        </div>
         <div className="account-sync">
-          <div><strong>{localCount}</strong><span>Bu cihazdaki kayıt</span></div>
+          <div><strong>{busy ? "Rafın güncelleniyor" : "Rafın hazır"}</strong><span>{syncResult ? `${syncResult.uploaded} gönderildi · ${syncResult.downloaded} alındı` : "Son eşitleme otomatik yapılır"}</span></div>
           <button onClick={syncNow} disabled={busy}>{busy ? "Eşitleniyor…" : "Şimdi eşitle"}</button>
         </div>
-        {syncResult && <small>{syncResult.uploaded} kayıt gönderildi · {syncResult.downloaded} kayıt alındı</small>}
         {message && <p className="account-message" role="status">{message}</p>}
       </section>
 
-      <section className="account-card account-settings">
-        <h3>Profil ve gizlilik</h3>
+      <section className="account-settings-card account-settings">
+        <div className="account-settings__heading"><span aria-hidden="true">♡</span><div><p>PROFİL AYARLARI</p><h3>Köşeni kişiselleştir</h3></div></div>
         <label>
           Görünen ad
           <input value={profile.display_name} maxLength={50} onChange={(event) => setProfile({ ...profile, display_name: event.target.value })} />
@@ -295,7 +331,7 @@ export default function AccountExperience() {
           ))}
         </fieldset>
         <p className="account-caveat">Paylaşım sayfaları açılana kadar liste verisi teknik olarak yalnızca sana erişilebilir; tercih şimdiden saklanır.</p>
-        <button className="account-save" onClick={() => saveProfile(profile)} disabled={busy}>Tercihleri kaydet</button>
+        <button className="account-save" onClick={() => saveProfile(profile)} disabled={busy}>Tercihlerimi kaydet ✦</button>
         <button className="account-signout" onClick={() => client.auth.signOut()}>Oturumu kapat</button>
       </section>
     </div>
