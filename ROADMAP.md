@@ -52,7 +52,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Resend'de doğrulanmış `sametbasbug.dev` alan adıyla özel SMTP'yi ve üretim Auth URL'lerini yapılandır.
 - [x] İki fiziksel cihazda production girişini ve liste sayısı eşitliğini doğrula.
 - [x] Kalıcı giriş yöntemini yalnız Google OAuth olarak kilitle; Discord, e-posta/parola ve magic-link'i hedef mimariden çıkar.
-- [ ] Google OAuth'u uygula, mevcut kullanıcının verisini koruduğunu doğrula ve magic-link akışını kaldır.
+- [x] Google OAuth'u uygula; eski hesap aktarımı yapmadan magic-link akışını ve ona özel dış bağımlılıkları kaldır.
 - [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
@@ -80,14 +80,14 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: şifresiz giriş, profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme iki bağımsız tarayıcı profiliyle doğrulandı. İki fiziksel cihazda production girişi tamamlandı ve liste sayısı eşitliği görüldü. GitHub Pages ve `anime.sametbasbug.dev` canlıdır; üretim Auth URL'leri ile `Rota <giris@sametbasbug.dev>` üzerinden Resend özel SMTP yapılandırılıp gerçek teslimat ve oturum açma testi geçirilmiştir.
+İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme doğrulandı. Kalıcı giriş yalnız Google OAuth'tur; istemci ve Supabase sağlayıcısı yapılandırıldı, Nyx hesabıyla yerel uçtan uca giriş testi geçti. Google uygulaması production durumundadır. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
 
 Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
 
-Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüketen magic-link modelinin kalıcı public kimlik doğrulama yöntemi olmayacağı kararlaştırıldı. Hedef yalnız Google OAuth'tur; Discord, e-posta/parola ve magic-link sunulmayacak, hesapsız local-first kullanım korunacaktır. Mevcut magic-link ve Turnstile koruması Google OAuth uygulanıp mevcut kullanıcı verisinin korunduğu doğrulanana kadar geçici olarak canlı kalır.
+Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüketen magic-link modeli kaldırıldı. Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA koruması kapatıldı; Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni silindi. Hesapsız local-first kullanım korunur.
 
-Aşamanın kapanması için Google OAuth geçişi ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine ve kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
+Aşamanın kapanması için Google OAuth ile iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor. O turda ikinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesine ve kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 
-`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır; özel SMTP ve üretim Auth URL ayarları da canlıdır.
+`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır.

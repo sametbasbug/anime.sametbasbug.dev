@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState, type SyntheticEvent } from "react";
-import { Turnstile } from "@marsidev/react-turnstile";
+import { useEffect, useMemo, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
 import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
@@ -17,18 +16,12 @@ const visibilityLabels: Record<Visibility, { title: string; detail: string }> = 
   PUBLIC: { title: "Herkese açık", detail: "Paylaşım sayfası açıldığında profilin herkese görünür olabilir." },
 };
 
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
-
 export default function AccountExperience() {
   const client = useMemo(() => getSupabaseClient(), []);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(Boolean(client));
-  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [captchaKey, setCaptchaKey] = useState(0);
-  const [cooldown, setCooldown] = useState(0);
   const [profile, setProfile] = useState<Profile>({ display_name: "", list_visibility: "PRIVATE" });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
@@ -38,12 +31,6 @@ export default function AccountExperience() {
     refreshLocalCount();
     return subscribeToPersonalList(refreshLocalCount);
   }, []);
-
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const timer = window.setInterval(() => setCooldown((seconds) => Math.max(0, seconds - 1)), 1000);
-    return () => window.clearInterval(timer);
-  }, [cooldown]);
 
   useEffect(() => {
     if (!client) return;
@@ -78,42 +65,22 @@ export default function AccountExperience() {
     };
   }, [client]);
 
-  const sendMagicLink = async (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!client || !email.trim()) return;
-    if (!captchaToken) {
-      setMessage("Devam etmek için güvenlik doğrulamasını tamamla.");
-      return;
-    }
+  const signInWithGoogle = async () => {
+    if (!client) return;
     setBusy(true);
     setMessage("");
-    const { error } = await client.auth.signInWithOtp({
-      email: email.trim(),
+    const { error } = await client.auth.signInWithOAuth({
+      provider: "google",
       options: {
-        emailRedirectTo: `${window.location.origin}/hesap`,
-        shouldCreateUser: true,
-        captchaToken,
+        redirectTo: `${window.location.origin}/hesap`,
+        queryParams: {
+          prompt: "select_account",
+        },
       },
     });
+    if (!error) return;
     setBusy(false);
-    setCaptchaToken(null);
-    setCaptchaKey((key) => key + 1);
-
-    if (!error) {
-      setCooldown(60);
-      setMessage("Giriş bağlantısı e-posta adresine gönderildi.");
-      return;
-    }
-
-    if (error.code === "over_email_send_rate_limit") {
-      setMessage("Saatlik güvenli gönderim sınırına ulaşıldı. Bir süre sonra yeniden dene.");
-    } else if (error.code === "over_request_rate_limit") {
-      setMessage("Çok fazla deneme yapıldı. Birkaç dakika sonra yeniden dene.");
-    } else if (error.code === "captcha_failed") {
-      setMessage("Güvenlik doğrulaması başarısız oldu. Yeniden deneyebilirsin.");
-    } else {
-      setMessage("Giriş bağlantısı gönderilemedi. Lütfen biraz sonra yeniden dene.");
-    }
+    setMessage("Google ile giriş başlatılamadı. Lütfen biraz sonra yeniden dene.");
   };
 
   const saveProfile = async (next: Profile) => {
@@ -167,33 +134,19 @@ export default function AccountExperience() {
     return (
       <div className="account-grid">
         <section className="account-card account-card--primary">
-          <p className="eyebrow">ŞİFRESİZ VE GÜVENLİ</p>
+          <p className="eyebrow">GOOGLE İLE GÜVENLİ GİRİŞ</p>
           <h2>Rotanı yanında taşı.</h2>
-          <p>E-posta adresine tek kullanımlık bir giriş bağlantısı göndeririz. Mevcut {localCount} yerel kaydın girişten sonra hesabınla birleştirilir.</p>
-          <form className="account-form" onSubmit={sendMagicLink}>
-            <label htmlFor="account-email">E-posta adresi</label>
-            <input id="account-email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
-            {turnstileSiteKey ? (
-              <div className="account-turnstile" aria-label="Güvenlik doğrulaması">
-                <Turnstile
-                  key={captchaKey}
-                  siteKey={turnstileSiteKey}
-                  onSuccess={setCaptchaToken}
-                  onExpire={() => setCaptchaToken(null)}
-                  onError={() => {
-                    setCaptchaToken(null);
-                    setMessage("Güvenlik doğrulaması yüklenemedi. Sayfayı yenileyip yeniden dene.");
-                  }}
-                  options={{ language: "tr", size: "flexible", theme: "light" }}
-                />
-              </div>
-            ) : (
-              <p className="account-security-error">Güvenlik doğrulaması yapılandırılmamış.</p>
-            )}
-            <button disabled={busy || cooldown > 0 || !captchaToken}>
-              {busy ? "Gönderiliyor…" : cooldown > 0 ? `Yeniden gönder (${cooldown})` : "Giriş bağlantısı gönder"}<span>→</span>
-            </button>
-          </form>
+          <p>Google hesabınla giriş yaptığında mevcut {localCount} yerel kaydın hesabınla birleştirilir. Rota Google parolanı görmez veya saklamaz.</p>
+          <button className="account-google" type="button" onClick={signInWithGoogle} disabled={busy}>
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path fill="#4285f4" d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.4Z" />
+              <path fill="#34a853" d="M12 22c2.7 0 4.98-.9 6.63-2.36l-3.24-2.54c-.9.6-2.05.96-3.39.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.62A10 10 0 0 0 12 22Z" />
+              <path fill="#fbbc05" d="M6.39 13.93A6.02 6.02 0 0 1 6.08 12c0-.67.11-1.32.31-1.93V7.45H3.04A10 10 0 0 0 2 12c0 1.64.39 3.2 1.04 4.55l3.35-2.62Z" />
+              <path fill="#ea4335" d="M12 5.94c1.47 0 2.79.5 3.83 1.5L18.7 4.57A9.62 9.62 0 0 0 12 2a10 10 0 0 0-8.96 5.45l3.35 2.62C7.18 7.7 9.39 5.94 12 5.94Z" />
+            </svg>
+            <span>{busy ? "Google'a yönlendiriliyor…" : "Google ile devam et"}</span>
+            <b aria-hidden="true">→</b>
+          </button>
           {message && <p className="account-message" role="status">{message}</p>}
         </section>
         <aside className="account-card">

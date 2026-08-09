@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",
-    "@marsidev/react-turnstile": "^1.5.5",
     "@supabase/supabase-js": "^2.112.2",
     "astro": "^7.1.6",
     "react": "^19.2.8",

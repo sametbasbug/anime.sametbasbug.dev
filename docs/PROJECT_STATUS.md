@@ -1,6 +1,6 @@
 # Rota proje durumu
 
-Son güncelleme: 8 Ağustos 2026
+Son güncelleme: 9 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -9,53 +9,48 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Geçici ürün adı: **Rota**.
 - Yayın domain'i: **`anime.sametbasbug.dev`**.
 - Statik yayın hedefi: **GitHub Pages**.
-- İşlem e-postası göndericisi: **`Rota <giris@sametbasbug.dev>`**.
 - GitHub deposu: **public**.
 - Kanonik GitHub deposu: **`sametbasbug/anime.sametbasbug.dev`**.
 - Lisans modeli: uygulama kaynak kodu **AGPL-3.0-only**; özgün içerik, görsel kimlik ve marka unsurları korumalı; katalog verisi ODbL/DbCL koşullarında.
 - Korunan içerik ve marka katmanının hak sahibi: **Samet Başbuğ**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
-- Kalıcı giriş kararı: yalnız **Google OAuth**; Discord, e-posta/parola ve magic-link sunulmayacak. Hesapsız local-first kullanım korunacak.
+- Giriş yöntemi: yalnız **Google OAuth**; Discord, e-posta/parola ve magic-link sunulmaz. Hesapsız local-first kullanım korunur.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
-- Geçici işlem e-postası: Resend'de doğrulanmış `sametbasbug.dev` üzerinden custom SMTP; Google OAuth geçişi tamamlanana kadar mevcut magic-link akışına hizmet eder.
 
 ## Tamamlananlar
 
 - 900 yapımlık aranabilir katalog, 900 detay sayfası, tür/stüdyo keşfi ve benzer yapım yolları.
 - Dört durumlu kişisel liste; bölüm ilerlemesi, puan ve kişisel not.
 - Sekiz yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
-- Şifresiz magic-link hesabı, profil ve liste görünürlüğü tercihleri.
+- Google OAuth hesabı, profil ve liste görünürlüğü tercihleri.
 - Equinox organizasyonu altında Frankfurt bölgesinde Supabase Free `Rota` projesi.
 - İki RLS tablosu ve yedi sahip-kullanıcı politikası içeren migration.
-- Magic-link, profil yazma ve bir liste kaydını boş ikinci tarayıcı profiline indirme testi.
+- Google OAuth, profil yazma ve yerel liste birleştirme testi.
 - Senkronizasyon sağlamlaştırması: sürümler metin yerine anlık değer olarak karşılaştırılır, gönderim 200'lük parçalara bölünür, sunucunun reddettiği satır yalıtılıp cihazda korunur, indirilen kayıtlar gönderimden önce yazılır.
 - Başlık rozetinde ayrı `partial` durumu: kısmi red artık "eşitlendi" gibi görünmüyor, kehribar noktayla ve reddedilen kayıt sayısıyla bildiriliyor.
 - Public depo için kod, içerik/marka ve katalog veri lisansı kapsamları ayrıldı.
 - Public GitHub deposu oluşturuldu ve `main` ilk kez push edildi: `sametbasbug/anime.sametbasbug.dev`.
 - GitHub Actions build + Pages deploy hattı kuruldu; `anime.sametbasbug.dev` doğrulanmış özel domain ve zorunlu HTTPS ile canlıya alındı.
-- GitHub Actions'a yalnız Supabase publishable URL/key ve Turnstile public site key repo değişkenleri tanımlandı; service-role, CAPTCHA secret veya başka secret eklenmedi.
+- GitHub Actions'a yalnız Supabase publishable URL/key repo değişkenleri tanımlandı; service-role veya başka secret eklenmedi.
 - Supabase production Site URL ve `/hesap` dönüş adresi yapılandırıldı; yerel geliştirme dönüş adresleri korundu.
-- `Rota <giris@sametbasbug.dev>` göndericisiyle Resend özel SMTP kuruldu; ayrı ve yalnız gönderim yetkili anahtarın değeri repoda tutulmadı.
-- Gerçek magic-link e-postası teslim edildi ve production oturum açma tamamlandı; SPF, DKIM ve DMARC geçti. Türkçe konu ve gövde şablonu kaydedildi.
-- Magic-link kötüye kullanımına karşı Cloudflare Turnstile zorunlu kılındı; Supabase sunucu kotası 5 e-posta/saat ve 10 kayıt-giriş isteği/5 dakika/IP değerlerine düşürüldü. İstemci tek kullanımlık CAPTCHA token'ını Supabase'e taşır ve başarılı gönderimden sonra 60 saniyelik yeniden gönderim beklemesi gösterir.
+- Google Cloud projesi, external production OAuth uygulaması ve Supabase Google sağlayıcısı yapılandırıldı; kullanıcı destek ve geliştirici iletişim adresi Nyx e-postasıdır.
+- Nyx hesabıyla localhost üzerinde gerçek Google onayı, oturum açma ve yerel liste birleştirme testi geçti. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
+- Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapatıldı. Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni kaldırıldı; Orbit anahtarı ile ortak alan adı korundu.
 - İki fiziksel cihazda production girişi tamamlandı ve kişisel liste sayısının iki cihazda aynı olduğu doğrulandı.
-- Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte e-posta tüketen magic-link modelinin public ürün için sürdürülebilir olmadığı kararlaştırıldı. Hedef mimari yalnız Google OAuth olarak kilitlendi; Discord ve diğer giriş yöntemleri kapsam dışı bırakıldı.
-- Turnstile sonrası bozulan masaüstü giriş düğmesi dikey form düzeniyle düzeltildi; masaüstü ve 390 px mobil görünüm production üzerinde doğrulandı.
+- Google ile giriş arayüzü masaüstü ve 390 px mobil görünümde doğrulandı.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
 
 ## Açık işler
 
-1. Google OAuth'u Supabase ve hesap arayüzünde uygula; mevcut kullanıcının kimliğini/listesini koruduğunu doğruladıktan sonra magic-link ile e-posta girişini kaldır.
-2. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. İkinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesini ve kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
-3. Magic-link kapatıldıktan sonra yalnız bu akış için kullanılan Turnstile ve Resend bağımlılıklarını temizle; Resend'i gelecekteki işlem e-postalarından bağımsız değerlendir.
-4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. İkinci eşitlemede gönderilen kayıt sayısının sıfıra düşmesini ve kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
+2. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı
 
 - Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
-- Resend özel SMTP ve Supabase üretim Auth URL yapılandırması bugün canlıdır fakat geçiş durumundadır; gizli SMTP anahtarı repoya yazılmaz.
+- Supabase üretim Auth URL yapılandırması canlıdır; Google OAuth istemci sırrı yalnız Google Cloud ve Supabase içinde tutulur.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 

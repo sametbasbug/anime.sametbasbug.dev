@@ -2,13 +2,13 @@
 
 İlk karar tarihi: 7 Ağustos 2026
 
-Kimlik doğrulama güncellemesi: 8 Ağustos 2026
+Kimlik doğrulama güncellemesi: 9 Ağustos 2026
 
 ## Karar
 
-Rota, hesap ve kullanıcı verisi için **Supabase Auth + Postgres + Row Level Security** kullanır. Kalıcı kimlik doğrulama yöntemi yalnız **Google OAuth** olacaktır. Discord, e-posta/parola ve e-posta magic-link alternatifleri sunulmayacaktır. Hesap açmak istemeyen kullanıcı için local-first kullanım değişmeden devam eder.
+Rota, hesap ve kullanıcı verisi için **Supabase Auth + Postgres + Row Level Security** kullanır. Kimlik doğrulama yöntemi yalnız **Google OAuth**'tur. Discord, e-posta/parola ve e-posta magic-link alternatifleri sunulmaz. Hesap açmak istemeyen kullanıcı için local-first kullanım değişmeden devam eder.
 
-İlk üretim doğrulaması şifresiz e-posta bağlantıları ve Resend özel SMTP ile tamamlandı. Bu akış teknik olarak çalışsa da Resend Free'nin günlük 100 e-posta sınırı, her girişin kota tüketmesi ve dağıtık kötüye kullanımın yalnız CAPTCHA/oran sınırıyla tamamen engellenememesi nedeniyle kalıcı public giriş yöntemi olmaya uygun bulunmadı. Magic-link sistemi Google OAuth geçişi tamamlanana kadar geçici mevcut durumdur; yeni ürün kararı onu geçersiz kılar.
+İlk üretim doğrulaması şifresiz e-posta bağlantıları ve Resend özel SMTP ile tamamlandı. Bu akış teknik olarak çalışsa da her girişin e-posta kotası tüketmesi nedeniyle kaldırıldı. Google OAuth geçişinin ardından Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapatıldı; Rota'ya özel Resend anahtarı ile Turnstile bileşeni silindi.
 
 Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürüm kontrollü statik veri olarak kalır. Supabase yalnızca kullanıcıya ait değişken veriyi saklar:
 
@@ -48,22 +48,19 @@ Gerekli public değerler:
 ```text
 PUBLIC_SUPABASE_URL=
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=
-PUBLIC_TURNSTILE_SITE_KEY=
 ```
 
 Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_lists.sql`.
 
-## Google OAuth geçişi
+## Google OAuth
 
-Geçiş aşağıdaki veri güvenliği sırasıyla yapılır:
+- Google Auth Platform uygulaması external ve production durumundadır.
+- Supabase Google sağlayıcısı yalnız `email` ve `profile` kapsamlarıyla kullanılır; dönüş Supabase Auth callback'i üzerinden `/hesap` sayfasına yapılır.
+- Hesap ekranı yalnız Google ile giriş sunar; hesapsız yerel kullanım korunur.
+- Eski iki magic-link hesabı ve verisi taşınmaz; bu temiz başlangıç ürün sahibi tarafından onaylanmıştır.
+- Nyx hesabıyla localhost üzerinde gerçek OAuth onayı, oturum açma ve yerel liste birleştirme testi geçmiştir.
 
-1. Google OAuth istemcisi ve Supabase Google sağlayıcısı production/localhost dönüş adresleriyle yapılandırılır.
-2. Hesap ekranı yalnız Google ile giriş sunacak biçimde değiştirilir; hesapsız yerel kullanım korunur.
-3. Mevcut magic-link hesabının Google kimliğiyle aynı kullanıcıya güvenli bağlandığı veya verisinin açık bir taşıma adımıyla korunduğu gerçek hesapta doğrulanır.
-4. Aynı yerel listenin iki fiziksel cihazda indirilmesi, düzenlenmesi ve silinmesi yeniden test edilir.
-5. Bu doğrulamalar geçmeden e-posta sağlayıcısı kapatılmaz. Geçtikten sonra Supabase e-posta girişi, magic-link arayüzü ve yalnız bu akış için kullanılan Turnstile kaldırılır.
-
-Resend yapılandırması geçiş sırasında korunur; gelecekte zorunlu işlem e-postası ihtiyacı doğarsa giriş kotasından bağımsız değerlendirilir. Google OAuth'a geçiş, katalog ve editoryal veri modelini veya mevcut RLS politikalarını değiştirmez.
+Google OAuth geçişi katalog ve editoryal veri modelini veya mevcut RLS politikalarını değiştirmez. Gelecekte zorunlu işlem e-postası gerekirse giriş akışından bağımsız değerlendirilir.
 
 ## Kurulu geliştirme ortamı
 
@@ -72,12 +69,9 @@ Resend yapılandırması geçiş sırasında korunur; gelecekte zorunlu işlem e
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
 - Auth site URL'si `https://anime.sametbasbug.dev`; production `/hesap` ile `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
-- Magic-link, profil yazma ve bir liste kaydının ikinci bağımsız tarayıcı profiline indirilmesi gerçek servis üzerinde doğrulanmıştır.
+- Google OAuth, profil yazma ve yerel liste birleştirme gerçek servis üzerinde doğrulanmıştır.
 - İki fiziksel cihazda production girişi tamamlanmış ve kişisel liste sayısının iki cihazda eşit olduğu doğrulanmıştır. Çevrimdışı düzenleme ve silme senaryolarının Google OAuth geçişinden sonra yeniden doğrulanması beklenir.
-- Yayın domain'i `anime.sametbasbug.dev`; işlem e-postası göndericisi `Rota <giris@sametbasbug.dev>` olarak yapılandırılmıştır. Resend'de doğrulanmış kök domain, yalnız gönderim yetkili ayrı anahtar ve Supabase özel SMTP kullanılır; anahtar değeri repoda tutulmaz.
-- Gerçek magic-link teslimatı ve production oturum açma doğrulanmıştır. SPF, DKIM ve DMARC geçmiştir; `Rota giriş bağlantın` başlıklı Türkçe şablon kaydedilmiştir.
-- Geçici magic-link akışının Auth giriş ve kayıt endpoint'lerinde Cloudflare Turnstile zorunludur. Supabase'in sunucu tarafı proje kotası saatte en fazla 5 e-posta, IP başına kayıt/giriş kotası 5 dakikada 10 istek olarak ayarlanmıştır. Aynı hedefe yeniden gönderim için Supabase'in sunucu bekleme süresine ek olarak arayüzde 60 saniyelik bekleme gösterilir. Bunlar kötüye kullanımı azaltır; günlük Resend kotasını sürdürülebilir hâle getiren nihai çözüm değildir.
-- Turnstile secret yalnız Cloudflare ve Supabase yapılandırmasında tutulur. Tarayıcıya ve GitHub Actions'a yalnız public site key verilir.
+- Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalıdır. Rota'ya özel Resend API anahtarı ile Cloudflare Turnstile bileşeni silinmiştir; ortak `sametbasbug.dev` alan adına ve Orbit anahtarına dokunulmamıştır.
 
 ## Ücretsiz plan sınırı
 

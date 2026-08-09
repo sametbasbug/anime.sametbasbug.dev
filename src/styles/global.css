@@ -433,15 +433,13 @@ footer > small { justify-self: end; color: var(--muted); font-size: 9px; text-tr
 .account-card h3 { margin: 0 0 14px; font-family: var(--display); font-size: 30px; letter-spacing: -.03em; text-transform: uppercase; }
 .account-card > p:not(.eyebrow):not(.account-message):not(.account-caveat) { max-width: 630px; margin: 24px 0 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
 .account-card__number { display: block; color: var(--coral); font-family: Georgia, serif; font-size: 74px; font-style: italic; line-height: 1; }
-.account-form { max-width: 630px; margin-top: 34px; display: flex; flex-direction: column; align-items: stretch; }
-.account-form label { margin-bottom: 8px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.account-form input, .account-settings > label input { min-width: 0; height: 52px; padding: 0 15px; border: 1px solid var(--line); border-radius: 0; outline: 0; background: var(--paper); color: var(--ink); font: inherit; }
-.account-form input:focus, .account-settings > label input:focus { border-color: var(--ink); }
-.account-turnstile { width: min(100%, 300px); min-height: 65px; margin: 14px 0; }
-.account-security-error { margin: 14px 0; color: var(--coral); font-size: 10px; }
-.account-form button { width: 100%; min-height: 52px; border: 0; background: var(--ink); color: white; font-size: 10px; font-weight: 800; cursor: pointer; }
-.account-form button span { margin-left: 22px; color: var(--acid); }
-.account-form button:disabled, .account-save:disabled, .account-sync button:disabled { cursor: wait; opacity: .58; }
+.account-settings > label input { min-width: 0; height: 52px; padding: 0 15px; border: 1px solid var(--line); border-radius: 0; outline: 0; background: var(--paper); color: var(--ink); font: inherit; }
+.account-settings > label input:focus { border-color: var(--ink); }
+.account-google { width: min(100%, 630px); min-height: 54px; margin-top: 34px; padding: 0 18px; display: grid; grid-template-columns: 24px 1fr 24px; align-items: center; gap: 14px; border: 1px solid var(--ink); background: var(--ink); color: white; font: inherit; font-size: 10px; font-weight: 800; cursor: pointer; }
+.account-google svg { width: 20px; height: 20px; padding: 2px; background: white; }
+.account-google span { text-align: center; }
+.account-google b { color: var(--acid); font-size: 16px; font-weight: 500; }
+.account-google:disabled, .account-save:disabled, .account-sync button:disabled { cursor: wait; opacity: .58; }
 .account-message { margin: 18px 0 0; padding-left: 12px; border-left: 3px solid var(--coral); font-size: 10px; line-height: 1.5; }
 .account-notice { min-height: 360px; padding: 60px; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--line); background: var(--paper-deep); }
 .account-notice > span { color: var(--coral); font-size: 9px; font-weight: 900; letter-spacing: .14em; }
@@ -594,7 +592,7 @@ footer > small { justify-self: end; color: var(--muted); font-size: 9px; text-tr
   .account-card { padding: 28px 22px; }
   .account-card + .account-card { border-left: 0; border-top: 1px solid var(--line); }
   .account-card h2 { font-size: 42px; }
-  .account-form button { min-height: 48px; }
+  .account-google { min-height: 50px; }
   .account-notice { min-height: 320px; padding: 34px 24px; }
   .account-notice h2 { font-size: 42px; }
 }
