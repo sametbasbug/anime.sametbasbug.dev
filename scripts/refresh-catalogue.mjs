@@ -27,6 +27,94 @@ const LANDMARK_TITLES = new Set([
   "Sousou no Frieren",
 ]);
 
+const ordinalWords = { second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6 };
+
+const normalizeIdentityTitle = (value) => value
+  .normalize("NFKD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLocaleLowerCase("en-US")
+  .replace(/&/g, " and ")
+  .replace(/[^\p{L}\p{N}]+/gu, " ")
+  .trim()
+  .replace(/\s+/g, " ");
+
+function semanticDuplicateKey(anime) {
+  return `${normalizeIdentityTitle(anime.title)}|${anime.type}|${anime.animeSeason?.year ?? "?"}`;
+}
+
+function mergeStringLists(...lists) {
+  return [...new Set(lists.flat().filter(Boolean))];
+}
+
+function collapseExactDuplicates(entries) {
+  const groups = new Map();
+  for (const anime of entries) {
+    const key = semanticDuplicateKey(anime);
+    const group = groups.get(key) ?? [];
+    group.push(anime);
+    groups.set(key, group);
+  }
+
+  let collapsedCount = 0;
+  const collapsed = [];
+  for (const group of groups.values()) {
+    if (group.length === 1) {
+      collapsed.push(group[0]);
+      continue;
+    }
+
+    const ranked = [...group].sort((left, right) =>
+      right.sources.length - left.sources.length
+      || (right.score?.arithmeticGeometricMean ?? 0) - (left.score?.arithmeticGeometricMean ?? 0));
+    const primary = ranked[0];
+    const merged = ranked.slice(1).reduce((result, duplicate) => ({
+      ...result,
+      synonyms: mergeStringLists(result.synonyms, duplicate.synonyms),
+      studios: mergeStringLists(result.studios, duplicate.studios),
+      tags: mergeStringLists(result.tags, duplicate.tags),
+      sources: mergeStringLists(result.sources, duplicate.sources),
+    }), primary);
+    collapsed.push(merged);
+    collapsedCount += ranked.length - 1;
+  }
+
+  return { entries: collapsed, collapsedCount };
+}
+
+function parseSeasonLineage(value) {
+  let base = value.replace(/\s*\((?:19|20)\d{2}\)\s*$/, "").trim();
+  const seasonRules = [
+    [/\s*\((?:Season|Saison)\s*(\d+)\)\s*$/i, (match) => Number(match[1])],
+    [/\s+(\d+)(?:st|nd|rd|th)\s+Season(?:\s*[:\-].*)?$/i, (match) => Number(match[1])],
+    [/\s+Season\s*(\d+)(?:\s*[:\-].*)?$/i, (match) => Number(match[1])],
+    [/\s+(Second|Third|Fourth|Fifth|Sixth)\s+Season$/i, (match) => ordinalWords[match[1].toLowerCase()]],
+  ];
+
+  for (const [pattern, getSeason] of seasonRules) {
+    const match = base.match(pattern);
+    if (!match) continue;
+    base = base.replace(pattern, "").trim();
+    return { base, seasonNumber: getSeason(match) };
+  }
+
+  return { base, seasonNumber: null };
+}
+
+function seasonDescriptor(anime) {
+  const primary = parseSeasonLineage(anime.title);
+  const variants = [anime.title, ...anime.synonyms]
+    .map(parseSeasonLineage)
+    .filter((item) => item.base.length >= 3);
+  return {
+    seasonNumber: primary.seasonNumber,
+    bases: new Set(variants.map((item) => normalizeIdentityTitle(item.base))),
+  };
+}
+
+function sharesLineage(left, right) {
+  return [...left.bases].some((base) => right.bases.has(base));
+}
+
 const slugify = (value) => value
   .normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "")
@@ -98,7 +186,9 @@ if (!dataset.license?.name?.includes(EXPECTED_LICENSE)) {
   throw new Error(`Unexpected dataset license: ${dataset.license?.name ?? "missing"}`);
 }
 
-const usable = dataset.data.filter((anime) =>
+const semantic = collapseExactDuplicates(dataset.data);
+
+const usable = semantic.entries.filter((anime) =>
   anime.title
   && anime.type !== "UNKNOWN"
   && anime.status !== "UNKNOWN"
@@ -123,6 +213,26 @@ const recent = [...usable]
   })
   .slice(0, 650);
 
+const usableById = new Map(usable.map((anime) => [stableId(anime), anime]));
+const lineageIndex = usable.map((anime) => ({ anime, descriptor: seasonDescriptor(anime) }));
+
+function findPreviousSeasons(anime) {
+  const current = seasonDescriptor(anime);
+  if (current.seasonNumber === null || current.seasonNumber <= 1) return [];
+
+  const parents = [];
+  for (let seasonNumber = current.seasonNumber - 1; seasonNumber >= 1; seasonNumber -= 1) {
+    const candidates = lineageIndex
+      .filter(({ anime: candidate, descriptor }) => candidate.type === anime.type
+        && sharesLineage(current, descriptor)
+        && (descriptor.seasonNumber ?? 1) === seasonNumber)
+      .sort((left, right) => right.anime.sources.length - left.anime.sources.length
+        || (right.anime.score?.arithmeticGeometricMean ?? 0) - (left.anime.score?.arithmeticGeometricMean ?? 0));
+    if (candidates[0]) parents.push(candidates[0].anime);
+  }
+  return parents;
+}
+
 const deduped = new Map();
 for (const anime of [...recent, ...topOverall]) {
   const item = compact(anime);
@@ -132,9 +242,62 @@ for (const anime of [...recent, ...topOverall]) {
 const ranked = [...deduped.values()]
   .sort((a, b) => (b.season.year - a.season.year) || ((b.score ?? 0) - (a.score ?? 0)))
   .slice(0, MAX_ITEMS);
-const landmarks = usable.filter((anime) => LANDMARK_TITLES.has(anime.title)).map(compact);
+const landmarkCandidates = new Map();
+for (const anime of usable.filter((candidate) => LANDMARK_TITLES.has(candidate.title))) {
+  const existing = landmarkCandidates.get(anime.title);
+  const isStronger = !existing
+    || anime.sources.length > existing.sources.length
+    || (anime.sources.length === existing.sources.length
+      && (anime.score?.arithmeticGeometricMean ?? 0) > (existing.score?.arithmeticGeometricMean ?? 0));
+  if (isStronger) landmarkCandidates.set(anime.title, anime);
+}
+const landmarks = [...LANDMARK_TITLES]
+  .map((title) => landmarkCandidates.get(title))
+  .filter(Boolean)
+  .map(compact);
 const landmarkIds = new Set(landmarks.map((anime) => anime.id));
-const items = [...landmarks, ...ranked.filter((anime) => !landmarkIds.has(anime.id))].slice(0, MAX_ITEMS);
+const initial = [...landmarks, ...ranked.filter((anime) => !landmarkIds.has(anime.id))].slice(0, MAX_ITEMS);
+const finalById = new Map(initial.map((anime) => [anime.id, anime]));
+const protectedIds = new Set(landmarkIds);
+
+for (const item of initial) {
+  const sourceAnime = usableById.get(item.id);
+  if (!sourceAnime) continue;
+  const descriptor = seasonDescriptor(sourceAnime);
+  if (descriptor.seasonNumber === null || descriptor.seasonNumber <= 1) continue;
+
+  protectedIds.add(item.id);
+  for (const previousSeason of findPreviousSeasons(sourceAnime)) {
+    const previousItem = compact(previousSeason);
+    finalById.set(previousItem.id, previousItem);
+    protectedIds.add(previousItem.id);
+  }
+}
+
+if (protectedIds.size > MAX_ITEMS) {
+  throw new Error(`Franchise closure protected ${protectedIds.size} entries, exceeding the ${MAX_ITEMS} item catalogue limit.`);
+}
+
+const initialRank = new Map(initial.map((anime, index) => [anime.id, index]));
+const removable = [...finalById.values()]
+  .filter((anime) => !protectedIds.has(anime.id))
+  .sort((left, right) => (initialRank.get(right.id) ?? Number.POSITIVE_INFINITY)
+    - (initialRank.get(left.id) ?? Number.POSITIVE_INFINITY));
+while (finalById.size > MAX_ITEMS && removable.length) {
+  finalById.delete(removable.shift().id);
+}
+
+const landmarkOrder = new Map(landmarks.map((anime, index) => [anime.id, index]));
+const items = [...finalById.values()].sort((left, right) => {
+  const leftLandmark = landmarkOrder.get(left.id);
+  const rightLandmark = landmarkOrder.get(right.id);
+  if (leftLandmark !== undefined || rightLandmark !== undefined) {
+    if (leftLandmark === undefined) return 1;
+    if (rightLandmark === undefined) return -1;
+    return leftLandmark - rightLandmark;
+  }
+  return (right.season.year - left.season.year) || ((right.score ?? 0) - (left.score ?? 0));
+});
 
 const output = {
   meta: {
@@ -145,7 +308,9 @@ const output = {
     license: dataset.license,
     originalEntryCount: dataset.data.length,
     entryCount: items.length,
-    selection: "Recent scored titles (2022+), historically well-covered titles, and a small documented landmark set; ranked by source coverage and score, then deduplicated by source ID.",
+    semanticDuplicatesCollapsed: semantic.collapsedCount,
+    franchiseClosureCount: [...protectedIds].filter((id) => !initialRank.has(id)).length,
+    selection: "Recent scored titles (2022+), historically well-covered titles, and one strongest canonical record per documented landmark title; exact title/year/type duplicates are consolidated, then explicit sequel seasons retain available predecessors before the catalogue is trimmed to its limit.",
   },
   items,
 };

@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 
 const CATALOGUE_PATH = resolve("src/data/catalogue.json");
 const OUTPUT_PATH = resolve("src/data/tmdb-posters.json");
+const OVERRIDES_PATH = resolve("src/data/tmdb-poster-overrides.json");
 const API_ROOT = "https://api.themoviedb.org/3";
 const token = process.env.TMDB_API_READ_TOKEN;
 const limitArg = process.argv.find((arg) => arg.startsWith("--limit="));
@@ -15,11 +16,8 @@ const refresh = process.argv.includes("--refresh");
 const retryRejected = process.argv.includes("--retry-rejected");
 const concurrency = 6;
 
-if (!token) {
-  throw new Error("TMDB_API_READ_TOKEN is required.");
-}
-
 const catalogue = JSON.parse(await readFile(CATALOGUE_PATH, "utf8"));
+const overrides = JSON.parse(await readFile(OVERRIDES_PATH, "utf8"));
 let previous = { meta: {}, entries: {} };
 try {
   previous = JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
@@ -189,6 +187,9 @@ function usefulQueries(anime) {
 }
 
 async function tmdb(path, attempt = 0) {
+  if (!token) {
+    throw new Error("TMDB_API_READ_TOKEN is required for API-backed poster matching.");
+  }
   const response = await fetch(`${API_ROOT}${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -252,7 +253,24 @@ function candidateScore(anime, mediaType, candidate) {
 }
 
 async function findPoster(anime) {
+  const override = overrides[anime.id];
+  if (override) {
+    return {
+      ...override,
+      confidence: "manual-override",
+    };
+  }
+
   const mediaType = anime.type === "MOVIE" ? "movie" : "tv";
+
+  if (mediaType === "tv") {
+    const lineage = seriesLineage(anime);
+    if (lineage && lineage.seasonNumber !== null && !lineage.inferredFromAliases) {
+      const seasonMatch = await findSeriesPoster(anime, lineage);
+      if (seasonMatch) return seasonMatch;
+    }
+  }
+
   const yearParameter = mediaType === "movie" ? "year" : "first_air_date_year";
   const candidates = new Map();
 
@@ -295,8 +313,27 @@ async function findPoster(anime) {
   };
 }
 
-async function findSeriesPoster(anime) {
-  const lineage = seriesLineage(anime);
+async function findSeasonImage(tvId, seasonNumber) {
+  const params = new URLSearchParams({
+    include_image_language: "null,ja,en",
+  });
+  const payload = await tmdb(`/tv/${tvId}/season/${seasonNumber}/images?${params}`);
+  const languageRank = new Map([[null, 0], ["ja", 1], ["en", 2]]);
+  const posters = (payload.posters ?? [])
+    .filter((poster) => poster.file_path)
+    .sort((left, right) => {
+      const leftRank = languageRank.get(left.iso_639_1) ?? 3;
+      const rightRank = languageRank.get(right.iso_639_1) ?? 3;
+      return leftRank - rightRank
+        || (right.vote_average ?? 0) - (left.vote_average ?? 0)
+        || (right.vote_count ?? 0) - (left.vote_count ?? 0)
+        || (right.width ?? 0) - (left.width ?? 0);
+    });
+  return posters[0]?.file_path ?? null;
+}
+
+async function findSeriesPoster(anime, knownLineage = null) {
+  const lineage = knownLineage ?? seriesLineage(anime);
   if (!lineage) return null;
 
   const normalizedAliases = new Set(lineage.aliases.map(normalizeTitle));
@@ -355,8 +392,9 @@ async function findSeriesPoster(anime) {
   if (lineage.seasonNumber !== null) {
     const details = await tmdb(`/tv/${parent.id}?language=en-US`);
     const season = (details.seasons ?? []).find((item) => item.season_number === lineage.seasonNumber);
-    if (season?.poster_path) {
-      posterPath = season.poster_path;
+    const seasonImage = season ? await findSeasonImage(parent.id, lineage.seasonNumber) : null;
+    if (seasonImage || season?.poster_path) {
+      posterPath = seasonImage ?? season.poster_path;
       posterKind = `season-${lineage.seasonNumber}`;
     }
   }
@@ -390,8 +428,9 @@ async function save() {
       catalogueRelease: catalogue.meta.release,
       matchedCount: Object.keys(orderedEntries).length,
       rejectedCount: Object.keys(orderedRejected).length,
+      overrideCount: Object.keys(overrides).filter((id) => orderedEntries[id]?.confidence === "manual-override").length,
       imageBaseUrl: "https://image.tmdb.org/t/p/w500",
-      matching: "Strict title + year + media type matching across known aliases, plus exact parent-series matching for explicit sequels or corroborated season aliases; unmatched titles keep Rota artwork.",
+      matching: "Verified per-title overrides are applied first for known TMDB/anime modelling mismatches. Explicit numbered TV seasons then resolve through their parent series and prefer season-specific TMDB artwork; remaining titles use strict title + year + media type matching across known aliases, with conservative parent-series fallback. Unmatched titles keep Rota artwork.",
     },
     entries: orderedEntries,
     rejected: orderedRejected,
@@ -400,9 +439,10 @@ async function save() {
 }
 
 const pending = catalogue.items
-  .filter((anime) => requestedIds?.has(String(anime.id))
-    || refresh
-    || (retryRejected ? Boolean(rejected[anime.id]) : (!entries[anime.id] && !rejected[anime.id])))
+  .filter((anime) => requestedIds
+    ? requestedIds.has(String(anime.id))
+    : (refresh
+      || (retryRejected ? Boolean(rejected[anime.id]) : (!entries[anime.id] && !rejected[anime.id]))))
   .slice(0, limit);
 let completed = 0;
 

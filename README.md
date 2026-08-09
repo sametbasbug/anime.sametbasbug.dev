@@ -63,11 +63,11 @@ Katalog, [manami-project/anime-offline-database](https://github.com/manami-proje
 npm run data:refresh
 ```
 
-Komut en güncel GitHub sürümünü indirir, beklenen lisansı doğrular ve `src/data/catalogue.json` dosyasını yeniden üretir. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur; detay sayfaları derleme sırasında statik oluşturulur.
+Komut en güncel GitHub sürümünü indirir, beklenen lisansı doğrular ve `src/data/catalogue.json` dosyasını yeniden üretir. Üretim sırasında aynı başlık/yıl/formatta kalan kesin upstream kopyalar tek kanonik kayıtta birleştirilir; seçkiye giren açık devam sezonlarının kaynakta bulunan önceki sezonları da 900 kayıt sınırı içinde korunur. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur; detay sayfaları derleme sırasında statik oluşturulur.
 
 AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan veri kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. MAL veya başka siteler de scrape edilmez.
 
-Posterler, önce bilinen İngilizce/Japonca adlar genelinde kesin başlık-yıl-tür eşleşmesiyle; açık devam sezonlarında veya birden fazla eş anlamlı sezon bilgisinde uzlaştığında ise doğrulanmış ana seri eşleşmesiyle TMDB'nin resmî API/CDN hizmetinden gösterilir. Sezon numarası yalnız ana başlık açıkça belirtiyorsa TMDB sezon posteri denenir; eş anlamlılardan çıkarılan devam ilişkileri güvenli biçimde ana seri posterinde kalır. Zorunlu TMDB atfı globaldir. Güvenli eşleşme kurulamayan yapımlar proje içinde üretilen Rota CSS kompozisyonlarını korur; anime-offline-database içindeki üçüncü taraf poster URL'leri kullanılmaz. Türkçe açıklamalar doğrudan kopyalanmaz, özgün editoryal metin olarak hazırlanacaktır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
+Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime model uyuşmazlıkları önce doğrulanmış `src/data/tmdb-poster-overrides.json` kayıtlarıyla çözülür; açık numaralı TV sezonları normal aramadan önce ana seri üzerinden eşleştirilir ve mevcutsa sezona özgü görsel tercih edilir. Kalan yapımlar bilinen İngilizce/Japonca adlar genelinde sıkı başlık-yıl-tür eşleşmesiyle çözülür; güvenli eşleşme kurulamayanlar proje içinde üretilen Rota CSS kompozisyonlarını korur. Zorunlu TMDB atfı globaldir ve anime-offline-database içindeki üçüncü taraf poster URL'leri kullanılmaz. Türkçe açıklamalar doğrudan kopyalanmaz, özgün editoryal metin olarak hazırlanacaktır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
 
 ## Kişisel liste ve hesap verisi
 

@@ -1,0 +1,22 @@
+{
+  "57334": {
+    "tmdbId": 240411,
+    "mediaType": "tv",
+    "posterPath": "/6qfZAOEUFIrbUH3JvePclx1nXzz.jpg",
+    "matchedTitle": "Dan Da Dan",
+    "matchedYear": 2024,
+    "posterKind": "series",
+    "seasonNumber": 1,
+    "note": "TMDB models the 2024 and 2025 anime cours as one 24-episode Season 1."
+  },
+  "60543": {
+    "tmdbId": 240411,
+    "mediaType": "tv",
+    "posterPath": "/zbbxqDw7JV9TGlx3OlrGSfZzUp8.jpg",
+    "matchedTitle": "Dan Da Dan",
+    "matchedYear": 2024,
+    "posterKind": "anime-season-2",
+    "seasonNumber": 2,
+    "note": "Manual TMDB poster override verified against the official 2025 season-2 key visual because TMDB groups both anime cours into Season 1."
+  }
+}
