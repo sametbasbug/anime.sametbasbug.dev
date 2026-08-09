@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -5,7 +6,26 @@ const CATALOGUE_PATH = resolve("src/data/catalogue.json");
 const OUTPUT_PATH = resolve("src/data/tmdb-posters.json");
 const OVERRIDES_PATH = resolve("src/data/tmdb-poster-overrides.json");
 const API_ROOT = "https://api.themoviedb.org/3";
-const token = process.env.TMDB_API_READ_TOKEN;
+const KEYCHAIN_SERVICE = "equinox-rota-tmdb";
+const KEYCHAIN_ACCOUNT = "TMDB_API_READ_TOKEN";
+
+function resolveTmdbToken() {
+  if (process.env.TMDB_API_READ_TOKEN) return process.env.TMDB_API_READ_TOKEN.trim();
+  if (process.platform !== "darwin") return null;
+
+  try {
+    return execFileSync("security", [
+      "find-generic-password",
+      "-s", KEYCHAIN_SERVICE,
+      "-a", KEYCHAIN_ACCOUNT,
+      "-w",
+    ], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  } catch {
+    return null;
+  }
+}
+
+const token = resolveTmdbToken();
 const limitArg = process.argv.find((arg) => arg.startsWith("--limit="));
 const limit = limitArg ? Number(limitArg.split("=")[1]) : Number.POSITIVE_INFINITY;
 const idsArg = process.argv.find((arg) => arg.startsWith("--ids="));
@@ -188,7 +208,7 @@ function usefulQueries(anime) {
 
 async function tmdb(path, attempt = 0) {
   if (!token) {
-    throw new Error("TMDB_API_READ_TOKEN is required for API-backed poster matching.");
+    throw new Error("TMDB_API_READ_TOKEN is required via environment or the macOS Keychain service 'equinox-rota-tmdb'.");
   }
   const response = await fetch(`${API_ROOT}${path}`, {
     headers: {

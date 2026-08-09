@@ -48,15 +48,10 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Göksel yoldaş boş, yükleme, hata, senkronizasyon ve anime tamamlama anlarına tepki verir; mikro animasyonlar ile göksel sayfa geçişleri `prefers-reduced-motion` uyumludur.
 - Favicon ile 1200×630 Open Graph/Twitter paylaşım kartı aynı marka diline taşındı; tüm sayfalar kanonik URL ve sosyal meta verileri üretir.
 - Ana sayfa, katalog, anime detayı, kişisel liste ve hesap ekranları 1.920×950 masaüstü ile 390×844 mobil viewport'larda gerçek tarayıcı görüntüsüyle doğrulandı; yatay taşma ve tarayıcı konsolu kontrol edildi.
-- Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.125 statik sayfa.
+- Katalog yenileme hattı exact başlık/yıl/format gölge kayıtlarını tek kanonik kayıtta birleştiriyor; önemli başlıklarda en güçlü kayıt korunuyor ve seçkiye giren açık devam sezonlarının mevcut önceki sezonları 900 kayıt sınırı içinde tutuluyor. One Piece gölge kopyası kaldırıldı; Dandadan 1/2/3 birlikte katalogda. TMDB sezon eşlemesi ve doğrulanmış manuel override katmanı da devrede.
+- Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.128 statik sayfa.
 
 ## Açık işler
-
-### Acil katalog düzeltmesi
-
-- **One Piece gölge kopyası / önemli başlık deduplikasyonu:** Katalog yenileme hattı, önemli yapımlar listesindeki aynı başlığı taşıyan bütün kayıtları ekliyor; son deduplikasyon başlık yerine kaynak ID'sine göre yapıldığı için farklı ID'li gölge kayıtlar birlikte kalıyor. Şu anda doğru `One Piece` kaydı `id: 21` (9 kaynakla doğrulanmış), kaldırılması gereken Anime News Network kaynaklı gölge kayıt ise `id: 2516294074`. Yenileme seçicisi, aynı önemli başlık için en çok bağımsız kaynakla doğrulanan tek kaydı tutacak şekilde acilen düzeltilmeli. `The One Piece` ve `Koisuru One Piece` ayrı yapımlar olduğundan başlık normalizasyonu bunları yanlışlıkla birleştirmemeli.
-
-### Diğer açık işler
 
 1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
 2. Google OAuth marka incelemesinin sonucunu takip et.
@@ -67,10 +62,13 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
 - Supabase üretim Auth URL yapılandırması canlıdır; Google OAuth istemci sırrı yalnız Google Cloud ve Supabase içinde tutulur.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
+- TMDB poster yenilemesi yerelde `npm run posters:refresh` ile çalıştırılır. Script önce `TMDB_API_READ_TOKEN` ortam değişkenine, macOS'ta yoksa `equinox-rota-tmdb` Keychain kaydına bakar; poster yenilemek için ayrı GitHub Actions workflow'u kullanılmaz.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 
 ## Son commitler
 
+- `6da11ed` — `data: refresh TMDB poster mappings`
+- `013f7c1` — `fix catalogue lineage and poster matching [skip ci]`
 - `04305a2` — `feat: expand Rota's celestial otaku world`
 - `85bd68a` — `feat: redesign Rota as a kawaii otaku companion`
 - `655a40d` — `feat: redesign Equinox Rota as a cinematic archive`
