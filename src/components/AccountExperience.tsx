@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
 import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
@@ -9,6 +9,59 @@ type Profile = {
   display_name: string;
   list_visibility: Visibility;
 };
+
+type GoogleCredentialResponse = { credential?: string };
+type GoogleIdentity = {
+  accounts: {
+    id: {
+      initialize: (options: {
+        client_id: string;
+        callback: (response: GoogleCredentialResponse) => void;
+        nonce: string;
+        auto_select: boolean;
+        use_fedcm_for_prompt: boolean;
+      }) => void;
+      renderButton: (element: HTMLElement, options: Record<string, string | number>) => void;
+    };
+  };
+};
+
+declare global {
+  interface Window {
+    google?: GoogleIdentity;
+  }
+}
+
+const googleClientId = import.meta.env.PUBLIC_GOOGLE_CLIENT_ID?.trim();
+
+function createNonce() {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return btoa(String.fromCharCode(...bytes)).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+}
+
+async function hashNonce(nonce: string) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(nonce));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function loadGoogleIdentity() {
+  if (window.google) return Promise.resolve(window.google);
+  return new Promise<GoogleIdentity>((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>('script[data-google-identity="true"]');
+    const script = existing ?? document.createElement("script");
+    const handleLoad = () => window.google ? resolve(window.google) : reject(new Error("Google Identity Services yüklenemedi."));
+    script.addEventListener("load", handleLoad, { once: true });
+    script.addEventListener("error", () => reject(new Error("Google Identity Services yüklenemedi.")), { once: true });
+    if (!existing) {
+      script.src = "https://accounts.google.com/gsi/client?hl=tr";
+      script.async = true;
+      script.defer = true;
+      script.dataset.googleIdentity = "true";
+      document.head.append(script);
+    }
+  });
+}
 
 const visibilityLabels: Record<Visibility, { title: string; detail: string }> = {
   PRIVATE: { title: "Yalnızca ben", detail: "Listen yalnız giriş yaptığın cihazlarda görünür." },
@@ -25,6 +78,7 @@ export default function AccountExperience() {
   const [profile, setProfile] = useState<Profile>({ display_name: "", list_visibility: "PRIVATE" });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const refreshLocalCount = () => setLocalCount(Object.keys(readPersonalList().entries).length);
@@ -65,23 +119,59 @@ export default function AccountExperience() {
     };
   }, [client]);
 
-  const signInWithGoogle = async () => {
-    if (!client) return;
-    setBusy(true);
-    setMessage("");
-    const { error } = await client.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/hesap`,
-        queryParams: {
-          prompt: "select_account",
-        },
-      },
-    });
-    if (!error) return;
-    setBusy(false);
-    setMessage("Google ile giriş başlatılamadı. Lütfen biraz sonra yeniden dene.");
-  };
+  useEffect(() => {
+    if (!client || session || loading || !googleButtonRef.current) return;
+    let active = true;
+
+    const mountGoogleButton = async () => {
+      if (!googleClientId) {
+        setMessage("Google girişi henüz yapılandırılmadı.");
+        return;
+      }
+      try {
+        const nonce = createNonce();
+        const hashedNonce = await hashNonce(nonce);
+        const google = await loadGoogleIdentity();
+        if (!active || !googleButtonRef.current) return;
+        google.accounts.id.initialize({
+          client_id: googleClientId,
+          nonce: hashedNonce,
+          auto_select: false,
+          use_fedcm_for_prompt: true,
+          callback: async ({ credential }) => {
+            if (!credential) {
+              setMessage("Google kimliği alınamadı. Lütfen yeniden dene.");
+              return;
+            }
+            setBusy(true);
+            setMessage("");
+            const { error } = await client.auth.signInWithIdToken({
+              provider: "google",
+              token: credential,
+              nonce,
+            });
+            if (error && active) setMessage("Google ile giriş tamamlanamadı. Lütfen yeniden dene.");
+            if (active) setBusy(false);
+          },
+        });
+        googleButtonRef.current.replaceChildren();
+        google.accounts.id.renderButton(googleButtonRef.current, {
+          type: "standard",
+          theme: "outline",
+          size: "large",
+          text: "continue_with",
+          shape: "rectangular",
+          logo_alignment: "left",
+          width: Math.min(400, googleButtonRef.current.clientWidth || 400),
+        });
+      } catch {
+        if (active) setMessage("Google giriş düğmesi yüklenemedi. Bağlantını kontrol edip yeniden dene.");
+      }
+    };
+
+    void mountGoogleButton();
+    return () => { active = false; };
+  }, [client, loading, session]);
 
   const saveProfile = async (next: Profile) => {
     if (!client || !session) return;
@@ -136,17 +226,8 @@ export default function AccountExperience() {
         <section className="account-card account-card--primary">
           <p className="eyebrow">GOOGLE İLE GÜVENLİ GİRİŞ</p>
           <h2>Rotanı yanında taşı.</h2>
-          <p>Google hesabınla giriş yaptığında mevcut {localCount} yerel kaydın hesabınla birleştirilir. Rota Google parolanı görmez veya saklamaz.</p>
-          <button className="account-google" type="button" onClick={signInWithGoogle} disabled={busy}>
-            <svg aria-hidden="true" viewBox="0 0 24 24">
-              <path fill="#4285f4" d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.4Z" />
-              <path fill="#34a853" d="M12 22c2.7 0 4.98-.9 6.63-2.36l-3.24-2.54c-.9.6-2.05.96-3.39.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.62A10 10 0 0 0 12 22Z" />
-              <path fill="#fbbc05" d="M6.39 13.93A6.02 6.02 0 0 1 6.08 12c0-.67.11-1.32.31-1.93V7.45H3.04A10 10 0 0 0 2 12c0 1.64.39 3.2 1.04 4.55l3.35-2.62Z" />
-              <path fill="#ea4335" d="M12 5.94c1.47 0 2.79.5 3.83 1.5L18.7 4.57A9.62 9.62 0 0 0 12 2a10 10 0 0 0-8.96 5.45l3.35 2.62C7.18 7.7 9.39 5.94 12 5.94Z" />
-            </svg>
-            <span>{busy ? "Google'a yönlendiriliyor…" : "Google ile devam et"}</span>
-            <b aria-hidden="true">→</b>
-          </button>
+          <p>Google hesabınla giriş yaptığında mevcut {localCount} yerel kaydın hesabınla birleştirilir. Equinox Rota, Google parolanı görmez veya saklamaz.</p>
+          <div className="account-google" ref={googleButtonRef} aria-busy={busy}></div>
           {message && <p className="account-message" role="status">{message}</p>}
         </section>
         <aside className="account-card">

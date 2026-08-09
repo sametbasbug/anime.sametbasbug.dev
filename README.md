@@ -1,8 +1,8 @@
-# Rota
+# Equinox Rota
 
-> Geçici ürün adı — anime yolculuğunun Türkçe kaydı.
+> Rota by Equinox — anime yolculuğunun Türkçe kaydı.
 
-Rota, Türkiye'deki anime izleyicileri için modern bir keşif, takip ve kişisel arşiv ürünüdür. Video barındırmaz ve korsan yayın bağlantısı sunmaz. İlk iki prototip; ürün dilini, görsel yönü ve gerçek katalog üzerinde arama ile detay deneyimini doğrulamak için hazırlanmıştır.
+Equinox Rota, Türkiye'deki anime izleyicileri için modern bir keşif, takip ve kişisel arşiv ürünüdür. Video barındırmaz ve korsan yayın bağlantısı sunmaz. İlk iki prototip; ürün dilini, görsel yönü ve gerçek katalog üzerinde arama ile detay deneyimini doğrulamak için hazırlanmıştır.
 
 Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 
@@ -24,7 +24,7 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Sayaçlar, durum filtreleri ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
 - Sekiz popüler yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
-- İsteğe bağlı Google OAuth hesabı, profil ve liste görünürlüğü ekranı
+- İsteğe bağlı, doğrudan Google Identity Services ID-token girişi; profil ve liste görünürlüğü ekranı
 - Yerel listeyi koruyan, tombstone destekli Supabase senkronizasyon katmanı
 - Sahip kullanıcıyla sınırlı Postgres RLS migration'ı
 - Astro static build
@@ -67,7 +67,7 @@ Kişisel liste local-first çalışır: her değişiklik önce sürümlü `rota.
 
 İsteğe bağlı hesap açıldığında yalnız profil ve kişisel liste verisi Supabase'e eşitlenir. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır; `PUBLIC`/`UNLISTED` tercihi tek başına kişisel notlara dış erişim vermez.
 
-Yerel yapılandırma için `.env.example` dosyasını `.env` olarak kopyala ve Supabase publishable değerlerini ekle. Migration ile güvenlik ayrıntıları [`docs/ACCOUNT_ARCHITECTURE.md`](./docs/ACCOUNT_ARCHITECTURE.md) içinde belgelenmiştir. Geliştirme projesi Supabase Free üzerinde kurulmuştur; ortam değerleri yoksa uygulama güvenli biçimde yerel modda kalır. Kimlik doğrulama yalnız **Google OAuth** kullanır; e-posta bağlantısı, özel SMTP ve CAPTCHA giriş bağımlılıkları kaldırılmıştır. Hesapsız local-first kullanım aynen korunur.
+Yerel yapılandırma için `.env.example` dosyasını `.env` olarak kopyala; Supabase publishable değerleriyle Google web istemci kimliğini ekle. Migration ile güvenlik ayrıntıları [`docs/ACCOUNT_ARCHITECTURE.md`](./docs/ACCOUNT_ARCHITECTURE.md) içinde belgelenmiştir. Geliştirme projesi Supabase Free üzerinde kurulmuştur; ortam değerleri yoksa uygulama güvenli biçimde yerel modda kalır. Kimlik doğrulama yalnız Google Identity Services üzerinden alınan, nonce-korumalı ID token'ının Supabase tarafından doğrulanmasıyla yapılır; kullanıcı giriş sırasında Supabase alan adına yönlendirilmez. E-posta bağlantısı, özel SMTP ve CAPTCHA giriş bağımlılıkları kaldırılmıştır. Hesapsız local-first kullanım aynen korunur.
 
 ## Editoryal içerik
 
@@ -96,7 +96,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 4. **Hesap ve kalıcı veri** — Google OAuth ve Supabase senkronizasyonu hazır; iki fiziksel cihazda çevrimdışı düzenleme ve silme testi bekliyor
 5. MAL/AniList içe aktarma fizibilitesi ve izinleri
 6. Topluluk ve moderasyon
-7. Marka ve yayın
+7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
 
 ## Sahiplik
 

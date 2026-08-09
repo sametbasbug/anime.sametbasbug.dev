@@ -1,4 +1,4 @@
-# Rota proje durumu
+# Equinox Rota proje durumu
 
 Son güncelleme: 9 Ağustos 2026
 
@@ -6,7 +6,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Kilitli kararlar
 
-- Geçici ürün adı: **Rota**.
+- Kalıcı proje adı: **Equinox Rota**; site imzası: **Rota by Equinox**.
 - Yayın domain'i: **`anime.sametbasbug.dev`**.
 - Statik yayın hedefi: **GitHub Pages**.
 - GitHub deposu: **public**.
@@ -15,7 +15,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Korunan içerik ve marka katmanının hak sahibi: **Samet Başbuğ**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
-- Giriş yöntemi: yalnız **Google OAuth**; Discord, e-posta/parola ve magic-link sunulmaz. Hesapsız local-first kullanım korunur.
+- Giriş yöntemi: Google Identity Services resmî düğmesi ve nonce-korumalı Supabase ID-token doğrulaması; Discord, e-posta/parola ve magic-link sunulmaz. Hesapsız local-first kullanım korunur.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 
@@ -25,7 +25,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Dört durumlu kişisel liste; bölüm ilerlemesi, puan ve kişisel not.
 - Sekiz yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
 - Google OAuth hesabı, profil ve liste görünürlüğü tercihleri.
-- Equinox organizasyonu altında Frankfurt bölgesinde Supabase Free `Rota` projesi.
+- Equinox organizasyonu altında Frankfurt bölgesinde Supabase Free `Equinox Rota` projesi.
 - İki RLS tablosu ve yedi sahip-kullanıcı politikası içeren migration.
 - Google OAuth, profil yazma ve yerel liste birleştirme testi.
 - Senkronizasyon sağlamlaştırması: sürümler metin yerine anlık değer olarak karşılaştırılır, gönderim 200'lük parçalara bölünür, sunucunun reddettiği satır yalıtılıp cihazda korunur, indirilen kayıtlar gönderimden önce yazılır.
@@ -33,14 +33,16 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Public depo için kod, içerik/marka ve katalog veri lisansı kapsamları ayrıldı.
 - Public GitHub deposu oluşturuldu ve `main` ilk kez push edildi: `sametbasbug/anime.sametbasbug.dev`.
 - GitHub Actions build + Pages deploy hattı kuruldu; `anime.sametbasbug.dev` doğrulanmış özel domain ve zorunlu HTTPS ile canlıya alındı.
-- GitHub Actions'a yalnız Supabase publishable URL/key repo değişkenleri tanımlandı; service-role veya başka secret eklenmedi.
+- GitHub Actions'a Supabase publishable URL/key ve public Google web istemci kimliği repo değişkenleri tanımlandı; service-role veya başka secret eklenmedi.
 - Supabase production Site URL ve `/hesap` dönüş adresi yapılandırıldı; yerel geliştirme dönüş adresleri korundu.
 - Google Cloud projesi, external production OAuth uygulaması ve Supabase Google sağlayıcısı yapılandırıldı; kullanıcı destek ve geliştirici iletişim adresi Nyx e-postasıdır.
 - Nyx hesabıyla localhost ve production üzerinde gerçek Google onayı, oturum açma ve yerel liste birleştirme testi geçti. Tekrarlanan eşitleme sıfır kayıt gönderdi. Eski iki magic-link hesabının aktarılmaması ürün sahibi tarafından kabul edildi.
 - Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapatıldı. Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni kaldırıldı; Orbit anahtarı ile ortak alan adı korundu.
 - İki fiziksel cihazda production girişi tamamlandı ve kişisel liste sayısının iki cihazda aynı olduğu doğrulandı.
 - Google ile giriş arayüzü masaüstü ve 390 px mobil görünümde doğrulandı.
-- Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.123 statik sayfa.
+- Google OAuth istemcisine production ve localhost JavaScript kökenleri eklendi; istemci **Equinox Rota web** olarak adlandırıldı. Giriş, kullanıcıyı Supabase alan adına yönlendirmeyen ID-token akışına geçirildi.
+- Gizlilik politikası ve kullanım koşulları yayımlanmak üzere eklendi; e-posta adreslerinin diğer kullanıcılara gösterilmediği açıklandı.
+- Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.125 statik sayfa.
 
 ## Açık işler
 

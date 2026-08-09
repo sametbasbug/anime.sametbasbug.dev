@@ -1,4 +1,4 @@
-# AGENTS.md — Rota
+# AGENTS.md — Equinox Rota
 
 ## Proje sahibi
 
@@ -12,7 +12,7 @@
 - Türkçe, modern anime keşif, takip ve kişisel arşiv ürünü.
 - Video barındırma, korsan yayın bağlantısı veya “anime izle” ürünü değildir.
 - Ürünün tek başına faydası topluluk özelliklerinden önce gelir.
-- “Rota” geçici ürün adıdır; kalıcı marka kararı verilmiş sayılmaz.
+- Kalıcı ürün ve proje adı **Equinox Rota**'dır; site imzasında **Rota by Equinox** kullanılabilir.
 - Onaylanan ürün sırası ve aşama durumları için `ROADMAP.md` kanoniktir; tamamlanan anlamlı işler aynı değişiklik içinde orada işaretlenir.
 
 ## Veri ve içerik

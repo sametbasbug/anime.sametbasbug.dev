@@ -6,7 +6,7 @@ Kimlik doğrulama güncellemesi: 9 Ağustos 2026
 
 ## Karar
 
-Rota, hesap ve kullanıcı verisi için **Supabase Auth + Postgres + Row Level Security** kullanır. Kimlik doğrulama yöntemi yalnız **Google OAuth**'tur. Discord, e-posta/parola ve e-posta magic-link alternatifleri sunulmaz. Hesap açmak istemeyen kullanıcı için local-first kullanım değişmeden devam eder.
+Equinox Rota, hesap ve kullanıcı verisi için **Supabase Auth + Postgres + Row Level Security** kullanır. Kimlik doğrulama, Google Identity Services resmî düğmesinden alınan nonce-korumalı ID token'ının Supabase tarafından doğrulanmasıyla yapılır; kullanıcı Supabase alan adına yönlendirilmez. Discord, e-posta/parola ve e-posta magic-link alternatifleri sunulmaz. Hesap açmak istemeyen kullanıcı için local-first kullanım değişmeden devam eder.
 
 İlk üretim doğrulaması şifresiz e-posta bağlantıları ve Resend özel SMTP ile tamamlandı. Bu akış teknik olarak çalışsa da her girişin e-posta kotası tüketmesi nedeniyle kaldırıldı. Google OAuth geçişinin ardından Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapatıldı; Rota'ya özel Resend anahtarı ile Turnstile bileşeni silindi.
 
@@ -64,7 +64,7 @@ Google OAuth geçişi katalog ve editoryal veri modelini veya mevcut RLS politik
 
 ## Kurulu geliştirme ortamı
 
-- Supabase organizasyonu: `Equinox`; proje: `Rota`.
+- Supabase organizasyonu: `Equinox`; proje: `Equinox Rota`.
 - Plan ve bölge: Free, Central EU (Frankfurt).
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.

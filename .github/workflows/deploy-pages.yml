@@ -38,6 +38,7 @@ jobs:
         env:
           PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+          PUBLIC_GOOGLE_CLIENT_ID: ${{ vars.PUBLIC_GOOGLE_CLIENT_ID }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

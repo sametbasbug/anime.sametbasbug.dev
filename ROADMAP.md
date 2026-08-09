@@ -1,6 +1,6 @@
-# Rota ürün yol haritası
+# Equinox Rota ürün yol haritası
 
-Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını korur. Rota'nın geçici adı veya teknik ayrıntıları değişse bile temel öncelik, topluluk özelliklerinden önce güçlü bir kişisel anime keşif ve takip ürünü oluşturmaktır.
+Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını korur. Kalıcı ürün adı **Equinox Rota**'dır; temel öncelik, topluluk özelliklerinden önce güçlü bir kişisel anime keşif ve takip ürünü oluşturmaktır.
 
 ## Ürün ilkeleri
 
@@ -53,6 +53,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] İki fiziksel cihazda production girişini ve liste sayısı eşitliğini doğrula.
 - [x] Kalıcı giriş yöntemini yalnız Google OAuth olarak kilitle; Discord, e-posta/parola ve magic-link'i hedef mimariden çıkar.
 - [x] Google OAuth'u uygula; eski hesap aktarımı yapmadan magic-link akışını ve ona özel dış bağımlılıkları kaldır.
+- [x] Google Identity Services resmî düğmesine ve nonce-korumalı Supabase ID-token doğrulamasına geç; Supabase yönlendirme alan adını kullanıcı akışından çıkar.
 - [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
@@ -69,10 +70,10 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - Korsan bağlantı, taciz ve spoiler için moderasyon kurallarını uygula.
 - Kişisel takip ürünü yeterli olgunluğa ulaşmadan sosyal akış ekleme.
 
-### 7. Marka ve yayın
+### 7. Marka ve yayın — tamamlandı
 
-- `Rota` adını ürün omurgası doğrulandıktan sonra kesinleştir veya değiştir.
-- Logo, domain, üretim altyapısı ve yayın kararlarını birlikte ele al.
+- [x] Kalıcı proje adını **Equinox Rota**, site imzasını **Rota by Equinox** olarak kesinleştir.
+- [x] Logo, domain, üretim altyapısı ve yayın kararlarını birlikte ele al.
 - [x] GitHub deposunun public olacağını; kodun AGPL-3.0-only, özgün içerik ve markanın korumalı olacağını kararlaştır.
 - [x] Kanonik repo adını `sametbasbug/anime.sametbasbug.dev`, korunan katmanın hak sahibini Samet Başbuğ olarak belirle.
 - [x] Public repoyu, GitHub Actions Pages hattını, özel domain'i ve HTTPS'i canlıya al.
@@ -90,4 +91,4 @@ Aşamanın kapanması için Google OAuth ile iki fiziksel cihazda çevrimdışı
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 
-`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır.
+`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için Supabase publishable değerleri ve public Google web istemci kimliği repo değişkeni olarak sağlanır.
