@@ -42,12 +42,14 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Google ile giriş arayüzü masaüstü ve 390 px mobil görünümde doğrulandı.
 - Google OAuth istemcisine production ve localhost JavaScript kökenleri eklendi; istemci **Equinox Rota web** olarak adlandırıldı. Giriş, kullanıcıyı Supabase alan adına yönlendirmeyen ID-token akışına geçirildi.
 - Gizlilik politikası ve kullanım koşulları yayımlanmak üzere eklendi; e-posta adreslerinin diğer kullanıcılara gösterilmediği açıklandı.
+- Google OAuth marka bilgileri ana sayfa, gizlilik politikası ve kullanım koşulları bağlantılarıyla gönderildi. Google incelemesi sürüyor; uygulama hassas veya kısıtlı kapsam istemediği için veri erişimi doğrulaması gerekmiyor.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.125 statik sayfa.
 
 ## Açık işler
 
 1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
-2. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+2. Google OAuth marka incelemesinin sonucunu takip et.
+3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 
 ## Değişiklik sınırı
 
@@ -58,6 +60,9 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Son commitler
 
+- `cb6afc5` — `fix: state product purpose explicitly`
+- `2f6d4c1` — `fix: clarify Equinox Rota branding on homepage`
+- `d198a75` — `feat: launch Equinox Rota branded Google sign-in`
 - `072756f` — `fix: restore account form button layout`
 - `76bc25a` — `feat: protect magic-link emails from abuse`
 - `217eda8` — `docs: record production auth and SMTP setup`
