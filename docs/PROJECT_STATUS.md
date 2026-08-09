@@ -52,6 +52,12 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
+### Acil katalog düzeltmesi
+
+- **One Piece gölge kopyası / önemli başlık deduplikasyonu:** Katalog yenileme hattı, önemli yapımlar listesindeki aynı başlığı taşıyan bütün kayıtları ekliyor; son deduplikasyon başlık yerine kaynak ID'sine göre yapıldığı için farklı ID'li gölge kayıtlar birlikte kalıyor. Şu anda doğru `One Piece` kaydı `id: 21` (9 kaynakla doğrulanmış), kaldırılması gereken Anime News Network kaynaklı gölge kayıt ise `id: 2516294074`. Yenileme seçicisi, aynı önemli başlık için en çok bağımsız kaynakla doğrulanan tek kaydı tutacak şekilde acilen düzeltilmeli. `The One Piece` ve `Koisuru One Piece` ayrı yapımlar olduğundan başlık normalizasyonu bunları yanlışlıkla birleştirmemeli.
+
+### Diğer açık işler
+
 1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
 2. Google OAuth marka incelemesinin sonucunu takip et.
 3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
