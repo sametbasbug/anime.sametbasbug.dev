@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
 import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
@@ -79,12 +79,36 @@ export default function AccountExperience() {
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
   const googleButtonRef = useRef<HTMLDivElement>(null);
+  const autoSyncedUserRef = useRef<string | null>(null);
+
+  const refreshLocalCount = useCallback(() => {
+    setLocalCount(Object.keys(readPersonalList().entries).length);
+  }, []);
+
+  const syncForUser = useCallback(async (userId: string, announceSuccess: boolean) => {
+    if (!client) return;
+    setBusy(true);
+    if (announceSuccess) setMessage("");
+    try {
+      const result = await syncPersonalList(client, userId);
+      setSyncResult(result);
+      refreshLocalCount();
+      if (result.rejected.length > 0) {
+        setMessage(`Eşitleme tamamlandı; ${result.rejected.length} kayıt sunucu tarafından reddedildi ve bu cihazda korunuyor.`);
+      } else if (announceSuccess) {
+        setMessage("Yerel arşivin bulutla eşitlendi.");
+      }
+    } catch (error) {
+      setMessage(`Senkronizasyon tamamlanamadı: ${error instanceof Error ? error.message : "Bilinmeyen hata"}`);
+    } finally {
+      setBusy(false);
+    }
+  }, [client, refreshLocalCount]);
 
   useEffect(() => {
-    const refreshLocalCount = () => setLocalCount(Object.keys(readPersonalList().entries).length);
     refreshLocalCount();
     return subscribeToPersonalList(refreshLocalCount);
-  }, []);
+  }, [refreshLocalCount]);
 
   useEffect(() => {
     if (!client) return;
@@ -100,24 +124,38 @@ export default function AccountExperience() {
       if (active && data) setProfile(data as Profile);
     };
 
+    const syncAfterSignIn = (nextSession: Session | null) => {
+      if (!nextSession) {
+        autoSyncedUserRef.current = null;
+        return;
+      }
+      if (autoSyncedUserRef.current === nextSession.user.id) return;
+      autoSyncedUserRef.current = nextSession.user.id;
+      void syncForUser(nextSession.user.id, false);
+    };
+
     client.auth.getSession().then(({ data }) => {
       if (!active) return;
       setSession(data.session);
       setLoading(false);
       void loadProfile(data.session);
+      syncAfterSignIn(data.session);
     });
 
     const { data: listener } = client.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
       setLoading(false);
-      if (nextSession) window.setTimeout(() => void loadProfile(nextSession), 0);
+      window.setTimeout(() => {
+        void loadProfile(nextSession);
+        syncAfterSignIn(nextSession);
+      }, 0);
     });
 
     return () => {
       active = false;
       listener.subscription.unsubscribe();
     };
-  }, [client]);
+  }, [client, syncForUser]);
 
   useEffect(() => {
     if (!client || session || loading || !googleButtonRef.current) return;
@@ -193,19 +231,7 @@ export default function AccountExperience() {
 
   const syncNow = async () => {
     if (!client || !session) return;
-    setBusy(true);
-    setMessage("");
-    try {
-      const result = await syncPersonalList(client, session.user.id);
-      setSyncResult(result);
-      setMessage(result.rejected.length > 0
-        ? `Eşitleme tamamlandı; ${result.rejected.length} kayıt sunucu tarafından reddedildi ve bu cihazda korunuyor.`
-        : "Yerel arşivin bulutla eşitlendi.");
-    } catch (error) {
-      setMessage(`Senkronizasyon tamamlanamadı: ${error instanceof Error ? error.message : "Bilinmeyen hata"}`);
-    } finally {
-      setBusy(false);
-    }
+    await syncForUser(session.user.id, true);
   };
 
   if (!client) {
@@ -222,7 +248,7 @@ export default function AccountExperience() {
 
   if (!session) {
     return (
-      <div className="account-grid">
+      <div className="account-grid" key="signed-out">
         <section className="account-card account-card--primary">
           <p className="eyebrow">GOOGLE İLE GÜVENLİ GİRİŞ</p>
           <h2>Rotanı yanında taşı.</h2>
@@ -240,7 +266,7 @@ export default function AccountExperience() {
   }
 
   return (
-    <div className="account-grid account-grid--signed-in">
+    <div className="account-grid account-grid--signed-in" key="signed-in">
       <section className="account-card account-card--primary">
         <p className="eyebrow">BAĞLI HESAP</p>
         <h2>{session.user.email}</h2>
