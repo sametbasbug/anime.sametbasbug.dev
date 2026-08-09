@@ -270,8 +270,13 @@ body.design-otaku .home-hero .feature-score { margin-right: 54px; }
 .rota-companion__bubble strong { color: var(--lavender-deep); font-size: 9px; font-weight: 950; line-height: 1; letter-spacing: .12em; text-transform: uppercase; }
 .rota-companion__bubble span { display: block; }
 .rota-companion__bubble::after { content: ""; position: absolute; left: 15px; bottom: -8px; width: 12px; height: 12px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: #fff; transform: rotate(45deg); }
-.rota-companion__body { position: relative; width: 76px; height: 64px; display: block; border: 2px solid var(--ink); border-radius: 48% 48% 42% 42%; background: linear-gradient(145deg,#c9afff,#9575dc); box-shadow: 4px 5px 0 var(--ink), 0 13px 20px rgba(73,52,105,.14); animation: rota-float 3.4s ease-in-out infinite; }
-.rota-companion__body::before { content: ""; position: absolute; z-index: -1; top: -21px; left: 4px; width: 64px; height: 34px; background: linear-gradient(135deg,#d8c5ff,#9b7ae1); clip-path: polygon(0 100%,14% 0,38% 76%,62% 76%,86% 0,100% 100%); }
+.rota-companion__figure { position: relative; width: 76px; height: 64px; display: block; animation: rota-float 3.4s ease-in-out infinite; }
+.rota-companion__ears { position: absolute; z-index: 0; inset: 0; pointer-events: none; }
+.rota-companion__ears::before,
+.rota-companion__ears::after { content: ""; position: absolute; top: -12px; width: 26px; height: 26px; border: 2px solid var(--ink); border-radius: 2px 8px 2px 8px; background: linear-gradient(135deg,#d8c5ff,#9b7ae1); box-shadow: inset 4px 4px 0 rgba(255,255,255,.22); transform: rotate(45deg); }
+.rota-companion__ears::before { left: 5px; }
+.rota-companion__ears::after { right: 5px; }
+.rota-companion__body { position: relative; z-index: 1; width: 76px; height: 64px; display: block; border: 2px solid var(--ink); border-radius: 48% 48% 42% 42%; background: linear-gradient(145deg,#c9afff,#9575dc); box-shadow: 4px 5px 0 var(--ink), 0 13px 20px rgba(73,52,105,.14); }
 .rota-companion__body::after { content: ""; position: absolute; right: -20px; bottom: 2px; width: 31px; height: 31px; border: 8px solid var(--sun); border-top-color: transparent; border-left-color: transparent; border-radius: 50%; transform: rotate(-20deg); }
 .rota-companion__crest { position: absolute; z-index: 1; top: 4px; left: 34px; color: var(--sun); font-size: 9px; font-style: normal; text-shadow: 1px 1px 0 rgba(52,43,74,.45); }
 .rota-companion__eyes { position: absolute; top: 23px; left: 19px; width: 7px; height: 10px; border-radius: 50%; background: var(--ink); box-shadow: 29px 0 0 var(--ink); }
@@ -284,7 +289,7 @@ body.design-otaku .home-hero .feature-score { margin-right: 54px; }
 .rota-companion--sleepy .rota-companion__eyes::after { width: 7px; height: 5px; border-bottom: 2px solid var(--ink); border-radius: 50%; background: transparent; box-shadow: 29px 0 0 -1px transparent; }
 .rota-companion--syncing .rota-companion__body { box-shadow: 4px 5px 0 var(--ink), 0 0 0 6px rgba(120,200,230,.2), 0 13px 20px rgba(73,52,105,.14); }
 .rota-companion__orbit { inset: -13px -15px -12px -15px; display: grid; place-items: end center; border: 2px dashed var(--lavender-deep); border-radius: 50%; color: var(--lavender-deep); font-size: 13px; animation: rota-orbit 1.05s linear infinite; }
-.rota-companion--celebrating .rota-companion__body { animation: rota-companion-party .48s ease-in-out alternate infinite; }
+.rota-companion--celebrating .rota-companion__figure { animation: rota-companion-party .48s ease-in-out alternate infinite; }
 .rota-companion__confetti { top: -25px; left: -17px; width: 110px; color: var(--coral); font-size: 17px; letter-spacing: .34em; transform: rotate(-7deg); animation: rota-confetti .62s ease-in-out alternate infinite; }
 .rota-companion--error .rota-companion__body { box-shadow: 4px 5px 0 var(--ink), 0 0 0 6px rgba(233,141,164,.18), 0 13px 20px rgba(73,52,105,.14); }
 .rota-companion--error .rota-companion__eyes { height: 2px; border-radius: 0; transform: rotate(9deg); }
@@ -535,6 +540,9 @@ body.design-otaku .my-list-hero,
 body.design-otaku .account-hero { border-bottom: 0; }
 body.design-otaku .my-list-hero { position: relative; }
 body.design-otaku .my-list-hero::after { content: "MY SHELF ♡"; position: absolute; right: 0; top: 34px; color: rgba(168,139,234,.16); font-family: var(--display); font-size: clamp(42px,7vw,82px); font-weight: 950; transform: rotate(4deg); }
+body.design-otaku .my-list-hero > :not(.rota-companion) { position: relative; z-index: 1; }
+body.design-otaku .my-list-hero > p { padding-right: 152px; }
+.rota-companion--list-hero { right: -18px; bottom: 28px; transform: rotate(4deg); }
 body.design-otaku .my-list-hero h1 em,
 body.design-otaku .account-hero h1 em { color: var(--coral); font-family: inherit; font-style: normal; }
 body.design-otaku .list-overview button { border: 2px solid var(--ink) !important; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 rgba(52,43,74,.14); }
@@ -727,6 +735,10 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .rota-companion--celebration { top: -78px; right: 53px; transform: scale(.58) rotate(-5deg); }
   .rota-companion--celebration .rota-companion__bubble { display: none; }
   body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
+  body.design-otaku .my-list-hero { padding-bottom: 116px; }
+  body.design-otaku .my-list-hero > p { padding-right: 0; }
+  .rota-companion--list-hero { right: -11px; bottom: -3px; transform: scale(.72) rotate(4deg); transform-origin: right bottom; }
+  .rota-companion--list-hero .rota-companion__bubble { max-width: 164px; }
   body.design-otaku .account-hero { grid-template-columns: 1fr; }
   body.design-otaku .account-hero::before { right: 10px; bottom: 4px; font-size: 60px; }
   .account-hero__badge { display: none; }
@@ -753,5 +765,5 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .01ms !important; }
   .page-transition-wink { display: none; }
-  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .rota-companion__body, .rota-companion__body em, .completion-burst, .my-list-card.is-celebrating { animation: none !important; }
+  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .rota-companion__figure, .rota-companion__body em, .completion-burst, .my-list-card.is-celebrating { animation: none !important; }
 }

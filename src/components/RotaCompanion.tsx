@@ -18,15 +18,18 @@ export default function RotaCompanion({
         <strong>Rota</strong>
         <span>{message}</span>
       </span>
-      <span className="rota-companion__body">
-        <i className="rota-companion__crest">✦</i>
-        <i className="rota-companion__eyes" />
-        <i className="rota-companion__blush" />
-        <i className="rota-companion__mouth" />
-        <b aria-hidden="true">✦</b>
-        {mood === "syncing" && <em className="rota-companion__orbit">↻</em>}
-        {mood === "celebrating" && <em className="rota-companion__confetti">✦♡✦</em>}
-        {mood === "error" && <em className="rota-companion__bandage">×</em>}
+      <span className="rota-companion__figure">
+        <i className="rota-companion__ears" />
+        <span className="rota-companion__body">
+          <i className="rota-companion__crest">✦</i>
+          <i className="rota-companion__eyes" />
+          <i className="rota-companion__blush" />
+          <i className="rota-companion__mouth" />
+          <b aria-hidden="true">✦</b>
+          {mood === "syncing" && <em className="rota-companion__orbit">↻</em>}
+          {mood === "celebrating" && <em className="rota-companion__confetti">✦♡✦</em>}
+          {mood === "error" && <em className="rota-companion__bandage">×</em>}
+        </span>
       </span>
     </div>
   );

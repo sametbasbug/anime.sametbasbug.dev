@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import MyListExperience from "../components/MyListExperience";
+import RotaCompanion from "../components/RotaCompanion";
 import DataAttribution from "../components/DataAttribution.astro";
 import { catalogueMeta } from "../lib/catalogue";
 ---
@@ -15,6 +16,7 @@ import { catalogueMeta } from "../lib/catalogue";
         <h1>Anime köşem ♡</h1>
       </div>
       <p>Devam ettiklerin, tamamladıkların ve bir gün mutlaka başlayacakların burada. Rafını istediğin gibi düzenle.</p>
+      <RotaCompanion message="Rafına göz kulak oluyorum!" mood="happy" className="rota-companion--list-hero" />
     </section>
     <section class="my-list-experience">
       <MyListExperience dataVersion={catalogueMeta.generatedAt} client:load />
