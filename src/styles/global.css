@@ -82,6 +82,7 @@ main { overflow: hidden; }
 }
 .hero h1 em, .manifesto h2 em { color: var(--coral); font-family: Georgia, serif; font-weight: 400; text-transform: none; }
 .hero__lede { max-width: 510px; margin: 38px 0 28px; color: #55504a; font-size: 16px; line-height: 1.75; }
+.hero__lede strong { color: var(--ink); font-weight: 800; }
 .hero__actions { display: flex; align-items: center; gap: 28px; }
 .primary-button { display: inline-flex; align-items: center; gap: 42px; padding: 18px 21px; font-size: 13px; }
 .primary-button span { color: var(--acid); font-size: 19px; }
