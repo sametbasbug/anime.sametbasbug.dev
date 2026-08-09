@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">Equinox Rota</title>
-  <desc id="desc">Göksel yoldaşın eşlik ettiği pastel manga panelli kişisel anime köşesi</desc>
+  <desc id="desc">Rota adlı göksel yoldaşın eşlik ettiği pastel manga panelli kişisel anime köşesi</desc>
   <defs>
     <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
       <circle cx="3" cy="3" r="1.4" fill="#342b4a" opacity=".12"/>
@@ -53,8 +53,8 @@
   <g transform="translate(815 350) rotate(-4)">
     <rect width="320" height="176" rx="28" fill="url(#sky)" stroke="#342b4a" stroke-width="6"/>
     <path d="M42 126c46-79 105-83 176-15 24-35 49-38 72-10" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" opacity=".72"/>
-    <rect x="24" y="22" width="145" height="40" rx="20" fill="#fff" stroke="#342b4a" stroke-width="3"/>
-    <text x="96" y="48" text-anchor="middle" fill="#342b4a" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="15" font-weight="900">BİR BÖLÜM DAHA?</text>
+    <rect x="24" y="22" width="252" height="40" rx="20" fill="#fff" stroke="#342b4a" stroke-width="3"/>
+    <text x="150" y="48" text-anchor="middle" fill="#342b4a" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="15" font-weight="900">ROTA · BİR BÖLÜM DAHA?</text>
     <text x="245" y="73" fill="#ff7f91" font-family="Arial, sans-serif" font-size="47">♡</text>
     <text x="54" y="151" fill="#7657bd" font-family="Arial, sans-serif" font-size="39">✦</text>
   </g>

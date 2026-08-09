@@ -25,7 +25,7 @@ Tasarımın başarı testi şudur:
 - Kawaii seviyesi bilinçli biçimde yüksektir; sevimlilik yalnız küçük ikonlara değil kompozisyonun kendisine taşınır.
 - Klasik web sitesi kalıpları zorunlu değildir. Kontrollü asimetri, üst üste binen kartlar, manga efektleri, sticker katmanları ve alışılmadık bölüm geçişleri teşvik edilir.
 - Her ana ekranda kullanıcıya “bunu başka bir sitede görmedim” dedirtecek en az bir karakterli an bulunmalıdır.
-- Rota'nın özgün göksel yoldaşı arayüzde rehber ve duygu işareti olarak kullanılabilir; maskot işlevin veya anime içeriğinin önüne geçmez.
+- **Rota**, ürünün göksel yoldaşı ve marka yüzüdür. Arayüzde rehber ve duygu işareti olarak kullanılır; işlevin veya anime içeriğinin önüne geçmez.
 - Hareket kısa, neşeli ve amaçlıdır. `prefers-reduced-motion` her zaman korunur.
 - Yüksek ifade, düşük kullanılabilirlik bahanesi değildir: metin kontrastı, 44 piksel dokunma hedefleri ve hızlı tarama korunur.
 
@@ -111,8 +111,13 @@ Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanıl
 
 ## Yaşayan Rota sistemi
 
+- Göksel yoldaşın adı **Rota**'dır. Kullanıcı kendi anime rotasını çizerken Rota ona eşlik eder; ürün adı, karakter ve anlatı bu ortak paydada buluşur.
+- Rota'nın lavanta gövdesi, taç-kulak silueti, güneş sarısı hilal kuyruğu, mürekkep konturu ve yıldız izi sabittir. Durumlar karakterin rengini veya anatomisini değiştirmez; yalnız mimik, hareket ve geçici aksesuar ekler.
+- Header işareti, favicon ve paylaşım kimliği Rota'nın aynı yüz anatomisinden türetilir. Yeni marka ikonları ayrı bir sembol icat etmez.
 - Göksel yoldaşın temel hâlleri `happy`, `curious`, `sleepy`, `syncing`, `celebrating` ve `error` olarak tanımlıdır.
 - Yoldaş; boş raf, yükleme, hata, hesap senkronizasyonu ve anime tamamlama anlarında bağlama göre tepki verir. Durum iletisini destekler, tek başına durumun tek göstergesi olmaz.
+- Konuşma balonu karakter animasyonundan bağımsız ve keskin kalır; gövdeyle birlikte ölçeklenmez. Balon metni mobil ve masaüstünde en az 12 piksel, yüksek kontrastlı ve kısa olmalıdır.
+- Rota kendini nadiren tanıtır; balondaki küçük `Rota` imzası konuşanın kimliğini kurar. Metin samimi Türkçedir, yapay “senpai/kawaii” diline kaçmaz.
 - Sayfa geçişleri kısa bir göksel manga işareti ve yumuşak içerik geçişi kullanır. Desteklenmeyen tarayıcılarda normal gezinme korunur.
 - Mevsim katmanı yalnız vurgu rengi ve arka plan ışıltısını değiştirir; içerik düzeni veya okunabilirlik mevsime göre değişmez.
 - `prefers-reduced-motion` açıkken yoldaş, kutlama ve sayfa geçişi animasyonları durur.
@@ -121,7 +126,7 @@ Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanıl
 
 - Varsayılan Open Graph/Twitter kartı `public/social/equinox-rota-share.png` dosyasıdır; düzenlenebilir kaynak SVG aynı klasörde tutulur.
 - Tüm sayfalar kanonik URL, Türkçe açıklama, 1200×630 paylaşım görseli ve erişilebilir görsel açıklaması üretir.
-- Paylaşım kartı göksel yoldaşı, manga panelini ve açık pastel kimliği birlikte taşır; anime kapağı kullanım hakkı doğrulanmadan harici görsel kullanmaz.
+- Paylaşım kartı Rota'yı, manga panelini ve açık pastel kimliği birlikte taşır; anime kapağı kullanım hakkı doğrulanmadan harici görsel kullanmaz.
 - Yeni özel paylaşım görselleri `BaseLayout` üzerindeki `image`, `imageAlt` ve `type` alanlarıyla tanımlanır.
 
 Bu belge, tüm yeni arayüz kararlarının kanonik kaynağıdır. Ürün aşamaları `ROADMAP.md`, hesap güvenliği ise `docs/ACCOUNT_ARCHITECTURE.md` tarafından yönetilir.

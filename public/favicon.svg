@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Rota">
   <rect x="2" y="2" width="60" height="60" rx="18" fill="#fff9f4" stroke="#342b4a" stroke-width="4"/>
   <path d="M17 29 20 15l11 10h3l10-10 3 14" fill="#b79bf2" stroke="#342b4a" stroke-width="3" stroke-linejoin="round"/>
   <rect x="15" y="25" width="34" height="27" rx="14" fill="#a88bea" stroke="#342b4a" stroke-width="3"/>

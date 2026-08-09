@@ -1,0 +1,26 @@
+---
+interface Props {
+  class?: string;
+  title?: string;
+}
+
+const { class: className = "", title } = Astro.props;
+---
+
+<svg
+  class:list={["rota-mark", className]}
+  viewBox="0 0 64 64"
+  role={title ? "img" : undefined}
+  aria-hidden={title ? undefined : "true"}
+  aria-label={title}
+>
+  <rect class="rota-mark__tile" x="2" y="2" width="60" height="60" rx="18" />
+  <path class="rota-mark__ears" d="M17 29 20 15l11 10h3l10-10 3 14" />
+  <rect class="rota-mark__face" x="15" y="25" width="34" height="27" rx="14" />
+  <ellipse class="rota-mark__eye" cx="26" cy="37" rx="2.5" ry="3.5" />
+  <ellipse class="rota-mark__eye" cx="38" cy="37" rx="2.5" ry="3.5" />
+  <path class="rota-mark__mouth" d="m29 43 3 2 3-2" />
+  <path class="rota-mark__star" d="m48 12 2 5 5 2-5 2-2 5-2-5-5-2 5-2z" />
+  <circle class="rota-mark__blush" cx="21" cy="43" r="3" />
+  <circle class="rota-mark__blush" cx="43" cy="43" r="3" />
+</svg>

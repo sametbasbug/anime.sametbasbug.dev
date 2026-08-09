@@ -25,9 +25,9 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
 - Durumlara ayrılan koleksiyon rafları, sayaçlar, filtreler ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
 - Manga açılımı ritmine sahip anime detayları ve otaku köşesi olarak tasarlanan hesap ekranı
-- Boş, yükleme, hata, senkronizasyon ve kutlama hâlleriyle yaşayan özgün göksel yoldaş
+- Boş, yükleme, hata, senkronizasyon ve kutlama hâlleriyle yaşayan marka yüzü ve göksel yoldaş **Rota**
 - Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve karakterli sayfa geçişleri
-- Özgün favicon ile 1200×630 Open Graph/Twitter paylaşım kartı
+- Rota'nın ortak yüz anatomisini kullanan site ikonu, favicon ve 1200×630 Open Graph/Twitter paylaşım kartı
 - Sekiz popüler yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
 - İsteğe bağlı, doğrudan Google Identity Services ID-token girişi; profil ve liste görünürlüğü ekranı
