@@ -52,7 +52,8 @@ const usefulSources = anime.sources
       <div class="detail-copy">
         <p class="eyebrow"><a href={`/ara?type=${anime.type}`}>{typeLabels[anime.type]}</a> · {seasonLabels[anime.season.season]} {anime.season.year}</p>
         <h1>{anime.title}</h1>
-        {aliases[0] && <p class="detail-alias">{aliases.join(" · ")}</p>}
+        {editorial?.summary && <p class="detail-deck">{editorial.summary}</p>}
+        {aliases[0] && <p class="detail-alias">Diğer adlar: {aliases.slice(0, 2).join(" · ")}</p>}
         <ListEditor animeId={anime.id} title={anime.title} episodes={anime.episodes} client:load />
         <dl class="detail-facts">
           <div><dt>Puan</dt><dd>{anime.score ? `★ ${anime.score.toFixed(1)}` : "—"}</dd></div>

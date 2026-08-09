@@ -35,6 +35,8 @@ export default function SearchExperience({ dataVersion }: Props) {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("ALL");
   const [status, setStatus] = useState("ALL");
+  const [genre, setGenre] = useState("ALL");
+  const [sort, setSort] = useState("RELEVANCE");
   const [visibleCount, setVisibleCount] = useState(24);
 
   useEffect(() => {
@@ -56,7 +58,11 @@ export default function SearchExperience({ dataVersion }: Props) {
       .catch(() => setLoadState("error"));
   }, [dataVersion]);
 
-  useEffect(() => setVisibleCount(24), [query, type, status]);
+  useEffect(() => setVisibleCount(24), [query, type, status, genre, sort]);
+
+  const genreOptions = useMemo(() => Array.from(new Set(
+    items.flatMap((anime) => displayTags(anime.tags, 8)),
+  )).sort((a, b) => a.localeCompare(b, "tr-TR")), [items]);
 
   const results = useMemo(() => {
     const normalizedQuery = fold(query.trim());
@@ -64,6 +70,7 @@ export default function SearchExperience({ dataVersion }: Props) {
       .filter((anime) => {
         if (type !== "ALL" && anime.type !== type) return false;
         if (status !== "ALL" && anime.status !== status) return false;
+        if (genre !== "ALL" && !displayTags(anime.tags, 10).includes(genre)) return false;
         if (!normalizedQuery) return true;
         const haystack = fold([
           anime.title,
@@ -75,8 +82,13 @@ export default function SearchExperience({ dataVersion }: Props) {
         ].join(" "));
         return haystack.includes(normalizedQuery);
       })
-      .sort((a, b) => relevance(b, normalizedQuery) - relevance(a, normalizedQuery));
-  }, [items, query, type, status]);
+      .sort((a, b) => {
+        if (sort === "SCORE") return (b.score ?? 0) - (a.score ?? 0);
+        if (sort === "NEWEST") return b.season.year - a.season.year || (b.score ?? 0) - (a.score ?? 0);
+        if (sort === "OLDEST") return a.season.year - b.season.year || (b.score ?? 0) - (a.score ?? 0);
+        return relevance(b, normalizedQuery) - relevance(a, normalizedQuery);
+      });
+  }, [items, query, type, status, genre, sort]);
 
   const visible = results.slice(0, visibleCount);
 
@@ -85,7 +97,6 @@ export default function SearchExperience({ dataVersion }: Props) {
       <div className="catalogue-search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
         <input
-          autoFocus
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Anime adı, stüdyo veya tür ara…"
@@ -98,6 +109,12 @@ export default function SearchExperience({ dataVersion }: Props) {
         <p><strong>{results.length}</strong> yapım bulundu</p>
         <div className="catalogue-selects">
           <label>Tür
+            <select value={genre} onChange={(event) => setGenre(event.target.value)}>
+              <option value="ALL">Tümü</option>
+              {genreOptions.map((label) => <option value={label} key={label}>{label}</option>)}
+            </select>
+          </label>
+          <label>Format
             <select value={type} onChange={(event) => setType(event.target.value)}>
               <option value="ALL">Tümü</option>
               {Object.entries(typeLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
@@ -107,6 +124,14 @@ export default function SearchExperience({ dataVersion }: Props) {
             <select value={status} onChange={(event) => setStatus(event.target.value)}>
               <option value="ALL">Tümü</option>
               {Object.entries(statusLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+            </select>
+          </label>
+          <label>Sırala
+            <select value={sort} onChange={(event) => setSort(event.target.value)}>
+              <option value="RELEVANCE">Önerilen</option>
+              <option value="SCORE">Puana göre</option>
+              <option value="NEWEST">En yeni</option>
+              <option value="OLDEST">En eski</option>
             </select>
           </label>
         </div>

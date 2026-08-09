@@ -2,7 +2,7 @@
 import AccountStatus from "./AccountStatus";
 
 interface Props {
-  active?: "discover" | "search" | "map" | "lists" | "account";
+  active?: "discover" | "search" | "lists" | "account";
 }
 
 const { active = "discover" } = Astro.props;
@@ -18,17 +18,36 @@ const { active = "discover" } = Astro.props;
     <span>ROTA<small>BY EQUINOX</small></span>
   </a>
 
-  <nav aria-label="Ana menü">
-    <a class:list={{ "is-active": active === "discover" }} href="/">Keşfet</a>
-    <a class:list={{ "is-active": active === "search" }} href="/ara">Katalog</a>
-    <a class:list={{ "is-active": active === "map" }} href="/#harita">Harita</a>
+  <nav class="desktop-nav" aria-label="Ana menü">
+    <a class:list={{ "is-active": active === "discover" }} href="/">Ana Sayfa</a>
+    <a class:list={{ "is-active": active === "search" }} href="/ara">Keşfet</a>
     <a class:list={{ "is-active": active === "lists" }} href="/listem">Listem</a>
   </nav>
 
   <div class="header-actions">
-    <a class="icon-button" href="/ara" aria-label="Anime ara">
+    <a class="header-search" href="/ara" aria-label="Anime ara">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
+      <span>Anime ara</span>
     </a>
     <AccountStatus client:load />
   </div>
 </header>
+
+<nav class="mobile-nav" aria-label="Mobil ana menü">
+  <a class:list={{ "is-active": active === "discover" }} href="/">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3l8.5 7.5v9a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5Z" /><path d="M9 21v-7h6v7" /></svg>
+    <span>Ana Sayfa</span>
+  </a>
+  <a class:list={{ "is-active": active === "search" }} href="/ara">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
+    <span>Keşfet</span>
+  </a>
+  <a class:list={{ "is-active": active === "lists" }} href="/listem">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-3.7L6 21Z" /></svg>
+    <span>Listem</span>
+  </a>
+  <a class:list={{ "is-active": active === "account" }} href="/hesap">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4.5 21c.8-4.4 3.3-6.5 7.5-6.5s6.7 2.1 7.5 6.5" /></svg>
+    <span>Hesap</span>
+  </a>
+</nav>

@@ -18,6 +18,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Giriş yöntemi: Google Identity Services resmî düğmesi ve nonce-korumalı Supabase ID-token doğrulaması; Discord, e-posta/parola ve magic-link sunulmaz. Hesapsız local-first kullanım korunur.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
+- Tasarım yönü: **sinematik kişisel anime arşivi**; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
 
 ## Tamamlananlar
 
@@ -43,6 +44,8 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Google OAuth istemcisine production ve localhost JavaScript kökenleri eklendi; istemci **Equinox Rota web** olarak adlandırıldı. Giriş, kullanıcıyı Supabase alan adına yönlendirmeyen ID-token akışına geçirildi.
 - Gizlilik politikası ve kullanım koşulları yayımlanmak üzere eklendi; e-posta adreslerinin diğer kullanıcılara gösterilmediği açıklandı.
 - Google OAuth marka bilgileri ana sayfa, gizlilik politikası ve kullanım koşulları bağlantılarıyla gönderildi. Google incelemesi sürüyor; uygulama hassas veya kısıtlı kapsam istemediği için veri erişimi doğrulaması gerekmiyor.
+- Ürün arayüzü koyu sinematik arşiv sistemiyle baştan aşağı yenilendi. Masaüstü üst menüsü, dört hedefli mobil alt gezinme, ana sayfa araması, kişisel arşiv özeti, katalogda Türkçe tür/format/durum/sıralama kontrolleri, işlem öncelikli anime detayı ve kompakt liste kartları eklendi.
+- Ana sayfa, katalog, anime detayı, kişisel liste ve hesap ekranları 1.440/1.920 px masaüstü ile 390 px mobil viewport'larda gerçek tarayıcı görüntüsüyle doğrulandı. Mobil katalogda arama ilk görüş alanına, anime detayında `Listeme ekle` eylemi görselin önüne taşındı; tarayıcı konsolunda hata görülmedi.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.125 statik sayfa.
 
 ## Açık işler

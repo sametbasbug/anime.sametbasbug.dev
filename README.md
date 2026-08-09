@@ -9,12 +9,14 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 ## Bugünkü durum
 
 - Mobil öncelikli, responsive ana sayfa
+- Koyu sinematik kişisel arşiv tasarım sistemi; masaüstü üst menüsü ve mobil alt gezinme
+- Ana sayfada doğrudan katalog araması ve yerel kişisel arşiv özeti
 - Gerçek katalogdan üretilen güncel ana sayfa seçkisi ve katalog haritası
 - Duruma göre çalışan anime kartı filtreleri
 - Proje içinde CSS ile üretilmiş özgün görsel kompozisyonlar
 - 900 yapımlık gerçek, aranabilir katalog
 - Başlık, alternatif ad, stüdyo, Türkçe tür etiketi ve yıla göre arama
-- Tür ve yayın durumu filtreleri
+- Türkçe tür, format, yayın durumu ve sıralama filtreleri
 - 20 Türkçe tür keşif sayfası ve normalize edilmiş stüdyo sayfaları
 - Ortak tür, stüdyo, etiket, yıl ve formata göre üretilen benzer yapım önerileri
 - Yayımlanmamış yapımları geriye alan, sonuç niteliği iyileştirilmiş arama sıralaması
@@ -36,6 +38,8 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - TypeScript strict mode
 - Supabase Auth + Postgres + RLS (hesap ve kullanıcı verisi)
 - Sıfır UI framework bağımlılığı; görsel sistem proje içinde
+
+Onaylanan ürün deneyimi ve görsel sistem ilkeleri [`docs/DESIGN_DIRECTION.md`](./docs/DESIGN_DIRECTION.md) içinde kanonik olarak tutulur.
 
 ```bash
 npm install
@@ -97,6 +101,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 5. MAL/AniList içe aktarma fizibilitesi ve izinleri
 6. Topluluk ve moderasyon
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
+8. ~~Ürün deneyimi ve görsel sistem~~ — sinematik kişisel arşiv yönüyle tamamlandı
 
 ## Sahiplik
 

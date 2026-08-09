@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import AnimeArtwork from "../components/AnimeArtwork";
 import SeasonShelf from "../components/SeasonShelf";
+import HomeLibrarySummary from "../components/HomeLibrarySummary";
 import {
   catalogue,
   catalogueMeta,
@@ -55,14 +56,19 @@ const catalogueOverview = [
   <SiteHeader active="discover" />
 
   <main>
-    <section class="hero" id="kesfet">
+    <section class="hero home-hero" id="kesfet">
       <div class="hero__copy">
-        <p class="eyebrow"><span>{seasonLabels[currentSeason]} {currentYear}</span> EQUINOX ROTA · TÜRKÇE ANİME KEŞİF, TAKİP VE KİŞİSEL ARŞİV</p>
-        <h1>Sıradaki hikâyeni<br /><em>bul.</em></h1>
-        <p class="hero__lede"><strong>Equinox Rota</strong>, Türkiye'deki anime izleyicileri için Türkçe keşif, takip ve kişisel arşiv ürünüdür. Ne izleyeceğine karar vermek, izlemekten uzun sürmesin; sana uyan animeleri keşfet, listeni kur, kaldığın yeri unutma.</p>
+        <p class="eyebrow"><span>{seasonLabels[currentSeason]} {currentYear}</span> TÜRKÇE ANİME KEŞİF VE KİŞİSEL ARŞİV</p>
+        <h1>Yeni bir dünyaya<br /><em>rota çiz.</em></h1>
+        <p class="hero__lede">Ne izleyeceğine daha hızlı karar ver. Animeleri keşfet, bölüm ilerlemeni tut ve kendi arşivini oluştur.</p>
+        <form class="home-search" action="/ara" method="get" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
+          <input name="q" type="search" placeholder="Anime, tür veya stüdyo ara" aria-label="Anime ara" />
+          <button type="submit">Ara <span>→</span></button>
+        </form>
         <div class="hero__actions">
-          <a class="primary-button" href="/ara?status=ONGOING">Devam edenleri keşfet <span>↗</span></a>
-          <a class="text-button" href="#listeler"><span class="play">▶</span> Nasıl çalışır?</a>
+          <a class="primary-button" href="/ara?status=ONGOING">Bu sezon yayında <span>→</span></a>
+          <a class="text-button" href="/listem">Listeme dön</a>
         </div>
         <dl class="hero__stats">
           <div><dt>{catalogueMeta.entryCount.toLocaleString("tr-TR")}</dt><dd>katalog kaydı</dd></div>
@@ -85,19 +91,18 @@ const catalogueOverview = [
             <div>{featuredTags.map((tag) => <span>{tag}</span>)}<span>{featured.episodes || "?"} BÖLÜM</span></div>
           </div>
         </a>
-        <div class="floating-note floating-note--top"><span>{catalogueMeta.release}</span><small>açık veri</small></div>
-        <div class="floating-note floating-note--bottom"><b>{featured.episodes || "?"}</b><span><strong>bölüm</strong><small>{typeLabels[featured.type]}</small></span></div>
-        <span class="hero__stamp">今<br />週</span>
       </div>
     </section>
 
+    <HomeLibrarySummary client:load />
+
     <section class="schedule" id="harita">
       <div class="section-heading">
-        <div><p class="eyebrow">KATALOG HARİTASI</p><h2>{catalogueMeta.entryCount} yapımın içinde ne var?</h2></div>
-        <a href="/ara">Kataloğu aç <span>→</span></a>
+        <div><p class="eyebrow">KEŞİF YOLLARI</p><h2>Nasıl bir şey arıyorsun?</h2></div>
+        <a href="/ara">Tüm kataloğu aç <span>→</span></a>
       </div>
       <div class="catalogue-strip">
-        {catalogueOverview.map((item) => (
+        {catalogueOverview.slice(0, 5).map((item) => (
           <a href={item.href}>
             <strong>{item.value}</strong><span>{item.label}</span><small>incele ↗</small>
           </a>
@@ -107,20 +112,20 @@ const catalogueOverview = [
 
     <section class="season" id="sezon">
       <div class="section-heading section-heading--season">
-        <div><p class="eyebrow">{currentYear} SEÇKİSİ</p><h2>Yeni rotalar</h2></div>
-        <p class="section-intro">Açık katalogdaki güncel yapımlardan durum ve kaynak kapsamına göre hazırlanan gerçek veri seçkisi.</p>
+        <div><p class="eyebrow">{currentYear} SEÇKİSİ</p><h2>Şimdi keşfet</h2></div>
+        <p class="section-intro">Devam edenler, yeni tamamlananlar ve yakında gelecek yapımlardan güncel bir seçki.</p>
       </div>
       <SeasonShelf items={homepageAnime} client:load />
     </section>
 
     <section class="manifesto" id="listeler">
-      <p class="eyebrow">KENDİ ROTAN</p>
-      <h2>Bir liste değil,<br /><em>senin anime hafızan.</em></h2>
+      <div><p class="eyebrow">ROTA BY EQUINOX</p><h2>İzlediklerin kaybolmasın.</h2></div>
       <div class="manifesto__grid">
-        <article><span>01</span><h3>Takip et</h3><p>Bölüm ilerlemeni tek dokunuşla kaydet. Nerede kaldığını düşünme.</p></article>
-        <article><span>02</span><h3>Keşfet</h3><p>Tempo, atmosfer ve anlatı özellikleriyle gerçekten sana uyan yapımları bul.</p></article>
-        <article><span>03</span><h3>Hatırla</h3><p>Puanların, notların ve anıların zaman içinde kişisel arşivine dönüşsün.</p></article>
+        <article><span>01</span><h3>Tek dokunuşla ilerlet</h3><p>Bölümünü kaydet ve kaldığın yere doğrudan dön.</p></article>
+        <article><span>02</span><h3>Cihazlarında yanında</h3><p>Google hesabınla giriş yaparsan arşivin güvenli biçimde eşitlensin.</p></article>
+        <article><span>03</span><h3>Sana özel kalsın</h3><p>Puanların ve notların önce cihazında saklanır; kontrol sende kalır.</p></article>
       </div>
+      <a class="manifesto__cta" href="/listem">Kişisel arşivimi aç <span>→</span></a>
     </section>
   </main>
 
