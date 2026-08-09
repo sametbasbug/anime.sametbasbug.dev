@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
 import { seasonLabels, typeLabels, visualFor } from "../lib/catalogue-ui";
 import {
@@ -10,6 +10,7 @@ import {
   type PersonalStatus,
 } from "../lib/personal-list";
 import AnimeArtwork from "./AnimeArtwork";
+import RotaCompanion from "./RotaCompanion";
 
 type Props = { dataVersion: string };
 type ListRecord = { anime: CatalogueAnime; entry: PersonalListEntry };
@@ -19,11 +20,22 @@ const filters = [
   ...Object.entries(personalStatusLabels).map(([value, label]) => ({ value, label })),
 ] as { value: "ALL" | PersonalStatus; label: string }[];
 
+const shelfMeta: Record<PersonalStatus, { icon: string; kicker: string; note: string }> = {
+  WATCHING: { icon: "▶", kicker: "ŞİMDİ YAYINDA", note: "Kaldığın bölüm seni bekliyor." },
+  COMPLETED: { icon: "✦", kicker: "HATIRA RAFI", note: "Son jeneriğine kadar seninle kalanlar." },
+  PLANNED: { icon: "♡", kicker: "SIRADAKİ ROTA", note: "Bir gün mutlaka başlayacakların." },
+  DROPPED: { icon: "↷", kicker: "BELKİ BAŞKA ZAMAN", note: "Yolunuz şimdilik burada ayrıldı." },
+};
+
+const shelfOrder = Object.keys(personalStatusLabels) as PersonalStatus[];
+
 export default function MyListExperience({ dataVersion }: Props) {
   const [catalogue, setCatalogue] = useState<CatalogueAnime[]>([]);
   const [entries, setEntries] = useState<PersonalListEntry[]>([]);
   const [filter, setFilter] = useState<"ALL" | PersonalStatus>("ALL");
   const [loadState, setLoadState] = useState<"loading" | "ready" | "error">("loading");
+  const [celebratingId, setCelebratingId] = useState<string | null>(null);
+  const celebrationTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const refreshEntries = () => setEntries(
@@ -46,6 +58,10 @@ export default function MyListExperience({ dataVersion }: Props) {
     return unsubscribe;
   }, [dataVersion]);
 
+  useEffect(() => () => {
+    if (celebrationTimer.current !== null) window.clearTimeout(celebrationTimer.current);
+  }, []);
+
   const records = useMemo(() => {
     const byId = new Map(catalogue.map((anime) => [anime.id, anime]));
     return entries
@@ -57,6 +73,15 @@ export default function MyListExperience({ dataVersion }: Props) {
   const counts = Object.fromEntries(
     Object.keys(personalStatusLabels).map((status) => [status, records.filter(({ entry }) => entry.status === status).length]),
   ) as Record<PersonalStatus, number>;
+  const shelves = (filter === "ALL" ? shelfOrder : [filter])
+    .map((status) => ({ status, records: records.filter(({ entry }) => entry.status === status) }))
+    .filter(({ records: shelfRecords }) => shelfRecords.length > 0);
+
+  const celebrate = (animeId: string) => {
+    if (celebrationTimer.current !== null) window.clearTimeout(celebrationTimer.current);
+    setCelebratingId(animeId);
+    celebrationTimer.current = window.setTimeout(() => setCelebratingId(null), 1900);
+  };
 
   const update = (record: ListRecord, patch: Partial<PersonalListEntry>) => {
     const next = { ...record.entry, ...patch };
@@ -68,6 +93,7 @@ export default function MyListExperience({ dataVersion }: Props) {
       ? record.anime.episodes
       : record.entry.progress;
     update(record, { status, progress });
+    if (status === "COMPLETED" && record.entry.status !== "COMPLETED") celebrate(record.anime.id);
   };
 
   const changeProgress = (record: ListRecord, direction: -1 | 1) => {
@@ -81,19 +107,21 @@ export default function MyListExperience({ dataVersion }: Props) {
         ? "WATCHING"
         : record.entry.status;
     update(record, { progress, status });
+    if (status === "COMPLETED" && record.entry.status !== "COMPLETED") celebrate(record.anime.id);
   };
 
   if (loadState === "loading") {
-    return <div className="catalogue-loading"><span></span><p>Kişisel arşivin açılıyor…</p></div>;
+    return <div className="catalogue-loading companion-state"><RotaCompanion message="Rafları sayıyorum…" mood="curious" className="rota-companion--state" /><span></span><p>Kişisel arşivin açılıyor…</p></div>;
   }
 
   if (loadState === "error") {
-    return <div className="catalogue-empty"><span>!</span><h2>Arşiv şu anda açılamadı.</h2><p>Katalog bağlantısını kontrol edip sayfayı yenile.</p></div>;
+    return <div className="catalogue-empty companion-state"><RotaCompanion message="Bir şey ters gitti…" mood="sleepy" className="rota-companion--state" /><span>!</span><h2>Arşiv şu anda açılamadı.</h2><p>Katalog bağlantısını kontrol edip sayfayı yenile.</p></div>;
   }
 
   if (records.length === 0) {
     return (
       <div className="my-list-empty">
+        <RotaCompanion message="İlk favorin kim?" mood="happy" className="rota-companion--empty" />
         <span>0 / 900</span>
         <h2>İlk rotanı<br />kaydet.</h2>
         <p>Bir anime detayında “Listeme ekle” düğmesini kullan. Hesapsız yerel kalır; giriş yaptığında cihazlarınla eşitlenir.</p>
@@ -121,13 +149,23 @@ export default function MyListExperience({ dataVersion }: Props) {
       </div>
 
       {visible.length > 0 ? (
-        <div className="my-list-grid" aria-live="polite">
-          {visible.map((record) => {
-            const { anime, entry } = record;
-            const visual = visualFor(anime.id);
-            const progressPercent = anime.episodes > 0 ? Math.min(100, (entry.progress / anime.episodes) * 100) : 0;
-            return (
-              <article className="my-list-card" key={anime.id}>
+        <div className="list-shelves" aria-live="polite">
+          {shelves.map(({ status, records: shelfRecords }) => (
+            <section className={`list-shelf list-shelf--${status.toLowerCase()}`} key={status}>
+              <header className="list-shelf__heading">
+                <span>{shelfMeta[status].icon}</span>
+                <div><p>{shelfMeta[status].kicker}</p><h2>{personalStatusLabels[status]}</h2><small>{shelfMeta[status].note}</small></div>
+                <b>{shelfRecords.length}</b>
+              </header>
+              <div className="my-list-grid">
+                {shelfRecords.map((record) => {
+                  const { anime, entry } = record;
+                  const visual = visualFor(anime.id);
+                  const progressPercent = anime.episodes > 0 ? Math.min(100, (entry.progress / anime.episodes) * 100) : 0;
+                  const isCelebrating = celebratingId === anime.id;
+                  return (
+              <article className={`my-list-card${isCelebrating ? " is-celebrating" : ""}`} key={anime.id}>
+                {isCelebrating && <div className="completion-burst" aria-live="polite"><span>✦</span><strong>TAMAMLANDI!</strong><i>♡</i></div>}
                 <a className="my-list-card__art" href={`/anime/${anime.slug}`} aria-label={`${anime.title} detayını aç`}>
                   <AnimeArtwork art={visual.art} palette={visual.palette} compact />
                 </a>
@@ -160,11 +198,14 @@ export default function MyListExperience({ dataVersion }: Props) {
                   <a className="my-list-card__edit" href={`/anime/${anime.slug}`}>Puanı ve notu düzenle <span>→</span></a>
                 </div>
               </article>
-            );
-          })}
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
       ) : (
-        <div className="catalogue-empty"><span>0</span><h2>Bu rafta kayıt yok.</h2><p>Başka bir durum filtresi seç.</p></div>
+        <div className="catalogue-empty companion-state"><RotaCompanion message="Bu raf bomboş!" mood="curious" className="rota-companion--state" /><span>0</span><h2>Bu rafta kayıt yok.</h2><p>Başka bir durum filtresi seç.</p></div>
       )}
     </>
   );

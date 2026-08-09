@@ -5,6 +5,7 @@ import AnimeArtwork from "../../components/AnimeArtwork";
 import DataAttribution from "../../components/DataAttribution.astro";
 import DiscoveryCard from "../../components/DiscoveryCard.astro";
 import ListEditor from "../../components/ListEditor";
+import RotaCompanion from "../../components/RotaCompanion";
 import {
   catalogue,
   durationLabel,
@@ -44,15 +45,26 @@ const usefulSources = anime.sources
   <SiteHeader active="search" />
   <main class="detail-page">
     <a class="detail-back" href="/ara">← Kataloğa dön</a>
-    <section class="detail-hero">
-      <div class="detail-art">
-        <AnimeArtwork art={visual.art} palette={visual.palette} />
-        <span>ROTA / {anime.id}</span>
+    <section class="detail-hero detail-manga-spread">
+      <div class="detail-art-wrap">
+        <span class="detail-volume">VOL. {anime.season.year || "∞"}</span>
+        <div class="detail-art">
+          <AnimeArtwork art={visual.art} palette={visual.palette} />
+          <span>ROTA / {anime.id}</span>
+        </div>
+        <i class="detail-tape detail-tape--top" aria-hidden="true"></i>
+        <i class="detail-tape detail-tape--bottom" aria-hidden="true"></i>
+        <span class="detail-sfx" aria-hidden="true">KIRA!</span>
+        <RotaCompanion message="İyi seçim!" mood="curious" className="rota-companion--detail" />
       </div>
       <div class="detail-copy">
-        <p class="eyebrow"><a href={`/ara?type=${anime.type}`}>{typeLabels[anime.type]}</a> · {seasonLabels[anime.season.season]} {anime.season.year}</p>
+        <div class="detail-chapter">
+          <span>CHAPTER</span>
+          <b>{typeLabels[anime.type]}</b>
+          <i>{seasonLabels[anime.season.season]} {anime.season.year}</i>
+        </div>
         <h1>{anime.title}</h1>
-        {editorial?.summary && <p class="detail-deck">{editorial.summary}</p>}
+        {editorial?.summary && <div class="detail-intro-panel"><p class="detail-deck">{editorial.summary}</p><span aria-hidden="true">♡</span></div>}
         {aliases[0] && <p class="detail-alias">Diğer adlar: {aliases.slice(0, 2).join(" · ")}</p>}
         <ListEditor animeId={anime.id} title={anime.title} episodes={anime.episodes} client:load />
         <dl class="detail-facts">

@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="18" fill="#171719"/>
-  <circle cx="32" cy="32" r="23" fill="none" stroke="#f0ff66" stroke-width="4"/>
-  <path d="M20 40c6-15 16-21 30-18-13 2-21 11-23 26" fill="none" stroke="#f0ff66" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="46" cy="20" r="4" fill="#f0ff66"/>
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="#fff9f4" stroke="#342b4a" stroke-width="4"/>
+  <path d="M17 29 20 15l11 10h3l10-10 3 14" fill="#b79bf2" stroke="#342b4a" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="15" y="25" width="34" height="27" rx="14" fill="#a88bea" stroke="#342b4a" stroke-width="3"/>
+  <ellipse cx="26" cy="37" rx="2.5" ry="3.5" fill="#342b4a"/>
+  <ellipse cx="38" cy="37" rx="2.5" ry="3.5" fill="#342b4a"/>
+  <path d="m29 43 3 2 3-2" fill="none" stroke="#342b4a" stroke-width="2" stroke-linecap="round"/>
+  <path d="m48 12 2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#ffe875" stroke="#342b4a" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="21" cy="43" r="3" fill="#ff9bad" opacity=".75"/>
+  <circle cx="43" cy="43" r="3" fill="#ff9bad" opacity=".75"/>
 </svg>

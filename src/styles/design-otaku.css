@@ -52,6 +52,24 @@ body.design-otaku::before {
   background-size: 18px 18px;
   mask-image: linear-gradient(to bottom, #000, transparent 78%);
 }
+body.design-otaku { --season-accent: var(--sky); --season-glow: rgba(255,232,117,.34); }
+body.design-otaku.rota-season--spring { --season-accent: #f2a8c2; --season-glow: rgba(158,228,200,.30); }
+body.design-otaku.rota-season--summer { --season-accent: #75cfea; --season-glow: rgba(255,232,117,.40); }
+body.design-otaku.rota-season--autumn { --season-accent: #e99b7c; --season-glow: rgba(255,195,112,.28); }
+body.design-otaku.rota-season--winter { --season-accent: #9dbfe9; --season-glow: rgba(216,197,255,.34); }
+body.design-otaku::after {
+  content: "✦  ·  ♡  ·  ✧";
+  position: fixed;
+  z-index: -1;
+  top: 116px;
+  right: -38px;
+  color: color-mix(in srgb, var(--season-accent) 38%, transparent);
+  font-family: var(--display);
+  font-size: 26px;
+  letter-spacing: .32em;
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
 ::selection { color: var(--ink); background: var(--sun); }
 :focus-visible { outline: 3px solid var(--lavender); outline-offset: 3px; }
 input, select, textarea, button { color-scheme: light; }
@@ -377,6 +395,77 @@ body.design-otaku .detail-sidebar > div { border: 1px solid var(--line); backgro
 body.design-otaku .detail-studios a,
 body.design-otaku .detail-sidebar li a { color: var(--lavender-deep); }
 
+/* Anime detail: an open manga spread, not a database sheet */
+body.design-otaku .detail-manga-spread {
+  min-height: 690px;
+  padding-block: 36px 82px;
+  grid-template-columns: minmax(320px, 410px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(58px, 8vw, 118px);
+}
+body.design-otaku .detail-manga-spread::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 14px -34px 46px 34%;
+  border: 2px solid rgba(52,43,74,.08);
+  border-radius: 44px 18px 54px 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(241,231,255,.62));
+  box-shadow: 18px 18px 0 var(--season-glow);
+  transform: rotate(.6deg);
+}
+body.design-otaku .detail-manga-spread::after { content: "STORY MODE ✦"; bottom: 52px; }
+.detail-art-wrap { position: relative; min-width: 0; transform: rotate(-1.2deg); }
+.detail-art-wrap::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -18px 20px 21px -18px;
+  border: 2px dashed rgba(118,87,189,.33);
+  border-radius: 22px 48px 24px 39px;
+  transform: rotate(-2deg);
+}
+body.design-otaku .detail-art-wrap .detail-art {
+  width: 100%;
+  height: 570px;
+  border-radius: 18px 18px 50px 18px;
+  box-shadow: 10px 12px 0 var(--sakura), 13px 15px 0 var(--ink);
+}
+.detail-volume {
+  position: absolute;
+  z-index: 8;
+  top: 24px;
+  left: -28px;
+  padding: 8px 12px;
+  border: 2px solid var(--ink);
+  color: #fff;
+  background: var(--coral);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .12em;
+  transform: rotate(-7deg);
+}
+.detail-tape { position: absolute; z-index: 7; width: 66px; height: 20px; background: rgba(255,232,117,.75); border: 1px solid rgba(52,43,74,.12); }
+.detail-tape--top { top: -7px; right: 36px; transform: rotate(8deg); }
+.detail-tape--bottom { left: -9px; bottom: 21px; transform: rotate(-43deg); }
+.detail-sfx { position: absolute; z-index: 7; right: -38px; bottom: 72px; color: var(--coral); font-family: var(--display); font-size: 32px; font-style: normal; font-weight: 950; letter-spacing: -.06em; text-shadow: 2px 2px 0 #fff; transform: rotate(-9deg); }
+.rota-companion--detail { right: -77px; top: 74px; transform: scale(.9) rotate(7deg); }
+.detail-chapter { width: fit-content; margin-bottom: 18px; display: flex; align-items: stretch; border: 2px solid var(--ink); background: #fff; box-shadow: 4px 4px 0 var(--ink); transform: rotate(-.7deg); }
+.detail-chapter > * { min-height: 34px; padding: 0 10px; display: grid; place-items: center; font-style: normal; }
+.detail-chapter span { color: #fff; background: var(--lavender-deep); font-size: 7px; font-weight: 950; letter-spacing: .13em; }
+.detail-chapter b { border-right: 1px solid var(--ink); font-size: 9px; }
+.detail-chapter i { color: var(--muted); font-size: 8px; }
+body.design-otaku .detail-manga-spread .detail-copy h1 { max-width: 780px; font-size: clamp(46px, 5.8vw, 80px); line-height: .91; letter-spacing: -.065em; }
+.detail-intro-panel { position: relative; max-width: 710px; margin-top: 25px; padding: 19px 52px 19px 21px; border: 2px solid var(--ink); border-radius: 5px 22px 22px; background: #fff; box-shadow: 5px 5px 0 var(--sky); }
+.detail-intro-panel::before { content: ""; position: absolute; left: -12px; top: -2px; width: 18px; height: 18px; border-left: 2px solid var(--ink); border-top: 2px solid var(--ink); background: #fff; transform: skew(-27deg); }
+.detail-intro-panel .detail-deck { margin: 0; color: var(--muted); }
+.detail-intro-panel > span { position: absolute; right: 17px; top: 12px; color: var(--coral); font-size: 26px; font-weight: 900; transform: rotate(10deg); }
+body.design-otaku .detail-manga-spread .detail-facts div:nth-child(1) { background: #fff2b8; transform: rotate(-.6deg); }
+body.design-otaku .detail-manga-spread .detail-facts div:nth-child(2) { background: #e7f8ff; transform: translateY(4px); }
+body.design-otaku .detail-manga-spread .detail-facts div:nth-child(3) { background: #eee5ff; transform: rotate(.5deg); }
+body.design-otaku .detail-manga-spread .detail-facts div:nth-child(4) { background: #ffe8ee; transform: translateY(-2px) rotate(-.4deg); }
+
 /* Personal anime shelf */
 body.design-otaku .my-list-hero,
 body.design-otaku .account-hero { border-bottom: 0; }
@@ -401,6 +490,32 @@ body.design-otaku .progress-track { background: #eee8f3; }
 body.design-otaku .progress-track span { background: linear-gradient(90deg, var(--lavender), var(--coral)); }
 body.design-otaku .my-list-empty { border: 2px dashed var(--lavender); background: rgba(255,255,255,.72); }
 body.design-otaku .my-list-empty a { color: #fff; background: var(--lavender-deep); }
+
+.list-shelves { display: grid; gap: 54px; }
+.list-shelf { position: relative; }
+.list-shelf::after { content: ""; position: absolute; z-index: -1; right: -12px; bottom: -20px; left: -12px; height: 52px; border: 2px solid var(--ink); border-radius: 8px 8px 20px 20px; background: var(--shelf-color, #eee5ff); box-shadow: 6px 7px 0 rgba(52,43,74,.16); }
+.list-shelf--watching { --shelf-color: #dff5ff; --shelf-accent: #5aaed1; }
+.list-shelf--completed { --shelf-color: #fff0ae; --shelf-accent: #e9a745; }
+.list-shelf--planned { --shelf-color: #f0e7ff; --shelf-accent: var(--lavender-deep); }
+.list-shelf--dropped { --shelf-color: #ffe8ed; --shelf-accent: var(--coral); }
+.list-shelf__heading { position: relative; margin-bottom: 14px; padding: 13px 17px; display: grid; grid-template-columns: 43px 1fr auto; align-items: center; gap: 13px; border: 2px solid var(--ink); border-radius: 16px 16px 6px 16px; background: var(--shelf-color); box-shadow: 4px 4px 0 var(--ink); }
+.list-shelf__heading > span { width: 41px; aspect-ratio: 1; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; color: #fff; background: var(--shelf-accent); font-size: 15px; box-shadow: 2px 2px 0 var(--ink); }
+.list-shelf__heading p { margin: 0 0 2px; color: var(--shelf-accent); font-size: 7px; font-weight: 950; letter-spacing: .14em; }
+.list-shelf__heading h2 { margin: 0; font-family: var(--display); font-size: 23px; line-height: 1; }
+.list-shelf__heading small { display: block; margin-top: 5px; color: var(--muted); font-size: 8px; }
+.list-shelf__heading > b { min-width: 42px; color: var(--shelf-accent); font-family: var(--display); font-size: 34px; text-align: center; }
+body.design-otaku .list-shelf .my-list-card { position: relative; overflow: visible; }
+body.design-otaku .list-shelf .my-list-card:nth-child(odd) { transform: rotate(-.18deg); }
+body.design-otaku .list-shelf .my-list-card:nth-child(even) { transform: rotate(.18deg); }
+body.design-otaku .my-list-card.is-celebrating { z-index: 3; border-color: var(--lavender-deep); box-shadow: 7px 7px 0 var(--sun); animation: rota-card-celebrate .48s ease both; }
+.completion-burst { position: absolute; z-index: 20; inset: -14px -11px auto auto; min-width: 126px; padding: 11px 12px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 2px solid var(--ink); color: var(--ink); background: var(--sun); box-shadow: 4px 4px 0 var(--ink); font-size: 8px; transform: rotate(4deg); animation: rota-burst .42s cubic-bezier(.2,.8,.2,1.2) both; }
+.completion-burst span, .completion-burst i { color: var(--coral); font-size: 17px; font-style: normal; }
+.companion-state, body.design-otaku .my-list-empty { position: relative; }
+.rota-companion--state { top: 50%; right: 11%; transform: translateY(-45%) rotate(5deg) scale(.82); }
+.rota-companion--empty { top: 44px; right: 11%; transform: rotate(5deg); }
+
+@keyframes rota-card-celebrate { 0% { transform: scale(.97) rotate(-.6deg); } 60% { transform: scale(1.018) rotate(.4deg); } 100% { transform: scale(1); } }
+@keyframes rota-burst { from { opacity: 0; transform: scale(.35) rotate(-10deg); } to { opacity: 1; transform: scale(1) rotate(4deg); } }
 
 /* Account as an otaku corner */
 body.design-otaku .account-hero { position: relative; grid-template-columns: minmax(0,1fr) auto; align-items: center; }
@@ -482,6 +597,11 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
 @media (max-width: 1100px) {
   .account-dashboard { grid-template-columns: 1fr; }
   .account-dashboard--guest .account-shelf-card { min-height: 300px; }
+  body.design-otaku .detail-manga-spread { min-height: 0; grid-template-columns: 1fr; gap: 42px; }
+  body.design-otaku .detail-manga-spread::before { inset: 4px -14px 47% 12%; }
+  .detail-art-wrap { order: 2; width: min(100%, 470px); margin-inline: auto; }
+  body.design-otaku .detail-art-wrap .detail-art { height: 560px; }
+  .rota-companion--detail { right: -56px; }
 }
 
 @media (max-width: 760px) {
@@ -508,7 +628,32 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .manifesto__grid article:nth-child(n) { transform: none; }
   body.design-otaku .catalogue-hero::after { top: 6px; right: 0; font-size: 38px; }
   body.design-otaku .catalogue-hero::before { right: 0; bottom: 0; font-size: 51px; }
-  body.design-otaku .detail-hero::after { bottom: 16px; }
+  body.design-otaku::after { display: none; }
+  body.design-otaku .detail-manga-spread { padding-block: 22px 64px; gap: 34px; }
+  body.design-otaku .detail-manga-spread::before { inset: -5px -5px 49% 8px; border-radius: 26px; }
+  body.design-otaku .detail-manga-spread::after { right: 4px; bottom: 17px; }
+  body.design-otaku .detail-manga-spread .detail-copy h1 { font-size: clamp(42px, 13vw, 58px); }
+  .detail-chapter { margin-bottom: 15px; }
+  .detail-chapter > * { padding-inline: 8px; }
+  .detail-intro-panel { margin-top: 19px; padding: 16px 42px 16px 17px; }
+  .detail-art-wrap { width: calc(100% - 12px); transform: rotate(-.6deg); }
+  body.design-otaku .detail-art-wrap .detail-art { height: 470px; border-radius: 16px 16px 40px 16px; box-shadow: 7px 8px 0 var(--sakura), 10px 11px 0 var(--ink); }
+  .detail-volume { left: -11px; }
+  .detail-sfx { right: -8px; bottom: 48px; font-size: 25px; }
+  .rota-companion--detail { right: -14px; top: 52px; transform: scale(.72) rotate(6deg); }
+  .rota-companion--detail .rota-companion__bubble { display: none; }
+  .list-shelves { gap: 44px; }
+  .list-shelf::after { right: -5px; left: -5px; bottom: -16px; }
+  .list-shelf__heading { padding: 10px 11px; grid-template-columns: 37px 1fr auto; gap: 9px; }
+  .list-shelf__heading > span { width: 36px; }
+  .list-shelf__heading h2 { font-size: 20px; }
+  .list-shelf__heading small { max-width: 190px; }
+  .list-shelf__heading > b { min-width: 30px; font-size: 28px; }
+  body.design-otaku .list-shelf .my-list-card:nth-child(n) { transform: none; }
+  .rota-companion--empty { top: 32px; right: 1%; transform: scale(.72) rotate(5deg); }
+  .rota-companion--empty .rota-companion__bubble { display: none; }
+  .rota-companion--state { right: 0; transform: translateY(-45%) scale(.66) rotate(5deg); }
+  .rota-companion--state .rota-companion__bubble { display: none; }
   body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
   body.design-otaku .account-hero { grid-template-columns: 1fr; }
   body.design-otaku .account-hero::before { right: 10px; bottom: 4px; font-size: 60px; }
@@ -531,5 +676,5 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .brand__spark { transform: none !important; animation: none !important; }
+  .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .brand__spark, .completion-burst, .my-list-card.is-celebrating { animation: none !important; }
 }

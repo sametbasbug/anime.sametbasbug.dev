@@ -9,6 +9,14 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const month = new Date().getMonth();
+const season = month === 11 || month < 2
+  ? "winter"
+  : month < 5
+    ? "spring"
+    : month < 8
+      ? "summer"
+      : "autumn";
 ---
 
 <!doctype html>
@@ -21,7 +29,7 @@ const { title, description } = Astro.props;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
   </head>
-  <body class="design-otaku">
+  <body class:list={["design-otaku", `rota-season--${season}`]}>
     <slot />
     <SiteFooter />
   </body>
