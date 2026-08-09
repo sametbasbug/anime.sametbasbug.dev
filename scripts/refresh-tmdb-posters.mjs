@@ -7,7 +7,12 @@ const API_ROOT = "https://api.themoviedb.org/3";
 const token = process.env.TMDB_API_READ_TOKEN;
 const limitArg = process.argv.find((arg) => arg.startsWith("--limit="));
 const limit = limitArg ? Number(limitArg.split("=")[1]) : Number.POSITIVE_INFINITY;
+const idsArg = process.argv.find((arg) => arg.startsWith("--ids="));
+const requestedIds = idsArg
+  ? new Set(idsArg.split("=")[1].split(",").map((value) => value.trim()).filter(Boolean))
+  : null;
 const refresh = process.argv.includes("--refresh");
+const retryRejected = process.argv.includes("--retry-rejected");
 const concurrency = 6;
 
 if (!token) {
@@ -62,14 +67,34 @@ function parseLineageTitle(value) {
   let isLineage = false;
   let seasonNumber = null;
 
+  const branchMatch = base.match(/\s+Part\s+\d+\s*[:\-].*$/i);
+  if (branchMatch) {
+    base = base.replace(branchMatch[0], "").trim();
+    isLineage = true;
+  }
+
+  const relatedWorkRules = [
+    /\s+(?:OVA|OAD)(?:\s*\d+)?(?:\s*[:\-].*)?$/i,
+    /\s+(?:TV\s+)?Special(?:\s+Episode)?(?:\s*[:\-].*)?$/i,
+    /\s+Final\s+Stage$/i,
+  ];
+  for (const pattern of relatedWorkRules) {
+    if (!pattern.test(base)) continue;
+    base = base.replace(pattern, "").trim();
+    isLineage = true;
+    break;
+  }
+
   if (/\s+Part\s+\d+\s*$/i.test(base)) {
     base = base.replace(/\s+Part\s+\d+\s*$/i, "").trim();
     isLineage = true;
   }
 
   const seasonRules = [
+    [/\s*\((?:Season|Saison)\s*(\d+)\)\s*$/i, (match) => Number(match[1])],
     [/\s+(\d+)(?:st|nd|rd|th)\s+Season(?:\s*[:\-].*)?$/i, (match) => Number(match[1])],
     [/\s+Season\s*(\d+)(?:\s*[:\-].*)?$/i, (match) => Number(match[1])],
+    [/\s+(\d+)(?:st|nd|rd|th)\s+Stage$/i, (match) => Number(match[1])],
     [/\s+S\s*(\d+)$/i, (match) => Number(match[1])],
     [/\s+(Second|Third|Fourth|Fifth|Sixth)\s+Season$/i, (match) => ordinalWords[match[1].toLowerCase()]],
     [/(?<!\bAct)\s+(II|III|IV|V|VI)$/i, (match) => romanNumerals[match[1].toUpperCase()]],
@@ -102,7 +127,31 @@ function parseLineageTitle(value) {
 
 function seriesLineage(anime) {
   const parsed = [anime.title, ...anime.synonyms].map(parseLineageTitle);
-  if (!parsed[0].isLineage) return null;
+  const primaryIsExplicit = parsed[0].isLineage;
+  const taggedSequel = anime.tags.includes("sequel");
+  const relatedFormatEvidence = ["OVA", "SPECIAL"].includes(anime.type)
+    && parsed.some((item) => item.isLineage);
+  if (!primaryIsExplicit) {
+    const seasonEvidence = parsed
+      .filter((item) => item.isLineage && item.seasonNumber !== null)
+      .reduce((counts, item) => {
+        counts.set(item.seasonNumber, (counts.get(item.seasonNumber) ?? 0) + 1);
+        return counts;
+      }, new Map());
+    const strongestEvidence = [...seasonEvidence.values()].sort((left, right) => right - left)[0] ?? 0;
+    const baseEvidence = parsed
+      .filter((item) => item.isLineage)
+      .reduce((counts, item) => {
+        const normalizedBase = normalizeTitle(item.base);
+        counts.set(normalizedBase, (counts.get(normalizedBase) ?? 0) + 1);
+        return counts;
+      }, new Map());
+    const strongestBaseEvidence = [...baseEvidence.values()].sort((left, right) => right - left)[0] ?? 0;
+    if (strongestEvidence < 2
+      && strongestBaseEvidence < 2
+      && !taggedSequel
+      && !relatedFormatEvidence) return null;
+  }
 
   const aliases = [...new Map(parsed
     .filter((item) => item.base.length >= 3 && item.base.length <= 90)
@@ -110,7 +159,10 @@ function seriesLineage(anime) {
 
   return {
     aliases,
-    seasonNumber: parsed[0].seasonNumber,
+    // Synonym consensus proves this belongs to a parent series, but not that
+    // AniList and TMDB number seasons identically. Use the parent artwork only.
+    seasonNumber: primaryIsExplicit ? parsed[0].seasonNumber : null,
+    inferredFromAliases: !primaryIsExplicit,
   };
 }
 
@@ -127,7 +179,13 @@ function usefulQueries(anime) {
 
   const officialEnglish = values.find((value) => /^[\x00-\x7F]+$/.test(value) && value.includes(" "));
   const japanese = values.find((value) => /[\u3040-\u30ff\u3400-\u9fff]/.test(value));
-  return [...new Set([anime.title, officialEnglish, japanese].filter(Boolean))].slice(0, 3);
+  const asciiAliases = values.filter((value) => /^[\x00-\x7F]+$/.test(value));
+  return [...new Set([
+    anime.title,
+    officialEnglish,
+    ...asciiAliases,
+    japanese,
+  ].filter(Boolean))].slice(0, 6);
 }
 
 async function tmdb(path, attempt = 0) {
@@ -174,7 +232,7 @@ function candidateScore(anime, mediaType, candidate) {
   const accepted = (exact && animated && yearDifference <= 2)
     || (exact && regionalAnimation && yearDifference <= 1)
     || (bestSimilarity >= 0.9 && animated && yearDifference <= 1)
-    || (topSearchResult && animated && regionalAnimation && yearDifference === 0);
+    || (topSearchResult && animated && regionalAnimation && yearDifference === 0 && bestSimilarity >= 0.4);
   if (!accepted) return null;
 
   const score = (exact ? 60 : bestSimilarity * 40)
@@ -198,33 +256,23 @@ async function findPoster(anime) {
   const yearParameter = mediaType === "movie" ? "year" : "first_air_date_year";
   const candidates = new Map();
 
-  for (const query of usefulQueries(anime)) {
-    const params = new URLSearchParams({
-      query,
-      include_adult: "false",
-      language: "en-US",
-      [yearParameter]: String(anime.season.year),
-    });
-    const payload = await tmdb(`/search/${mediaType}?${params}`);
-    for (const [rank, candidate] of (payload.results ?? []).entries()) {
-      const previousCandidate = candidates.get(candidate.id);
-      candidates.set(candidate.id, {
-        ...candidate,
-        _bestRank: Math.min(previousCandidate?._bestRank ?? Number.POSITIVE_INFINITY, rank),
+  const queries = usefulQueries(anime);
+  for (const includeYear of [true, false]) {
+    for (const query of queries) {
+      const params = new URLSearchParams({
+        query,
+        include_adult: "false",
+        language: "en-US",
       });
-    }
-    if (candidates.size > 0) break;
-  }
-
-  if (candidates.size === 0) {
-    const params = new URLSearchParams({
-      query: anime.title,
-      include_adult: "false",
-      language: "en-US",
-    });
-    const payload = await tmdb(`/search/${mediaType}?${params}`);
-    for (const [rank, candidate] of (payload.results ?? []).entries()) {
-      candidates.set(candidate.id, { ...candidate, _bestRank: rank });
+      if (includeYear) params.set(yearParameter, String(anime.season.year));
+      const payload = await tmdb(`/search/${mediaType}?${params}`);
+      for (const [rank, candidate] of (payload.results ?? []).entries()) {
+        const previousCandidate = candidates.get(candidate.id);
+        candidates.set(candidate.id, {
+          ...candidate,
+          _bestRank: Math.min(previousCandidate?._bestRank ?? Number.POSITIVE_INFINITY, rank),
+        });
+      }
     }
   }
 
@@ -253,9 +301,16 @@ async function findSeriesPoster(anime) {
 
   const normalizedAliases = new Set(lineage.aliases.map(normalizeTitle));
   const officialEnglish = lineage.aliases.find((value) => /^[\x00-\x7F]+$/.test(value) && value.includes(" "));
+  const asciiAliases = lineage.aliases.filter((value) => /^[\x00-\x7F]+$/.test(value));
   const japanese = lineage.aliases.find((value) => /[\u3040-\u30ff\u3400-\u9fff]/.test(value));
-  const queries = [...new Set([lineage.aliases[0], officialEnglish, japanese].filter(Boolean))];
-  let parent = null;
+  const queries = [...new Set([
+    lineage.aliases[0],
+    officialEnglish,
+    ...asciiAliases,
+    japanese,
+  ].filter(Boolean))].slice(0, 6);
+  const japaneseProduction = anime.tags.includes("japanese production");
+  const parents = new Map();
 
   for (const query of queries) {
     const params = new URLSearchParams({
@@ -264,16 +319,35 @@ async function findSeriesPoster(anime) {
       language: "en-US",
     });
     const payload = await tmdb(`/search/tv?${params}`);
-    parent = (payload.results ?? []).find((candidate) => {
+    for (const candidate of payload.results ?? []) {
       const titles = [candidate.name, candidate.original_name];
       const exactAlias = titles.some((title) => normalizedAliases.has(normalizeTitle(title ?? "")));
+      const prefixedAlias = titles.some((title) => {
+        const normalizedTitle = normalizeTitle(title ?? "");
+        return [...normalizedAliases].some((alias) => alias.split(" ").length >= 2
+          && normalizedTitle.startsWith(`${alias} `));
+      });
       const animated = candidate.genre_ids?.includes(16) ?? false;
       const regionalAnimation = ["ja", "ko", "zh"].includes(candidate.original_language);
-      return exactAlias && animated && regionalAnimation;
-    });
-    if (parent) break;
+      if (!(exactAlias || prefixedAlias)
+        || !animated
+        || !(regionalAnimation || japaneseProduction)) continue;
+      const candidateYear = Number(candidate.first_air_date?.slice(0, 4)) || null;
+      const yearGap = candidateYear === null
+        ? 99
+        : anime.season.year - candidateYear;
+      const score = (exactAlias ? 100 : 60)
+        + (yearGap >= 0 ? Math.max(0, 30 - yearGap) : -50 - Math.abs(yearGap))
+        + Math.min(8, Math.log10((candidate.popularity ?? 0) + 1) * 2);
+      const existing = parents.get(candidate.id);
+      if (!existing || score > existing._lineageScore) {
+        parents.set(candidate.id, { ...candidate, _lineageScore: score });
+      }
+    }
   }
 
+  const parent = [...parents.values()]
+    .sort((left, right) => right._lineageScore - left._lineageScore)[0];
   if (!parent) return null;
 
   let posterPath = parent.poster_path;
@@ -298,6 +372,7 @@ async function findSeriesPoster(anime) {
     confidence: "series-lineage",
     posterKind,
     seasonNumber: lineage.seasonNumber,
+    inferredFromAliases: lineage.inferredFromAliases,
   };
 }
 
@@ -316,7 +391,7 @@ async function save() {
       matchedCount: Object.keys(orderedEntries).length,
       rejectedCount: Object.keys(orderedRejected).length,
       imageBaseUrl: "https://image.tmdb.org/t/p/w500",
-      matching: "Strict title + year + media type matching, plus exact series-lineage matching for explicit sequel titles; unmatched titles keep Rota artwork.",
+      matching: "Strict title + year + media type matching across known aliases, plus exact parent-series matching for explicit sequels or corroborated season aliases; unmatched titles keep Rota artwork.",
     },
     entries: orderedEntries,
     rejected: orderedRejected,
@@ -325,7 +400,9 @@ async function save() {
 }
 
 const pending = catalogue.items
-  .filter((anime) => refresh || (!entries[anime.id] && !rejected[anime.id]))
+  .filter((anime) => requestedIds?.has(String(anime.id))
+    || refresh
+    || (retryRejected ? Boolean(rejected[anime.id]) : (!entries[anime.id] && !rejected[anime.id])))
   .slice(0, limit);
 let completed = 0;
 
