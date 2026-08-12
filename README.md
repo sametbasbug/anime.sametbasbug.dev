@@ -133,7 +133,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 6. ~~Topluluk ve moderasyon~~ — production kabulüyle tamamlandı
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
 8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı
-9. **Paylaşılabilir Rota profili** — yerel uygulama hazır; production migration ve gerçek hesap kabulü bekliyor
+9. ~~Paylaşılabilir Rota profili~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 
 ## Sahiplik
 

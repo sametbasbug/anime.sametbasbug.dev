@@ -102,14 +102,14 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Arama, listeye dönüş, animeyi değerlendirme ve bölüm ilerletme temel görevleri masaüstü ve mobilde tanıtım/dekor katmanına takılmadan gerçekleştirilebilir.
 
-### 9. Paylaşılabilir Rota profili — aktif çalışma
+### 9. Paylaşılabilir Rota profili — tamamlandı
 
 - [x] Hesap sahibine paylaşım bağlantısını açma, kapatma ve güvenli kodunu yenileme kontrolleri ver.
 - [x] `Bağlantıya sahip olanlar` ve `Herkese açık` tercihlerinin gerçek salt-okunur profil sayfasını beslemesini sağla.
 - [x] Paylaşılan raflarda durum, ilerleme ve puanı göster; puanlar ile kişisel notlar için ayrı görünürlük kontrolleri ekle.
 - [x] E-posta, kullanıcı UUID'si, tombstone ve senkronizasyon metadatasını açmayan dar bir Supabase RPC kullan.
 - [x] Paylaşım sayfasını mobil ve masaüstünde doğrula; geçersiz, kapalı ve bulunamayan bağlantılar için güvenli boş durum hazırla.
-- [ ] Migration'ı production'a uygula; gerçek hesapla bağlantıyı açma, yenileme ve kapatma kabulünü tamamla.
+- [x] Migration'ı production'a uygula; gerçek hesapla bağlantıyı açma, yenileme ve kapatma kabulünü tamamla.
 
 **Tamamlanma ölçütü:** Kullanıcı rafını tek bağlantıyla kontrollü biçimde paylaşabilir; bağlantıyı kapatabilir veya yenileyebilir ve ziyaretçi yalnız sahibin açıkça görünür yaptığı alanları görür.
 
@@ -135,7 +135,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 İlk dört aşama ve 6. aşama tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor. Migration, kapalı temel tablo izinleri, RPC yetkileri ve ürün sahibinin `owner` rolü canlı sorguyla doğrulandı. Samet ve Nyx hesaplarıyla yayımlama, güncelleme, spoiler açma, raporlama, `İhlal yok` kararı ve silme uçtan uca geçti; test kayıtları temizlendi.
 
-9. aşamanın yerel uygulaması hazırdır: yüksek entropili bağlantı kodu, dar paylaşım RPC'si, alan bazlı puan/not izinleri, hesap kontrolleri ve `/paylas` salt-okunur görünümü eklendi. Otomatik güvenlik kontrolleri ile 1.920×950 ve 390×844 tarayıcı doğrulaması geçti. Production migration ve gerçek hesap kabulü tamamlanmadan aşama kapatılmayacak.
+9. aşama tamamlandı: yüksek entropili bağlantı kodu, dar paylaşım RPC'si, alan bazlı puan/not izinleri, hesap kontrolleri ve `/paylas` salt-okunur görünümü production altyapısına taşındı. Gerçek Nyx hesabıyla `PRIVATE → UNLISTED`, bağlantıyı açma, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma akışları geçti. Son durumda test hesabının paylaşımı kapalıdır; otomatik güvenlik kontrolleri ile 1.920×950 ve 390×844 tarayıcı doğrulaması temizdir.
 
 Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de `custom:orbit` adlı OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, kapsamlar `openid email profile`, PKCE akışı. Google girişi tamamen kaldırıldı — düğme, betik, ortam değişkeni ve Supabase'deki sağlayıcı kaydı dahil. Geçiş penceresi bırakılmadı; site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği e-posta eşleşmesiyle aynı kullanıcıya bağlandı, ikinci hesap açılmadı. Production'da uçtan uca giriş doğrulandı.
 

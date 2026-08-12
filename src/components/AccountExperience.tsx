@@ -162,13 +162,15 @@ export default function AccountExperience() {
     if (!client || !session) return;
     setBusy(true);
     setMessage("");
-    const { error } = await client.from("profiles").upsert({
-      id: session.user.id,
-      display_name: next.display_name.trim(),
-      list_visibility: next.list_visibility,
-      share_scores: next.share_scores,
-      share_notes: next.share_notes,
-    });
+    const { error } = await client
+      .from("profiles")
+      .update({
+        display_name: next.display_name.trim(),
+        list_visibility: next.list_visibility,
+        share_scores: next.share_scores,
+        share_notes: next.share_notes,
+      })
+      .eq("id", session.user.id);
     setBusy(false);
     if (error) {
       setMessage(`Profil kaydedilemedi: ${error.message}`);

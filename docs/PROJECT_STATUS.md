@@ -72,20 +72,21 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-1. **Paylaşılabilir Rota profili:** yerel uygulama ve görsel doğrulama hazır; production migration ile gerçek hesap kabulü bekliyor.
-2. **Kişisel istatistikler:** toplamlar, izleme süresi, tamamlama oranı, tür ve stüdyo eğilimleri.
-3. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
-4. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
+1. **Kişisel istatistikler:** toplamlar, izleme süresi, tamamlama oranı, tür ve stüdyo eğilimleri.
+2. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
+3. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
 
-9. aşama aktiftir. 10–12. aşamalar bu sırayla planlanmıştır; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+9. aşama tamamlandı. 10–12. aşamalar bu sırayla planlanmıştır; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
 
 ## 9. aşama durumu
 
-- Hesap ekranında `PRIVATE`, `UNLISTED` ve `PUBLIC` görünürlükleri; puan/not izinleri; bağlantıyı kopyalama ve token yenileme kontrolleri yerelde hazırdır.
+- Hesap ekranında `PRIVATE`, `UNLISTED` ve `PUBLIC` görünürlükleri; puan/not izinleri; bağlantıyı kopyalama ve token yenileme kontrolleri production şemasıyla çalışır.
 - `/paylas?rota=<uuid>` yalnız dar `get_shared_profile` RPC yanıtını kullanır. E-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları yanıt şemasına girmez; temel tablolar anonim erişime açılmaz.
 - Geçersiz, kapalı veya bulunamayan bağlantılar aynı güvenli boş duruma gider; sayfa `noindex,nofollow` yayımlar.
 - `sharing:check`, tam `npm run check` ve 1.131 sayfalık production build temizdir. Örnek RPC yanıtıyla 1.920×950 ve 390×844 tarayıcı görselleri doğrulandı; yatay taşma ve konsol hatası yoktur.
-- Sıradaki adım production migration, ardından gerçek hesapta açma → görüntüleme → token yenileme → eski bağlantının kapanması → görünürlüğü `PRIVATE` yapma kabul turudur. Bunlar tamamlanmadan 9. aşama kapanmaz.
+- `shareable_profiles` migration'ı production'a uygulandı. İki mevcut profil için tokenların dolu ve benzersiz olduğu; anonim rollerin temel profil/liste tablolarını okuyamadığı; paylaşım RPC'sinin anonim, token yenilemenin yalnız girişli kullanıcı tarafından çağrılabildiği canlı sorguyla doğrulandı.
+- Gerçek Nyx hesabında ilk profil kaydı eski `upsert` akışının korumalı `id` sütununda güncelleme yetkisi istemesi nedeniyle reddedildi. Token yetkisini gevşetmek yerine istemci yalnız izinli tercih sütunlarında dar `UPDATE` kullanacak biçimde düzeltildi ve regresyon kontrolü eklendi.
+- Ardından `PRIVATE → UNLISTED` kaydı, gerçek paylaşım görünümü, token yenileme, eski bağlantının kapanması, yeni bağlantının açılması ve yeniden `PRIVATE` yapma uçtan uca geçti. Son sorguda açık `UNLISTED/PUBLIC` test profili kalmadı; 9. aşama kabulü tamamlandı.
 
 ## 6. aşama durumu
 

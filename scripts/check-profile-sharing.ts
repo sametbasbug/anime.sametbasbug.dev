@@ -24,6 +24,7 @@ assert.equal(normalized.entries[0]?.progress, 4);
 assert.equal(normalizeSharedProfile({ list_visibility: "PRIVATE", entries: [] }), null);
 
 const migration = await readFile(new URL("../supabase/migrations/202608120003_shareable_profiles.sql", import.meta.url), "utf8");
+const accountExperience = await readFile(new URL("../src/components/AccountExperience.tsx", import.meta.url), "utf8");
 for (const requiredRule of [
   "profiles_share_token_idx",
   "security definer",
@@ -44,5 +45,8 @@ for (const forbiddenField of ["auth.users", "email", "client_updated_at'", "user
   );
   assert.equal(rpcBody.includes(forbiddenField), false, `Paylaşım RPC'si özel alan sızdırıyor: ${forbiddenField}`);
 }
+
+assert.match(accountExperience, /\.from\("profiles"\)\s*\.update\(/s, "Profil tercihleri yalnız izinli sütunlarda UPDATE kullanmalı.");
+assert.doesNotMatch(accountExperience, /\.from\("profiles"\)\.upsert\(/s, "Profil upsert'i kimlik sütunu güncelleme yetkisi istememeli.");
 
 console.log("Paylaşılabilir profil bağlantısı ve veri sınırları doğrulandı.");
