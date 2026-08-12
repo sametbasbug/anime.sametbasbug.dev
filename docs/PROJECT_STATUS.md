@@ -1,6 +1,6 @@
 # Equinox Rota proje durumu
 
-Son güncelleme: 9 Ağustos 2026
+Son güncelleme: 12 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -15,17 +15,23 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Korunan içerik ve marka katmanının hak sahibi: **Samet Başbuğ**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
-- Giriş yöntemi: Google Identity Services resmî düğmesi ve nonce-korumalı Supabase ID-token doğrulaması; Discord, e-posta/parola ve magic-link sunulmaz. Hesapsız local-first kullanım korunur.
+- Giriş yöntemi: **Equinox Orbit** (Supabase'de `custom:orbit` OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, PKCE). Google, Discord, e-posta/parola ve magic-link sunulmaz — Google sağlayıcısı Supabase'de de kapatıldı. Hesapsız local-first kullanım korunur. Tam yapılandırma: `docs/ACCOUNT_ARCHITECTURE.md`.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
 
 ## Tamamlananlar
 
+> Bu bölüm bir **geçmiş kaydıdır**, güncel durum tarifi değil. Aşağıdaki Google
+> satırları yapıldıkları gün doğruydu ve olduğu gibi bırakıldı; 12 Ağustos 2026
+> tarihli satırlar onları geçersiz kılar. Güncel giriş yöntemi için yukarıdaki
+> **Kilitli kararlar** bölümüne bak.
+
+
 - 900 yapımlık aranabilir katalog, 900 detay sayfası, tür/stüdyo keşfi ve benzer yapım yolları.
 - Dört durumlu kişisel liste; bölüm ilerlemesi, puan ve kişisel not.
 - Sekiz yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
-- Google OAuth hesabı, profil ve liste görünürlüğü tercihleri.
+- Orbit hesabı, profil ve liste görünürlüğü tercihleri.
 - Equinox organizasyonu altında Frankfurt bölgesinde Supabase Free `Equinox Rota` projesi.
 - İki RLS tablosu ve yedi sahip-kullanıcı politikası içeren migration.
 - Google OAuth, profil yazma ve yerel liste birleştirme testi.
@@ -46,6 +52,11 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Google OAuth marka bilgileri ana sayfa, gizlilik politikası ve kullanım koşulları bağlantılarıyla gönderildi. Google incelemesi sürüyor; uygulama hassas veya kısıtlı kapsam istemediği için veri erişimi doğrulaması gerekmiyor.
 - Ürün arayüzü açık, kawaii **Soft Celestial Otaku** sistemiyle baştan aşağı yenilendi. Manga editoryali, koleksiyon rafları, otaku köşesi hesap ekranı, mevsimsel renk katmanı ve özgün göksel yoldaş eklendi.
 - Göksel yoldaş boş, yükleme, hata, senkronizasyon ve anime tamamlama anlarına tepki verir; mikro animasyonlar ile göksel sayfa geçişleri `prefers-reduced-motion` uyumludur.
+- **12 Ağustos 2026 — giriş Orbit'e taşındı.** Google Identity Services tek-dokunuş akışı ve `signInWithIdToken` kaldırıldı; yerine tek bir `signInWithOAuth({ provider: 'custom:orbit' })` geldi. Üçüncü taraf betiği, nonce üretimi ve düğmeyi başkasının çizmesini bekleyen efekt de gitti. `PUBLIC_GOOGLE_CLIENT_ID` örnek ortam dosyasından ve deploy workflow'undan kaldırıldı.
+- Geçiş penceresi bırakılmadı: site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği silinmedi; e-posta eşleşmesiyle aynı `auth.users` satırına `custom:orbit` kimliği eklendi.
+- Supabase'de Google sağlayıcısı kapatıldı. Sitedeki düğmeyi kaldırmak yeterli değildi: sağlayıcı açıkken `/authorize?provider=google` adresine doğrudan giden biri Orbit'i hiç görmeden hesap açabiliyordu.
+- Gizlilik politikası ve kullanım koşulları aynı gün güncellendi; ikisi de sağlayıcı olarak Google'ı ve artık var olmayan bir parola akışını anlatıyordu.
+- Giriş düğmesinde `text-transform: uppercase` bilerek kullanılmıyor: sayfa `lang="tr"` ve tarayıcı Türkçe kuralıyla büyütünce "Orbit" ekranda "ORBİT" oluyor.
 - Favicon ile 1200×630 Open Graph/Twitter paylaşım kartı aynı marka diline taşındı; tüm sayfalar kanonik URL ve sosyal meta verileri üretir.
 - Ana sayfa, katalog, anime detayı, kişisel liste ve hesap ekranları 1.920×950 masaüstü ile 390×844 mobil viewport'larda gerçek tarayıcı görüntüsüyle doğrulandı; yatay taşma ve tarayıcı konsolu kontrol edildi.
 - Katalog yenileme hattı exact başlık/yıl/format gölge kayıtlarını tek kanonik kayıtta birleştiriyor; önemli başlıklarda en güçlü kayıt korunuyor ve seçkiye giren açık devam sezonlarının mevcut önceki sezonları 900 kayıt sınırı içinde tutuluyor. One Piece gölge kopyası kaldırıldı; Dandadan 1/2/3 birlikte katalogda. TMDB sezon eşlemesi ve doğrulanmış manuel override katmanı da devrede.
@@ -53,14 +64,16 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. Google OAuth ile iki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et.
-2. Google OAuth marka incelemesinin sonucunu takip et.
+1. İki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et. Bu borç Google döneminden devraldı; Orbit geçişi kapatmadı.
+2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
 3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+5. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
 
 ## Değişiklik sınırı
 
 - Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
-- Supabase üretim Auth URL yapılandırması canlıdır; Google OAuth istemci sırrı yalnız Google Cloud ve Supabase içinde tutulur.
+- Supabase üretim Auth URL yapılandırması canlıdır. Orbit istemci sırrı yalnız Supabase sağlayıcı ayarında ve Orbit veritabanındaki HMAC özeti olarak tutulur; düz metin hâli hiçbir yerde saklanmaz.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
 - TMDB poster yenilemesi yerelde `npm run posters:refresh` ile çalıştırılır. Script önce `TMDB_API_READ_TOKEN` ortam değişkenine, macOS'ta yoksa `equinox-rota-tmdb` Keychain kaydına bakar; poster yenilemek için ayrı GitHub Actions workflow'u kullanılmaz.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.

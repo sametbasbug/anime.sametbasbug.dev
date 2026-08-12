@@ -2,13 +2,30 @@
 
 İlk karar tarihi: 7 Ağustos 2026
 
-Kimlik doğrulama güncellemesi: 9 Ağustos 2026
+Kimlik doğrulama güncellemesi: 12 Ağustos 2026 (Google kaldırıldı, Orbit geldi)
 
 ## Karar
 
-Equinox Rota, hesap ve kullanıcı verisi için **Supabase Auth + Postgres + Row Level Security** kullanır. Kimlik doğrulama, Google Identity Services resmî düğmesinden alınan nonce-korumalı ID token'ının Supabase tarafından doğrulanmasıyla yapılır; kullanıcı Supabase alan adına yönlendirilmez. Discord, e-posta/parola ve e-posta magic-link alternatifleri sunulmaz. Hesap açmak istemeyen kullanıcı için local-first kullanım değişmeden devam eder.
+Equinox Rota, hesap ve kullanıcı verisi için **Supabase Auth + Postgres + Row Level Security** kullanır. Bu değişmedi.
 
-İlk üretim doğrulaması şifresiz e-posta bağlantıları ve Resend özel SMTP ile tamamlandı. Bu akış teknik olarak çalışsa da her girişin e-posta kotası tüketmesi nedeniyle kaldırıldı. Google OAuth geçişinin ardından Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapatıldı; Rota'ya özel Resend anahtarı ile Turnstile bileşeni silindi.
+Değişen kimliğin nereden geldiği: **giriş artık Equinox Orbit üzerinden.** Orbit,
+Supabase'de `custom:orbit` adlı bir OIDC sağlayıcısı olarak kayıtlı; site tek bir
+`signInWithOAuth({ provider: 'custom:orbit' })` çağrısı yapıyor, tarayıcı Orbit'e
+gidiyor, kullanıcı orada onay veriyor ve `/hesap` adresine dönüyor. Google,
+e-posta/parola, magic-link ve Discord sunulmaz. Hesap açmak istemeyen kullanıcı
+için local-first kullanım değişmeden devam eder.
+
+Bunun Rota tarafındaki maliyeti bilerek küçük tutuldu: RLS politikaları,
+`profiles`, `personal_list_entries` ve `cloud-sync.ts` **hiç değişmedi**. Supabase
+Auth bırakılmadı; yalnız kimliği getiren sağlayıcı değişti.
+
+Kimlik yönteminin geçmişi, tekrar edilmemesi için duruyor: ilk üretim
+doğrulaması şifresiz e-posta bağlantıları ve Resend özel SMTP ile yapıldı; her
+girişin e-posta kotası tüketmesi nedeniyle kaldırıldı. Ardından Google Identity
+Services tek-dokunuş akışı geldi (`signInWithIdToken`, nonce korumalı). O da
+12 Ağustos 2026'da kaldırıldı — geçiş penceresi bırakılmadı, çünkü site henüz
+halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı.
+Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalı kalmaya devam ediyor.
 
 Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürüm kontrollü statik veri olarak kalır. Supabase yalnızca kullanıcıya ait değişken veriyi saklar:
 
@@ -52,15 +69,52 @@ PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 
 Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_lists.sql`.
 
-## Google OAuth
+## Orbit ile giriş
 
-- Google Auth Platform uygulaması external ve production durumundadır.
-- Supabase Google sağlayıcısı yalnız `email` ve `profile` kapsamlarıyla kullanılır; dönüş Supabase Auth callback'i üzerinden `/hesap` sayfasına yapılır.
-- Hesap ekranı yalnız Google ile giriş sunar; hesapsız yerel kullanım korunur.
-- Eski iki magic-link hesabı ve verisi taşınmaz; bu temiz başlangıç ürün sahibi tarafından onaylanmıştır.
-- Nyx hesabıyla localhost ve production üzerinde gerçek OAuth onayı, oturum açma ve yerel liste birleştirme testi geçmiştir.
+- Supabase sağlayıcısı: **Custom / OIDC**, tanımlayıcı `custom:orbit`, görünen ad
+  `Orbit`. SDK'da adı birebir `custom:orbit` yazılmak zorunda.
+- Issuer: `https://orbit.sametbasbug.dev`. Discovery URL alanı **bilerek boş** —
+  boş bırakıldığında Supabase adresi issuer'dan türetiyor
+  (`{issuer}/.well-known/openid-configuration`) ve keşif belgesi tam orada
+  duruyor. İki alanı birden doldurmak, biri değişip diğeri değişmediğinde
+  sessizce kırılan bir çift bırakırdı.
+- İstemci: `orbit-equinox-rota`. İstemci gizli anahtarı yalnız Supabase sağlayıcı
+  ayarında ve Orbit'in veritabanındaki HMAC özeti olarak var; düz metin hâli
+  hiçbir yerde saklanmıyor.
+- Kapsamlar: `openid, email, profile`. Orbit tarafında da izin bu üçüyle sınırlı
+  kayıtlı; daha fazlası istenirse Orbit kullanıcıya yeniden sorar.
+- Orbit'in gönderdiği talepler: `sub` (Rota'ya özel, siteye göre farklı),
+  `name`, `preferred_username`, `picture`, `email`, `email_verified`.
+- Akış PKCE: sitenin Supabase istemcisi `flowType: "pkce"` ile kurulu, dönüş
+  `?code=` ile geliyor. **Elle** Supabase'in `/authorize` adresine gidip akış
+  başlatılırsa Supabase implicit biçimde (adres parçasında token) döner ve site
+  oturumu görmez — bu bir hata değil, sitenin kendi giriş düğmesini atlamanın
+  sonucudur. Doğrulama her zaman düğmeden başlar.
+- İzinli dönüş adresleri jokersiz: `https://anime.sametbasbug.dev/hesap`,
+  `http://localhost:4321/hesap`, `http://127.0.0.1:4321/hesap`. Yerel geliştirme
+  **4321** portunda koşmalı; başka portta düğme Orbit'e gider ama dönüş tutmaz.
+- Barındırma katmanı `/hesap` için `/hesap/`'e 301 veriyor ve sorgu dizesi
+  korunuyor, yani yetki kodu hayatta kalıyor. Kod sorgu dizesinde taşındığı için
+  bu adım kırılgandır; değiştirilirse yeniden ölçülmeli.
+- Mevcut Google kimliği silinmedi: e-posta eşleşmesi üzerinden aynı
+  `auth.users` satırına `custom:orbit` kimliği eklendi, ikinci hesap açılmadı.
+- Supabase'de Google sağlayıcısı **kapatıldı**. Sitedeki düğmeyi kaldırmak
+  yeterli değildi: sağlayıcı açık kaldığı sürece `/authorize?provider=google`
+  adresine doğrudan giden biri Orbit'i hiç görmeden hesap açabiliyordu.
 
-Google OAuth geçişi katalog ve editoryal veri modelini veya mevcut RLS politikalarını değiştirmez. Gelecekte zorunlu işlem e-postası gerekirse giriş akışından bağımsız değerlendirilir.
+### İzni geri almanın sınırı
+
+Kullanıcı Orbit panelindeki **bağlı siteler** bölümünden izni geri alabilir.
+Bu, Orbit'in Rota'ya verdiği anahtarları anında düşürür ve Rota Orbit'ten yeni
+bilgi alamaz. **Ama Rota'daki oturumu kapatmaz.** Supabase kendi JWT'sini ve
+yenileme anahtarını üretiyor ve yenilerken Orbit'e bir daha sormuyor; özel OIDC
+sağlayıcısında geri kanal çıkışı (back-channel logout) yok. Kullanıcının Rota'dan
+ayrıca çıkması gerekiyor ve arayüz bunu böyle yazıyor. Bir gün zorunlu çıkış
+gerekirse bu, Supabase tarafında ayrı bir iş olarak ele alınmalı.
+
+Orbit geçişi katalog ve editoryal veri modelini veya mevcut RLS politikalarını
+değiştirmez. Gelecekte zorunlu işlem e-postası gerekirse giriş akışından bağımsız
+değerlendirilir.
 
 ## Kurulu geliştirme ortamı
 
@@ -68,9 +122,9 @@ Google OAuth geçişi katalog ve editoryal veri modelini veya mevcut RLS politik
 - Plan ve bölge: Free, Central EU (Frankfurt).
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
-- Auth site URL'si `https://anime.sametbasbug.dev`; production `/hesap` ile `localhost` ve `127.0.0.1` hesap dönüş adresleri izinlidir.
-- Google OAuth, profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir.
-- İki fiziksel cihazda production girişi tamamlanmış ve kişisel liste sayısının iki cihazda eşit olduğu doğrulanmıştır. Çevrimdışı düzenleme ve silme senaryolarının Google OAuth geçişinden sonra yeniden doğrulanması beklenir.
+- Auth site URL'si `https://anime.sametbasbug.dev` (jokersiz); production `/hesap` ile `localhost:4321` ve `127.0.0.1:4321` hesap dönüş adresleri izinlidir. Supabase bu listeyi **dönüş bacağında** doğruluyor: `/authorize`'a verilen `redirect_to` başlangıçta hiç denetlenmiyor, yani listeyi istekle ölçmeye çalışmak yanıltır — panelden bakmak gerekir.
+- Profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir. Bu doğrulama Google akışıyla yapıldı ve Orbit geçişi kimlik katmanının altındaki bu yolları değiştirmiyor.
+- İki fiziksel cihazda production girişi tamamlanmış ve kişisel liste sayısının iki cihazda eşit olduğu doğrulanmıştır. Çevrimdışı düzenleme ve silme senaryoları **hâlâ** yeniden doğrulanmayı bekliyor; Orbit geçişi bu borcu kapatmadı, yalnız devraldı.
 - Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalıdır. Rota'ya özel Resend API anahtarı ile Cloudflare Turnstile bileşeni silinmiştir; ortak `sametbasbug.dev` alan adına ve Orbit anahtarına dokunulmamıştır.
 
 ## Ücretsiz plan sınırı
