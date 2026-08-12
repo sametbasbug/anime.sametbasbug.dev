@@ -36,6 +36,15 @@ function emptyStore(): PersonalListStore {
   return { version: 2, entries: {}, tombstones: {} };
 }
 
+function nextVersion(...versions: Array<string | undefined>) {
+  const previousTime = versions.reduce((latest, version) => {
+    if (!version) return latest;
+    const time = Date.parse(version);
+    return Number.isNaN(time) ? latest : Math.max(latest, time);
+  }, 0);
+  return new Date(Math.max(Date.now(), previousTime + 1)).toISOString();
+}
+
 function sanitizeEntry(value: unknown): PersonalListEntry | null {
   if (!value || typeof value !== "object") return null;
   const candidate = value as Partial<PersonalListEntry>;
@@ -95,9 +104,12 @@ export function replacePersonalList(store: PersonalListStore) {
 
 export function writePersonalEntry(entry: PersonalListEntry) {
   if (typeof window === "undefined") return entry;
-  const sanitized = sanitizeEntry({ ...entry, updatedAt: new Date().toISOString() });
-  if (!sanitized) return entry;
   const store = readPersonalList();
+  const sanitized = sanitizeEntry({
+    ...entry,
+    updatedAt: nextVersion(store.entries[entry.animeId]?.updatedAt, store.tombstones[entry.animeId]),
+  });
+  if (!sanitized) return entry;
   store.entries[sanitized.animeId] = sanitized;
   delete store.tombstones[sanitized.animeId];
   replacePersonalList(store);
@@ -118,8 +130,9 @@ export function createPersonalEntry(animeId: string): PersonalListEntry {
 export function removePersonalEntry(animeId: string) {
   if (typeof window === "undefined") return;
   const store = readPersonalList();
+  const deletedAt = nextVersion(store.entries[animeId]?.updatedAt, store.tombstones[animeId]);
   delete store.entries[animeId];
-  store.tombstones[animeId] = new Date().toISOString();
+  store.tombstones[animeId] = deletedAt;
   replacePersonalList(store);
 }
 

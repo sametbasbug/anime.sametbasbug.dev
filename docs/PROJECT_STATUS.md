@@ -64,7 +64,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. İki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Kısmi red bildiriminin gerçek oturumdaki görünümünü ayrıca kontrol et. Bu borç Google döneminden devraldı; Orbit geçişi kapatmadı.
+1. İki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu borç Google döneminden devraldı; Orbit geçişi kapatmadı. Yerel otomasyon artık iki bağımsız cihazın sıralı ve eşzamanlı yakınsamasını, tombstone silmeyi, kesilen gönderimde indirilen verinin korunmasını ve 200'lük parçalamayı kapsıyor. Eşzamanlı eski-yazma yarışını kapatan `202608120001_keep_newer_personal_list_version.sql` migration'ı production'a uygulandı; fonksiyon ve trigger canlı sorguyla doğrulandı. Kısmi-red bildiriminin gerçek production oturumundaki başlık rozeti, sorun sayacı, açıklayıcı mesajı ve Rota hata hâli ayrıca doğrulandı; geçici kayıt cihazdan temizlendi ve veritabanında kalıcılaşmadı.
 2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
 3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.

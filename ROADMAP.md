@@ -55,7 +55,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Google OAuth'u uygula; eski hesap aktarımı yapmadan magic-link akışını ve ona özel dış bağımlılıkları kaldır.
 - [x] Google Identity Services resmî düğmesine ve nonce-korumalı Supabase ID-token doğrulamasına geç; Supabase yönlendirme alan adını kullanıcı akışından çıkar.
 - [x] Kalıcı giriş yöntemini **Equinox Orbit** olarak değiştir; Google Identity Services akışını, `PUBLIC_GOOGLE_CLIENT_ID` bağımlılığını ve Supabase Google sağlayıcısını kaldır. *(12 Ağustos 2026 — yukarıdaki üç Google maddesini geçersiz kılar; onlar tarih kaydı olarak duruyor.)*
-- [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula.
+- [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. *(Kısmi-red bildiriminin gerçek production oturumundaki masaüstü görünümü doğrulandı.)*
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
 
@@ -101,11 +101,11 @@ Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de 
 
 Supabase Auth ve RLS bırakılmadı: `profiles`, `personal_list_entries`, politikalar ve `cloud-sync.ts` değişmedi. Değişen tek şey kimliğin nereden geldiği.
 
-Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor.
+Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştırması PostgREST ile yerel kaydın zaman biçimi farkına takılmıyor, gönderim parçalı yapılıyor, sunucunun reddettiği kayıt yalıtılıp cihazda korunuyor ve başlık rozetinde ayrıca bildiriliyor. İki cihazlı yakınsama otomasyonu genişletildi; eşzamanlı yüklemede eski sürümün yeniyi ezmesini önleyen veritabanı migration'ı production'a uygulandı ve canlı sorguyla doğrulandı.
 
 Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüketen magic-link modeli kaldırıldı. Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA koruması kapatıldı; Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni silindi. Hesapsız local-first kullanım korunur.
 
-Aşamanın kapanması için iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor; bu borç Google döneminden devraldı ve Orbit geçişi onu kapatmadı. Production'da ikinci eşitlemenin sıfır kayıt göndermesi doğrulandı; kısmi red bildiriminin gerçek oturumdaki görünümüne ayrıca bakılacak.
+Aşamanın kapanması için iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor; bu borç Google döneminden devraldı ve Orbit geçişi onu kapatmadı. Production'da ikinci eşitlemenin sıfır kayıt göndermesi doğrulandı. Kısmi-red bildirimi kontrollü, sunucuda kalıcılaşmayan geçersiz bir yerel kayıtla gerçek production oturumunda doğrulandı: başlık rozeti, sorun sayacı, açıklayıcı mesaj ve Rota'nın hata hâli doğru çalıştı; test kaydı ardından cihazdan temizlendi.
 
 Ürün deneyimi baştan aşağı **Soft Celestial Otaku** sistemine geçirildi: açık manga editoryali, kontrollü asimetri, koleksiyon rafları, otaku köşesi hesap ekranı ve yaşayan göksel yoldaş eklendi. Yoldaşın adı **Rota** olarak ürün anlatısına bağlandı; sabit yüz anatomisi site ikonu, favicon ve paylaşım kimliğinin ortak marka paydasıdır. Ana sayfada arama ile kişisel dönüş ilk görüş alanında; katalog Türkçe filtrelerle, anime detayı manga açılımıyla, Listem ise durumlara ayrılan raflarla çalışır. Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve sayfa geçişleri aynı marka dilini taşır. Kanonik tasarım ilkeleri `docs/DESIGN_DIRECTION.md` içindedir.
 

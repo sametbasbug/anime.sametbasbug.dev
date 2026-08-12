@@ -30,6 +30,14 @@ const browser = new EventTarget() as EventTarget & { localStorage: MemoryStorage
 browser.localStorage = localStorage;
 Object.assign(globalThis, { window: browser, localStorage });
 
+function useDevice(storage: MemoryStorage) {
+  browser.localStorage = storage;
+}
+
+function seedDevice(storage: MemoryStorage, store: PersonalListStore) {
+  storage.setItem(PERSONAL_LIST_STORAGE_KEY, JSON.stringify(store));
+}
+
 localStorage.setItem(PERSONAL_LIST_STORAGE_KEY, JSON.stringify({
   version: 1,
   entries: {
@@ -52,10 +60,12 @@ assert.deepEqual(migrated.tombstones, {});
 writePersonalEntry({ ...migrated.entries.legacy, progress: 5 });
 assert.equal(readPersonalList().version, 2);
 assert.equal(readPersonalList().entries.legacy.progress, 5);
+const editedAt = readPersonalList().entries.legacy.updatedAt;
 
 removePersonalEntry("legacy");
 assert.equal(readPersonalList().entries.legacy, undefined);
 assert.ok(readPersonalList().tombstones.legacy);
+assert.ok(Date.parse(readPersonalList().tombstones.legacy) > Date.parse(editedAt));
 
 // Bölüm ilerlemesi sunucudaki üst sınırı aşamaz; aşarsa toplu upsert reddedilir.
 writePersonalEntry({
@@ -171,6 +181,60 @@ function createFakeClient(rows: unknown[], rejectedIds: string[] = [], errorCode
   return { client, requests, accepted };
 }
 
+function createStatefulFakeClient(initialRows: FakeRow[] = []) {
+  const rows = new Map(initialRows.map((row) => [row.anime_id as string, structuredClone(row)]));
+
+  const client = {
+    from() {
+      return {
+        select() {
+          return {
+            async eq() {
+              return { data: [...rows.values()].map((row) => structuredClone(row)), error: null };
+            },
+          };
+        },
+        async upsert(batch: FakeRow[]) {
+          for (const row of batch) rows.set(row.anime_id as string, structuredClone(row));
+          return { error: null };
+        },
+      };
+    },
+  };
+
+  return { client, rows };
+}
+
+function createVersionGuardedFakeClient(initialRows: FakeRow[] = []) {
+  const rows = new Map(initialRows.map((row) => [row.anime_id as string, structuredClone(row)]));
+
+  const client = {
+    from() {
+      return {
+        select() {
+          return {
+            async eq() {
+              return { data: [...rows.values()].map((row) => structuredClone(row)), error: null };
+            },
+          };
+        },
+        async upsert(batch: FakeRow[]) {
+          for (const row of batch) {
+            const animeId = row.anime_id as string;
+            const current = rows.get(animeId);
+            const incomingTime = Date.parse(row.client_updated_at as string);
+            const currentTime = current ? Date.parse(current.client_updated_at as string) : Number.NEGATIVE_INFINITY;
+            if (incomingTime >= currentTime) rows.set(animeId, structuredClone(row));
+          }
+          return { error: null };
+        },
+      };
+    },
+  };
+
+  return { client, rows };
+}
+
 const merge = createFakeClient(remoteRows);
 const uploads = merge.accepted;
 
@@ -236,5 +300,223 @@ localStorage.setItem(PERSONAL_LIST_STORAGE_KEY, JSON.stringify(withBadRow));
 const denied = createFakeClient([], ["bozuk"], "42501");
 await assert.rejects(() => syncPersonalList(denied.client as never, "user-1"));
 assert.equal(denied.requests.length, 1);
+
+// İndirme başarılı, gönderme başarısız olursa buluttan alınan yeni kayıt yine
+// cihazda kalır. Bir sonraki deneme yalnız gönderilemeyen yerel farkı taşır.
+const interruptedStore: PersonalListStore = {
+  version: 2,
+  entries: {
+    upload_waiting: {
+      animeId: "upload_waiting",
+      status: "PLANNED",
+      progress: 0,
+      score: null,
+      note: "Bağlantı gelince gönder",
+      updatedAt: "2026-08-07T13:00:00.000Z",
+    },
+  },
+  tombstones: {},
+};
+seedDevice(localStorage, interruptedStore);
+useDevice(localStorage);
+const interrupted = createFakeClient([{
+  anime_id: "download_first",
+  status: "COMPLETED",
+  progress: 12,
+  score: 8,
+  note: "Buluttan geldi",
+  client_updated_at: "2026-08-07T12:00:00+00:00",
+  deleted_at: null,
+}], ["upload_waiting"], "42501");
+await assert.rejects(() => syncPersonalList(interrupted.client as never, "user-1"));
+assert.equal(readPersonalList().entries.download_first.note, "Buluttan geldi");
+assert.equal(readPersonalList().entries.upload_waiting.note, "Bağlantı gelince gönder");
+
+// Büyük arşivler tek dev istek yerine 200 kayıtlık parçalara ayrılır.
+const largeEntries = Object.fromEntries(Array.from({ length: 201 }, (_, index) => {
+  const animeId = `large_${index}`;
+  return [animeId, {
+    animeId,
+    status: "PLANNED" as const,
+    progress: 0,
+    score: null,
+    note: "",
+    updatedAt: "2026-08-07T13:00:00.000Z",
+  }];
+}));
+seedDevice(localStorage, { version: 2, entries: largeEntries, tombstones: {} });
+const chunked = createFakeClient([]);
+assert.deepEqual(
+  await syncPersonalList(chunked.client as never, "user-1"),
+  { downloaded: 0, uploaded: 201, rejected: [] },
+);
+assert.deepEqual(chunked.requests.map((batch) => batch.length), [200, 1]);
+
+// İki bağımsız cihaz sırayla çevrimiçi olduğunda birleşme aynı arşive yakınsar.
+// Bu tur tek bir sync çağrısının iç mantığını değil, gerçek kullanım sırasını
+// taklit eder: A yükler, B indirip kendi kaydını yükler, A son farkı indirir.
+const deviceA = new MemoryStorage();
+const deviceB = new MemoryStorage();
+seedDevice(deviceA, {
+  version: 2,
+  entries: {
+    a_only: {
+      animeId: "a_only",
+      status: "WATCHING",
+      progress: 3,
+      score: 8,
+      note: "A cihazı",
+      updatedAt: "2026-08-07T12:00:00.000Z",
+    },
+    shared: {
+      animeId: "shared",
+      status: "COMPLETED",
+      progress: 24,
+      score: 9,
+      note: "A'daki daha yeni düzenleme",
+      updatedAt: "2026-08-07T13:00:00.000Z",
+    },
+  },
+  tombstones: {},
+});
+seedDevice(deviceB, {
+  version: 2,
+  entries: {
+    b_only: {
+      animeId: "b_only",
+      status: "PLANNED",
+      progress: 0,
+      score: null,
+      note: "B cihazı",
+      updatedAt: "2026-08-07T12:30:00.000Z",
+    },
+    shared: {
+      animeId: "shared",
+      status: "WATCHING",
+      progress: 8,
+      score: null,
+      note: "B'deki eski düzenleme",
+      updatedAt: "2026-08-07T11:00:00.000Z",
+    },
+  },
+  tombstones: {},
+});
+
+const statefulCloud = createStatefulFakeClient();
+useDevice(deviceA);
+assert.deepEqual(
+  await syncPersonalList(statefulCloud.client as never, "user-1"),
+  { downloaded: 0, uploaded: 2, rejected: [] },
+);
+useDevice(deviceB);
+assert.deepEqual(
+  await syncPersonalList(statefulCloud.client as never, "user-1"),
+  { downloaded: 2, uploaded: 1, rejected: [] },
+);
+useDevice(deviceA);
+assert.deepEqual(
+  await syncPersonalList(statefulCloud.client as never, "user-1"),
+  { downloaded: 1, uploaded: 0, rejected: [] },
+);
+
+const convergedA = readPersonalList();
+useDevice(deviceB);
+const convergedB = readPersonalList();
+assert.deepEqual(convergedA, convergedB);
+assert.deepEqual(Object.keys(convergedA.entries).sort(), ["a_only", "b_only", "shared"]);
+assert.equal(convergedA.entries.shared.note, "A'daki daha yeni düzenleme");
+
+// A çevrimdışıyken siler ve sonra buluta yollar. Eski canlı kaydı taşıyan B
+// daha sonra bağlandığında tombstone'u indirir; silinen animeyi geri yüklemez.
+seedDevice(deviceA, {
+  version: 2,
+  entries: {},
+  tombstones: { erased: "2026-08-07T15:00:00.000Z" },
+});
+seedDevice(deviceB, {
+  version: 2,
+  entries: {
+    erased: {
+      animeId: "erased",
+      status: "WATCHING",
+      progress: 6,
+      score: null,
+      note: "Çevrimdışı kalmış eski kayıt",
+      updatedAt: "2026-08-07T14:00:00.000Z",
+    },
+  },
+  tombstones: {},
+});
+const deletionCloud = createStatefulFakeClient([{
+  user_id: "user-1",
+  anime_id: "erased",
+  status: "WATCHING",
+  progress: 6,
+  score: null,
+  note: "Eski bulut kaydı",
+  client_updated_at: "2026-08-07T14:00:00+00:00",
+  deleted_at: null,
+}]);
+
+useDevice(deviceA);
+assert.deepEqual(
+  await syncPersonalList(deletionCloud.client as never, "user-1"),
+  { downloaded: 0, uploaded: 1, rejected: [] },
+);
+useDevice(deviceB);
+assert.deepEqual(
+  await syncPersonalList(deletionCloud.client as never, "user-1"),
+  { downloaded: 1, uploaded: 0, rejected: [] },
+);
+const deletedOnB = readPersonalList();
+assert.equal(deletedOnB.entries.erased, undefined);
+assert.equal(deletedOnB.tombstones.erased, "2026-08-07T15:00:00.000Z");
+assert.equal(deletionCloud.rows.get("erased")?.deleted_at, "2026-08-07T15:00:00.000Z");
+
+// İki cihaz aynı eski bulut anlık görüntüsünü okuyup aynı anda yüklese bile
+// veritabanı koruması daha sonra ulaşan eski sürümü atlar. B'nin sonraki turu
+// A'nın yeni sürümünü indirerek yakınsar.
+seedDevice(deviceA, {
+  version: 2,
+  entries: {
+    concurrent: {
+      animeId: "concurrent",
+      status: "COMPLETED",
+      progress: 24,
+      score: 9,
+      note: "Yeni sürüm",
+      updatedAt: "2026-08-07T17:00:00.000Z",
+    },
+  },
+  tombstones: {},
+});
+seedDevice(deviceB, {
+  version: 2,
+  entries: {
+    concurrent: {
+      animeId: "concurrent",
+      status: "WATCHING",
+      progress: 4,
+      score: null,
+      note: "Eski sürüm",
+      updatedAt: "2026-08-07T16:00:00.000Z",
+    },
+  },
+  tombstones: {},
+});
+const guardedCloud = createVersionGuardedFakeClient();
+useDevice(deviceA);
+const concurrentA = syncPersonalList(guardedCloud.client as never, "user-1");
+useDevice(deviceB);
+const concurrentB = syncPersonalList(guardedCloud.client as never, "user-1");
+await Promise.all([concurrentA, concurrentB]);
+assert.equal(guardedCloud.rows.get("concurrent")?.note, "Yeni sürüm");
+
+useDevice(deviceB);
+assert.deepEqual(
+  await syncPersonalList(guardedCloud.client as never, "user-1"),
+  { downloaded: 1, uploaded: 0, rejected: [] },
+);
+assert.equal(readPersonalList().entries.concurrent.note, "Yeni sürüm");
 
 console.log("Kişisel liste geçişi ve local-first senkronizasyonu doğrulandı.");

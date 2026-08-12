@@ -46,11 +46,12 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 1. Her değişiklik önce `rota.personal-list.v1` yerel kaydına yazılır.
 2. Yerel kayıt biçimi v2'ye yükseltilmiştir; eski v1 kayıtları otomatik okunur.
 3. Giriş yapılmışsa değişiklikler kısa bir debounce sonrasında buluta gönderilir.
-4. İlk girişte yerel ve bulut kayıtları `client_updated_at` üzerinden birleştirilir; daha yeni değişiklik korunur. Karşılaştırma metin olarak değil anlık değer olarak yapılır: PostgREST timestamptz'i `+00:00` ofsetiyle döndürürken yerel kayıt `Z` biçimindedir ve iki biçim metin olarak asla eşit görünmez.
+4. İlk girişte yerel ve bulut kayıtları `client_updated_at` üzerinden birleştirilir; daha yeni değişiklik korunur. Karşılaştırma metin olarak değil anlık değer olarak yapılır: PostgREST timestamptz'i `+00:00` ofsetiyle döndürürken yerel kayıt `Z` biçimindedir ve iki biçim metin olarak asla eşit görünmez. Aynı cihazda art arda gelen iki değişiklik saat aynı milisaniyeyi verse bile yerel sürüm en az bir milisaniye ilerletilir.
 5. Silmeler fiziksel olarak hemen kaldırılmaz. `deleted_at` tombstone'u çevrimdışı cihazların silinen kaydı geri getirmesini önler.
 6. İndirilen kayıtlar gönderimden önce yerele yazılır; gönderim yarıda kesilse bile uzaktan alınan değişiklik kaybolmaz.
 7. Gönderim 200'lük parçalara bölünür. Sunucu bir parçayı veri (22xxx) veya kısıt (23xxx) hatasıyla reddederse satırlar tek tek denenir; yalnız bozuk kayıt elenir, cihazda korunur ve hesap ekranında bildirilir. Ağ, JWT ve RLS hataları isteğin tamamını ilgilendirdiği için satır satır yeniden denenmez.
 8. Senkronizasyon hatası yerel yazmayı engellemez; daha sonra yeniden denenebilir.
+9. İkinci migration uygulandığında, iki cihaz aynı eski bulut sürümünü okuyup eşzamanlı yükleme yaparsa `personal_list_entries_keep_newer_version` tetikleyicisi daha eski `client_updated_at` değerini taşıyan güncellemeyi atlar. Böylece istemcideki “yenisi kazanır” kararı koşulsuz `upsert` yarışıyla tersine dönmez.
 
 Bu ilk senkronizasyon modeli cihaz saatine dayanır. Ürün geniş kullanıcı kitlesine açılmadan önce saat sapması telemetrisi incelenmeli; gerekirse sunucu revizyonu/optimistic concurrency protokolüne geçilmelidir.
 
@@ -67,7 +68,10 @@ PUBLIC_SUPABASE_URL=
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-Migration dosyası: `supabase/migrations/202608070001_accounts_and_personal_lists.sql`.
+Migration dosyaları:
+
+- `supabase/migrations/202608070001_accounts_and_personal_lists.sql`
+- `supabase/migrations/202608120001_keep_newer_personal_list_version.sql`
 
 ## Orbit ile giriş
 
@@ -122,9 +126,10 @@ değerlendirilir.
 - Plan ve bölge: Free, Central EU (Frankfurt).
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
+- Eşzamanlı cihaz yarışında eski sürümün yeniyi ezmesini önleyen ikinci migration production veritabanına uygulanmış; fonksiyon ile trigger'ın varlığı canlı sorguyla ve davranışı otomatik yakınsama senaryosuyla doğrulanmıştır.
 - Auth site URL'si `https://anime.sametbasbug.dev` (jokersiz); production `/hesap` ile `localhost:4321` ve `127.0.0.1:4321` hesap dönüş adresleri izinlidir. Supabase bu listeyi **dönüş bacağında** doğruluyor: `/authorize`'a verilen `redirect_to` başlangıçta hiç denetlenmiyor, yani listeyi istekle ölçmeye çalışmak yanıltır — panelden bakmak gerekir.
 - Profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir. Bu doğrulama Google akışıyla yapıldı ve Orbit geçişi kimlik katmanının altındaki bu yolları değiştirmiyor.
-- İki fiziksel cihazda production girişi tamamlanmış ve kişisel liste sayısının iki cihazda eşit olduğu doğrulanmıştır. Çevrimdışı düzenleme ve silme senaryoları **hâlâ** yeniden doğrulanmayı bekliyor; Orbit geçişi bu borcu kapatmadı, yalnız devraldı.
+- İki fiziksel cihazda production girişi tamamlanmış ve kişisel liste sayısının iki cihazda eşit olduğu doğrulanmıştır. Çevrimdışı düzenleme ve silme senaryoları **hâlâ** yeniden doğrulanmayı bekliyor; Orbit geçişi bu borcu kapatmadı, yalnız devraldı. Kısmi-red başlık rozeti ile hesap ekranı gerçek production oturumunda kontrollü geçersiz yerel kayıtla doğrulandı; kayıt sunucuda kalıcılaşmadı ve test sonrasında cihazdan temizlendi.
 - Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalıdır. Rota'ya özel Resend API anahtarı ile Cloudflare Turnstile bileşeni silinmiştir; ortak `sametbasbug.dev` alan adına ve Orbit anahtarına dokunulmamıştır.
 
 ## Ücretsiz plan sınırı
