@@ -136,12 +136,12 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Güvenlik sınırı:** CSV yalnız okunabilir dışa aktarımdır. Geri yükleme yalnız sürümü tanınan Rota JSON dosyasından yapılır; mevcut arşiv topluca silinmez ve aynı anime için daha yeni zaman damgası kazanır.
 
-### 12. Editoryal genişleme — yerelde hazır, canlı kabul bekliyor
+### 12. Editoryal genişleme — tamamlandı
 
 - [x] Yayımlanmış özgün Türkçe profil sayısını 8'den 20 güçlü yapıma çıkar.
 - [x] Ana sayfada yayımlanmış profillerden beslenen beş tematik, haftalık dönüşümlü seçki oluştur.
 - [x] Özgünlük, spoiler, editoryal durum ve seçki bütünlüğü kontrollerini otomatik doğrulama hattıyla koru.
-- [ ] Değişiklikleri yayımla; canlı ana sayfa rotasyonu ile yeni profil sayfalarını kabul et.
+- [x] Değişiklikleri yayımla; canlı ana sayfa rotasyonu ile yeni profil sayfalarını kabul et.
 
 **Editoryal sınır:** Seçkiler yalnız `PUBLISHED` ve `spoilerSafe` onaylı profilleri kullanır. Her yayımlanmış profil rotasyonda tam bir kez yer alır; taslak veya kontroldeki metin ana sayfaya çıkamaz.
 
@@ -155,7 +155,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 11. aşama tamamlandı: tam JSON yedeği aktif kayıtlarla tombstone geçmişini taşır; okunabilir CSV başlık, durum, ilerleme, puan ve not alanlarını içerir. Geri yükleme biçim/sürüm/alan sınırlarını doğrular ve ortak “yenisi kazanır” katmanıyla mevcut local-first arşive birleşir. Yerel otomasyon ile masaüstü/mobil görsel QA'nın ardından `639484a` production'a yayımlandı. Canlı girişli hesapta JSON/CSV indirme, 390 px taşmasız yerleşim, hatasız konsol ve aynı JSON'u değişikliksiz birleştirirken daha yeni/eşit cihaz kaydını koruma kabulü geçti; geri yükleme buluta yazma tetiklemedi.
 
-12. aşamanın uygulaması yerelde hazırdır: Demon Slayer editoryal kontrolden geçti; Vinland Saga, Haikyuu!!, Bocchi the Rock!, Odd Taxi, Dungeon Meshi, Chainsaw Man, Ousama Ranking, 86, Kusuriya no Hitorigoto, Cyberpunk: Edgerunners ve Dandadan için özgün spoiler kontrollü profiller eklendi. Toplam 20 yayımlanmış profil beş tematik seçkiye ayrıldı; ana sayfa seçkisi her pazartesi otomatik değişir ve kullanıcı diğer seçkilere elle geçebilir. İçerik doğrulaması profil sayısını, spoiler onayını, bağlantı/yinelenen cümle yasağını ve her profilin rotasyonda tam bir kez yer almasını korur. Push ve canlı kabul tamamlanmadan aşama kapanmaz.
+12. aşama tamamlandı: Demon Slayer editoryal kontrolden geçti; Vinland Saga, Haikyuu!!, Bocchi the Rock!, Odd Taxi, Dungeon Meshi, Chainsaw Man, Ousama Ranking, 86, Kusuriya no Hitorigoto, Cyberpunk: Edgerunners ve Dandadan için özgün spoiler kontrollü profiller eklendi. Toplam 20 yayımlanmış profil beş tematik seçkiye ayrıldı; ana sayfa seçkisi her pazartesi otomatik değişir ve kullanıcı diğer seçkilere elle geçebilir. İçerik doğrulaması profil sayısını, spoiler onayını, bağlantı/yinelenen cümle yasağını ve her profilin rotasyonda tam bir kez yer almasını korur. `a792e4e` production'a yayımlandı; GitHub Pages çalıştırması `31652279533` başarıyla tamamlandı. Canlı domainde beş seçkinin tamamı, masaüstü ve 390 px mobil raf düzeni ile Vinland Saga'nın tam editoryal profili doğrulandı.
 
 Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de `custom:orbit` adlı OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, kapsamlar `openid email profile`, PKCE akışı. Google girişi tamamen kaldırıldı — düğme, betik, ortam değişkeni ve Supabase'deki sağlayıcı kaydı dahil. Geçiş penceresi bırakılmadı; site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği e-posta eşleşmesiyle aynı kullanıcıya bağlandı, ikinci hesap açılmadı. Production'da uçtan uca giriş doğrulandı.
 

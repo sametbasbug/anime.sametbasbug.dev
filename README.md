@@ -136,7 +136,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 9. ~~Paylaşılabilir Rota profili~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 10. ~~Kişisel istatistikler~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 11. ~~Yedekleme ve taşınabilirlik~~ — sürümlü JSON/CSV, doğrulamalı geri yükleme ve canlı kabulüyle tamamlandı
-12. Editoryal genişleme — 20 özgün profil ve beş haftalık seçki yerelde hazır; canlı kabul bekliyor
+12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
 
 ## Sahiplik
 

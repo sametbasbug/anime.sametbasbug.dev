@@ -72,16 +72,16 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-1. **Editoryal genişlemenin canlı kabulü:** 20 profil ile haftalık dönüşümlü ana sayfa seçkisini yayımla ve gerçek domain üzerinde doğrula.
+Aktif sıradaki ürün aşaması yok. 5. aşama, AniList'in yazılı yanıtı gelene kadar bilinçli olarak beklemede.
 
-9–11. aşamalar tamamlandı. 12. aşama yerelde hazırdır ve canlı kabul bekler; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+9–12. aşamalar tamamlandı; 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
 
 ## 12. aşama durumu
 
 - 11 yeni profil eklendi ve Kimetsu no Yaiba editoryal kontrolden geçirilerek yayımlandı; toplam yayımlanmış özgün Türkçe profil sayısı 8'den 20'ye çıktı. Tek taslak One Piece kaydı halka açılmaz.
 - Yayımlanmış profiller dörder yapımlık beş tematik seçkiye ayrıldı. Ana sayfadaki Rota Editörlüğü rafı pazartesi temelli UTC haftasına göre otomatik döner; beş numaralı kontrol seçkiler arasında elle geçiş de sağlar.
 - `content:check` artık `spoilerSafe` onayını, geçerli kontrol tarihini, editoryal metinde bağlantı ve yinelenen uzun cümle bulunmamasını, 20–30 yayımlanmış profil sınırını ve her profilin rotasyonda tam bir kez bulunmasını doğrular.
-- Yerel `content:check`, Astro kontrolü ve 1.131 sayfalık production build temizdir. Ana sayfa rafı 1.920×950 ve 390×844 boyutlarında görsel kontrolden geçti; beş seçkinin elle geçişi, haftalık sıra ve Vinland Saga'nın yeni editoryal profili tarayıcıda doğrulandı. Push/deploy yapılmadı.
+- Yerel `content:check`, Astro kontrolü ve 1.131 sayfalık production build temizdir. `a792e4e` production'a yayımlandı ve GitHub Pages çalıştırması `31652279533` başarıyla tamamlandı. Canlı ana sayfa rafı 1.920×950 ve 390×844 boyutlarında görsel kontrolden geçti; beş seçkinin elle geçişi, haftalık sıra ve Vinland Saga'nın başlık, değerlendirme ve hedef kitle metinleri doğrulandı. Mobil profil sayfası 390 px'de yatay taşma üretmedi; konsoldaki tek hata tarayıcı tarafından engellenen Cloudflare Analytics isteğiydi, uygulama hatası yoktu.
 
 ## 11. aşama durumu
 
