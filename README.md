@@ -135,7 +135,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı
 9. ~~Paylaşılabilir Rota profili~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 10. ~~Kişisel istatistikler~~ — production migration ve gerçek hesap kabulüyle tamamlandı
-11. Yedekleme ve taşınabilirlik — sürümlü JSON/CSV, doğrulamalı geri yükleme ve görsel QA yerelde hazır; canlı kabul bekliyor
+11. ~~Yedekleme ve taşınabilirlik~~ — sürümlü JSON/CSV, doğrulamalı geri yükleme ve canlı kabulüyle tamamlandı
 
 ## Sahiplik
 

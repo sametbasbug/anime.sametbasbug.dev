@@ -124,7 +124,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Hesaplama sınırı:** “Planlıyorum” toplam animeye dahildir ancak tamamlama oranının paydasına girmez. İzleme süresi katalogdaki yaklaşık bölüm sürelerinden türetilir; ortalama yalnız puan verilmiş kayıtlardan hesaplanır.
 
-### 11. Yedekleme ve taşınabilirlik — yerelde hazır, canlı kabul bekliyor
+### 11. Yedekleme ve taşınabilirlik — tamamlandı
 
 - [x] Rota arşivini sürümlü JSON ve okunabilir CSV olarak dışa aktar.
 - [x] Rota JSON yedeğini doğrulayıp mevcut local-first kayıtlarla güvenli biçimde birleştir.
@@ -132,7 +132,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Ortak taşınabilir kayıt/birleşim katmanını gelecekteki MAL/AniList eşleyicilerinin de kullanabileceği biçimde tasarla.
 - [x] Dosya boyutu, kayıt sayısı, alan sınırları, sürüm ve CSV formül enjeksiyonu korumalarını otomatik test et.
 - [x] Hesaplı ve hesapsız kullanım için aynı arayüzü masaüstü/mobilde doğrula.
-- [ ] Değişiklikleri yayımla; canlı domainde JSON/CSV indirme ve güvenli geri yükleme kabulünü tamamla.
+- [x] Değişiklikleri yayımla; canlı domainde JSON/CSV indirme ve güvenli geri yükleme kabulünü tamamla.
 
 **Güvenlik sınırı:** CSV yalnız okunabilir dışa aktarımdır. Geri yükleme yalnız sürümü tanınan Rota JSON dosyasından yapılır; mevcut arşiv topluca silinmez ve aynı anime için daha yeni zaman damgası kazanır.
 
@@ -150,7 +150,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 10. aşama tamamlandı: sahip görünümünde local-first istatistikler, paylaşılan profilde varsayılanı kapalı ayrı izin, ortak hesaplama katmanı ve regresyon kontrolü eklendi. Masaüstü/mobil sahip ile salt-okunur paylaşım ekranlarında yatay taşma veya konsol hatası görülmedi. `202608120004_personal_statistics.sql` production'a uygulandı; gerçek Nyx hesabında `PRIVATE → UNLISTED`, istatistik iznini açma, gerçek tokenlı paylaşım görünümü ve yeniden güvenli kapalı duruma dönme akışları geçti. Son durumda açık profil veya istatistik paylaşımı yoktur.
 
-11. aşamanın uygulaması yerelde hazırdır: tam JSON yedeği aktif kayıtlarla tombstone geçmişini taşır; okunabilir CSV başlık, durum, ilerleme, puan ve not alanlarını içerir. Geri yükleme biçim/sürüm/alan sınırlarını doğrular ve ortak “yenisi kazanır” katmanıyla mevcut local-first arşive birleşir. Masaüstü/mobil görsel QA, gerçek JSON/CSV indirme, bozuk dosya reddi ve daha eski yedeğin yeni cihaz kaydını koruması geçti. Push ve canlı domain kabulü yapılmadan aşama tamamlanmış sayılmaz.
+11. aşama tamamlandı: tam JSON yedeği aktif kayıtlarla tombstone geçmişini taşır; okunabilir CSV başlık, durum, ilerleme, puan ve not alanlarını içerir. Geri yükleme biçim/sürüm/alan sınırlarını doğrular ve ortak “yenisi kazanır” katmanıyla mevcut local-first arşive birleşir. Yerel otomasyon ile masaüstü/mobil görsel QA'nın ardından `639484a` production'a yayımlandı. Canlı girişli hesapta JSON/CSV indirme, 390 px taşmasız yerleşim, hatasız konsol ve aynı JSON'u değişikliksiz birleştirirken daha yeni/eşit cihaz kaydını koruma kabulü geçti; geri yükleme buluta yazma tetiklemedi.
 
 Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de `custom:orbit` adlı OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, kapsamlar `openid email profile`, PKCE akışı. Google girişi tamamen kaldırıldı — düğme, betik, ortam değişkeni ve Supabase'deki sağlayıcı kaydı dahil. Geçiş penceresi bırakılmadı; site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği e-posta eşleşmesiyle aynı kullanıcıya bağlandı, ikinci hesap açılmadı. Production'da uçtan uca giriş doğrulandı.
 
