@@ -152,7 +152,10 @@ raporlayan kişiyi veya rapor ayrıntısını yanlışlıkla açamaz.
   ve `moderator` rolleri yetkilidir.
 - Production migration uygulanmış, tablo/RPC varlığı ile temel tablo ve RPC
   izinleri canlı sorguyla doğrulanmıştır. Ürün sahibinin hesabına `owner` rolü
-  verilmiştir. Ayrıntılı ürün kuralları `docs/COMMUNITY_MODERATION.md` içindedir.
+  verilmiştir. Samet ve Nyx hesaplarıyla production'da spoiler, raporlama,
+  `İhlal yok` moderasyon kararı, güncelleme ve silme akışları uçtan uca
+  doğrulanmış; test kayıtları temizlenmiştir. Ayrıntılı ürün kuralları
+  `docs/COMMUNITY_MODERATION.md` içindedir.
 
 ## Ücretsiz plan sınırı
 

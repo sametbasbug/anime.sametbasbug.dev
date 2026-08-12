@@ -67,7 +67,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Durum:** Samet'in 12 Ağustos 2026 kararıyla 6. aşamadan sonraya ertelendi; entegrasyon izni veya kaynak kararı değişmedi.
 
-### 6. Topluluk ve moderasyon — yapım aşamasında
+### 6. Topluluk ve moderasyon — tamamlandı
 
 - [x] Topluluğu anime başlığına bağlı tekil incelemelerle sınırla; genel sosyal akışı ilk teslimin dışında tut.
 - [x] İnceleme yazma/düzenleme/silme, isteğe bağlı puan ve okuyucu eylemine bağlı spoiler perdesini uygula.
@@ -76,7 +76,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Tabloları doğrudan tarayıcı erişimine kapat; kamusal okuma ve yazmayı dar RPC'lerle sınırla.
 - [x] Topluluk kurallarını, kullanım koşullarını, gizlilik metnini ve otomatik koruma kontrollerini güncelle.
 - [x] Production migration'ını uygula ve ürün sahibine `owner` moderasyon rolü ver.
-- [ ] İki ayrı gerçek hesapla inceleme, spoiler, rapor ve moderasyon kararını production'da doğrula.
+- [x] İki ayrı gerçek hesapla inceleme, spoiler, rapor ve moderasyon kararını production'da doğrula.
 
 **Tamamlanma ölçütü:** Kullanıcı anime incelemesini güvenle yayımlayıp yönetebilir; spoiler okuyucu onayı olmadan açılmaz; raporlar özel kuyruğa düşer ve yalnız yetkili moderatör içerik kararı verebilir.
 
@@ -104,7 +104,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk dört aşama tamamlandı; 5. aşama sonraya ertelendi ve 6. aşama aktif çalışmadır. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak hazırlandı. Production migration'ı uygulandı, temel tabloların tarayıcı rollerine kapalı olduğu ve RPC yetkileri canlı sorguyla doğrulandı; ürün sahibine `owner` rolü verildi. İki ayrı gerçek hesapla uçtan uca production kabulü kaldı.
+İlk dört aşama ve 6. aşama tamamlandı; 5. aşama sonraya ertelendi. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor. Migration, kapalı temel tablo izinleri, RPC yetkileri ve ürün sahibinin `owner` rolü canlı sorguyla doğrulandı. Samet ve Nyx hesaplarıyla yayımlama, güncelleme, spoiler açma, raporlama, `İhlal yok` kararı ve silme uçtan uca geçti; test kayıtları temizlendi.
 
 Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de `custom:orbit` adlı OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, kapsamlar `openid email profile`, PKCE akışı. Google girişi tamamen kaldırıldı — düğme, betik, ortam değişkeni ve Supabase'deki sağlayıcı kaydı dahil. Geçiş penceresi bırakılmadı; site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği e-posta eşleşmesiyle aynı kullanıcıya bağlandı, ikinci hesap açılmadı. Production'da uçtan uca giriş doğrulandı.
 

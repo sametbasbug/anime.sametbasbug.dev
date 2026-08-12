@@ -64,10 +64,9 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. İki gerçek hesapla production'da inceleme yayımlama/düzenleme/silme, spoiler perdesi, raporlama ve moderasyon kararını doğrula.
-2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
-4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+1. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+2. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+3. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
 6. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
 
 ## 6. aşama durumu
@@ -78,7 +77,9 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - İncelemelerde bağlantı veritabanı katmanında reddedilir. Yeni inceleme ve raporlara saatlik sınır uygulanır; kullanıcı kendi içeriğini veya aynı içeriği ikinci kez raporlayamaz.
 - Raporlar otomatik gizleme üretmez. `app_metadata.rota_role = owner|moderator` kontrolünden geçen kuyruk, ihlal yok/gizle/kaldır kararlarını uygular.
 - Anime detay arayüzü, `/moderasyon` kuyruğu, `/topluluk-kurallari`, kullanım koşulları, gizlilik metni ve `community:check` yerelde hazırdır.
-- Production migration uygulandı; tablolar, RPC'ler, kapalı temel tablo izinleri ve RPC yetkileri 12/12 canlı sorguyla doğrulandı. Ürün sahibinin `app_metadata.rota_role` değeri `owner` yapıldı. Uçtan uca iki hesap testi, push ve deploy henüz yapılmadı.
+- Production migration uygulandı; tablolar, RPC'ler, kapalı temel tablo izinleri ve RPC yetkileri 12/12 canlı sorguyla doğrulandı. Ürün sahibinin `app_metadata.rota_role` değeri `owner` yapıldı.
+- `42409b4` production'a yayımlandı. Samet ve Nyx hesaplarıyla inceleme yayımlama, 8'den 9'a güncelleme, spoiler perdesini okuyucu eylemiyle açma, rapor gönderme, owner kuyruğunda `İhlal yok` kararı ve sahip silme akışları geçti. Son kontrolde inceleme ve rapor tablolarında test kaydı kalmadı.
+- 6. aşama kabulü tamamlandı.
 
 ## 4. aşama kabulü
 
