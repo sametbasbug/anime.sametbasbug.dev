@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import AccountExperience from "../components/AccountExperience";
+import { catalogueMeta } from "../lib/catalogue";
 ---
 
 <BaseLayout title="Hesap — Equinox Rota" description="Equinox Rota hesabını, cihazlar arası senkronizasyonu ve liste gizliliğini yönet.">
@@ -20,7 +21,7 @@ import AccountExperience from "../components/AccountExperience";
       </div>
     </section>
     <section class="account-experience">
-      <AccountExperience client:load />
+      <AccountExperience dataVersion={catalogueMeta.generatedAt} client:load />
     </section>
   </main>
 </BaseLayout>

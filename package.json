@@ -8,14 +8,15 @@
     "dev": "astro dev",
     "build": "npm run check && astro build",
     "preview": "astro preview",
-    "check": "npm run content:check && npm run sync:check && npm run auth:check && npm run community:check && npm run sharing:check && astro check",
+    "check": "npm run content:check && npm run sync:check && npm run auth:check && npm run community:check && npm run sharing:check && npm run statistics:check && astro check",
     "content:check": "node scripts/check-editorial.mjs",
     "sync:check": "tsx scripts/check-personal-list-sync.ts",
     "data:refresh": "node scripts/refresh-catalogue.mjs",
     "posters:refresh": "node scripts/refresh-tmdb-posters.mjs",
     "auth:check": "tsx scripts/check-orbit-signin.ts",
     "community:check": "tsx scripts/check-community.ts",
-    "sharing:check": "tsx scripts/check-profile-sharing.ts"
+    "sharing:check": "tsx scripts/check-profile-sharing.ts",
+    "statistics:check": "tsx scripts/check-personal-statistics.ts"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",

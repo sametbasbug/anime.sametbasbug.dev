@@ -13,6 +13,7 @@ export type SharedProfile = {
   list_visibility: "UNLISTED" | "PUBLIC";
   share_scores: boolean;
   share_notes: boolean;
+  share_statistics: boolean;
   entries: SharedListEntry[];
 };
 
@@ -59,6 +60,7 @@ export function normalizeSharedProfile(value: unknown): SharedProfile | null {
     list_visibility: candidate.list_visibility,
     share_scores: candidate.share_scores === true,
     share_notes: candidate.share_notes === true,
+    share_statistics: candidate.share_statistics === true,
     entries,
   };
 }

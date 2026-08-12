@@ -509,6 +509,27 @@ main { overflow: hidden; }
 .account-sharing__actions button { flex: 1; min-height: 39px; padding: 9px 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 8px; font-weight: 800; cursor: pointer; }
 .account-sharing__actions button:disabled { cursor: not-allowed; opacity: .48; }
 
+.personal-statistics { grid-column: 1 / -1; min-width: 0; padding: 30px; border: 1px solid var(--line); background: var(--paper-deep); }
+.personal-statistics--shared { margin-top: 34px; }
+.personal-statistics > header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.personal-statistics > header p { margin: 0 0 4px; color: var(--coral); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
+.personal-statistics > header h2 { margin: 0; font-family: var(--display); font-size: clamp(28px, 4vw, 44px); line-height: 1; letter-spacing: -.04em; }
+.personal-statistics > header > span { color: var(--coral); font-size: 32px; }
+.personal-statistics__loading { min-height: 180px; margin: 0; display: grid; place-items: center; color: var(--muted); font-size: 10px; }
+.personal-statistics__metrics { margin-top: 24px; display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); background: var(--paper); }
+.personal-statistics__metrics div { min-height: 92px; padding: 15px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
+.personal-statistics__metrics div:last-child { border: 0; }
+.personal-statistics__metrics strong { font-family: var(--display); font-size: 27px; line-height: 1; }
+.personal-statistics__metrics span { margin-top: 5px; color: var(--muted); font-size: 7px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.personal-statistics__rankings { margin-top: 14px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.personal-statistics__ranking { min-height: 156px; padding: 17px; border: 1px solid var(--line); background: var(--paper); }
+.personal-statistics__ranking > p { margin: 0 0 11px; color: var(--muted); font-size: 7px; font-weight: 900; letter-spacing: .1em; }
+.personal-statistics__ranking ol { margin: 0; padding: 0; list-style: none; }
+.personal-statistics__ranking li { min-height: 31px; display: flex; align-items: center; justify-content: space-between; gap: 18px; border-top: 1px solid var(--line); font-size: 10px; }
+.personal-statistics__ranking li b { color: var(--coral); }
+.personal-statistics__ranking small { display: block; max-width: 300px; color: var(--muted); font-size: 9px; line-height: 1.55; }
+.personal-statistics__note { margin: 14px 0 0; color: var(--muted); font-size: 8px; line-height: 1.5; }
+
 .shared-profile-page { width: var(--page); min-height: calc(100vh - 76px); margin: 0 auto; overflow: visible; }
 .shared-profile-hero { padding: 72px 0 52px; display: grid; grid-template-columns: 1fr minmax(300px, 440px); align-items: end; gap: 64px; border-bottom: 1px solid var(--line); }
 .shared-profile-hero h1 { margin: 0; font-family: var(--display); font-size: clamp(68px, 8vw, 118px); line-height: .82; letter-spacing: -.07em; text-transform: uppercase; }

@@ -29,7 +29,7 @@ Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalı kalmaya devam ed
 
 Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürüm kontrollü statik veri olarak kalır. Supabase yalnızca kullanıcıya ait değişken veriyi saklar:
 
-- profil adı ve liste görünürlüğü tercihi;
+- profil adı; liste, puan, not ve türetilmiş istatistik görünürlüğü tercihleri;
 - anime durumu, bölüm ilerlemesi, kişisel puan ve özel not;
 - cihazlar arası silme işlemlerini taşıyan tombstone kayıtları.
 
@@ -74,6 +74,7 @@ Migration dosyaları:
 - `supabase/migrations/202608120001_keep_newer_personal_list_version.sql`
 - `supabase/migrations/202608120002_community_reviews_and_moderation.sql`
 - `supabase/migrations/202608120003_shareable_profiles.sql`
+- `supabase/migrations/202608120004_personal_statistics.sql` *(production bekliyor)*
 
 ## Orbit ile giriş
 
@@ -130,6 +131,7 @@ değerlendirilir.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
 - Eşzamanlı cihaz yarışında eski sürümün yeniyi ezmesini önleyen ikinci migration production veritabanına uygulanmış; fonksiyon ile trigger'ın varlığı canlı sorguyla ve davranışı otomatik yakınsama senaryosuyla doğrulanmıştır.
 - Paylaşılabilir profil migration'ı production'a uygulanmıştır. Tokenların dolu/benzersiz oluşu, temel tabloların anonim erişime kapalı kalması ve RPC yetki sınırları canlı sorguyla doğrulandı. Gerçek Nyx hesabında `PRIVATE → UNLISTED`, paylaşım görünümü, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma kabulü geçti; test sonunda açık profil bırakılmadı.
+- Kişisel istatistikler tarayıcıda mevcut liste ile statik katalogdan türetilir; ayrı bir istatistik kaydı tutulmaz. Paylaşım için varsayılanı kapalı `profiles.share_statistics` tercihini ve dar RPC yanıtını genişleten migration yerelde hazırdır, production'a henüz uygulanmamıştır.
 - Auth site URL'si `https://anime.sametbasbug.dev` (jokersiz); production `/hesap` ile `localhost:4321` ve `127.0.0.1:4321` hesap dönüş adresleri izinlidir. Supabase bu listeyi **dönüş bacağında** doğruluyor: `/authorize`'a verilen `redirect_to` başlangıçta hiç denetlenmiyor, yani listeyi istekle ölçmeye çalışmak yanıltır — panelden bakmak gerekir.
 - Profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir. Bu doğrulama Google akışıyla yapıldı ve Orbit geçişi kimlik katmanının altındaki bu yolları değiştirmiyor.
 - İki fiziksel cihazda production girişi ve canlı liste eşitleme tamamlandı; Samet 12 Ağustos 2026'da bunu ürün kabulü için yeterli saydı. Rota çevrimdışı açılma/gezinme vadeden bir PWA olmadığından çevrimdışı site kullanımı ayrı kabul şartı değildir. Cihaz yakınsaması ve tombstone silme otomatik senaryolarla korunur. Kısmi-red başlık rozeti ile hesap ekranı gerçek production oturumunda kontrollü geçersiz yerel kayıtla doğrulandı; kayıt sunucuda kalıcılaşmadı ve test sonrasında cihazdan temizlendi.

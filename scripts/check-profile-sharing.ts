@@ -12,6 +12,7 @@ const normalized = normalizeSharedProfile({
   list_visibility: "UNLISTED",
   share_scores: true,
   share_notes: false,
+  share_statistics: true,
   entries: [
     { anime_id: "1", status: "WATCHING", progress: 4.9, score: 8, note: null },
     { anime_id: "bad", status: "UNKNOWN", progress: 0, score: 5, note: "drop me" },
@@ -19,6 +20,7 @@ const normalized = normalizeSharedProfile({
 });
 assert.ok(normalized);
 assert.equal(normalized.display_name, "Nyx");
+assert.equal(normalized.share_statistics, true);
 assert.equal(normalized.entries.length, 1);
 assert.equal(normalized.entries[0]?.progress, 4);
 assert.equal(normalizeSharedProfile({ list_visibility: "PRIVATE", entries: [] }), null);

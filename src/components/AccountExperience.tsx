@@ -1,17 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
-import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
+import type { CatalogueAnime } from "../lib/catalogue-ui";
+import { readPersonalList, subscribeToPersonalList, type PersonalListEntry } from "../lib/personal-list";
+import { calculateRotaStatistics } from "../lib/personal-statistics";
 import { buildShareUrl } from "../lib/profile-sharing";
 import { getSupabaseClient } from "../lib/supabase";
+import PersonalStatisticsPanel from "./PersonalStatisticsPanel";
 import RotaCompanion from "./RotaCompanion";
 
+type Props = { dataVersion: string };
 type Visibility = "PRIVATE" | "UNLISTED" | "PUBLIC";
 type Profile = {
   display_name: string;
   list_visibility: Visibility;
   share_scores: boolean;
   share_notes: boolean;
+  share_statistics: boolean;
   share_token: string;
 };
 
@@ -42,7 +47,7 @@ const visibilityLabels: Record<Visibility, { title: string; detail: string }> = 
   PUBLIC: { title: "Herkese açık", detail: "Paylaşım sayfası açıldığında profilin herkese görünür olabilir." },
 };
 
-export default function AccountExperience() {
+export default function AccountExperience({ dataVersion }: Props) {
   const client = useMemo(() => getSupabaseClient(), []);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(Boolean(client));
@@ -53,15 +58,23 @@ export default function AccountExperience() {
     list_visibility: "PRIVATE",
     share_scores: true,
     share_notes: false,
+    share_statistics: false,
     share_token: "",
   });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
+  const [localEntries, setLocalEntries] = useState<PersonalListEntry[]>([]);
+  const [catalogue, setCatalogue] = useState<CatalogueAnime[]>([]);
+  const [catalogueLoading, setCatalogueLoading] = useState(true);
   const autoSyncedUserRef = useRef<string | null>(null);
 
   const refreshLocalCount = useCallback(() => {
-    setLocalCount(Object.keys(readPersonalList().entries).length);
+    const entries = Object.values(readPersonalList().entries);
+    setLocalCount(entries.length);
+    setLocalEntries(entries);
   }, []);
+
+  const statistics = useMemo(() => calculateRotaStatistics(localEntries, catalogue), [catalogue, localEntries]);
 
   const syncForUser = useCallback(async (userId: string, announceSuccess: boolean) => {
     if (!client) return;
@@ -89,6 +102,19 @@ export default function AccountExperience() {
   }, [refreshLocalCount]);
 
   useEffect(() => {
+    let active = true;
+    fetch(`/data/catalogue.json?v=${encodeURIComponent(dataVersion)}`)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Catalogue request failed: ${response.status}`);
+        return response.json() as Promise<CatalogueAnime[]>;
+      })
+      .then((items) => { if (active) setCatalogue(items); })
+      .catch(() => {})
+      .finally(() => { if (active) setCatalogueLoading(false); });
+    return () => { active = false; };
+  }, [dataVersion]);
+
+  useEffect(() => {
     if (!client) return;
     let active = true;
     const loadingTimer = window.setTimeout(() => {
@@ -99,7 +125,7 @@ export default function AccountExperience() {
       if (!nextSession) return;
       const { data, error } = await client
         .from("profiles")
-        .select("display_name,list_visibility,share_scores,share_notes,share_token")
+        .select("display_name,list_visibility,share_scores,share_notes,share_statistics,share_token")
         .eq("id", nextSession.user.id)
         .maybeSingle();
       if (active && data && !error) setProfile(data as Profile);
@@ -169,6 +195,7 @@ export default function AccountExperience() {
         list_visibility: next.list_visibility,
         share_scores: next.share_scores,
         share_notes: next.share_notes,
+        share_statistics: next.share_statistics,
       })
       .eq("id", session.user.id);
     setBusy(false);
@@ -280,6 +307,7 @@ export default function AccountExperience() {
           <p>Giriş yapmadan da kullanmaya devam edebilirsin. Kayıtların bu tarayıcıda kalır.</p>
           <a href="/listem">Rafımı aç <span>→</span></a>
         </aside>
+        <PersonalStatisticsPanel statistics={statistics} loading={catalogueLoading} />
       </div>
     );
   }
@@ -334,6 +362,10 @@ export default function AccountExperience() {
             <input type="checkbox" checked={profile.share_notes} onChange={(event) => setProfile({ ...profile, share_notes: event.target.checked })} />
             <span><b>Kişisel notlarımı göster</b><small>Notların sana özeldir; yalnız açarsan bağlantıda görünür.</small></span>
           </label>
+          <label className="sharing-toggle">
+            <input type="checkbox" checked={profile.share_statistics} onChange={(event) => setProfile({ ...profile, share_statistics: event.target.checked })} />
+            <span><b>Yolculuk istatistiklerimi göster</b><small>Yaklaşık süre, tamamlama oranı, tür ve stüdyo eğilimleri paylaşılır.</small></span>
+          </label>
         </div>
         <p className="account-caveat">E-posta adresin, kullanıcı kimliğin ve senkronizasyon geçmişin hiçbir paylaşım görünümünde gösterilmez.</p>
         <button className="account-save" onClick={() => saveProfile(profile)} disabled={busy}>Tercihlerimi kaydet ✦</button>
@@ -355,6 +387,7 @@ export default function AccountExperience() {
         {canModerate && <a className="account-moderation-link" href="/moderasyon">Moderasyon kuyruğunu aç <span>→</span></a>}
         <button className="account-signout" onClick={() => client.auth.signOut()}>Oturumu kapat</button>
       </section>
+      <PersonalStatisticsPanel statistics={statistics} loading={catalogueLoading} />
     </div>
   );
 }

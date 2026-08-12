@@ -4,8 +4,10 @@ import RotaCompanion from "./RotaCompanion";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
 import { seasonLabels, typeLabels, visualFor } from "../lib/catalogue-ui";
 import { personalStatusLabels, type PersonalStatus } from "../lib/personal-list";
+import { calculateRotaStatistics } from "../lib/personal-statistics";
 import { isShareToken, normalizeSharedProfile, type SharedListEntry, type SharedProfile } from "../lib/profile-sharing";
 import { getSupabaseClient } from "../lib/supabase";
+import PersonalStatisticsPanel from "./PersonalStatisticsPanel";
 
 type Props = { dataVersion: string };
 type SharedRecord = { anime: CatalogueAnime; entry: SharedListEntry };
@@ -64,6 +66,16 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
       .filter((record): record is SharedRecord => Boolean(record.anime));
   }, [catalogue, profile]);
 
+  const statistics = useMemo(() => calculateRotaStatistics(
+    (profile?.entries ?? []).map((entry) => ({
+      animeId: entry.anime_id,
+      status: entry.status,
+      progress: entry.progress,
+      score: entry.score,
+    })),
+    catalogue,
+  ), [catalogue, profile]);
+
   if (loadState === "loading") {
     return <div className="shared-profile-state catalogue-loading"><RotaCompanion mood="curious" message="Paylaşılan rafı arıyorum…" className="rota-companion--state" /><span></span><p>Rota bağlantısı açılıyor…</p></div>;
   }
@@ -95,6 +107,8 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
         {shelfOrder.map((status) => <div key={status}><strong>{counts[status]}</strong><span>{personalStatusLabels[status]}</span></div>)}
         <div><strong>{average === null ? "—" : average.toFixed(1)}</strong><span>ortalama puan</span></div>
       </section>
+
+      {profile.share_statistics && <PersonalStatisticsPanel statistics={statistics} mode="shared" />}
 
       {records.length === 0 ? (
         <div className="shared-profile__empty"><span>♡</span><h3>Bu rafta henüz anime yok.</h3><p>Rota yeni başladığında boş raf da hikâyenin parçasıdır.</p></div>

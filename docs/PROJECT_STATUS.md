@@ -72,11 +72,19 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-1. **Kişisel istatistikler:** toplamlar, izleme süresi, tamamlama oranı, tür ve stüdyo eğilimleri.
+1. **Kişisel istatistiklerin production kabulü:** migration, gerçek hesapta tercih kaydı ve paylaşılan profil doğrulaması.
 2. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
 3. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
 
-9. aşama tamamlandı. 10–12. aşamalar bu sırayla planlanmıştır; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+9. aşama tamamlandı. 10. aşama yerelde hazırdır ve production kabulü bekler; 11–12. aşamalar sıradadır. 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+
+## 10. aşama durumu
+
+- Hesap ekranı toplam anime, izlenen bölüm, yaklaşık izleme süresi, tamamlama oranı ve yalnız puanlanmış kayıtlardan ortalama puanı gösterir. En sık görülen üç tür ve stüdyo aynı ortak hesaplama katmanından gelir.
+- Hesapsız local-first kullanım da istatistik üretir. “Planlıyorum” toplam animeye dahildir fakat tamamlama oranının paydasına girmez; izleme süresi katalogdaki yaklaşık bölüm sürelerinden türetilir.
+- Paylaşılan profil istatistikleri varsayılan olarak kapalıdır ve puan/not tercihlerinden ayrı `share_statistics` izni ister. Puan paylaşımı kapalıysa paylaşılan ortalama puan da üretilmez.
+- `statistics:check`, tam `npm run check` ve 1.131 sayfalık production build temizdir. Sahip ve örnek paylaşılan profil 1.920×950 ile 390×844 boyutlarında doğrulandı; yatay taşma veya konsol hatası yoktur.
+- `202608120004_personal_statistics.sql` yerelde hazırdır fakat production'a uygulanmamıştır. Migration, gerçek hesapta tercih kaydı ve salt-okunur paylaşım kabulü tamamlanana kadar 10. aşama kapanmaz.
 
 ## 9. aşama durumu
 
