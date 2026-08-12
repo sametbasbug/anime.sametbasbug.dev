@@ -676,6 +676,14 @@ body.design-otaku .personal-statistics__metrics { overflow: hidden; border: 2px 
 body.design-otaku .personal-statistics__ranking { border: 2px solid var(--ink); border-radius: 14px; background: rgba(255,255,255,.84); }
 body.design-otaku .personal-statistics__ranking:first-child { box-shadow: 3px 3px 0 var(--sakura); }
 body.design-otaku .personal-statistics__ranking:last-child { box-shadow: 3px 3px 0 var(--sky); }
+body.design-otaku .archive-portability { overflow: hidden; border: 2px solid var(--ink); border-radius: 22px; background: linear-gradient(145deg, #fff8ea 0 72%, #f1eaff 72%); box-shadow: 5px 5px 0 rgba(52,43,74,.14); }
+body.design-otaku .archive-portability > header > span { color: var(--lavender-deep); text-shadow: 1px 1px 0 var(--ink); transform: rotate(-8deg); }
+body.design-otaku .archive-portability__actions button { border: 2px solid var(--ink); border-radius: 14px; background: rgba(255,255,255,.88); box-shadow: 3px 3px 0 var(--ink); transition: transform .18s ease, box-shadow .18s ease; }
+body.design-otaku .archive-portability__actions button:not(:disabled):hover { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+body.design-otaku .archive-portability__actions button:nth-child(2) { background: #eefaff; }
+body.design-otaku .archive-portability__actions button:nth-child(3) { background: #f7f0ff; }
+body.design-otaku .archive-portability__feedback { border: 2px solid var(--ink); border-radius: 10px; background: #effff7; box-shadow: 2px 2px 0 var(--sky); }
+body.design-otaku .archive-portability__feedback.is-error { background: #fff0ed; box-shadow: 2px 2px 0 var(--coral); }
 
 body.design-otaku .shared-profile-hero { position: relative; border-bottom: 0; }
 body.design-otaku .shared-profile-hero::after { content: "✦"; position: absolute; right: 28%; top: 28px; color: var(--sun); text-shadow: 1px 1px 0 var(--ink); font-size: 38px; transform: rotate(8deg); }
@@ -795,6 +803,9 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .personal-statistics__metrics div:nth-child(even) { border-right: 0; }
   .personal-statistics__metrics div:last-child { grid-column: 1 / -1; border-right: 0; border-bottom: 0; }
   .personal-statistics__rankings { grid-template-columns: 1fr; }
+  .archive-portability { padding: 22px 18px; }
+  .archive-portability__actions { grid-template-columns: 1fr; }
+  .archive-portability__actions button { min-height: 104px; }
   .shared-profile-hero { padding: 42px 0 30px; grid-template-columns: 1fr; gap: 22px; }
   .shared-profile-hero h1 { font-size: 54px; }
   body.design-otaku .shared-profile-hero::after { right: 4px; top: 20px; }

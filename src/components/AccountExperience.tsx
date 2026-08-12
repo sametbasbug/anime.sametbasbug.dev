@@ -6,6 +6,7 @@ import { readPersonalList, subscribeToPersonalList, type PersonalListEntry } fro
 import { calculateRotaStatistics } from "../lib/personal-statistics";
 import { buildShareUrl } from "../lib/profile-sharing";
 import { getSupabaseClient } from "../lib/supabase";
+import ArchivePortabilityPanel from "./ArchivePortabilityPanel";
 import PersonalStatisticsPanel from "./PersonalStatisticsPanel";
 import RotaCompanion from "./RotaCompanion";
 
@@ -308,6 +309,7 @@ export default function AccountExperience({ dataVersion }: Props) {
           <a href="/listem">Rafımı aç <span>→</span></a>
         </aside>
         <PersonalStatisticsPanel statistics={statistics} loading={catalogueLoading} />
+        <ArchivePortabilityPanel catalogue={catalogue} catalogueLoading={catalogueLoading} />
       </div>
     );
   }
@@ -388,6 +390,13 @@ export default function AccountExperience({ dataVersion }: Props) {
         <button className="account-signout" onClick={() => client.auth.signOut()}>Oturumu kapat</button>
       </section>
       <PersonalStatisticsPanel statistics={statistics} loading={catalogueLoading} />
+      <ArchivePortabilityPanel
+        catalogue={catalogue}
+        catalogueLoading={catalogueLoading}
+        onImported={(summary) => {
+          if (session && summary.added + summary.updated + summary.deleted > 0) void syncForUser(session.user.id, false);
+        }}
+      />
     </div>
   );
 }

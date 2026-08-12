@@ -72,10 +72,19 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-1. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
+1. **Yedekleme ve taşınabilirliğin canlı kabulü:** yayın, gerçek JSON/CSV indirme ve güvenli geri yükleme doğrulaması.
 2. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
 
-9–10. aşamalar tamamlandı. 11–12. aşamalar sıradadır; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+9–10. aşamalar tamamlandı. 11. aşama yerelde hazırdır ve canlı kabul bekler; 12. aşama sıradadır. 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+
+## 11. aşama durumu
+
+- Hesap ekranı giriş durumundan bağımsız olarak tam, sürümlü Rota JSON yedeği ve insan tarafından okunabilir CSV üretir. JSON aktif kayıtlarla tombstone geçmişini; CSV başlık, durum, ilerleme, toplam bölüm, puan, not ve güncellenme zamanını taşır.
+- JSON geri yükleme biçim, sürüm, tarih, anime kimliği, durum, ilerleme, puan, not, 10 MB dosya ve 20.000 kayıt sınırlarını doğrular. Tanınmayan veya bozuk dosya yerel arşivi değiştirmeden reddedilir.
+- Ortak birleşim katmanında aynı anime için daha yeni zaman damgası kazanır. Böylece eski bir yedek daha yeni cihaz kaydını ezmez ve daha yeni tombstone'u diriltmez; bu katman gelecekteki izinli dış kaynak eşleyicileri tarafından da kullanılabilir.
+- CSV hücreleri RFC 4180 biçiminde kaçırılır, UTF-8 BOM taşır ve tablo uygulamalarındaki formül enjeksiyonuna karşı metin başlangıçları etkisizleştirilir. CSV geri yükleme formatı değildir.
+- `portability:check`, tam `npm run check` ve 1.131 sayfalık build temizdir. 1.920×950 ile 390×844 arayüz doğrulamasında yatay taşma veya konsol hatası yoktur. Gerçek JSON/CSV indirme, bozuk dosya reddi ve eski tarihli geçerli yedeğin mevcut kaydı koruması geçti; production aktif liste sayısı değişmeden `3` kaldı.
+- Push/deploy yapılmadı. Canlı domain üzerinde indirme ve güvenli geri yükleme kabulü tamamlanana kadar 11. aşama kapanmaz.
 
 ## 10. aşama durumu
 

@@ -55,6 +55,13 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 
 Bu ilk senkronizasyon modeli cihaz saatine dayanır. Ürün geniş kullanıcı kitlesine açılmadan önce saat sapması telemetrisi incelenmeli; gerekirse sunucu revizyonu/optimistic concurrency protokolüne geçilmelidir.
 
+## Yedekleme ve taşınabilirlik
+
+- Sürümlü Rota JSON yedeği aktif liste kayıtlarıyla tombstone geçmişini birlikte taşır. E-posta, kullanıcı UUID'si, paylaşım tokenı, profil tercihleri veya Supabase oturum bilgisi yedeğe girmez.
+- Geri yükleme tarayıcıda doğrulanır ve mevcut v2 local-first depoya birleşir; toplu silme/üstüne yazma yapılmaz. Aynı anime kimliğinde daha yeni `updatedAt` veya tombstone zamanı kazanır.
+- Geçerli birleşim giriş yapılmış cihazda normal sahip-kullanıcı senkronizasyonunu tetikler; Supabase RLS ve satır kısıtları değişmez.
+- CSV yalnız okunabilir taşınabilirlik çıktısıdır. İç tombstone geçmişini içermez ve geri yükleme girdisi olarak kabul edilmez.
+
 ## Yapılandırma
 
 ```bash
