@@ -126,7 +126,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 1. ~~Kataloğu ürünleştirme ve Türkçe sınıflandırma~~ — tamamlandı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı
 3. ~~Türkçe editoryal içerik~~ — tamamlandı
-4. **Hesap ve kalıcı veri** — Orbit girişi ve Supabase senkronizasyonu canlı; iki fiziksel cihazda çevrimdışı düzenleme ve silme testi bekliyor
+4. ~~Hesap ve kalıcı veri~~ — Orbit girişi, Supabase senkronizasyonu ve iki cihazlı kabul doğrulamasıyla tamamlandı
 5. MAL/AniList içe aktarma fizibilitesi ve izinleri
 6. Topluluk ve moderasyon
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı

@@ -64,11 +64,17 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. İki fiziksel cihazda birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. Bu borç Google döneminden devraldı; Orbit geçişi kapatmadı. Yerel otomasyon artık iki bağımsız cihazın sıralı ve eşzamanlı yakınsamasını, tombstone silmeyi, kesilen gönderimde indirilen verinin korunmasını ve 200'lük parçalamayı kapsıyor. Eşzamanlı eski-yazma yarışını kapatan `202608120001_keep_newer_personal_list_version.sql` migration'ı production'a uygulandı; fonksiyon ve trigger canlı sorguyla doğrulandı. Kısmi-red bildiriminin gerçek production oturumundaki başlık rozeti, sorun sayacı, açıklayıcı mesajı ve Rota hata hâli ayrıca doğrulandı; geçici kayıt cihazdan temizlendi ve veritabanında kalıcılaşmadı.
-2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
-4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
-5. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
+1. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+2. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+3. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+4. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
+
+## 4. aşama kabulü
+
+- İki fiziksel cihazda canlı eşitleme çalıştı ve Samet 12 Ağustos 2026'da bunu ürün kabulü için yeterli saydı.
+- Rota çevrimdışı açılma/gezinme vadeden bir PWA değildir; bu nedenle “çevrimdışı site kullanımı” kapanış ölçütü değildir.
+- Sıralı ve eşzamanlı cihaz yakınsaması, tombstone silme, kesilen gönderimde indirilen verinin korunması ve 200'lük parçalama otomatik doğrulanır.
+- Eski-yazma yarışını kapatan production trigger ile gerçek oturumdaki kısmi-red arayüzü ayrıca canlı doğrulandı.
 
 ## Değişiklik sınırı
 

@@ -37,7 +37,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Seçili yapımlar doğrulanmış, özgün Türkçe metinlerle zenginleşir; kaynak metinler kopyalanmaz.
 
-### 4. Hesap ve kalıcı veri — yapım aşamasında
+### 4. Hesap ve kalıcı veri — tamamlandı
 
 - [x] Supabase Auth + Postgres + RLS mimarisini ve local-first güven sınırını kilitle.
 - [x] Şifresiz kimlik doğrulama ve kullanıcı profili arayüzünü ekle.
@@ -55,7 +55,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Google OAuth'u uygula; eski hesap aktarımı yapmadan magic-link akışını ve ona özel dış bağımlılıkları kaldır.
 - [x] Google Identity Services resmî düğmesine ve nonce-korumalı Supabase ID-token doğrulamasına geç; Supabase yönlendirme alan adını kullanıcı akışından çıkar.
 - [x] Kalıcı giriş yöntemini **Equinox Orbit** olarak değiştir; Google Identity Services akışını, `PUBLIC_GOOGLE_CLIENT_ID` bağımlılığını ve Supabase Google sağlayıcısını kaldır. *(12 Ağustos 2026 — yukarıdaki üç Google maddesini geçersiz kılar; onlar tarih kaydı olarak duruyor.)*
-- [ ] İki gerçek cihazla giriş, birleştirme, çevrimdışı düzenleme ve silme senaryolarını doğrula. *(Kısmi-red bildiriminin gerçek production oturumundaki masaüstü görünümü doğrulandı.)*
+- [x] İki gerçek cihazda giriş ve senkronizasyonu doğrula; cihazlar arası güncelleme ile silme davranışını otomatik yakınsama senaryolarıyla koru. *(12 Ağustos 2026 — Samet canlı iki-cihaz eşitlemesini kabul etti; çevrimdışı site kullanımı ürün kabul şartı değildir.)*
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
 
@@ -95,7 +95,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk üç aşama tamamlandı. Dördüncü aşama Supabase Free üzerinde çalışıyor: profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası ve cihazlar arası liste birleştirme doğrulandı.
+İlk dört aşama tamamlandı. Hesap ve kalıcı veri Supabase Free üzerinde çalışıyor: profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası, cihazlar arası liste eşitleme ve silmenin geri dirilmesini önleyen tombstone modeli doğrulandı.
 
 Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de `custom:orbit` adlı OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, kapsamlar `openid email profile`, PKCE akışı. Google girişi tamamen kaldırıldı — düğme, betik, ortam değişkeni ve Supabase'deki sağlayıcı kaydı dahil. Geçiş penceresi bırakılmadı; site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği e-posta eşleşmesiyle aynı kullanıcıya bağlandı, ikinci hesap açılmadı. Production'da uçtan uca giriş doğrulandı.
 
@@ -105,7 +105,7 @@ Senkronizasyon katmanı ardından sağlamlaştırıldı: sürüm karşılaştır
 
 Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüketen magic-link modeli kaldırıldı. Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA koruması kapatıldı; Rota'ya özel Resend anahtarı, Cloudflare Turnstile bileşeni ve GitHub Pages değişkeni silindi. Hesapsız local-first kullanım korunur.
 
-Aşamanın kapanması için iki fiziksel cihazda çevrimdışı düzenleme ve silme testi gerekiyor; bu borç Google döneminden devraldı ve Orbit geçişi onu kapatmadı. Production'da ikinci eşitlemenin sıfır kayıt göndermesi doğrulandı. Kısmi-red bildirimi kontrollü, sunucuda kalıcılaşmayan geçersiz bir yerel kayıtla gerçek production oturumunda doğrulandı: başlık rozeti, sorun sayacı, açıklayıcı mesaj ve Rota'nın hata hâli doğru çalıştı; test kaydı ardından cihazdan temizlendi.
+İki fiziksel cihazda canlı eşitleme çalıştı ve Samet bunu ürün kabulü için yeterli saydı. Rota çevrimdışı açılma veya gezinme vadeden bir PWA olmadığı için “çevrimdışı site kullanımı” ayrı kapanış şartı değildir. Cihazlar arası güncelleme, eşzamanlı yakınsama ve tombstone silme davranışları otomatik testlerle; eski sürümün yeniyi ezmemesi production trigger'ıyla korunur. Kısmi-red bildirimi kontrollü, sunucuda kalıcılaşmayan geçersiz bir yerel kayıtla gerçek production oturumunda doğrulandı: başlık rozeti, sorun sayacı, açıklayıcı mesaj ve Rota'nın hata hâli doğru çalıştı; test kaydı ardından cihazdan temizlendi.
 
 Ürün deneyimi baştan aşağı **Soft Celestial Otaku** sistemine geçirildi: açık manga editoryali, kontrollü asimetri, koleksiyon rafları, otaku köşesi hesap ekranı ve yaşayan göksel yoldaş eklendi. Yoldaşın adı **Rota** olarak ürün anlatısına bağlandı; sabit yüz anatomisi site ikonu, favicon ve paylaşım kimliğinin ortak marka paydasıdır. Ana sayfada arama ile kişisel dönüş ilk görüş alanında; katalog Türkçe filtrelerle, anime detayı manga açılımıyla, Listem ise durumlara ayrılan raflarla çalışır. Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve sayfa geçişleri aynı marka dilini taşır. Kanonik tasarım ilkeleri `docs/DESIGN_DIRECTION.md` içindedir.
 
