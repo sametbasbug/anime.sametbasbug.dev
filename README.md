@@ -104,6 +104,14 @@ npm run content:check
 
 Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
 
+`npm run auth:check` (yine `npm run check` içinde) Orbit girişinin **dışarıyla
+eşleşmesi gereken** kısımlarını korur: sağlayıcı adının birebir `custom:orbit`
+olması, dönüş yolunun `/hesap` kalması, akışın `pkce` ve `detectSessionInUrl`'in
+açık olması, Google giriş çağrısının geri sızmaması ve düğme metninin CSS ile
+büyütülmemesi. Bunların hiçbiri derlemeyi kırmaz ama her biri girişi sessizce
+öldürür — karşılıkları Supabase'in sağlayıcı ayarında ve izinli dönüş adresleri
+listesinde duruyor.
+
 ## Ürün sınırları
 
 - Anime videosu barındırılmaz veya gömülmez.
