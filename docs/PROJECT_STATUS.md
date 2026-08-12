@@ -72,11 +72,10 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-1. **Kişisel istatistiklerin production kabulü:** migration, gerçek hesapta tercih kaydı ve paylaşılan profil doğrulaması.
-2. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
-3. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
+1. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
+2. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
 
-9. aşama tamamlandı. 10. aşama yerelde hazırdır ve production kabulü bekler; 11–12. aşamalar sıradadır. 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+9–10. aşamalar tamamlandı. 11–12. aşamalar sıradadır; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
 
 ## 10. aşama durumu
 
@@ -84,7 +83,8 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Hesapsız local-first kullanım da istatistik üretir. “Planlıyorum” toplam animeye dahildir fakat tamamlama oranının paydasına girmez; izleme süresi katalogdaki yaklaşık bölüm sürelerinden türetilir.
 - Paylaşılan profil istatistikleri varsayılan olarak kapalıdır ve puan/not tercihlerinden ayrı `share_statistics` izni ister. Puan paylaşımı kapalıysa paylaşılan ortalama puan da üretilmez.
 - `statistics:check`, tam `npm run check` ve 1.131 sayfalık production build temizdir. Sahip ve örnek paylaşılan profil 1.920×950 ile 390×844 boyutlarında doğrulandı; yatay taşma veya konsol hatası yoktur.
-- `202608120004_personal_statistics.sql` yerelde hazırdır fakat production'a uygulanmamıştır. Migration, gerçek hesapta tercih kaydı ve salt-okunur paylaşım kabulü tamamlanana kadar 10. aşama kapanmaz.
+- `202608120004_personal_statistics.sql` production'a uygulandı. Sütunun varsayılanı kapalı oluşu, girişli kullanıcının yalnız tercih sütununu güncelleyebilmesi, anonim kullanıcının güncelleyememesi ve dar paylaşım RPC'sinin anonim çağrılabilmesi canlı sorguyla doğrulandı.
+- Gerçek Nyx hesabında `PRIVATE → UNLISTED`, istatistik paylaşımını açma, profil tercihini kaydetme ve gerçek tokenlı salt-okunur istatistik görünümü geçti. Ardından profil yeniden `PRIVATE`, istatistik izni kapalı duruma getirildi; eski bağlantı güvenli kapalı ekranına döndü. Son sorguda iki profil için de dış görünürlük ve istatistik paylaşımı sıfır, üç aktif liste kaydı değişmeden kaldı. 10. aşama kabulü tamamlandı.
 
 ## 9. aşama durumu
 
