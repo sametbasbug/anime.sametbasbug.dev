@@ -625,7 +625,9 @@ body.design-otaku .account-hero::before { content: "♡"; position: absolute; ri
 .account-benefits span { display: flex; flex-direction: column; gap: 3px; }
 .account-benefits b { font-size: 11px; }
 .account-benefits small { color: var(--muted); font-size: 9px; }
-body.design-otaku .account-google { margin-top: 28px; }
+body.design-otaku .account-orbit { margin-top: 28px; border: 2px solid var(--ink); border-radius: 13px; background: var(--lavender-deep); box-shadow: 3px 3px 0 var(--ink); }
+body.design-otaku .account-orbit:hover { background: var(--coral); }
+body.design-otaku .account-orbit > span { color: #fff; }
 .account-shelf-card { position: relative; overflow: hidden; display: flex; flex-direction: column; background: #e8f7ff; }
 .account-shelf-card__art { position: relative; height: 125px; margin: -10px 0 18px; }
 .account-moon { position: absolute; right: 14px; top: 5px; width: 88px; aspect-ratio: 1; border: 2px solid var(--ink); border-radius: 50%; background: var(--sun); box-shadow: 4px 4px 0 var(--ink); }

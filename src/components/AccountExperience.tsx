@@ -11,57 +11,25 @@ type Profile = {
   list_visibility: Visibility;
 };
 
-type GoogleCredentialResponse = { credential?: string };
-type GoogleIdentity = {
-  accounts: {
-    id: {
-      initialize: (options: {
-        client_id: string;
-        callback: (response: GoogleCredentialResponse) => void;
-        nonce: string;
-        auto_select: boolean;
-        use_fedcm_for_prompt: boolean;
-      }) => void;
-      renderButton: (element: HTMLElement, options: Record<string, string | number>) => void;
-    };
-  };
-};
+/* Giriş artık Orbit üzerinden.
+ *
+ * Eskiden burada Google'ın tek-dokunuş kutusu vardı: sayfaya Google'dan bir
+ * betik iniyor, kimlik belgesini o üretiyor, biz `signInWithIdToken` ile
+ * Supabase'e veriyorduk. Orbit'te o iş tarayıcının kendi yönlendirmesiyle
+ * oluyor — üçüncü taraf betiği yok, `nonce` üretme/özetleme yok, düğmeyi
+ * başkasının çizmesini bekleyen bir efekt yok. Bu yüzden bu bölüm kod olarak
+ * da küçüldü.
+ *
+ * Sağlayıcı adı Supabase'de `custom:orbit` diye kayıtlı; buradaki metin o
+ * kaydın adıyla birebir aynı olmak zorunda. */
+const ORBIT_PROVIDER = "custom:orbit";
 
-declare global {
-  interface Window {
-    google?: GoogleIdentity;
-  }
-}
-
-const googleClientId = import.meta.env.PUBLIC_GOOGLE_CLIENT_ID?.trim();
-
-function createNonce() {
-  const bytes = new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  return btoa(String.fromCharCode(...bytes)).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
-}
-
-async function hashNonce(nonce: string) {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(nonce));
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
-function loadGoogleIdentity() {
-  if (window.google) return Promise.resolve(window.google);
-  return new Promise<GoogleIdentity>((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>('script[data-google-identity="true"]');
-    const script = existing ?? document.createElement("script");
-    const handleLoad = () => window.google ? resolve(window.google) : reject(new Error("Google Identity Services yüklenemedi."));
-    script.addEventListener("load", handleLoad, { once: true });
-    script.addEventListener("error", () => reject(new Error("Google Identity Services yüklenemedi.")), { once: true });
-    if (!existing) {
-      script.src = "https://accounts.google.com/gsi/client?hl=tr";
-      script.async = true;
-      script.defer = true;
-      script.dataset.googleIdentity = "true";
-      document.head.append(script);
-    }
-  });
+/* Dönüş adresi kendi kökeninden üretiliyor, sabit yazılmıyor: aynı kod
+ * localhost'ta, önizlemede ve canlıda çalışsın diye. Karşılığında Supabase'in
+ * izinli dönüş adresleri listesinde bu adreslerin bulunması gerekiyor —
+ * listede olmayan bir adrese Supabase dönmez, sessizce site köküne atar. */
+function accountReturnUrl() {
+  return new URL("/hesap", window.location.origin).toString();
 }
 
 const visibilityLabels: Record<Visibility, { title: string; detail: string }> = {
@@ -79,7 +47,6 @@ export default function AccountExperience() {
   const [profile, setProfile] = useState<Profile>({ display_name: "", list_visibility: "PRIVATE" });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
-  const googleButtonRef = useRef<HTMLDivElement>(null);
   const autoSyncedUserRef = useRef<string | null>(null);
 
   const refreshLocalCount = useCallback(() => {
@@ -163,59 +130,23 @@ export default function AccountExperience() {
     };
   }, [client, syncForUser]);
 
-  useEffect(() => {
-    if (!client || session || loading || !googleButtonRef.current) return;
-    let active = true;
-
-    const mountGoogleButton = async () => {
-      if (!googleClientId) {
-        setMessage("Google girişi henüz yapılandırılmadı.");
-        return;
-      }
-      try {
-        const nonce = createNonce();
-        const hashedNonce = await hashNonce(nonce);
-        const google = await loadGoogleIdentity();
-        if (!active || !googleButtonRef.current) return;
-        google.accounts.id.initialize({
-          client_id: googleClientId,
-          nonce: hashedNonce,
-          auto_select: false,
-          use_fedcm_for_prompt: true,
-          callback: async ({ credential }) => {
-            if (!credential) {
-              setMessage("Google kimliği alınamadı. Lütfen yeniden dene.");
-              return;
-            }
-            setBusy(true);
-            setMessage("");
-            const { error } = await client.auth.signInWithIdToken({
-              provider: "google",
-              token: credential,
-              nonce,
-            });
-            if (error && active) setMessage("Google ile giriş tamamlanamadı. Lütfen yeniden dene.");
-            if (active) setBusy(false);
-          },
-        });
-        googleButtonRef.current.replaceChildren();
-        google.accounts.id.renderButton(googleButtonRef.current, {
-          type: "standard",
-          theme: "outline",
-          size: "large",
-          text: "continue_with",
-          shape: "rectangular",
-          logo_alignment: "left",
-          width: Math.min(400, googleButtonRef.current.clientWidth || 400),
-        });
-      } catch {
-        if (active) setMessage("Google giriş düğmesi yüklenemedi. Bağlantını kontrol edip yeniden dene.");
-      }
-    };
-
-    void mountGoogleButton();
-    return () => { active = false; };
-  }, [client, loading, session]);
+  const signInWithOrbit = useCallback(async () => {
+    if (!client) return;
+    setBusy(true);
+    setMessage("");
+    const { error } = await client.auth.signInWithOAuth({
+      provider: ORBIT_PROVIDER,
+      options: { redirectTo: accountReturnUrl() },
+    });
+    /* Hatasız durumda buraya dönmüyoruz: tarayıcı Orbit'e gitmiş oluyor. O
+     * yüzden `busy` yalnız hata yolunda geri açılıyor — başarı yolunda düğmeyi
+     * yeniden etkinleştirmek, sayfa değişirken bir an "yeniden basılabilir"
+     * göstermek olurdu. */
+    if (error) {
+      setBusy(false);
+      setMessage("Orbit ile giriş başlatılamadı. Bağlantını kontrol edip yeniden dene.");
+    }
+  }, [client]);
 
   const saveProfile = async (next: Profile) => {
     if (!client || !session) return;
@@ -240,10 +171,14 @@ export default function AccountExperience() {
     await syncForUser(session.user.id, true);
   };
 
-  const googleName = typeof session?.user.user_metadata?.full_name === "string"
-    ? session.user.user_metadata.full_name.trim()
-    : "";
-  const displayName = profile.display_name.trim() || googleName || "Anime yolcusu";
+  /* Orbit `name` ve `preferred_username` gönderiyor; Supabase eski Google
+   * kimliğinden gelen `full_name` alanını da aynı kullanıcıda tutuyor. Üçünü
+   * sırayla deniyoruz ki hem Orbit'ten gelen hem devralınan ad çalışsın. */
+  const metadata = session?.user.user_metadata ?? {};
+  const orbitName = ["full_name", "name", "preferred_username"]
+    .map((key) => (typeof metadata[key] === "string" ? (metadata[key] as string).trim() : ""))
+    .find((value) => value.length > 0) ?? "";
+  const displayName = profile.display_name.trim() || orbitName || "Anime yolcusu";
   const profileInitial = displayName.charAt(0).toLocaleUpperCase("tr-TR");
   const syncHasError = message.startsWith("Senkronizasyon tamamlanamadı");
   const syncIsPartial = (syncResult?.rejected.length ?? 0) > 0;
@@ -272,9 +207,9 @@ export default function AccountExperience() {
       <div className="account-dashboard account-dashboard--guest" key="signed-out">
         <section className="account-profile-card account-profile-card--guest">
           <div className="account-card__topline"><span>ÜYELİK İSTEĞE BAĞLI</span><b aria-hidden="true">✦</b></div>
-          <p className="eyebrow">GOOGLE İLE GÜVENLİ GİRİŞ</p>
+          <p className="eyebrow">ORBIT İLE GÜVENLİ GİRİŞ</p>
           <h2>Rafın, her cihazda seninle.</h2>
-          <p className="account-intro">Google hesabınla giriş yaptığında bu cihazdaki {localCount} kayıt hesabınla birleşir. Rota, Google parolanı görmez veya saklamaz.</p>
+          <p className="account-intro">Orbit hesabınla giriş yaptığında bu cihazdaki {localCount} kayıt hesabınla birleşir. Girişi Orbit yapar; Rota parolanı görmez, istemez ve saklamaz.</p>
 
           <ul className="account-benefits" aria-label="Hesap özellikleri">
             <li><i>01</i><span><b>Önce cihazında</b><small>Değişikliklerin anında kaydolur.</small></span></li>
@@ -282,7 +217,11 @@ export default function AccountExperience() {
             <li><i>03</i><span><b>Kontrol sende</b><small>Listen varsayılan olarak özeldir.</small></span></li>
           </ul>
 
-          <div className="account-google" ref={googleButtonRef} aria-busy={busy}></div>
+          <button className="account-orbit" onClick={signInWithOrbit} disabled={busy}>
+            <span aria-hidden="true">✦</span>
+            {busy ? "Orbit'e yönlendiriliyorsun…" : "Orbit ile devam et"}
+          </button>
+          <p className="account-caveat">Orbit hesabın yoksa aynı ekranda açabilirsin.</p>
           {message && <p className="account-message" role="status">{message}</p>}
         </section>
         <aside className="account-shelf-card">

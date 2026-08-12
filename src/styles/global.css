@@ -457,9 +457,18 @@ main { overflow: hidden; }
 .account-card__number { display: block; color: var(--coral); font-family: Georgia, serif; font-size: 74px; font-style: italic; line-height: 1; }
 .account-settings > label input { min-width: 0; height: 52px; padding: 0 15px; border: 1px solid var(--line); border-radius: 0; outline: 0; background: var(--paper); color: var(--ink); font: inherit; }
 .account-settings > label input:focus { border-color: var(--ink); }
-.account-google { width: min(100%, 630px); min-height: 44px; margin-top: 34px; display: flex; align-items: center; overflow: hidden; }
-.account-google[aria-busy="true"], .account-save:disabled, .account-sync button:disabled { cursor: wait; opacity: .58; }
-.account-google iframe { max-width: 100%; }
+/* Giriş düğmesi artık bizim: Google'ın kendi çizdiği iframe gitti, o yüzden
+   iframe'i evcilleştiren kurallar da gitti. Bu düğmede bilerek
+   `text-transform: uppercase` yok: sayfa `lang="tr"` ve tarayıcı Türkçe
+   kuralıyla büyütüyor, yani "Orbit" ekranda "ORBİT" oluyor. */
+.account-orbit { width: min(100%, 630px); min-height: 52px; margin-top: 34px; padding: 16px 22px; display: flex; align-items: center; justify-content: center; gap: 11px; border: 0; background: var(--ink); color: white; font: inherit; font-size: 13px; font-weight: 800; letter-spacing: .02em; cursor: pointer; }
+.account-orbit:hover { background: var(--coral); }
+.account-orbit > span { color: var(--coral); font-size: 15px; }
+.account-orbit:hover > span { color: white; }
+.account-orbit:disabled { cursor: wait; opacity: .58; }
+.account-orbit:disabled:hover { background: var(--ink); }
+.account-orbit + .account-caveat { margin-top: 14px; }
+.account-save:disabled, .account-sync button:disabled { cursor: wait; opacity: .58; }
 .account-message { margin: 18px 0 0; padding-left: 12px; border-left: 3px solid var(--coral); font-size: 10px; line-height: 1.5; }
 .account-notice { min-height: 360px; padding: 60px; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--line); background: var(--paper-deep); }
 .account-notice > span { color: var(--coral); font-size: 9px; font-weight: 900; letter-spacing: .14em; }
@@ -616,7 +625,7 @@ main { overflow: hidden; }
   .account-card { padding: 28px 22px; }
   .account-card + .account-card { border-left: 0; border-top: 1px solid var(--line); }
   .account-card h2 { font-size: 42px; }
-  .account-google { min-height: 50px; }
+  .account-orbit { min-height: 56px; }
   .account-notice { min-height: 320px; padding: 34px 24px; }
   .account-notice h2 { font-size: 42px; }
 }
