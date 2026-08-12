@@ -665,6 +665,7 @@ body.design-otaku .account-settings > label input { border: 1px solid var(--line
 body.design-otaku .visibility-option { border-color: var(--line); }
 body.design-otaku .visibility-option input { accent-color: var(--lavender-deep); }
 body.design-otaku .account-notice { border: 2px dashed var(--lavender); border-radius: 22px; background: #fff; }
+body.design-otaku .account-moderation-link { border: 2px solid var(--ink); border-radius: 10px; color: var(--ink); background: var(--sun); box-shadow: 3px 3px 0 var(--ink); }
 
 /* Legal and footer */
 body.design-otaku .legal-page > header,
@@ -769,3 +770,32 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .page-transition-wink { display: none; }
   .hero-sticker, .hero-doodle, .account-hero__badge, .rota-companion, .rota-companion__figure, .rota-companion__body em, .completion-burst, .my-list-card.is-celebrating { animation: none !important; }
 }
+
+/* Community layer keeps the manga-card language while remaining quiet enough
+ * for long-form reading and moderation work. */
+body.design-otaku .community-reviews__heading,
+body.design-otaku .moderation-hero { border-color: var(--line); }
+body.design-otaku .community-reviews__summary { padding: 15px 18px; border: 2px solid var(--ink); border-radius: 17px 22px 17px 26px; background: var(--sun); box-shadow: 4px 4px 0 var(--ink); transform: rotate(1deg); }
+body.design-otaku .review-composer__guest,
+body.design-otaku .review-composer__form,
+body.design-otaku .review-card,
+body.design-otaku .moderation-list > article { border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.84); box-shadow: var(--shadow); }
+body.design-otaku .review-composer__form { border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--sakura); }
+body.design-otaku .review-composer select,
+body.design-otaku .review-composer textarea,
+body.design-otaku .review-report-form select,
+body.design-otaku .review-report-form textarea { border-radius: 10px; background: var(--surface-soft); }
+body.design-otaku .review-composer__footer > button,
+body.design-otaku .review-report-form button:last-child { border-radius: 9px; color: #fff; background: var(--lavender-deep); box-shadow: 3px 3px 0 var(--ink); }
+body.design-otaku .review-avatar { border: 2px solid var(--ink); background: var(--sakura); box-shadow: 2px 2px 0 var(--ink); }
+body.design-otaku .review-card:nth-child(4n+2) .review-avatar { background: var(--sky); }
+body.design-otaku .review-card:nth-child(4n+3) .review-avatar { background: var(--mint); }
+body.design-otaku .review-card:nth-child(4n) .review-avatar { background: var(--sun); }
+body.design-otaku .review-spoiler-cover { border: 2px dashed var(--lavender); border-radius: 13px; background: repeating-linear-gradient(-45deg, #f6efff, #f6efff 9px, #fff 9px, #fff 18px); }
+body.design-otaku .review-report-form { border-radius: 12px; background: var(--paper-deep); }
+body.design-otaku .community-empty,
+body.design-otaku .community-notice,
+body.design-otaku .moderation-notice,
+body.design-otaku .moderation-empty { border-radius: 18px; background: rgba(255,255,255,.72); }
+body.design-otaku .community-notice--warning { border-color: var(--coral); background: #fff2f5; }
+body.design-otaku .moderation-list footer button { border-radius: 8px; }

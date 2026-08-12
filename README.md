@@ -33,6 +33,7 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - İsteğe bağlı **Equinox Orbit** girişi (Supabase'de `custom:orbit` OIDC sağlayıcısı); profil ve liste görünürlüğü ekranı
 - Yerel listeyi koruyan, tombstone destekli Supabase senkronizasyon katmanı
 - Sahip kullanıcıyla sınırlı Postgres RLS migration'ı
+- Anime başına tek topluluk incelemesi, spoiler perdesi, özel rapor kuyruğu ve rol korumalı moderasyon arayüzü (production migration'ı bekliyor)
 - Astro static build
 
 ## Teknik temel
@@ -127,8 +128,8 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı
 3. ~~Türkçe editoryal içerik~~ — tamamlandı
 4. ~~Hesap ve kalıcı veri~~ — Orbit girişi, Supabase senkronizasyonu ve iki cihazlı kabul doğrulamasıyla tamamlandı
-5. MAL/AniList içe aktarma fizibilitesi ve izinleri
-6. Topluluk ve moderasyon
+5. MAL/AniList içe aktarma fizibilitesi ve izinleri — 6. aşamadan sonraya ertelendi
+6. **Topluluk ve moderasyon** — anime incelemeleri, spoiler perdesi, raporlama ve sahip kuyruğu yerelde hazır; production doğrulaması bekliyor
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
 8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı
 

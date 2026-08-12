@@ -59,17 +59,26 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
 
-### 5. MAL/AniList içe aktarma fizibilitesi
+### 5. MAL/AniList içe aktarma fizibilitesi — ertelendi
 
 - Resmî dışa aktarma dosyalarını ve izin verilen aktarım yöntemlerini araştır.
 - Mümkünse XML/JSON dosyasıyla tek seferlik içe aktarmayı öncele.
 - API tabanlı yöntemleri ancak güncel koşullar ve izinler elveriyorsa uygula.
 
-### 6. Topluluk ve moderasyon
+**Durum:** Samet'in 12 Ağustos 2026 kararıyla 6. aşamadan sonraya ertelendi; entegrasyon izni veya kaynak kararı değişmedi.
 
-- İnceleme, spoiler işareti ve raporlama araçlarını tasarla.
-- Korsan bağlantı, taciz ve spoiler için moderasyon kurallarını uygula.
-- Kişisel takip ürünü yeterli olgunluğa ulaşmadan sosyal akış ekleme.
+### 6. Topluluk ve moderasyon — yapım aşamasında
+
+- [x] Topluluğu anime başlığına bağlı tekil incelemelerle sınırla; genel sosyal akışı ilk teslimin dışında tut.
+- [x] İnceleme yazma/düzenleme/silme, isteğe bağlı puan ve okuyucu eylemine bağlı spoiler perdesini uygula.
+- [x] İşaretlenmemiş spoiler, taciz, korsan yönlendirme, spam ve diğer ihlaller için giriş gerektiren raporlamayı uygula.
+- [x] Raporların otomatik gizleme üretmediği, `app_metadata` rolüyle korunan moderasyon kuyruğunu hazırla.
+- [x] Tabloları doğrudan tarayıcı erişimine kapat; kamusal okuma ve yazmayı dar RPC'lerle sınırla.
+- [x] Topluluk kurallarını, kullanım koşullarını, gizlilik metnini ve otomatik koruma kontrollerini güncelle.
+- [x] Production migration'ını uygula ve ürün sahibine `owner` moderasyon rolü ver.
+- [ ] İki ayrı gerçek hesapla inceleme, spoiler, rapor ve moderasyon kararını production'da doğrula.
+
+**Tamamlanma ölçütü:** Kullanıcı anime incelemesini güvenle yayımlayıp yönetebilir; spoiler okuyucu onayı olmadan açılmaz; raporlar özel kuyruğa düşer ve yalnız yetkili moderatör içerik kararı verebilir.
 
 ### 7. Marka ve yayın — tamamlandı
 
@@ -95,7 +104,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk dört aşama tamamlandı. Hesap ve kalıcı veri Supabase Free üzerinde çalışıyor: profil/gizlilik yazımı, yedi sahip-kullanıcı RLS politikası, cihazlar arası liste eşitleme ve silmenin geri dirilmesini önleyen tombstone modeli doğrulandı.
+İlk dört aşama tamamlandı; 5. aşama sonraya ertelendi ve 6. aşama aktif çalışmadır. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak hazırlandı. Production migration'ı uygulandı, temel tabloların tarayıcı rollerine kapalı olduğu ve RPC yetkileri canlı sorguyla doğrulandı; ürün sahibine `owner` rolü verildi. İki ayrı gerçek hesapla uçtan uca production kabulü kaldı.
 
 Kalıcı giriş **12 Ağustos 2026'da Equinox Orbit'e taşındı**: Supabase'de `custom:orbit` adlı OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, kapsamlar `openid email profile`, PKCE akışı. Google girişi tamamen kaldırıldı — düğme, betik, ortam değişkeni ve Supabase'deki sağlayıcı kaydı dahil. Geçiş penceresi bırakılmadı; site halka duyurulmamıştı ve mevcut hesaplar ürün sahibinin test hesaplarıydı. Mevcut Google kimliği e-posta eşleşmesiyle aynı kullanıcıya bağlandı, ikinci hesap açılmadı. Production'da uçtan uca giriş doğrulandı.
 

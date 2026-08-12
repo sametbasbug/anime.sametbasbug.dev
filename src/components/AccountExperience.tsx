@@ -179,6 +179,10 @@ export default function AccountExperience() {
     .map((key) => (typeof metadata[key] === "string" ? (metadata[key] as string).trim() : ""))
     .find((value) => value.length > 0) ?? "";
   const displayName = profile.display_name.trim() || orbitName || "Anime yolcusu";
+  const rotaRole = typeof session?.user.app_metadata?.rota_role === "string"
+    ? session.user.app_metadata.rota_role
+    : "";
+  const canModerate = rotaRole === "owner" || rotaRole === "moderator";
   const profileInitial = displayName.charAt(0).toLocaleUpperCase("tr-TR");
   const syncHasError = message.startsWith("Senkronizasyon tamamlanamadı");
   const syncIsPartial = (syncResult?.rejected.length ?? 0) > 0;
@@ -282,6 +286,7 @@ export default function AccountExperience() {
         </fieldset>
         <p className="account-caveat">Paylaşım sayfaları açılana kadar liste verisi teknik olarak yalnızca sana erişilebilir; tercih şimdiden saklanır.</p>
         <button className="account-save" onClick={() => saveProfile(profile)} disabled={busy}>Tercihlerimi kaydet ✦</button>
+        {canModerate && <a className="account-moderation-link" href="/moderasyon">Moderasyon kuyruğunu aç <span>→</span></a>}
         <button className="account-signout" onClick={() => client.auth.signOut()}>Oturumu kapat</button>
       </section>
     </div>

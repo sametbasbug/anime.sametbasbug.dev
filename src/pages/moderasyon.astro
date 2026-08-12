@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ModerationQueue from "../components/ModerationQueue";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="Moderasyon — Equinox Rota" description="Equinox Rota topluluk raporlarını incele.">
+  <SiteHeader active="account" />
+  <main class="moderation-page">
+    <header class="moderation-hero">
+      <p class="eyebrow">ROTA TOPLULUĞU · YETKİLİ ALAN</p>
+      <h1>Sakin, adil,<br /><em>iz bırakmadan değil.</em></h1>
+      <p>Spoiler, taciz, spam ve korsan yönlendirmesi raporlarını bağlamıyla değerlendir. Rapor sayısı tek başına karar değildir.</p>
+    </header>
+    <ModerationQueue client:load />
+  </main>
+</BaseLayout>

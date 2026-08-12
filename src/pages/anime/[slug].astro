@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import AnimeArtwork from "../../components/AnimeArtwork";
+import CommunityReviews from "../../components/CommunityReviews";
 import DataAttribution from "../../components/DataAttribution.astro";
 import DiscoveryCard from "../../components/DiscoveryCard.astro";
 import ListEditor from "../../components/ListEditor";
@@ -141,6 +142,8 @@ const usefulSources = anime.sources
         </div>
       </aside>
     </section>
+
+    <CommunityReviews animeId={anime.id} animeTitle={anime.title} client:load />
 
     {related.length > 0 && (
       <section class="related-section">

@@ -72,6 +72,7 @@ Migration dosyaları:
 
 - `supabase/migrations/202608070001_accounts_and_personal_lists.sql`
 - `supabase/migrations/202608120001_keep_newer_personal_list_version.sql`
+- `supabase/migrations/202608120002_community_reviews_and_moderation.sql`
 
 ## Orbit ile giriş
 
@@ -131,6 +132,27 @@ değerlendirilir.
 - Profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir. Bu doğrulama Google akışıyla yapıldı ve Orbit geçişi kimlik katmanının altındaki bu yolları değiştirmiyor.
 - İki fiziksel cihazda production girişi ve canlı liste eşitleme tamamlandı; Samet 12 Ağustos 2026'da bunu ürün kabulü için yeterli saydı. Rota çevrimdışı açılma/gezinme vadeden bir PWA olmadığından çevrimdışı site kullanımı ayrı kabul şartı değildir. Cihaz yakınsaması ve tombstone silme otomatik senaryolarla korunur. Kısmi-red başlık rozeti ile hesap ekranı gerçek production oturumunda kontrollü geçersiz yerel kayıtla doğrulandı; kayıt sunucuda kalıcılaşmadı ve test sonrasında cihazdan temizlendi.
 - Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalıdır. Rota'ya özel Resend API anahtarı ile Cloudflare Turnstile bileşeni silinmiştir; ortak `sametbasbug.dev` alan adına ve Orbit anahtarına dokunulmamıştır.
+
+## Topluluk erişim modeli
+
+6. aşama için hazırlanan `community_reviews` ve `community_review_reports`
+tabloları kişisel liste modelinden bilinçli olarak ayrıdır. İncelemeler kamusal
+olsa da temel tablolara `anon` veya `authenticated` rolüyle doğrudan izin
+verilmez. Böylece bir PostgREST sorgusu kullanıcı UUID'sini, moderasyon notunu,
+raporlayan kişiyi veya rapor ayrıntısını yanlışlıkla açamaz.
+
+- Kamusal inceleme okuması yalnız yayımdaki kaydın metin, puan, spoiler,
+  görünen ad ve tarih alanlarını döndüren `get_anime_reviews` RPC'sidir.
+- Kullanıcının kendi incelemesini okuma, yazma ve silme işlemleri `auth.uid()`
+  doğrulayan ayrı RPC'lerden geçer. Anime başına tek inceleme vardır.
+- Raporlama giriş gerektirir; kendi incelemesini veya aynı incelemeyi ikinci kez
+  raporlama reddedilir. Rapor içeriği otomatik gizlemez.
+- Moderasyon kuyruğu ve karar RPC'si, JWT içindeki kullanıcı tarafından
+  değiştirilemeyen `app_metadata.rota_role` değerini denetler. Yalnız `owner`
+  ve `moderator` rolleri yetkilidir.
+- Production migration uygulanmış, tablo/RPC varlığı ile temel tablo ve RPC
+  izinleri canlı sorguyla doğrulanmıştır. Ürün sahibinin hesabına `owner` rolü
+  verilmiştir. Ayrıntılı ürün kuralları `docs/COMMUNITY_MODERATION.md` içindedir.
 
 ## Ücretsiz plan sınırı
 
