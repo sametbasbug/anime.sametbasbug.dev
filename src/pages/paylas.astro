@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SharedProfileExperience from "../components/SharedProfileExperience";
+import { catalogueMeta } from "../lib/catalogue";
+---
+
+<BaseLayout title="Paylaşılan Rota — Equinox Rota" description="Bir anime yolcusunun Equinox Rota'da paylaşmayı seçtiği salt okunur anime rafı." robots="noindex,nofollow">
+  <SiteHeader active="none" />
+  <main class="shared-profile-page">
+    <section class="shared-profile-hero">
+      <div><p class="eyebrow">BİR YOLCUNUN ANİME KÖŞESİ</p><h1>Paylaşılan <em>Rota.</em></h1></div>
+      <p>Bu sayfa yalnız hesap sahibinin görünür yaptığı rafları gösterir. Buradan liste değiştirilemez; e-posta ve hesap kimliği paylaşılmaz.</p>
+    </section>
+    <section class="shared-profile-experience">
+      <SharedProfileExperience dataVersion={catalogueMeta.generatedAt} client:load />
+    </section>
+  </main>
+</BaseLayout>

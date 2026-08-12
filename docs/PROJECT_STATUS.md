@@ -60,14 +60,32 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Favicon ile 1200×630 Open Graph/Twitter paylaşım kartı aynı marka diline taşındı; tüm sayfalar kanonik URL ve sosyal meta verileri üretir.
 - Ana sayfa, katalog, anime detayı, kişisel liste ve hesap ekranları 1.920×950 masaüstü ile 390×844 mobil viewport'larda gerçek tarayıcı görüntüsüyle doğrulandı; yatay taşma ve tarayıcı konsolu kontrol edildi.
 - Katalog yenileme hattı exact başlık/yıl/format gölge kayıtlarını tek kanonik kayıtta birleştiriyor; önemli başlıklarda en güçlü kayıt korunuyor ve seçkiye giren açık devam sezonlarının mevcut önceki sezonları 900 kayıt sınırı içinde tutuluyor. One Piece gölge kopyası kaldırıldı; Dandadan 1/2/3 birlikte katalogda. TMDB sezon eşlemesi ve doğrulanmış manuel override katmanı da devrede.
-- Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.128 statik sayfa.
+- Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.131 statik sayfa.
 
 ## Açık işler
 
-1. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-2. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
-3. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
-6. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
+1. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
+2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
+4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+5. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
+
+## Sıradaki ürün işleri
+
+1. **Paylaşılabilir Rota profili:** yerel uygulama ve görsel doğrulama hazır; production migration ile gerçek hesap kabulü bekliyor.
+2. **Kişisel istatistikler:** toplamlar, izleme süresi, tamamlama oranı, tür ve stüdyo eğilimleri.
+3. **Yedekleme ve taşınabilirlik:** sürümlü JSON/CSV dışa aktarma ve doğrulamalı Rota yedeği geri yükleme.
+4. **Editoryal genişleme:** 20–30 özgün profil ve dönüşümlü ana sayfa seçkileri.
+
+9. aşama aktiftir. 10–12. aşamalar bu sırayla planlanmıştır; 5. aşama AniList'in yazılı yanıtından bağımsız olarak beklemede kalır.
+
+## 9. aşama durumu
+
+- Hesap ekranında `PRIVATE`, `UNLISTED` ve `PUBLIC` görünürlükleri; puan/not izinleri; bağlantıyı kopyalama ve token yenileme kontrolleri yerelde hazırdır.
+- `/paylas?rota=<uuid>` yalnız dar `get_shared_profile` RPC yanıtını kullanır. E-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları yanıt şemasına girmez; temel tablolar anonim erişime açılmaz.
+- Geçersiz, kapalı veya bulunamayan bağlantılar aynı güvenli boş duruma gider; sayfa `noindex,nofollow` yayımlar.
+- `sharing:check`, tam `npm run check` ve 1.131 sayfalık production build temizdir. Örnek RPC yanıtıyla 1.920×950 ve 390×844 tarayıcı görselleri doğrulandı; yatay taşma ve konsol hatası yoktur.
+- Sıradaki adım production migration, ardından gerçek hesapta açma → görüntüleme → token yenileme → eski bağlantının kapanması → görünürlüğü `PRIVATE` yapma kabul turudur. Bunlar tamamlanmadan 9. aşama kapanmaz.
 
 ## 6. aşama durumu
 

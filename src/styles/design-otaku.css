@@ -666,6 +666,25 @@ body.design-otaku .visibility-option { border-color: var(--line); }
 body.design-otaku .visibility-option input { accent-color: var(--lavender-deep); }
 body.design-otaku .account-notice { border: 2px dashed var(--lavender); border-radius: 22px; background: #fff; }
 body.design-otaku .account-moderation-link { border: 2px solid var(--ink); border-radius: 10px; color: var(--ink); background: var(--sun); box-shadow: 3px 3px 0 var(--ink); }
+body.design-otaku .sharing-toggle input { accent-color: var(--lavender-deep); }
+body.design-otaku .account-sharing { border: 2px dashed var(--lavender); border-radius: 14px; background: #f8f2ff; }
+body.design-otaku .account-sharing__actions button { border: 2px solid var(--ink); border-radius: 9px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
+body.design-otaku .account-sharing__actions button:first-child:not(:disabled) { color: #fff; background: var(--lavender-deep); }
+
+body.design-otaku .shared-profile-hero { position: relative; border-bottom: 0; }
+body.design-otaku .shared-profile-hero::after { content: "✦"; position: absolute; right: 28%; top: 28px; color: var(--sun); text-shadow: 1px 1px 0 var(--ink); font-size: 38px; transform: rotate(8deg); }
+body.design-otaku .shared-profile__identity { border: 2px solid var(--ink); border-radius: 24px 24px 40px 24px; background: linear-gradient(135deg, #fff 0 70%, #f0e7ff 70%); box-shadow: 6px 6px 0 var(--ink); }
+body.design-otaku .shared-profile__avatar { border: 2px solid var(--ink); border-radius: 30px 30px 42px 30px; background: var(--lavender); box-shadow: 4px 4px 0 var(--ink); transform: rotate(-2deg); }
+.rota-companion--shared { position: absolute; right: 24px; top: 19px; transform: rotate(4deg); }
+body.design-otaku .shared-profile__summary { margin: 16px 5px 0; overflow: hidden; border: 2px solid var(--ink); border-radius: 16px; background: #fff; box-shadow: 4px 4px 0 var(--sakura); }
+body.design-otaku .shared-shelf > header { border: 2px solid var(--ink); border-radius: 15px; background: var(--sun); box-shadow: 4px 4px 0 var(--ink); }
+body.design-otaku .shared-shelf > header > span { border: 1px solid var(--ink); background: #fff; }
+body.design-otaku .shared-anime-card { border: 2px solid var(--ink); border-radius: 17px; background: rgba(255,255,255,.88); box-shadow: 4px 4px 0 rgba(52,43,74,.14); }
+body.design-otaku .shared-anime-card:nth-child(even) { background: #fff8fb; transform: rotate(.15deg); }
+body.design-otaku .shared-anime-card:nth-child(odd) { transform: rotate(-.15deg); }
+body.design-otaku .shared-anime-card__art .art { border: 1px solid var(--ink); border-radius: 11px; }
+body.design-otaku .shared-anime-card .progress-track { border-radius: 999px; background: #eee7f4; }
+body.design-otaku .shared-anime-card .progress-track span { border-radius: inherit; background: var(--lavender); }
 
 /* Legal and footer */
 body.design-otaku .legal-page > header,
@@ -763,6 +782,23 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .account-mini-stats div { min-height: 62px; border-right: 0; border-bottom: 1px solid var(--line); }
   .account-sync { align-items: stretch; flex-direction: column; }
   .account-sync button { min-height: 44px; }
+  .account-sharing__actions { flex-direction: column; }
+  .shared-profile-hero { padding: 42px 0 30px; grid-template-columns: 1fr; gap: 22px; }
+  .shared-profile-hero h1 { font-size: 54px; }
+  body.design-otaku .shared-profile-hero::after { right: 4px; top: 20px; }
+  .shared-profile__identity { min-height: 300px; padding: 28px 20px 140px; align-items: flex-start; }
+  .shared-profile__avatar { width: 62px; height: 62px; font-size: 28px; }
+  .shared-profile__identity h2 { font-size: 36px; }
+  .rota-companion--shared { right: 8px; top: auto; bottom: 5px; transform: scale(.72) rotate(4deg); transform-origin: right bottom; }
+  .shared-profile__summary { grid-template-columns: repeat(2, 1fr); }
+  .shared-profile__summary div { min-height: 70px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .shared-profile__summary div:nth-child(even) { border-right: 0; }
+  .shared-profile__summary div:nth-last-child(-n+2) { border-bottom: 0; }
+  .shared-shelf__grid { grid-template-columns: 1fr; }
+  body.design-otaku .shared-anime-card:nth-child(n) { grid-template-columns: 92px minmax(0, 1fr); gap: 12px; transform: none; }
+  .shared-anime-card__art { min-height: 156px; }
+  .shared-anime-card h3 { font-size: 19px; }
+  .shared-anime-card blockquote { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 }
 
 @media (prefers-reduced-motion: reduce) {

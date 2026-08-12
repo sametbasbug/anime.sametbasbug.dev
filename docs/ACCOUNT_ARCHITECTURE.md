@@ -38,7 +38,7 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 - Tarayıcıya yalnız Supabase URL'si ve **publishable** anahtar verilir. Secret/service-role anahtarı istemciye konmaz.
 - `profiles` ve `personal_list_entries` tablolarında RLS zorunludur.
 - Temel tablolar yalnız sahip kullanıcı tarafından okunabilir ve değiştirilebilir.
-- `PUBLIC` veya `UNLISTED` tercihi temel tablolara anonim erişim açmaz. Gelecekte paylaşım ekranı yapılırsa kişisel notu dışarıda bırakan ayrı, sanitize edilmiş bir okuma yüzeyi gerekir.
+- `PUBLIC` veya `UNLISTED` tercihi temel tablolara anonim erişim açmaz. Paylaşım ekranı yüksek entropili UUID token ve `get_shared_profile` security-definer RPC'sini kullanır; yalnız aktif kayıtları ve sahibin açtığı alanları döndürür. E-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları yanıt şemasında yoktur.
 - Hesap isteğe bağlıdır; giriş yapmayan kullanıcının listesi yalnız tarayıcıda çalışır.
 
 ## Local-first senkronizasyon
@@ -73,6 +73,7 @@ Migration dosyaları:
 - `supabase/migrations/202608070001_accounts_and_personal_lists.sql`
 - `supabase/migrations/202608120001_keep_newer_personal_list_version.sql`
 - `supabase/migrations/202608120002_community_reviews_and_moderation.sql`
+- `supabase/migrations/202608120003_shareable_profiles.sql`
 
 ## Orbit ile giriş
 
@@ -128,6 +129,7 @@ değerlendirilir.
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
 - Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
 - Eşzamanlı cihaz yarışında eski sürümün yeniyi ezmesini önleyen ikinci migration production veritabanına uygulanmış; fonksiyon ile trigger'ın varlığı canlı sorguyla ve davranışı otomatik yakınsama senaryosuyla doğrulanmıştır.
+- Paylaşılabilir profil migration'ı yerelde hazırdır ancak henüz production'a uygulanmamıştır. Uygulandığında sahip ayarları ile token döndürme/yenileme akışı gerçek hesapta ayrıca kabul edilecektir.
 - Auth site URL'si `https://anime.sametbasbug.dev` (jokersiz); production `/hesap` ile `localhost:4321` ve `127.0.0.1:4321` hesap dönüş adresleri izinlidir. Supabase bu listeyi **dönüş bacağında** doğruluyor: `/authorize`'a verilen `redirect_to` başlangıçta hiç denetlenmiyor, yani listeyi istekle ölçmeye çalışmak yanıltır — panelden bakmak gerekir.
 - Profil yazma ve yerel liste birleştirme production üzerinde doğrulanmıştır; tekrarlanan eşitleme sıfır kayıt göndermiştir. Bu doğrulama Google akışıyla yapıldı ve Orbit geçişi kimlik katmanının altındaki bu yolları değiştirmiyor.
 - İki fiziksel cihazda production girişi ve canlı liste eşitleme tamamlandı; Samet 12 Ağustos 2026'da bunu ürün kabulü için yeterli saydı. Rota çevrimdışı açılma/gezinme vadeden bir PWA olmadığından çevrimdışı site kullanımı ayrı kabul şartı değildir. Cihaz yakınsaması ve tombstone silme otomatik senaryolarla korunur. Kısmi-red başlık rozeti ile hesap ekranı gerçek production oturumunda kontrollü geçersiz yerel kayıtla doğrulandı; kayıt sunucuda kalıcılaşmadı ve test sonrasında cihazdan temizlendi.

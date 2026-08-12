@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
 import { readPersonalList, subscribeToPersonalList } from "../lib/personal-list";
+import { buildShareUrl } from "../lib/profile-sharing";
 import { getSupabaseClient } from "../lib/supabase";
 import RotaCompanion from "./RotaCompanion";
 
@@ -9,6 +10,9 @@ type Visibility = "PRIVATE" | "UNLISTED" | "PUBLIC";
 type Profile = {
   display_name: string;
   list_visibility: Visibility;
+  share_scores: boolean;
+  share_notes: boolean;
+  share_token: string;
 };
 
 /* Giriş artık Orbit üzerinden.
@@ -44,7 +48,13 @@ export default function AccountExperience() {
   const [loading, setLoading] = useState(Boolean(client));
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  const [profile, setProfile] = useState<Profile>({ display_name: "", list_visibility: "PRIVATE" });
+  const [profile, setProfile] = useState<Profile>({
+    display_name: "",
+    list_visibility: "PRIVATE",
+    share_scores: true,
+    share_notes: false,
+    share_token: "",
+  });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [localCount, setLocalCount] = useState(0);
   const autoSyncedUserRef = useRef<string | null>(null);
@@ -87,12 +97,12 @@ export default function AccountExperience() {
 
     const loadProfile = async (nextSession: Session | null) => {
       if (!nextSession) return;
-      const { data } = await client
+      const { data, error } = await client
         .from("profiles")
-        .select("display_name,list_visibility")
+        .select("display_name,list_visibility,share_scores,share_notes,share_token")
         .eq("id", nextSession.user.id)
         .maybeSingle();
-      if (active && data) setProfile(data as Profile);
+      if (active && data && !error) setProfile(data as Profile);
     };
 
     const syncAfterSignIn = (nextSession: Session | null) => {
@@ -156,6 +166,8 @@ export default function AccountExperience() {
       id: session.user.id,
       display_name: next.display_name.trim(),
       list_visibility: next.list_visibility,
+      share_scores: next.share_scores,
+      share_notes: next.share_notes,
     });
     setBusy(false);
     if (error) {
@@ -164,6 +176,32 @@ export default function AccountExperience() {
     }
     setProfile(next);
     setMessage("Profil tercihin kaydedildi.");
+  };
+
+  const copyShareLink = async () => {
+    if (!profile.share_token || profile.list_visibility === "PRIVATE") return;
+    const link = buildShareUrl(window.location.origin, profile.share_token);
+    try {
+      await navigator.clipboard.writeText(link);
+      setMessage("Paylaşım bağlantısı panoya kopyalandı.");
+    } catch {
+      setMessage(`Bağlantı kopyalanamadı. Elle kopyalayabilirsin: ${link}`);
+    }
+  };
+
+  const rotateShareLink = async () => {
+    if (!client || !session) return;
+    if (!window.confirm("Eski paylaşım bağlantısı hemen geçersiz olacak. Yeni bağlantı oluşturulsun mu?")) return;
+    setBusy(true);
+    setMessage("");
+    const { data, error } = await client.rpc("rotate_profile_share_token");
+    setBusy(false);
+    if (error || typeof data !== "string") {
+      setMessage("Paylaşım bağlantısı yenilenemedi. Biraz sonra yeniden dene.");
+      return;
+    }
+    setProfile((current) => ({ ...current, share_token: data }));
+    setMessage("Yeni paylaşım bağlantısı hazır; eski bağlantı artık çalışmıyor.");
   };
 
   const syncNow = async () => {
@@ -284,8 +322,34 @@ export default function AccountExperience() {
             </label>
           ))}
         </fieldset>
-        <p className="account-caveat">Paylaşım sayfaları açılana kadar liste verisi teknik olarak yalnızca sana erişilebilir; tercih şimdiden saklanır.</p>
+        <div className="sharing-fields" aria-label="Paylaşım alanları">
+          <p>Paylaşılacak ayrıntılar</p>
+          <label className="sharing-toggle">
+            <input type="checkbox" checked={profile.share_scores} onChange={(event) => setProfile({ ...profile, share_scores: event.target.checked })} />
+            <span><b>Puanlarımı göster</b><small>Anime başına verdiğin 1–10 puan paylaşılır.</small></span>
+          </label>
+          <label className="sharing-toggle">
+            <input type="checkbox" checked={profile.share_notes} onChange={(event) => setProfile({ ...profile, share_notes: event.target.checked })} />
+            <span><b>Kişisel notlarımı göster</b><small>Notların sana özeldir; yalnız açarsan bağlantıda görünür.</small></span>
+          </label>
+        </div>
+        <p className="account-caveat">E-posta adresin, kullanıcı kimliğin ve senkronizasyon geçmişin hiçbir paylaşım görünümünde gösterilmez.</p>
         <button className="account-save" onClick={() => saveProfile(profile)} disabled={busy}>Tercihlerimi kaydet ✦</button>
+        <section className={`account-sharing${profile.list_visibility === "PRIVATE" ? " is-closed" : ""}`} aria-label="Rota paylaşım bağlantısı">
+          <div>
+            <p>ROTA PAYLAŞIM BAĞLANTISI</p>
+            <strong>{profile.list_visibility === "PRIVATE" ? "Paylaşım kapalı" : "Rafın bağlantıya hazır"}</strong>
+            <small>{profile.list_visibility === "PRIVATE"
+              ? "Bağlantıyı açmak için yukarıdan bir görünürlük seçip tercihlerini kaydet."
+              : profile.list_visibility === "PUBLIC"
+                ? "Profil herkese açık; bağlantıyı bilen herkes rafını görebilir."
+                : "Yalnız bu bağlantıya sahip kişiler rafını görebilir."}</small>
+          </div>
+          <div className="account-sharing__actions">
+            <button onClick={copyShareLink} disabled={busy || profile.list_visibility === "PRIVATE" || !profile.share_token}>Bağlantıyı kopyala</button>
+            <button onClick={rotateShareLink} disabled={busy || !profile.share_token}>Bağlantıyı yenile</button>
+          </div>
+        </section>
         {canModerate && <a className="account-moderation-link" href="/moderasyon">Moderasyon kuyruğunu aç <span>→</span></a>}
         <button className="account-signout" onClick={() => client.auth.signOut()}>Oturumu kapat</button>
       </section>

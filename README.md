@@ -33,7 +33,8 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - İsteğe bağlı **Equinox Orbit** girişi (Supabase'de `custom:orbit` OIDC sağlayıcısı); profil ve liste görünürlüğü ekranı
 - Yerel listeyi koruyan, tombstone destekli Supabase senkronizasyon katmanı
 - Sahip kullanıcıyla sınırlı Postgres RLS migration'ı
-- Anime başına tek topluluk incelemesi, spoiler perdesi, özel rapor kuyruğu ve rol korumalı moderasyon arayüzü (production migration'ı bekliyor)
+- Anime başına tek topluluk incelemesi, spoiler perdesi, özel rapor kuyruğu ve rol korumalı moderasyon arayüzü
+- E-posta, kullanıcı UUID'si ve senkronizasyon metadatasını açmayan dar RPC üzerinden salt okunur Rota paylaşım bağlantıları
 - Astro static build
 
 ## Teknik temel
@@ -74,7 +75,7 @@ Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime mo
 
 Kişisel liste local-first çalışır: her değişiklik önce sürümlü `rota.personal-list.v1` kaydıyla mevcut tarayıcıya yazılır. Depolama biçimi geriye uyumlu v2'ye yükseltilmiştir; silmeler çevrimdışı cihazlarda geri gelmesin diye tombstone olarak korunur.
 
-İsteğe bağlı hesap açıldığında yalnız profil ve kişisel liste verisi Supabase'e eşitlenir. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır; `PUBLIC`/`UNLISTED` tercihi tek başına kişisel notlara dış erişim vermez.
+İsteğe bağlı hesap açıldığında yalnız profil ve kişisel liste verisi Supabase'e eşitlenir. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır. `PUBLIC`/`UNLISTED` paylaşımı temel tablo erişimi açmaz; yüksek entropili bağlantı koduyla çalışan dar RPC yalnız görünen ad, aktif liste durumu ve bölüm ilerlemesini verir. Puan ile kişisel not ayrı tercihlerdir; e-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları paylaşılmaz. Bağlantı kapatılabilir veya kodu yenilenerek eskisi geçersiz kılınabilir.
 
 Yerel yapılandırma için `.env.example` dosyasını `.env` olarak kopyala ve
 Supabase publishable değerlerini ekle. Giriş için siteye ait ayrı bir istemci
@@ -128,10 +129,11 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı
 3. ~~Türkçe editoryal içerik~~ — tamamlandı
 4. ~~Hesap ve kalıcı veri~~ — Orbit girişi, Supabase senkronizasyonu ve iki cihazlı kabul doğrulamasıyla tamamlandı
-5. MAL/AniList içe aktarma fizibilitesi ve izinleri — 6. aşamadan sonraya ertelendi
-6. **Topluluk ve moderasyon** — anime incelemeleri, spoiler perdesi, raporlama ve sahip kuyruğu yerelde hazır; production doğrulaması bekliyor
+5. MAL/AniList içe aktarma fizibilitesi ve izinleri — yazılı API başvurusunun yanıtı bekleniyor
+6. ~~Topluluk ve moderasyon~~ — production kabulüyle tamamlandı
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
 8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı
+9. **Paylaşılabilir Rota profili** — yerel uygulama hazır; production migration ve gerçek hesap kabulü bekliyor
 
 ## Sahiplik
 

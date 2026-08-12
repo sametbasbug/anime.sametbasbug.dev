@@ -3,7 +3,7 @@ import AccountStatus from "./AccountStatus";
 import RotaMark from "./RotaMark.astro";
 
 interface Props {
-  active?: "discover" | "search" | "lists" | "account";
+  active?: "discover" | "search" | "lists" | "account" | "none";
 }
 
 const { active = "discover" } = Astro.props;

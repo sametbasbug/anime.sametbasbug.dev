@@ -493,6 +493,63 @@ main { overflow: hidden; }
 .account-caveat { margin: 18px 0; color: var(--muted); font-size: 8px; line-height: 1.55; }
 .account-save { width: 100%; }
 .account-signout { margin-top: 14px; padding: 0; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--muted); font-size: 8px; cursor: pointer; }
+.sharing-fields { margin-top: 24px; }
+.sharing-fields > p { margin: 0 0 10px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.sharing-toggle { padding: 12px 0; display: grid; grid-template-columns: 18px 1fr; gap: 8px; border-top: 1px solid var(--line); cursor: pointer; }
+.sharing-toggle input { margin: 3px 0 0; accent-color: var(--ink); }
+.sharing-toggle span { display: flex; flex-direction: column; gap: 4px; }
+.sharing-toggle b { color: var(--ink); font-size: 11px; }
+.sharing-toggle small { color: var(--muted); font-size: 8px; line-height: 1.45; }
+.account-sharing { margin: 20px 0 14px; padding: 16px; display: grid; gap: 15px; border: 1px solid var(--line); background: var(--paper-deep); }
+.account-sharing.is-closed { opacity: .72; }
+.account-sharing p { margin: 0 0 4px; color: var(--coral); font-size: 7px; font-weight: 900; letter-spacing: .1em; }
+.account-sharing strong { display: block; font-size: 13px; }
+.account-sharing small { display: block; margin-top: 5px; color: var(--muted); font-size: 8px; line-height: 1.45; }
+.account-sharing__actions { display: flex; gap: 8px; }
+.account-sharing__actions button { flex: 1; min-height: 39px; padding: 9px 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 8px; font-weight: 800; cursor: pointer; }
+.account-sharing__actions button:disabled { cursor: not-allowed; opacity: .48; }
+
+.shared-profile-page { width: var(--page); min-height: calc(100vh - 76px); margin: 0 auto; overflow: visible; }
+.shared-profile-hero { padding: 72px 0 52px; display: grid; grid-template-columns: 1fr minmax(300px, 440px); align-items: end; gap: 64px; border-bottom: 1px solid var(--line); }
+.shared-profile-hero h1 { margin: 0; font-family: var(--display); font-size: clamp(68px, 8vw, 118px); line-height: .82; letter-spacing: -.07em; text-transform: uppercase; }
+.shared-profile-hero h1 em { color: var(--coral); font-family: Georgia, serif; font-weight: 400; text-transform: none; }
+.shared-profile-hero > p { margin: 0 0 6px; color: var(--muted); font-size: 13px; line-height: 1.72; }
+.shared-profile-experience { padding: 48px 0 110px; }
+.shared-profile-state { min-height: 520px; }
+.shared-profile__identity { position: relative; min-height: 190px; padding: 34px 190px 34px 34px; display: flex; align-items: center; gap: 22px; border: 1px solid var(--line); background: var(--paper-deep); }
+.shared-profile__avatar { position: relative; flex: 0 0 auto; width: 82px; height: 82px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: white; font-family: var(--display); font-size: 36px; }
+.shared-profile__avatar span { position: absolute; right: -7px; top: -8px; color: var(--coral); font-size: 21px; }
+.shared-profile__identity p { margin: 0 0 6px; color: var(--coral); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
+.shared-profile__identity h2 { margin: 0; font-family: var(--display); font-size: clamp(38px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
+.shared-profile__identity small { display: block; margin-top: 8px; color: var(--muted); font-size: 9px; }
+.shared-profile__summary { display: grid; grid-template-columns: repeat(6, 1fr); border: 1px solid var(--line); border-top: 0; }
+.shared-profile__summary div { min-height: 90px; padding: 14px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
+.shared-profile__summary div:last-child { border: 0; }
+.shared-profile__summary strong { font-family: var(--display); font-size: 28px; }
+.shared-profile__summary span { margin-top: 3px; color: var(--muted); font-size: 7px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.shared-profile__empty { min-height: 360px; display: grid; place-content: center; justify-items: center; text-align: center; }
+.shared-profile__empty > span { color: var(--coral); font-size: 28px; }
+.shared-profile__empty h3 { margin: 12px 0 8px; font-family: var(--display); font-size: 34px; }
+.shared-profile__empty p { margin: 0; color: var(--muted); font-size: 11px; }
+.shared-shelves { margin-top: 46px; display: grid; gap: 48px; }
+.shared-shelf > header { padding: 14px 16px; display: grid; grid-template-columns: 46px 1fr auto; gap: 13px; align-items: center; border: 1px solid var(--line); }
+.shared-shelf > header > span { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--paper-deep); font-size: 16px; }
+.shared-shelf > header p { margin: 0 0 2px; color: var(--coral); font-size: 7px; font-weight: 900; letter-spacing: .1em; }
+.shared-shelf > header h2 { margin: 0; font-family: var(--display); font-size: 26px; }
+.shared-shelf > header small { color: var(--muted); font-size: 8px; }
+.shared-shelf > header > b { font-family: var(--display); font-size: 36px; }
+.shared-shelf__grid { margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.shared-anime-card { min-width: 0; padding: 14px; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 18px; border: 1px solid var(--line); background: var(--paper); }
+.shared-anime-card__art { min-height: 184px; }
+.shared-anime-card__art .art { height: 100%; }
+.shared-anime-card__body { min-width: 0; display: flex; flex-direction: column; }
+.shared-anime-card__body > p { margin: 0; color: var(--muted); font-size: 7px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.shared-anime-card h3 { margin: 8px 0 0; font-family: var(--display); font-size: 23px; line-height: 1; overflow-wrap: anywhere; }
+.shared-anime-card__meta { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 8px; }
+.shared-anime-card__meta span { display: flex; flex-direction: column; gap: 3px; text-transform: uppercase; }
+.shared-anime-card__meta b { color: var(--ink); font-size: 10px; }
+.shared-anime-card__meta > strong { color: var(--coral); font-size: 10px; }
+.shared-anime-card blockquote { margin: 14px 0 0; color: var(--muted); font-family: Georgia, serif; font-size: 10px; font-style: italic; line-height: 1.5; }
 
 @media (max-width: 1100px) {
   .site-header { grid-template-columns: 1fr auto; }
