@@ -11,7 +11,7 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Mobil öncelikli, responsive ana sayfa
 - Açık ve kawaii **Soft Celestial Otaku** tasarım sistemi; manga editoryali, masaüstü üst menüsü ve mobil alt gezinme
 - Ana sayfada doğrudan katalog araması ve yerel kişisel arşiv özeti
-- Gerçek katalogdan üretilen güncel ana sayfa seçkisi ve katalog haritası
+- Gerçek katalogdan üretilen güncel sezon rafı, haftalık dönüşümlü editoryal seçki ve katalog haritası
 - Duruma göre çalışan anime kartı filtreleri
 - Proje içinde CSS ile üretilmiş özgün görsel kompozisyonlar
 - 900 yapımlık gerçek, aranabilir katalog
@@ -28,7 +28,7 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Boş, yükleme, hata, senkronizasyon ve kutlama hâlleriyle yaşayan marka yüzü ve göksel yoldaş **Rota**
 - Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve karakterli sayfa geçişleri
 - Rota'nın ortak yüz anatomisini kullanan site ikonu, favicon ve 1200×630 Open Graph/Twitter paylaşım kartı
-- Sekiz popüler yapım için özgün, spoiler kontrollü Türkçe editoryal profil
+- 20 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
 - İsteğe bağlı **Equinox Orbit** girişi (Supabase'de `custom:orbit` OIDC sağlayıcısı); profil ve liste görünürlüğü ekranı
 - Yerel listeyi koruyan, tombstone destekli Supabase senkronizasyon katmanı
@@ -104,7 +104,7 @@ Hesapsız local-first kullanım aynen korunur.
 npm run content:check
 ```
 
-Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
+Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü, spoiler onayı, yinelenen uzun cümleler ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. Haftalık ana sayfa seçkilerinin yalnız yayımlanmış profillerden oluşmasını, tekrar etmemesini ve 20–30 profil hedefini de korur. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
 
 `npm run auth:check` (yine `npm run check` içinde) Orbit girişinin **dışarıyla
 eşleşmesi gereken** kısımlarını korur: sağlayıcı adının birebir `custom:orbit`
@@ -136,6 +136,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 9. ~~Paylaşılabilir Rota profili~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 10. ~~Kişisel istatistikler~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 11. ~~Yedekleme ve taşınabilirlik~~ — sürümlü JSON/CSV, doğrulamalı geri yükleme ve canlı kabulüyle tamamlandı
+12. Editoryal genişleme — 20 özgün profil ve beş haftalık seçki yerelde hazır; canlı kabul bekliyor
 
 ## Sahiplik
 

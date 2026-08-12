@@ -1,4 +1,5 @@
 import rawEditorial from "../data/editorial.json";
+export { editorialCollectionIndex } from "./editorial-rotation";
 
 export const editorialStatusLabels = {
   DRAFT: "Taslak",
@@ -16,6 +17,7 @@ export type EditorialEntry = {
   whyWatch?: string[];
   verdict?: string;
   audience?: string;
+  spoilerSafe?: boolean;
   updatedAt: string;
   reviewedAt?: string;
 };
@@ -26,11 +28,22 @@ export type PublishedEditorial = EditorialEntry & {
   whyWatch: [string, string, string];
   verdict: string;
   audience: string;
+  spoilerSafe: true;
   reviewedAt: string;
+};
+
+export type HomepageEditorialCollection = {
+  id: string;
+  label: string;
+  title: string;
+  description: string;
+  animeIds: [string, string, string, string];
 };
 
 const entries = rawEditorial.entries as EditorialEntry[];
 const byAnimeId = new Map(entries.map((entry) => [entry.animeId, entry]));
+
+export const homepageEditorialCollections = rawEditorial.homepageCollections as HomepageEditorialCollection[];
 
 export const editorialStats = {
   total: entries.length,

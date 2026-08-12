@@ -323,6 +323,31 @@ body.design-otaku .library-summary > a { z-index: 1; color: #fff; background: va
 /* Mood routes and anime shelves */
 body.design-otaku .schedule { border-top: 0; }
 body.design-otaku .catalogue-strip.mood-grid { overflow: visible; }
+body.design-otaku .editorial-rotation {
+  position: relative;
+  border-top: 2px solid var(--ink);
+}
+body.design-otaku .editorial-rotation::before {
+  content: "✦";
+  position: absolute;
+  top: 45px;
+  right: 8px;
+  color: var(--sun-deep);
+  font-size: 42px;
+  transform: rotate(12deg);
+}
+body.design-otaku .editorial-rotation__label { color: var(--coral); }
+body.design-otaku .editorial-rotation__controls button {
+  border: 2px solid var(--ink);
+  background: #fff;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+body.design-otaku .editorial-rotation__controls button.is-active {
+  background: var(--lavender-deep);
+  color: #fff;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--sakura);
+}
 body.design-otaku .mood-card {
   position: relative;
   overflow: hidden;

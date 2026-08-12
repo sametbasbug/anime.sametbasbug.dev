@@ -5,6 +5,8 @@ import AnimeArtwork from "../components/AnimeArtwork";
 import SeasonShelf from "../components/SeasonShelf";
 import HomeLibrarySummary from "../components/HomeLibrarySummary";
 import RotaCompanion from "../components/RotaCompanion";
+import EditorialShelf from "../components/EditorialShelf";
+import { editorialCollectionIndex, homepageEditorialCollections } from "../lib/editorial";
 import {
   catalogue,
   displayTags,
@@ -38,6 +40,12 @@ const featured = statusSelection("ONGOING")[0] ?? homepageAnime[0] ?? catalogue[
 const featuredVisual = visualFor(featured.id);
 const featuredAlias = preferredAliases(featured.synonyms, 1)[0];
 const featuredTags = displayTags(featured.tags, 2);
+const catalogueById = new Map(catalogue.map((anime) => [anime.id, anime]));
+const editorialCollections = homepageEditorialCollections.map((collection) => ({
+  ...collection,
+  items: collection.animeIds.map((animeId) => catalogueById.get(animeId)).filter((anime): anime is CatalogueAnime => Boolean(anime)),
+}));
+const initialEditorialCollection = editorialCollectionIndex(now, editorialCollections.length);
 const moodRoutes = [
   { icon: "♡", label: "Kalp çarptıran", note: "Romantizm", href: "/ara?q=romantizm", tone: "pink" },
   { icon: "✦", label: "Başka dünyalar", note: "Isekai & fantazi", href: "/ara?q=fantazi", tone: "violet" },
@@ -105,6 +113,8 @@ const moodRoutes = [
         ))}
       </div>
     </section>
+
+    <EditorialShelf collections={editorialCollections} initialIndex={initialEditorialCollection} client:load />
 
     <section class="season" id="sezon">
       <div class="section-heading section-heading--season">

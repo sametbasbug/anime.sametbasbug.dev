@@ -1,5 +1,42 @@
 {
   "version": 1,
+  "homepageCollections": [
+    {
+      "id": "sessizce-derinlesenler",
+      "label": "SAKİN AMA UZUN SÜREN",
+      "title": "Sessizce derinleşen hikâyeler",
+      "description": "Büyük duygularını acele etmeden kuran, ayrıntıları izleyenin yanında kalan dört dünya.",
+      "animeIds": ["52991", "46102", "47917", "54492"]
+    },
+    {
+      "id": "dunya-dar-gelirken",
+      "label": "SINIRLAR VE SEÇİMLER",
+      "title": "Dünya dar gelirken verilen kararlar",
+      "description": "Özgürlük, savaş ve hayatta kalma fikrini kolay cevaplara sığınmadan tartışan yapımlar.",
+      "animeIds": ["16498", "41457", "37521", "42310"]
+    },
+    {
+      "id": "ritmi-yuksek-baslangiclar",
+      "label": "İLK BÖLÜMDEN YAKALAYAN",
+      "title": "Ritmi yüksek başlangıçlar",
+      "description": "Enerjisini berrak karakter hedefleriyle birleştiren, hızla içine çeken modern seriler.",
+      "animeIds": ["40748", "38000", "44511", "57334"]
+    },
+    {
+      "id": "yol-arkadaslari",
+      "label": "BİRLİKTE BÜYÜYENLER",
+      "title": "İyi yol arkadaşlarıyla büyümek",
+      "description": "Macera kadar ekip ruhuna, güvene ve birlikte değişmenin küçük anlarına da yer açanlar.",
+      "animeIds": ["5114", "52701", "40834", "20583"]
+    },
+    {
+      "id": "klasikten-buyuye",
+      "label": "ROTA'NIN TEMEL TAŞLARI",
+      "title": "Klasikten büyüye dört durak",
+      "description": "Suç geriliminden ruhlar dünyasına, animeye açılan birbirinden farklı dört güçlü kapı.",
+      "animeIds": ["1", "1535", "32281", "199"]
+    }
+  ],
   "entries": [
     {
       "animeId": "1",
@@ -13,6 +50,7 @@
       ],
       "verdict": "Cowboy Bebop, bilim kurgu dekorunu gösteriş için değil; aidiyet, pişmanlık ve geride bırakılamayan hayatlar üzerine konuşmak için kullanıyor. Serinkanlı tavrının altında hayli insani bir hikâye var.",
       "audience": "Bölümlük anlatıları, yetişkin karakterleri ve melankoliyi seven; hızlı bir ana olay örgüsü beklemeyen izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -28,6 +66,7 @@
       ],
       "verdict": "Death Note'un asıl çekiciliği defterin kuralında değil, o gücü kullanan kişinin her kararla biraz daha değişmesinde. Bazı bölümleri diğerlerinden daha güçlü olsa da gerilim animeye giriş için hâlâ etkili bir kapı.",
       "audience": "Zekâ oyunları, suç gerilimi ve ahlaki ikilemler arayan; karanlık karakter çalışmalarından hoşlanan izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -43,6 +82,7 @@
       ],
       "verdict": "Fullmetal Alchemist: Brotherhood büyük ölçekli bir hikâyeyi merkezindeki kardeşlik duygusunu kaybetmeden tamamlıyor. Klasik macera yapısını sevenler için hem ulaşılabilir hem de katmanlı bir başlangıç noktası.",
       "audience": "Dünya kurulumuna, tamamlanmış uzun hikâyelere ve kalabalık ama işlevli karakter kadrolarına değer veren izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -58,6 +98,7 @@
       ],
       "verdict": "Jujutsu Kaisen tanıdık shounen parçalarını çok iyi bir teknik uygulama ve canlı karakter ilişkileriyle tazeliyor. Dizi derinleşmeden önce bile aksiyonu ve mizahı sayesinde kolayca akıyor.",
       "audience": "Modern shounen, yoğun aksiyon ve karanlık fantastik isteyen; zaman zaman sert şiddetle sorunu olmayan izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -73,6 +114,7 @@
       ],
       "verdict": "Kimi no Na wa. yüksek prodüksiyon değerini kolay tüketilen bir romantizmin ötesine taşıyor; hafıza, mesafe ve bağ kurma üzerine samimi bir film sunuyor. Duygusu doğrudan, işçiliği ise son derece kontrollü.",
       "audience": "Romantik fantastik filmleri, güçlü görsel atmosferi ve tek oturuşta tamamlanan duygusal hikâyeleri seven izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -88,6 +130,7 @@
       ],
       "verdict": "Sen to Chihiro no Kamikakushi çocukluk korkularını küçümsemeden anlatan, yetişkinlere de yeni ayrıntılar bırakan ender filmlerden. Hayal gücü kadar karakterine gösterdiği sabırla da kalıcı.",
       "audience": "Ailece izlenebilen fakat çocuk filmi kalıbına sığmayan, masalsı ve çok katmanlı bir macera arayanlara göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -103,6 +146,7 @@
       ],
       "verdict": "Shingeki no Kyojin ilk bakışta insanlarla devlerin savaşı gibi görünse de asıl gücünü korku, özgürlük ve kolektif hafıza üzerine giderek büyüyen tartışmasından alıyor. Yoğun ve sabır isteyen, karşılığını veren bir seri.",
       "audience": "Yüksek gerilim, sert şiddet, büyük gizemler ve sezonlar boyunca dönüşen politik anlatılar arayan izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
@@ -118,12 +162,189 @@
       ],
       "verdict": "Sousou no Frieren büyük bir görevin sonrasını anlatarak fantastik maceraya taze bir yerden bakıyor. Hüzünlü ama karamsar değil; yavaş ama amaçsız hiç değil. Duygusal etkisini acele etmeden kuruyor.",
       "audience": "Karakter odaklı fantastik yolculukları, sakin tempoyu ve küçük anlardan büyüyen duyguları seven izleyicilere göre.",
+      "spoilerSafe": true,
       "updatedAt": "2026-08-06",
       "reviewedAt": "2026-08-06"
     },
     {
+      "animeId": "37521",
+      "status": "PUBLISHED",
+      "headline": "İntikamın gölgesinde savaşsız bir ülke aramak",
+      "summary": "Savaşçıların gücü belirlediği bir çağda büyüyen Thorfinn, çocukluğunu elinden alan bir adamın peşinde savaş meydanlarından denizlere sürüklenir. Uzakta anlatılan bereketli Vinland ise onun için önce bir efsane, sonra şiddetin dışında bir hayat ihtimalidir.",
+      "whyWatch": [
+        "Tarihî ayrıntılar dekor olmakla kalmaz; iktidarın, emeğin ve hayatta kalmanın karakterleri nasıl biçimlendirdiğini sürekli hissettirir.",
+        "Dövüşlerin fiziksel ağırlığı yüksek olsa da anlatı asıl ilgisini şiddetin insanlarda bıraktığı uzun süreli yaralara yöneltir.",
+        "Thorfinn'in dar bir hedefle başlayan yolculuğu, kahramanlık fikrini ve gerçek gücün ne olduğunu sorgulayan sabırlı bir karakter çalışmasına dönüşür."
+      ],
+      "verdict": "Vinland Saga tarihî aksiyonu intikamın cazibesini parlatmak için değil, onun insanı nasıl tükettiğini göstermek için kullanıyor. Büyük çatışmaların yanında sessiz bakışlara da güvenen, değişime gerçekten zaman tanıyan bir seri.",
+      "audience": "Tarihî dram, ağır karakter dönüşümü ve sert aksiyon arayan; anlatının zaman zaman yavaşlayıp düşünmesine izin veren izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "20583",
+      "status": "PUBLISHED",
+      "headline": "File önünde yetenekten önce cesaret yükselir",
+      "summary": "Kısa boyuna rağmen voleybol sahasında yükselmek isteyen Shouyou Hinata, ortaokuldaki yenilgisinin ardından Karasuno Lisesi'ne katılır. En büyük rakibi sandığı Tobio Kageyama ile aynı takımda buluşunca bireysel hırsları, birbirlerini tamamlayan bir oyuna dönüşmek zorunda kalır.",
+      "whyWatch": [
+        "Maçlar yalnız sonuca değil; pozisyon alma, tempo değiştirme ve takım arkadaşını okuma gibi küçük kararların gerilimine yaslanır.",
+        "Rakip takımlar tek kullanımlık engeller gibi yazılmaz; kendi oyun kimlikleri ve hedefleri sayesinde karşılaşmalar iki taraf için de anlam kazanır.",
+        "Hinata ile Kageyama'nın sürtüşmeli uyumu, rekabeti arkadaşlıktan ayırmadan gelişen canlı ve komik bir merkez oluşturur."
+      ],
+      "verdict": "Haikyuu!! voleybolu bilmeyen bir izleyiciyi bile sahanın ritmine ortak edebilen berrak bir spor anlatısı. Coşkusunu ucuz mucizelerden değil, tekrarın, güvenin ve doğru anda birlikte hareket etmenin verdiği tatminden çıkarıyor.",
+      "audience": "Takım dinamiklerini, yoğun ama anlaşılır spor karşılaşmalarını ve iyimser büyüme hikâyelerini seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "47917",
+      "status": "PUBLISHED",
+      "headline": "Sahne ışığına çıkmaya çalışan içe dönük bir gitar",
+      "summary": "İnsanlarla konuşmakta zorlanan Hitori Gotou, gitar çalışarak bir gün gruba katılabileceğini hayal eder; fakat yıllar süren emeği odasının dışına pek çıkamaz. Kessoku Band'e beklenmedik biçimde davet edilmesi, yeteneğini başkalarıyla paylaşmayı öğrenmesi gereken yeni bir başlangıç olur.",
+      "whyWatch": [
+        "Sosyal kaygı, abartılı görsel şakalarla anlatılırken Hitori'nin yaşadığı sıkışmışlık küçümsenmez veya tek hamlede çözülmez.",
+        "Konserler ve provalar, karakterlerin birbirini dinlemeyi öğrenmesiyle birlikte müzikal açıdan da belirgin bir gelişim çizgisi kurar.",
+        "Farklı animasyon tekniklerine sıçrayan komedi, seriye öngörülemez ama karakter duygusuyla uyumlu bir görsel enerji kazandırır."
+      ],
+      "verdict": "Bocchi the Rock! içe dönüklüğü sevimli bir etiket olarak kullanmakla yetinmiyor; ilerlemenin bazen yalnızca odayı terk etmek kadar küçük göründüğünü biliyor. Çok komik, müzikal olarak özenli ve kırılganlığına karşı dürüst.",
+      "audience": "Müzik grubu hikâyelerini, yaratıcı görsel komediyi ve sosyal kaygıyı yargılamadan ele alan karakter odaklı serileri sevenlere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "46102",
+      "status": "PUBLISHED",
+      "headline": "Gece taksisinde birbirine bağlanan küçük sırlar",
+      "summary": "Az konuşan taksi şoförü Odokawa, Tokyo gecelerinde birbirinden ilgisiz görünen yolcuları taşır: bir hemşire, başarısız bir komedyen, genç bir polis ve şöhret arayan insanlar. Kayıp bir kızla ilgili izler çoğaldıkça gündelik sohbetler, şehrin görünmeyen bağlarını açığa çıkarır.",
+      "whyWatch": [
+        "Doğal diyaloglar hem karakter mizahı üretir hem de ilk anda önemsiz görünen ayrıntıları daha geniş gizemin parçalarına dönüştürür.",
+        "Hayvan karakter tasarımları sıcak bir mesafe yaratırken yalnızlık, internet takıntısı ve görünür olma arzusu oldukça insani kalır.",
+        "Dar bölüm süresi ve kontrollü kurgu, kalabalık oyuncu kadrosunu karıştırmadan farklı hikâye çizgilerini adım adım birbirine yaklaştırır."
+      ],
+      "verdict": "Odd Taxi gösterişli bilmeceler yerine iyi yazılmış konuşmalara güvenen sıkı bir şehir gizemi. Başından beri verdiği küçük işaretleri ciddiye alıyor ve karakterlerini yalnızca çözülecek olayın araçlarına indirgemiyor.",
+      "audience": "Suç gizemlerini, yetişkin karakterleri ve ayrıntı toplamayı seven; aksiyondan çok diyalogla ilerleyen kısa bir seri arayanlara göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "52701",
+      "status": "PUBLISHED",
+      "headline": "Zindanda hayatta kalmanın en lezzetli yöntemi",
+      "summary": "Laios ve ekibi, zindanın derinliklerinde kaybettikleri arkadaşlarına yeniden ulaşmak için vakitle yarışır. Erzak almaya dönmek yerine karşılarına çıkan yaratıkları pişirmeye karar vermeleri, tehlikeli kurtarma yolculuğunu ekoloji, mutfak ve ekip uyumu üzerine tuhaf bir keşfe çevirir.",
+      "whyWatch": [
+        "Her yemek, yaratıkların anatomisiyle yaşadıkları çevreyi açıklayan küçük bir dünya kurma dersine dönüşür; şaka ile bilgi aynı tabakta buluşur.",
+        "Ekip üyelerinin yemek ve risk konusundaki farklı sınırları, aralarındaki güveni doğal tartışmalar ve komik uzlaşmalar üzerinden geliştirir.",
+        "Hafif başlayan macera, zindanın düzeni belirginleştikçe tonunu kaybetmeden daha ciddi ahlaki ve duygusal sorulara alan açar."
+      ],
+      "verdict": "Dungeon Meshi yüksek konseptli bir yemek şakasını sonuna kadar sömürmek yerine ondan tutarlı bir fantastik ekosistem kuruyor. İştah açıcı, çok komik ve ekibinin birbirini tanıma biçiminde beklenmedik ölçüde içten.",
+      "audience": "Masaüstü rol yapma hissini, yaratıcı dünya kurulumunu ve yemek temasını seven; komediyle ciddiyetin yavaşça karışmasına açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "44511",
+      "status": "PUBLISHED",
+      "headline": "Basit hayallerle korkunç bir işe giren çocuk",
+      "summary": "Borç içinde yaşayan Denji, küçük testere iblisi Pochita ile tehlikeli işler yaparak günü kurtarmaya çalışır. Hayatı bir anda Kamu Güvenliği'nin iblis avcıları arasına taşındığında düzenli yemek, sıcak bir ev ve yakınlık gibi sıradan arzuları ölümcül görevlerle yan yana gelir.",
+      "whyWatch": [
+        "Denji'nin küçük ve kimi zaman kaba istekleri, büyük kahramanlık söylemlerinin yanında sınıf, yoksunluk ve manipülasyon üzerine keskin bir karşıtlık kurar.",
+        "Aksiyon sahneleri yalnız hızla değil; kamera dili, ağırlık hissi ve her bölümün tonuna göre değişen müzik tercihleriyle karakter kazanır.",
+        "Korku, kara mizah ve gündelik ev hayatı arasındaki ani geçişler dünyanın dengesizliğini yansıtan kendine özgü bir ritim yaratır."
+      ],
+      "verdict": "Chainsaw Man gürültülü fikrinin altında sevilme ve normal bir hayat kurma arzusuna odaklanan huzursuz bir karakter hikâyesi. Şiddeti sert, mizahı rahatsız edici; fakat bütün bu taşkınlığın merkezinde şaşırtıcı bir kırılganlık var.",
+      "audience": "Kara mizah, yoğun şiddet ve alışılmadık kahramanlar arayan; karakterlerin kusurlu ve zaman zaman rahatsız edici olmasından kaçınmayan yetişkin izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "40834",
+      "status": "PUBLISHED",
+      "headline": "Gücün boyla ölçülmediği kırılgan bir krallık",
+      "summary": "Duymayan ve konuşmakta zorlanan Prens Bojji, çevresindekilerin küçümsemesine rağmen bir gün iyi bir kral olmak ister. Gölge klanından Kage ile kurduğu beklenmedik dostluk, sarayın beklentileri arasında kendi cesaretini ve yönetmenin ne anlama geldiğini keşfettiği bir yolculuk başlatır.",
+      "whyWatch": [
+        "Masal kitabını andıran çizgiler, dünyanın sertliğini gizlemek yerine şefkat ile tehlikeyi aynı görsel dilde yan yana taşıyabilir.",
+        "Karakterler ilk izlenimlerine hapsedilmez; korkuları, sadakatleri ve hataları açıldıkça saraydaki ilişkiler sürekli yeni bir anlam kazanır.",
+        "Bojji'nin gelişimi fiziksel üstünlükten çok gözlem, direnç ve başkalarının acısını anlayabilme becerisi üzerinden kuruludur."
+      ],
+      "verdict": "Ousama Ranking, çocuk masalı sadeliğini ahlaki açıdan tek renkli bir dünyayla karıştırmıyor. Bojji'nin iyiliğini pasiflik değil bilinçli bir güç olarak ele alan, sıcaklığı kadar yaralarıyla da akılda kalan bir macera.",
+      "audience": "Masalsı fantastik dünyaları, duygusal dostlukları ve ilk bakışta göründüğünden daha karmaşık karakterleri seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "41457",
+      "status": "PUBLISHED",
+      "headline": "Uzak kumandaların ardında unutulan genç askerler",
+      "summary": "San Magnolia Cumhuriyeti savaşı insansız makinelerle yürüttüğünü söyler; fakat cephedeki araçları toplumdan dışlanan gençler kullanır. Komutan Lena ile 86. bölgesindeki Spearhead birliğinin lideri Shin arasındaki ses bağlantısı, resmî anlatıyla yaşanan gerçek arasındaki uçurumu açar.",
+      "whyWatch": [
+        "Aynı çatışmayı güvenli komuta odasıyla cephe arasında bölerek ayrıcalık, sorumluluk ve uzaktan verilen kararların bedelini görünür kılar.",
+        "Ses köprüleri, paralel kurgu ve kadraj tekrarları fiziksel olarak ayrı karakterler arasında güçlü bir dramatik ilişki kurar.",
+        "Mekanik savaşın ölçeği korunurken birlik üyelerinin küçük alışkanlıkları ve yas biçimleri, kayıpları isimsiz rakamlara dönüşmekten çıkarır."
+      ],
+      "verdict": "86 savaş draması ile gençlik hikâyesini, sistematik ayrımcılığın rahat bir toplum tarafından nasıl görünmez kılındığı sorusunda buluşturuyor. Duygusunu yükselttiği anlar var ama bunu sağlam bir görsel anlatımla destekliyor.",
+      "audience": "Askerî bilim kurgu, politik alt metin ve duygusal ekip ilişkileri arayan; savaşın kayıp ve ayrımcılık boyutundan kaçmayan izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "54492",
+      "status": "PUBLISHED",
+      "headline": "Saray söylentilerini zehir bilgisiyle çözmek",
+      "summary": "Eczacı olarak yetişen Maomao, kaçırılıp imparatorluk sarayının arka bölümünde hizmetçi yapılır. Dikkat çekmeden günlerini tamamlamak isterken hastalıklar ve tuhaf olaylar merakını harekete geçirir; bitkilerle zehirlere duyduğu ilgi onu saray düzeninin sırlarına yaklaştırır.",
+      "whyWatch": [
+        "Maomao'nun gözlem gücü doğaüstü bir yetenek gibi sunulmaz; bilgi, deney ve insan davranışlarını soğukkanlı biçimde birleştirmesine dayanır.",
+        "Sarayın görkemli yüzüyle hizmetlilerin kırılgan konumu yan yana durur; küçük vakalar sınıf ve güç ilişkilerini görünür kılar.",
+        "Jinshi ile kurulan sürtüşmeli iletişim, ana karakterin bağımsızlığını gölgelemeyen ölçülü bir mizah ve merak katmanı ekler."
+      ],
+      "verdict": "Kusuriya no Hitorigoto, dönem sarayı entrikasını Maomao'nun pratik zekâsı ve bilime yakın merakıyla tazeliyor. Vaka yapısı erişilebilir, arka plandaki ilişkiler ise sabırlı izleyici için giderek zenginleşiyor.",
+      "audience": "Dönem atmosferini, gözlemle çözülen gizemleri ve güçlü kadın başrolleri seven; aksiyondan çok diyalog ve ayrıntı arayan izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "42310",
+      "status": "PUBLISHED",
+      "headline": "Neon ışıkları altında bedeni hızla tüketmek",
+      "summary": "Night City'nin eşitsiz düzeninde yaşayan David, seçkin okuluyla yoksul mahallesi arasında sıkışmış genç bir öğrencidir. Hayatını değiştiren bir teknoloji parçası onu paralı askerlerin dünyasına çekerken güçlenme arzusu, bedeninin ve ilişkilerinin taşıyabileceği sınırlarla çatışır.",
+      "whyWatch": [
+        "Parlak renkler, sert kesmeler ve yoğun elektronik müzik şehrin hem baştan çıkarıcı hem de insanı öğüten hızını sürekli hissettirir.",
+        "On bölümlük yapı yan karakterlerde uzun molalar vermeden David'in aidiyet, statü ve kontrol arzusunu keskin bir çizgide izler.",
+        "Cyberpunk evrenine aşinalık gerektirmeden şirket gücü, beden modifikasyonu ve yoksulluk arasındaki ilişkiyi anlaşılır biçimde kurar."
+      ],
+      "verdict": "Cyberpunk: Edgerunners Night City'yi yalnız havalı bir fon olarak kullanmıyor; o parıltının insanları nasıl daha fazlasını istemeye zorladığını gösteriyor. Kısa, yoğun ve duygusal olarak acımasız bir trajedi.",
+      "audience": "Yetişkinlere yönelik bilim kurgu, yoğun şiddet ve hızlı trajik anlatılar arayan; karanlık bir gelecek dünyasına hazır izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
+      "animeId": "57334",
+      "status": "PUBLISHED",
+      "headline": "Uzaylılarla ruhların arasında ergenlik tam gaz",
+      "summary": "Hayaletlere inanan Momo ile uzaylılara inanan Okarun, birbirlerinin fikrini çürütmek için ayrı ayrı tehlikeli yerlere gider. İkisinin de haklı çıkması, doğaüstü güçleri, tuhaf düşmanları ve yeni filizlenen yakınlıklarını aynı anda yönetmeleri gereken çılgın bir mücadele başlatır.",
+      "whyWatch": [
+        "Korku, romantik komedi ve yüksek hızlı aksiyon arasında geçiş yaparken her türün ritmini koruyan son derece hareketli bir yönetim dili kullanır.",
+        "Momo ile Okarun'un ilişkisi yalnız yanlış anlaşılmalara değil; birbirini savunma, utanma ve yavaşça güvenme anlarına dayanan sıcak bir merkez kurar.",
+        "Uzaylı ve ruh tasarımları popüler kültürden beslenirken renk, müzik ve animasyonla seriye ait neşeli bir tuhaflığa dönüşür."
+      ],
+      "verdict": "Dandadan aynı anda çok fazla şey yapmaya çalışıyor ve şaşırtıcı biçimde çoğunu taşıyor. Gürültülü yüzeyinin altında iki gencin birbirine alan açmasını önemseyen, teknik açıdan canlı ve içten bir seri.",
+      "audience": "Doğaüstü komedi, yaratıcı aksiyon ve hızlı gelişen gençlik ilişkileri arayan; zaman zaman kaba mizah ve ürkütücü imgelerle sorunu olmayanlara göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
+    },
+    {
       "animeId": "38000",
-      "status": "IN_REVIEW",
+      "status": "PUBLISHED",
       "headline": "Yasın içinden nezaketini kaybetmeden yürümek",
       "summary": "Ailesini bir iblis saldırısında kaybeden Tanjirou, dönüşmeye başlayan kız kardeşi Nezuko'yu kurtarmanın yolunu arar. İblis avcılarına katıldığı yolculuk, kılıç eğitimi kadar acıyla karşılaşınca insanlığını koruma sınavına dönüşür.",
       "whyWatch": [
@@ -133,7 +354,9 @@
       ],
       "verdict": "Kimetsu no Yaiba anlatı bakımından güvenli bir yol izliyor; fakat görsel işçiliği, berrak duygusu ve karakterlerinin samimiyeti bu tanıdık yapıyı oldukça etkili kılıyor.",
       "audience": "Duygusal motivasyonu açık, görsel olarak güçlü ve kolay takip edilen bir aksiyon serisi isteyen izleyicilere göre.",
-      "updatedAt": "2026-08-06"
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-13",
+      "reviewedAt": "2026-08-13"
     },
     {
       "animeId": "21",
