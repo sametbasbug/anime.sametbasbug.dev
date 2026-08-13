@@ -466,8 +466,6 @@ main { overflow: hidden; }
 .account-card h3 { margin: 0 0 14px; font-family: var(--display); font-size: 30px; letter-spacing: -.03em; text-transform: uppercase; }
 .account-card > p:not(.eyebrow):not(.account-message):not(.account-caveat) { max-width: 630px; margin: 24px 0 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
 .account-card__number { display: block; color: var(--coral); font-family: Georgia, serif; font-size: 74px; font-style: italic; line-height: 1; }
-.account-settings > label input { min-width: 0; height: 52px; padding: 0 15px; border: 1px solid var(--line); border-radius: 0; outline: 0; background: var(--paper); color: var(--ink); font: inherit; }
-.account-settings > label input:focus { border-color: var(--ink); }
 /* Giriş düğmesi artık bizim: Google'ın kendi çizdiği iframe gitti, o yüzden
    iframe'i evcilleştiren kurallar da gitti. Bu düğmede bilerek
    `text-transform: uppercase` yok: sayfa `lang="tr"` ve tarayıcı Türkçe
@@ -492,8 +490,12 @@ main { overflow: hidden; }
 .account-sync span { color: var(--muted); font-size: 8px; font-weight: 800; text-transform: uppercase; }
 .account-sync button, .account-save { padding: 14px 18px; border: 0; background: var(--ink); color: white; font-size: 9px; font-weight: 800; cursor: pointer; }
 .account-card--primary > small { display: block; margin-top: 12px; color: var(--muted); font-size: 8px; }
-.account-settings > label { display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.account-settings > label input { width: 100%; margin-bottom: 26px; }
+.account-orbit-identity { margin-bottom: 26px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 18px; border: 1px solid var(--line); background: var(--paper); }
+.account-orbit-identity > div { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.account-orbit-identity span { color: var(--lavender-deep); font-size: 7px; font-weight: 900; letter-spacing: .09em; }
+.account-orbit-identity strong { overflow-wrap: anywhere; font-size: 14px; }
+.account-orbit-identity small { color: var(--muted); font-size: 8px; line-height: 1.45; }
+.account-orbit-identity > a { flex: 0 0 auto; padding: 10px 12px; border: 1px solid var(--line); color: var(--ink); font-size: 8px; font-weight: 800; }
 .account-settings fieldset { margin: 0; padding: 0; border: 0; }
 .account-settings legend { margin-bottom: 10px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .visibility-option { padding: 12px 0; display: grid; grid-template-columns: 18px 1fr; gap: 8px; border-top: 1px solid var(--line); cursor: pointer; }

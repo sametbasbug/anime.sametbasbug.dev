@@ -192,7 +192,6 @@ export default function AccountExperience({ dataVersion }: Props) {
     const { error } = await client
       .from("profiles")
       .update({
-        display_name: next.display_name.trim(),
         list_visibility: next.list_visibility,
         share_scores: next.share_scores,
         share_notes: next.share_notes,
@@ -205,7 +204,7 @@ export default function AccountExperience({ dataVersion }: Props) {
       return;
     }
     setProfile(next);
-    setMessage("Profil tercihin kaydedildi.");
+    setMessage("Paylaşım tercihlerin kaydedildi.");
   };
 
   const copyShareLink = async () => {
@@ -239,14 +238,14 @@ export default function AccountExperience({ dataVersion }: Props) {
     await syncForUser(session.user.id, true);
   };
 
-  /* Orbit `name` ve `preferred_username` gönderiyor; Supabase eski Google
-   * kimliğinden gelen `full_name` alanını da aynı kullanıcıda tutuyor. Üçünü
-   * sırayla deniyoruz ki hem Orbit'ten gelen hem devralınan ad çalışsın. */
+  /* Görünen adın sahibi Orbit'tir. `name` önce gelir; `preferred_username`
+   * güvenli yedektir. `full_name` yalnız geçişten kalan eski hesapların Orbit
+   * yeniden oturum açana kadar adsız görünmemesi için son sırada tutulur. */
   const metadata = session?.user.user_metadata ?? {};
-  const orbitName = ["full_name", "name", "preferred_username"]
+  const orbitName = ["name", "preferred_username", "full_name"]
     .map((key) => (typeof metadata[key] === "string" ? (metadata[key] as string).trim() : ""))
     .find((value) => value.length > 0) ?? "";
-  const displayName = profile.display_name.trim() || orbitName || "Anime yolcusu";
+  const displayName = orbitName || profile.display_name.trim() || "Anime yolcusu";
   const rotaRole = typeof session?.user.app_metadata?.rota_role === "string"
     ? session.user.app_metadata.rota_role
     : "";
@@ -255,12 +254,12 @@ export default function AccountExperience({ dataVersion }: Props) {
   const syncHasError = message.startsWith("Senkronizasyon tamamlanamadı");
   const syncIsPartial = (syncResult?.rejected.length ?? 0) > 0;
   const companionState = busy
-    ? { mood: "syncing" as const, message: "Rafları buluşturuyorum…" }
+    ? { mood: "syncing" as const, scene: "accountSyncing" as const }
     : syncHasError || syncIsPartial
-      ? { mood: "error" as const, message: syncIsPartial ? "Bir kayda bakmalıyız." : "Bağlantı biraz huysuz." }
+      ? { mood: "error" as const, scene: "accountError" as const }
       : syncResult
-        ? { mood: "celebrating" as const, message: "Rafların buluştu!" }
-        : { mood: "happy" as const, message: "Rafın hazır!" };
+        ? { mood: "celebrating" as const, scene: "accountSuccess" as const }
+        : { mood: "happy" as const, scene: "accountReady" as const };
 
   if (!client) {
     return (
@@ -340,11 +339,11 @@ export default function AccountExperience({ dataVersion }: Props) {
       </section>
 
       <section className="account-settings-card account-settings">
-        <div className="account-settings__heading"><span aria-hidden="true">♡</span><div><p>PROFİL AYARLARI</p><h3>Köşeni kişiselleştir</h3></div></div>
-        <label>
-          Görünen ad
-          <input value={profile.display_name} maxLength={50} onChange={(event) => setProfile({ ...profile, display_name: event.target.value })} />
-        </label>
+        <div className="account-settings__heading"><span aria-hidden="true">♡</span><div><p>PAYLAŞIM AYARLARI</p><h3>Köşenin görünürlüğü</h3></div></div>
+        <div className="account-orbit-identity">
+          <div><span>GÖRÜNEN AD · ORBIT'TEN GELİR</span><strong>{displayName}</strong><small>Adını değiştirmek için Orbit hesap merkezini kullan.</small></div>
+          <a href="https://orbit.sametbasbug.dev/dashboard#account">Orbit'i aç <span aria-hidden="true">↗</span></a>
+        </div>
         <fieldset>
           <legend>Liste görünürlüğü</legend>
           {(Object.keys(visibilityLabels) as Visibility[]).map((visibility) => (

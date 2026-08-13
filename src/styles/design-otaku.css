@@ -686,7 +686,8 @@ body.design-otaku .account-save { color: #fff; background: var(--lavender-deep);
 .account-settings__heading > span { width: 43px; height: 43px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; color: var(--coral); background: var(--sakura); font-size: 20px; }
 .account-settings__heading p { margin: 0 0 3px; color: var(--lavender-deep); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
 .account-settings__heading h3 { margin: 0; font-family: var(--display); font-size: 22px; }
-body.design-otaku .account-settings > label input { border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fff; }
+body.design-otaku .account-orbit-identity { border: 2px solid var(--ink); border-radius: 14px; background: #fff; box-shadow: 3px 3px 0 var(--sakura); }
+body.design-otaku .account-orbit-identity > a { border: 2px solid var(--ink); border-radius: 9px; background: var(--sun); box-shadow: 2px 2px 0 var(--ink); }
 body.design-otaku .visibility-option { border-color: var(--line); }
 body.design-otaku .visibility-option input { accent-color: var(--lavender-deep); }
 body.design-otaku .account-notice { border: 2px dashed var(--lavender); border-radius: 22px; background: #fff; }
@@ -758,7 +759,7 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .home-hero .feature-card { box-shadow: 6px 7px 0 var(--sakura), 8px 9px 0 var(--ink); }
   .hero-sticker--top { right: -7px; }
   body.design-otaku .home-hero .feature-score { margin-right: 60px; }
-  .rota-companion--hero { left: auto; right: -20px; bottom: -35px; transform: rotate(5deg); }
+  .rota-companion--hero { left: auto; right: -8px; bottom: -35px; transform: rotate(5deg); }
   .rota-companion--catalogue { top: 2px; right: -17px; transform: scale(.72) rotate(5deg); }
   .rota-companion--catalogue .rota-companion__bubble { display: none; }
   .hero-doodle--heart { right: -7px; }
@@ -822,6 +823,8 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .account-sync { align-items: stretch; flex-direction: column; }
   .account-sync button { min-height: 44px; }
   .account-sharing__actions { flex-direction: column; }
+  .account-orbit-identity { align-items: stretch; flex-direction: column; }
+  .account-orbit-identity > a { text-align: center; }
   .personal-statistics { padding: 22px 18px; }
   .personal-statistics__metrics { grid-template-columns: repeat(2, 1fr); }
   .personal-statistics__metrics div { min-height: 74px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }

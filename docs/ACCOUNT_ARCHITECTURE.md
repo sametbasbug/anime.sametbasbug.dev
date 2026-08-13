@@ -29,7 +29,7 @@ Supabase e-posta sağlayıcısı, özel SMTP ve CAPTCHA kapalı kalmaya devam ed
 
 Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürüm kontrollü statik veri olarak kalır. Supabase yalnızca kullanıcıya ait değişken veriyi saklar:
 
-- profil adı; liste, puan, not ve türetilmiş istatistik görünürlüğü tercihleri;
+- Orbit OIDC kimliğinden alınan görünen adın yerel kopyası; liste, puan, not ve türetilmiş istatistik görünürlüğü tercihleri;
 - anime durumu, bölüm ilerlemesi, kişisel puan ve özel not;
 - cihazlar arası silme işlemlerini taşıyan tombstone kayıtları.
 
@@ -38,6 +38,7 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 - Tarayıcıya yalnız Supabase URL'si ve **publishable** anahtar verilir. Secret/service-role anahtarı istemciye konmaz.
 - `profiles` ve `personal_list_entries` tablolarında RLS zorunludur.
 - Temel tablolar yalnız sahip kullanıcı tarafından okunabilir ve değiştirilebilir.
+- Görünen ad Rota'da düzenlenmez. Orbit `name` talebi bu alanın tek kaynağıdır; Supabase Auth metadatası değiştiğinde tetikleyici `profiles.display_name` kopyasını yeniler. Tarayıcının bu kolonu doğrudan güncelleme yetkisi yoktur.
 - `PUBLIC` veya `UNLISTED` tercihi temel tablolara anonim erişim açmaz. Paylaşım ekranı yüksek entropili UUID token ve `get_shared_profile` security-definer RPC'sini kullanır; yalnız aktif kayıtları ve sahibin açtığı alanları döndürür. E-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları yanıt şemasında yoktur.
 - Hesap isteğe bağlıdır; giriş yapmayan kullanıcının listesi yalnız tarayıcıda çalışır.
 
@@ -82,6 +83,7 @@ Migration dosyaları:
 - `supabase/migrations/202608120002_community_reviews_and_moderation.sql`
 - `supabase/migrations/202608120003_shareable_profiles.sql`
 - `supabase/migrations/202608120004_personal_statistics.sql`
+- `supabase/migrations/202608130001_orbit_managed_display_names.sql`
 
 ## Orbit ile giriş
 

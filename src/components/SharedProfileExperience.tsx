@@ -77,15 +77,15 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
   ), [catalogue, profile]);
 
   if (loadState === "loading") {
-    return <div className="shared-profile-state catalogue-loading"><RotaCompanion mood="curious" message="Paylaşılan rafı arıyorum…" className="rota-companion--state" /><span></span><p>Rota bağlantısı açılıyor…</p></div>;
+    return <div className="shared-profile-state catalogue-loading"><RotaCompanion mood="curious" scene="sharedLoading" className="rota-companion--state" /><span></span><p>Rota bağlantısı açılıyor…</p></div>;
   }
 
   if (loadState === "missing") {
-    return <div className="shared-profile-state my-list-empty"><RotaCompanion mood="curious" message="Bu rota iz bırakmamış." className="rota-companion--empty" /><span>404 / ROTA</span><h2>Bu paylaşım<br />kapalı.</h2><p>Bağlantı yenilenmiş, paylaşım kapatılmış veya adres eksik olabilir. Hesap sahibinden güncel bağlantıyı iste.</p><a href="/">Rota'ya dön <span>↗</span></a></div>;
+    return <div className="shared-profile-state my-list-empty"><RotaCompanion mood="curious" scene="sharedClosed" className="rota-companion--empty" /><span>404 / ROTA</span><h2>Bu paylaşım<br />kapalı.</h2><p>Bağlantı yenilenmiş, paylaşım kapatılmış veya adres eksik olabilir. Hesap sahibinden güncel bağlantıyı iste.</p><a href="/">Rota'ya dön <span>↗</span></a></div>;
   }
 
   if (loadState === "error" || !profile) {
-    return <div className="shared-profile-state catalogue-empty companion-state"><RotaCompanion mood="error" message="Bağlantı biraz huysuz." className="rota-companion--state" /><span>!</span><h2>Raf şu an açılamadı.</h2><p>Bağlantını kontrol edip biraz sonra yeniden dene.</p></div>;
+    return <div className="shared-profile-state catalogue-empty companion-state"><RotaCompanion mood="error" scene="sharedError" className="rota-companion--state" /><span>!</span><h2>Raf şu an açılamadı.</h2><p>Bağlantını kontrol edip biraz sonra yeniden dene.</p></div>;
   }
 
   const counts = Object.fromEntries(shelfOrder.map((status) => [status, records.filter(({ entry }) => entry.status === status).length])) as Record<PersonalStatus, number>;
@@ -99,7 +99,7 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
       <header className="shared-profile__identity">
         <div className="shared-profile__avatar" aria-hidden="true">{profile.display_name.charAt(0).toLocaleUpperCase("tr-TR")}<span>✦</span></div>
         <div><p>{profile.list_visibility === "PUBLIC" ? "HERKESE AÇIK ROTA" : "PAYLAŞILAN ROTA"}</p><h2>{profile.display_name}</h2><small>Salt okunur anime köşesi · kişisel hesap bilgileri gizli</small></div>
-        <RotaCompanion mood="happy" message="Misafirimiz var!" className="rota-companion--shared" />
+        <RotaCompanion mood="happy" scene="sharedWelcome" className="rota-companion--shared" />
       </header>
 
       <section className="shared-profile__summary" aria-label="Paylaşılan liste özeti">

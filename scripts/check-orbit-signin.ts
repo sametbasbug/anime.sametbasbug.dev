@@ -18,6 +18,10 @@ const supabaseClient = readFileSync(
   new URL("../src/lib/supabase.ts", import.meta.url),
   "utf8",
 );
+const orbitManagedNamesMigration = readFileSync(
+  new URL("../supabase/migrations/202608130001_orbit_managed_display_names.sql", import.meta.url),
+  "utf8",
+);
 
 /* 1. Sağlayıcı adı. Supabase'de tanımlayıcı `orbit`, SDK'da kullanılan biçim
    `custom:orbit`. Tek harf farkı Supabase'in "sağlayıcı bulunamadı" demesine
@@ -67,7 +71,23 @@ for (const iz of ["signInWithIdToken", "accounts.google.com", "PUBLIC_GOOGLE_CLI
   );
 }
 
-/* 5. Düğme metni CSS ile büyütülmesin. Sayfa `lang="tr"` ve tarayıcı Türkçe
+/* 5. Görünen adın sahibi Orbit. Rota'da ikinci bir ad düzenleyicisi veya
+   display_name kolonuna istemci yazımı kalırsa iki kimlik kısa sürede ayrışır. */
+assert.equal(
+  /display_name:\s*next\.display_name/u.test(kodSatirlari),
+  false,
+  "Rota istemcisi görünen adı doğrudan güncellememeli.",
+);
+assert.equal(
+  /Görünen ad\s*\n\s*<input/u.test(accountExperience),
+  false,
+  "Hesap ekranında görünen ad giriş alanı bulunmamalı.",
+);
+assert.match(accountExperience, /GÖRÜNEN AD · ORBIT'TEN GELİR/u);
+assert.match(orbitManagedNamesMigration, /after update of raw_user_meta_data on auth\.users/u);
+assert.match(orbitManagedNamesMigration, /revoke update \(display_name\) on public\.profiles from authenticated/u);
+
+/* 6. Düğme metni CSS ile büyütülmesin. Sayfa `lang="tr"` ve tarayıcı Türkçe
    kuralıyla büyütüyor: "Orbit" ekranda "ORBİT" oluyor. */
 const globalCss = readFileSync(
   new URL("../src/styles/global.css", import.meta.url),

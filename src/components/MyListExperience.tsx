@@ -111,17 +111,17 @@ export default function MyListExperience({ dataVersion }: Props) {
   };
 
   if (loadState === "loading") {
-    return <div className="catalogue-loading companion-state"><RotaCompanion message="Rafları sayıyorum…" mood="curious" className="rota-companion--state" /><span></span><p>Kişisel arşivin açılıyor…</p></div>;
+    return <div className="catalogue-loading companion-state"><RotaCompanion scene="listLoading" mood="curious" className="rota-companion--state" /><span></span><p>Kişisel arşivin açılıyor…</p></div>;
   }
 
   if (loadState === "error") {
-    return <div className="catalogue-empty companion-state"><RotaCompanion message="Bir şey ters gitti…" mood="error" className="rota-companion--state" /><span>!</span><h2>Arşiv şu anda açılamadı.</h2><p>Katalog bağlantısını kontrol edip sayfayı yenile.</p></div>;
+    return <div className="catalogue-empty companion-state"><RotaCompanion scene="listError" mood="error" className="rota-companion--state" /><span>!</span><h2>Arşiv şu anda açılamadı.</h2><p>Katalog bağlantısını kontrol edip sayfayı yenile.</p></div>;
   }
 
   if (records.length === 0) {
     return (
       <div className="my-list-empty">
-        <RotaCompanion message="İlk favorin kim?" mood="happy" className="rota-companion--empty" />
+        <RotaCompanion scene="listEmpty" mood="happy" className="rota-companion--empty" />
         <span>0 / 900</span>
         <h2>İlk rotanı<br />kaydet.</h2>
         <p>Bir anime detayında “Listeme ekle” düğmesini kullan. Hesapsız yerel kalır; giriş yaptığında cihazlarınla eşitlenir.</p>
@@ -166,7 +166,7 @@ export default function MyListExperience({ dataVersion }: Props) {
                   return (
               <article className={`my-list-card${isCelebrating ? " is-celebrating" : ""}`} key={anime.id}>
                 {isCelebrating && <>
-                  <RotaCompanion message="Son bölüm de tamam!" mood="celebrating" className="rota-companion--celebration" />
+                  <RotaCompanion scene="listCelebration" mood="celebrating" className="rota-companion--celebration" />
                   <div className="completion-burst" aria-live="polite"><span>✦</span><strong>TAMAMLANDI!</strong><i>♡</i></div>
                 </>}
                 <a className="my-list-card__art" href={`/anime/${anime.slug}`} aria-label={`${anime.title} detayını aç`}>
@@ -208,7 +208,7 @@ export default function MyListExperience({ dataVersion }: Props) {
           ))}
         </div>
       ) : (
-        <div className="catalogue-empty companion-state"><RotaCompanion message="Bu raf bomboş!" mood="curious" className="rota-companion--state" /><span>0</span><h2>Bu rafta kayıt yok.</h2><p>Başka bir durum filtresi seç.</p></div>
+        <div className="catalogue-empty companion-state"><RotaCompanion scene="listFilterEmpty" mood="curious" className="rota-companion--state" /><span>0</span><h2>Bu rafta kayıt yok.</h2><p>Başka bir durum filtresi seç.</p></div>
       )}
     </>
   );

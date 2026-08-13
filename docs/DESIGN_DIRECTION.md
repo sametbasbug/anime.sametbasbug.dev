@@ -117,6 +117,7 @@ Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanıl
 - Göksel yoldaşın temel hâlleri `happy`, `curious`, `sleepy`, `syncing`, `celebrating` ve `error` olarak tanımlıdır.
 - Yoldaş; boş raf, yükleme, hata, hesap senkronizasyonu ve anime tamamlama anlarında bağlama göre tepki verir. Durum iletisini destekler, tek başına durumun tek göstergesi olmaz.
 - Konuşma balonu karakter animasyonundan bağımsız ve keskin kalır; gövdeyle birlikte ölçeklenmez. Balon metni mobil ve masaüstünde en az 12 piksel, yüksek kontrastlı ve kısa olmalıdır.
+- Rota aynı ekranda tek bir ezber cümleyi tekrarlamaz. Ana sayfa, keşif, kişisel raf, detay, hesap, paylaşım ve sistem durumlarının ayrı kısa replik havuzları vardır; aynı sahnenin son repliği oturum içinde art arda seçilmez.
 - Rota kendini nadiren tanıtır; balondaki küçük `Rota` imzası konuşanın kimliğini kurar. Metin samimi Türkçedir, yapay “senpai/kawaii” diline kaçmaz.
 - Sayfa geçişleri kısa bir göksel manga işareti ve yumuşak içerik geçişi kullanır. Desteklenmeyen tarayıcılarda normal gezinme korunur.
 - Mevsim katmanı yalnız vurgu rengi ve arka plan ışıltısını değiştirir; içerik düzeni veya okunabilirlik mevsime göre değişmez.
