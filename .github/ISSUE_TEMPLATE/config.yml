@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Güvenlik açığı bildir
+    url: https://github.com/sametbasbug/anime.sametbasbug.dev/security/advisories/new
+    about: Hassas güvenlik bildirimini özel olarak gönder.
+  - name: Canlı Equinox Rota
+    url: https://anime.sametbasbug.dev/
+    about: Sorunu bildirmeden önce güncel production davranışını kontrol et.

@@ -1,0 +1,35 @@
+name: Hata bildirimi
+description: Tekrarlanabilir bir ürün veya teknik sorun bildir.
+title: "[Hata]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Güvenlik açığını herkese açık issue olarak bildirmeyin; `SECURITY.md` içindeki özel kanalı kullanın.
+  - type: textarea
+    id: description
+    attributes:
+      label: Sorun
+      description: Ne oldu, ne olmasını bekliyordunuz?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Tekrarlama adımları
+      placeholder: "1. …\n2. …\n3. …"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Ortam
+      description: Tarayıcı, işletim sistemi, cihaz ve ilgili sayfa adresi.
+      placeholder: "Safari 18, iOS 19, /listem"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Ek bağlam
+      description: Varsa ekran görüntüsü, konsol çıktısı veya başka kanıt.

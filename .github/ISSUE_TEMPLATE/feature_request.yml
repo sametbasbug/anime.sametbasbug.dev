@@ -1,0 +1,26 @@
+name: Özellik önerisi
+description: Rota'nın ürün sınırlarına uyan bir iyileştirme öner.
+title: "[Öneri]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Çözülecek ihtiyaç
+      description: Kullanıcının hangi gerçek sorununu çözmek istiyorsunuz?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Önerilen yaklaşım
+      description: Beklenen davranışı ve mümkünse alternatifleri anlatın.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Ürün sınırı
+      options:
+        - label: Öneri video barındırma, korsan yönlendirme veya izinsiz scraping gerektirmiyor.
+          required: true
