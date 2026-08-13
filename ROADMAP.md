@@ -177,4 +177,4 @@ Katalog üretimi ayrıca veri bütünlüğü için sağlamlaştırıldı: aynı 
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.
 
-`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır; giriş için siteye ait ayrı bir istemci kimliği gerekmiyor, çünkü kimlik Orbit'ten geliyor. `PUBLIC_GOOGLE_CLIENT_ID` değişkeni depoda hâlâ duruyor ama artık okunmuyor.
+`sametbasbug/anime.sametbasbug.dev` public reposu, GitHub Actions Pages hattı ve `https://anime.sametbasbug.dev/` özel domain'i HTTPS ile canlıdır. Production build için yalnız Supabase publishable değerleri repo değişkeni olarak sağlanır; giriş için siteye ait ayrı bir istemci kimliği gerekmiyor, çünkü kimlik Orbit'ten geliyor. Eski `PUBLIC_GOOGLE_CLIENT_ID` değişkeni repo ayarlarından da kaldırılmıştır. Repo kalite hattı CI, CodeQL ve Dependabot ile korunur.

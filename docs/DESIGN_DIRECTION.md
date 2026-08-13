@@ -122,6 +122,8 @@ Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanıl
 - Sayfa geçişleri kısa bir göksel manga işareti ve yumuşak içerik geçişi kullanır. Desteklenmeyen tarayıcılarda normal gezinme korunur.
 - Mevsim katmanı yalnız vurgu rengi ve arka plan ışıltısını değiştirir; içerik düzeni veya okunabilirlik mevsime göre değişmez.
 - `prefers-reduced-motion` açıkken yoldaş, kutlama ve sayfa geçişi animasyonları durur.
+- Masaüstü hassas işaretçide yıldız/kalp detaylı Rota cursor'ları kullanılır; dokunmatik cihazlarda sistem imleci korunur. Metin alanı ve devre dışı kontrol gibi semantik cursor durumları dekor uğruna ezilmez.
+- Dikey scrollbar lavanta–sakura renklerini taşır; ince, yüksek kontrastlı ve platformun doğal kaydırma davranışını bozmayan bir görsel katmandır.
 
 ## Paylaşım kimliği
 

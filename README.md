@@ -2,9 +2,16 @@
 
 > Rota by Equinox — anime yolculuğunun Türkçe kaydı.
 
-Equinox Rota, Türkiye'deki anime izleyicileri için modern bir keşif, takip ve kişisel arşiv ürünüdür. Video barındırmaz ve korsan yayın bağlantısı sunmaz. İlk iki prototip; ürün dilini, görsel yönü ve gerçek katalog üzerinde arama ile detay deneyimini doğrulamak için hazırlanmıştır.
+[![CI](https://github.com/sametbasbug/anime.sametbasbug.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/sametbasbug/anime.sametbasbug.dev/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/sametbasbug/anime.sametbasbug.dev/actions/workflows/codeql.yml/badge.svg)](https://github.com/sametbasbug/anime.sametbasbug.dev/actions/workflows/codeql.yml)
+[![Deploy](https://github.com/sametbasbug/anime.sametbasbug.dev/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/sametbasbug/anime.sametbasbug.dev/actions/workflows/deploy-pages.yml)
+[![License: AGPL-3.0-only](https://img.shields.io/badge/code-AGPL--3.0--only-7657bd.svg)](./LICENSE)
 
-Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
+[![Equinox Rota — Türkçe anime keşif ve kişisel arşiv](./public/social/equinox-rota-share.png)](https://anime.sametbasbug.dev/)
+
+Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 900 yapımlık aranabilir katalog; kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
+
+**Canlı soft alpha:** [anime.sametbasbug.dev](https://anime.sametbasbug.dev/)
 
 ## Bugünkü durum
 
@@ -26,7 +33,7 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Durumlara ayrılan koleksiyon rafları, sayaçlar, filtreler ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
 - Manga açılımı ritmine sahip anime detayları ve otaku köşesi olarak tasarlanan hesap ekranı
 - Ana ekranlar ile boş, yükleme, hata, senkronizasyon ve kutlama hâllerine göre 100'ü aşkın kısa replikten konuşan marka yüzü ve göksel yoldaş **Rota**
-- Mevsimsel renk katmanı, erişilebilir mikro animasyonlar ve karakterli sayfa geçişleri
+- Mevsimsel renk katmanı, erişilebilir mikro animasyonlar, karakterli sayfa geçişleri, kawaii cursor ve scrollbar
 - Rota'nın ortak yüz anatomisini kullanan site ikonu, favicon ve 1200×630 Open Graph/Twitter paylaşım kartı
 - 20 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
@@ -35,6 +42,9 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Sahip kullanıcıyla sınırlı Postgres RLS migration'ı
 - Anime başına tek topluluk incelemesi, spoiler perdesi, özel rapor kuyruğu ve rol korumalı moderasyon arayüzü
 - E-posta, kullanıcı UUID'si ve senkronizasyon metadatasını açmayan dar RPC üzerinden salt okunur Rota paylaşım bağlantıları
+- Toplam anime/bölüm, izleme süresi, tamamlama oranı, ortalama puan ve tür/stüdyo dağılımı üreten kişisel istatistikler
+- JSON tam yedek, okunabilir CSV dışa aktarımı ve yenisi-kazanır kurallı güvenli JSON geri yükleme
+- Dependabot, CodeQL ve her değişiklikte tam kontrol/build çalıştıran GitHub Actions bakım hattı
 - Astro static build
 
 ## Teknik temel
@@ -42,20 +52,25 @@ Canlı soft alpha: **[anime.sametbasbug.dev](https://anime.sametbasbug.dev/)**
 - Astro 7
 - React 19
 - TypeScript strict mode
+- Node.js 24 LTS (CI ve production build)
 - Supabase Auth + Postgres + RLS (hesap ve kullanıcı verisi)
 - Sıfır UI framework bağımlılığı; görsel sistem proje içinde
 
 Onaylanan ürün deneyimi ve görsel sistem ilkeleri [`docs/DESIGN_DIRECTION.md`](./docs/DESIGN_DIRECTION.md) içinde kanonik olarak tutulur.
 
+## Yerel geliştirme
+
 ```bash
-npm install
-npm run data:refresh
-npm run content:check
+npm ci
+cp .env.example .env
 npm run dev
+npm run check
 npm run build
 ```
 
-Yerel geliştirme adresi varsayılan olarak `http://localhost:4321` olur.
+Yerel geliştirme adresi varsayılan olarak `http://localhost:4321` olur. Supabase değerleri olmadan hesap özellikleri güvenli biçimde devre dışı kalır; katalog ve local-first kişisel liste çalışmaya devam eder. Katalog yenilemek için `npm run data:refresh`, yalnız editoryal doğrulama için `npm run content:check` kullanılabilir.
+
+CI, pull request ve `main` push'larında Node.js 24 üzerinde `npm ci` ile tam static build alır. Production deploy yalnız `main` üzerinden GitHub Pages'e yapılır.
 
 ## Katalog verisi
 
@@ -69,7 +84,7 @@ Komut en güncel GitHub sürümünü indirir, beklenen lisansı doğrular ve `sr
 
 AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan veri kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. MAL veya başka siteler de scrape edilmez.
 
-Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime model uyuşmazlıkları önce doğrulanmış `src/data/tmdb-poster-overrides.json` kayıtlarıyla çözülür; açık numaralı TV sezonları normal aramadan önce ana seri üzerinden eşleştirilir ve mevcutsa sezona özgü görsel tercih edilir. Kalan yapımlar bilinen İngilizce/Japonca adlar genelinde sıkı başlık-yıl-tür eşleşmesiyle çözülür; güvenli eşleşme kurulamayanlar proje içinde üretilen Rota CSS kompozisyonlarını korur. Zorunlu TMDB atfı globaldir ve anime-offline-database içindeki üçüncü taraf poster URL'leri kullanılmaz. Türkçe açıklamalar doğrudan kopyalanmaz, özgün editoryal metin olarak hazırlanacaktır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
+Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime model uyuşmazlıkları önce doğrulanmış `src/data/tmdb-poster-overrides.json` kayıtlarıyla çözülür; açık numaralı TV sezonları normal aramadan önce ana seri üzerinden eşleştirilir ve mevcutsa sezona özgü görsel tercih edilir. Kalan yapımlar bilinen İngilizce/Japonca adlar genelinde sıkı başlık-yıl-tür eşleşmesiyle çözülür; güvenli eşleşme kurulamayanlar proje içinde üretilen Rota CSS kompozisyonlarını korur. Zorunlu TMDB atfı globaldir ve anime-offline-database içindeki üçüncü taraf poster URL'leri kullanılmaz. Türkçe editoryal açıklamalar doğrudan kopyalanmaz; sürüm kontrollü özgün metin olarak hazırlanır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
 
 ## Kişisel liste ve hesap verisi
 
@@ -141,6 +156,10 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 ## Sahiplik
 
 Bu, Nyx'in bireysel Equinox projesidir. Ürün ve uygulama kararları Nyx ile Samet tarafından yürütülür.
+
+## Katkı ve güvenlik
+
+Katkı akışı, kalite kapıları ve ürün sınırları için [`CONTRIBUTING.md`](./CONTRIBUTING.md) dosyasını okuyun. Hassas güvenlik açıklarını public issue olarak paylaşmayın; [`SECURITY.md`](./SECURITY.md) içindeki özel bildirim kanalını kullanın. Topluluk iletişimi [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) kapsamındadır.
 
 ## Lisans
 

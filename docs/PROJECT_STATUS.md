@@ -71,13 +71,20 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Yerel `npm run check`, Astro typecheck ve 1.131 sayfalık production build temizdir. 1.920 px masaüstü ile 390 px mobil Hesabım ve Rota yerleşimleri gerçek tarayıcıda doğrulandı; uygulama konsol hatası yoktur.
 - İki migration production'a uygulandı. İki profilin yerel adı Orbit metadata'sıyla birebir eşleşiyor; metadata trigger'ı çalışır durumda, `authenticated` rolü `display_name` sütununu güncelleyemiyor ve trigger fonksiyonunu `anon`/`authenticated` rolleri çalıştıramıyor. `504a2ff` ile `89e9af3` main dalına push edildi; GitHub Pages çalıştırması `31653922774` başarıyla tamamlandı. Canlı ana sayfada art arda farklı Rota replikleri; girişli Hesabım'da Orbit adı, kaldırılmış ad input'u ve 1.920/390 px taşmasız yerleşim doğrulandı. Konsoldaki tek hata tarayıcının engellediği Cloudflare Analytics isteğiydi, uygulama hatası yoktu.
 
+## 13 Ağustos 2026 — repo bakım ve güvenlik turu
+
+- Astro `7.2.1`, Supabase JS `2.112.3`, Astro Check `0.9.10`, tsx ve React tiplerinin güncel uyumlu sürümleri kuruldu. TypeScript 7 büyük sürümü bilinçli olarak ayrı uyumluluk işi bırakıldı; CI ve Node tipleri Node.js 24 LTS hattında eşleştirildi.
+- Pull request ve `main` push'larında tam kontrol/build çalıştıran ayrı CI; JavaScript/TypeScript için CodeQL; npm ile GitHub Actions güncellemeleri için gruplanmış haftalık Dependabot yapılandırması eklendi.
+- Public repo sağlık yüzeyi `CONTRIBUTING.md`, `SECURITY.md`, davranış kuralları, CODEOWNERS, issue formları ve pull request şablonuyla tamamlandı. README ürünün güncel özellikleri, mimarisi, kurulum ve bakım hattıyla yenilendi.
+- GitHub repository ayarlarında Dependabot alerts, otomatik güvenlik güncellemeleri ve private vulnerability reporting açıldı; mevcut secret scanning ile push protection korunuyor. Açıklama, homepage ve 14 konu etiketi güncel ürün kapsamına taşındı.
+- Kawaii cursor/scrollbar katmanı `31c97d4` ile production'a yayımlandı; hassas işaretçi, metin alanı ve dokunmatik ayrımı korunuyor.
+
 ## Açık işler
 
 1. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
 2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
 3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
 4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
-5. `PUBLIC_GOOGLE_CLIENT_ID` GitHub depo değişkeni hâlâ duruyor ama artık hiçbir workflow ve hiçbir kod onu okumuyor. Silinmesi Nyx'in kararı; okunmayan bir yapılandırma satırı bir gün okunuyor sanılır.
 
 ## Sıradaki ürün işleri
 
@@ -149,19 +156,15 @@ Aktif sıradaki ürün aşaması yok. 5. aşama, AniList'in yazılı yanıtı ge
 
 ## Son commitler
 
-- `6da11ed` — `data: refresh TMDB poster mappings`
-- `013f7c1` — `fix catalogue lineage and poster matching [skip ci]`
-- `04305a2` — `feat: expand Rota's celestial otaku world`
-- `85bd68a` — `feat: redesign Rota as a kawaii otaku companion`
-- `655a40d` — `feat: redesign Equinox Rota as a cinematic archive`
-- `cb6afc5` — `fix: state product purpose explicitly`
-- `2f6d4c1` — `fix: clarify Equinox Rota branding on homepage`
-- `d198a75` — `feat: launch Equinox Rota branded Google sign-in`
-- `072756f` — `fix: restore account form button layout`
-- `76bc25a` — `feat: protect magic-link emails from abuse`
-- `217eda8` — `docs: record production auth and SMTP setup`
-- `c512f37` — `chore: prepare public Rota repository [skip ci]`
-- `d1099a6` — `chore: ignore .claude`
-- `2d4e8da` — `feat: tell partial sync apart in the header badge`
-- `fede3c4` — `docs: record sync hardening and ownership in status`
-- `a9f534d` — `fix: make personal list sync resilient to format and constraint errors`
+- `31c97d4` — `feat: add kawaii cursors and scrollbars`
+- `68fc39a` — `docs: complete Rota dialogue and Orbit name rollout`
+- `89e9af3` — `fix: restrict Orbit profile trigger execution`
+- `504a2ff` — `feat: expand Rota dialogue and delegate names to Orbit`
+- `406b610` — `docs: complete editorial expansion rollout`
+- `a792e4e` — `feat: expand Rota editorial selections`
+- `91532ed` — `docs: complete portability rollout`
+- `639484a` — `feat: add portable Rota backups`
+- `0f932b1` — `docs: complete personal statistics rollout`
+- `d00d106` — `feat: add personal Rota statistics`
+- `e628d19` — `fix: complete share profile rollout`
+- `3d34574` — `feat: add shareable Rota profiles`
