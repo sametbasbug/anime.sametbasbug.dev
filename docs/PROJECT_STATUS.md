@@ -77,6 +77,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Pull request ve `main` push'larında tam kontrol/build çalıştıran ayrı CI; JavaScript/TypeScript için CodeQL; npm ile GitHub Actions güncellemeleri için gruplanmış haftalık Dependabot yapılandırması eklendi.
 - Public repo sağlık yüzeyi `CONTRIBUTING.md`, `SECURITY.md`, davranış kuralları, CODEOWNERS, issue formları ve pull request şablonuyla tamamlandı. README ürünün güncel özellikleri, mimarisi, kurulum ve bakım hattıyla yenilendi.
 - GitHub repository ayarlarında Dependabot alerts, otomatik güvenlik güncellemeleri ve private vulnerability reporting açıldı; mevcut secret scanning ile push protection korunuyor. Açıklama, homepage ve 14 konu etiketi güncel ürün kapsamına taşındı.
+- İlk CodeQL taramasının işaretlediği katalog kaynak etiketi eşleşmeleri gerçek hostname ve alt alan adı sınırına bağlandı; yanıltıcı alan adları için regresyon kontrolü ana `npm run check` zincirine eklendi. Dependabot, CI'ın Node.js 24 LTS hattını aşan `@types/node` major güncellemelerini artık açmaz.
 - Kawaii cursor/scrollbar katmanı `31c97d4` ile production'a yayımlandı; hassas işaretçi, metin alanı ve dokunmatik ayrımı korunuyor.
 
 ## Açık işler
@@ -156,6 +157,10 @@ Aktif sıradaki ürün aşaması yok. 5. aşama, AniList'in yazılı yanıtı ge
 
 ## Son commitler
 
+- `584a962` — `fix: harden catalogue source labels`
+- `f38415a` — `docs: polish the public repository`
+- `096d64e` — `ci: add repository security automation`
+- `5e3046b` — `chore: refresh Astro project dependencies`
 - `31c97d4` — `feat: add kawaii cursors and scrollbars`
 - `68fc39a` — `docs: complete Rota dialogue and Orbit name rollout`
 - `89e9af3` — `fix: restrict Orbit profile trigger execution`
