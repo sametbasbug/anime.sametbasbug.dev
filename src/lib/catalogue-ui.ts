@@ -160,17 +160,25 @@ export function durationLabel(seconds: number | null) {
   return remainder ? `${hours} sa. ${remainder} dk.` : `${hours} sa.`;
 }
 
+const sourceLabels = new Map([
+  ["myanimelist.net", "MyAnimeList"],
+  ["anidb.net", "AniDB"],
+  ["anime-planet.com", "Anime-Planet"],
+  ["animenewsnetwork.com", "Anime News Network"],
+  ["kitsu.app", "Kitsu"],
+  ["livechart.me", "LiveChart"],
+  ["anisearch.com", "AniSearch"],
+  ["simkl.com", "Simkl"],
+  ["anilist.co", "AniList"],
+]);
+
 export function sourceLabel(url: string) {
-  if (url.includes("myanimelist.net")) return "MyAnimeList";
-  if (url.includes("anidb.net")) return "AniDB";
-  if (url.includes("anime-planet.com")) return "Anime-Planet";
-  if (url.includes("animenewsnetwork.com")) return "Anime News Network";
-  if (url.includes("kitsu.app")) return "Kitsu";
-  if (url.includes("livechart.me")) return "LiveChart";
-  if (url.includes("anisearch.com")) return "AniSearch";
-  if (url.includes("simkl.com")) return "Simkl";
-  if (url.includes("anilist.co")) return "AniList";
-  return new URL(url).hostname.replace("www.", "");
+  const hostname = new URL(url).hostname.toLocaleLowerCase("en-US");
+  const source = [...sourceLabels].find(([domain]) => (
+    hostname === domain || hostname.endsWith(`.${domain}`)
+  ));
+
+  return source?.[1] ?? hostname.replace(/^www\./, "");
 }
 
 const artworks = ["moon", "blade", "city", "signal", "garden", "ember"] as const;
