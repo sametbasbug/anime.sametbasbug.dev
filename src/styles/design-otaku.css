@@ -32,6 +32,39 @@
 }
 
 html { background: var(--paper); }
+html {
+  scrollbar-color: var(--lavender) var(--paper-deep);
+  scrollbar-width: thin;
+}
+html::-webkit-scrollbar { width: 14px; height: 14px; }
+html::-webkit-scrollbar-track {
+  border-left: 1px solid rgba(52, 43, 74, .08);
+  background: linear-gradient(180deg, var(--paper-deep), #fff7fb);
+}
+html::-webkit-scrollbar-thumb {
+  min-height: 52px;
+  border: 3px solid var(--paper-deep);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--sakura), var(--lavender));
+  box-shadow: inset 0 0 0 1px rgba(52, 43, 74, .18);
+}
+html::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--coral), var(--lavender-deep));
+}
+html::-webkit-scrollbar-corner { background: var(--paper-deep); }
+
+@media (pointer: fine) {
+  body.design-otaku {
+    cursor: url("/cursors/rota-default.svg") 3 3, auto;
+  }
+  body.design-otaku :where(a, button, select, summary, label, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], input[type="checkbox"], input[type="radio"], input[type="file"]) {
+    cursor: url("/cursors/rota-pointer.svg") 3 3, pointer;
+  }
+  body.design-otaku :where(input:not([type]), input[type="text"], input[type="search"], input[type="email"], input[type="url"], input[type="password"], input[type="number"], textarea, [contenteditable="true"]) {
+    cursor: text;
+  }
+  body.design-otaku :where(:disabled) { cursor: not-allowed; }
+}
 body.design-otaku {
   color: var(--ink);
   color-scheme: light;
