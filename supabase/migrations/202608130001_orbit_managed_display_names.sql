@@ -57,6 +57,10 @@ where profile.id = auth_user.id
 -- bypass Orbit and invent a second display name through the Data API.
 revoke update (display_name) on public.profiles from authenticated;
 
+-- This function belongs to auth.users triggers. It must never be exposed as a
+-- callable Data API RPC even though it is SECURITY DEFINER.
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+
 comment on column public.profiles.display_name is
   'Orbit-managed display-name snapshot refreshed from OIDC user metadata; not user-editable through Rota.';
 comment on function public.handle_new_user() is

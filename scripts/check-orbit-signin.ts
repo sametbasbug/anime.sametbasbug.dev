@@ -86,6 +86,10 @@ assert.equal(
 assert.match(accountExperience, /GÖRÜNEN AD · ORBIT'TEN GELİR/u);
 assert.match(orbitManagedNamesMigration, /after update of raw_user_meta_data on auth\.users/u);
 assert.match(orbitManagedNamesMigration, /revoke update \(display_name\) on public\.profiles from authenticated/u);
+assert.match(
+  orbitManagedNamesMigration,
+  /revoke execute on function public\.handle_new_user\(\) from public, anon, authenticated/u,
+);
 
 /* 6. Düğme metni CSS ile büyütülmesin. Sayfa `lang="tr"` ve tarayıcı Türkçe
    kuralıyla büyütüyor: "Orbit" ekranda "ORBİT" oluyor. */

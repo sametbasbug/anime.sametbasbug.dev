@@ -67,7 +67,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Rota'nın tek cümlelik sekme tekrarları 17 bağlama ayrılmış 118 özgün Türkçe replikle değiştirildi. Aynı bağlamda son gösterilen replik oturum boyunca yeniden seçilmez; sabit mesaj desteği korunur.
 - Ana sayfa, katalog, anime detayı, kişisel liste, hesap ve paylaşılan profil durumları kendi replik havuzlarını kullanır. `dialogue:check` havuz sayısını, en az replik sayısını, uzunlukları ve bağlam içi tekrarları doğrular.
 - Hesabım ekranındaki görünen ad düzenleme alanı kaldırıldı. Arayüz adı salt okunur gösterir ve kullanıcının Orbit hesap ekranına gitmesini sağlar.
-- `202608130001_orbit_managed_display_names.sql`, görünen adı Orbit OIDC metadata'sından (`name`, `preferred_username`, eski hesaplar için `full_name`) yerel profil kopyasına aktarır; metadata değişim trigger'ı ekler ve tarayıcıdan `display_name` güncellemesini kapatır.
+- `202608130001_orbit_managed_display_names.sql`, görünen adı Orbit OIDC metadata'sından (`name`, `preferred_username`, eski hesaplar için `full_name`) yerel profil kopyasına aktarır; metadata değişim trigger'ı ekler, tarayıcıdan `display_name` güncellemesini kapatır ve trigger fonksiyonunu Data API çağrısına kapatır. Production sırasını koruyan `202608130002_restrict_orbit_profile_trigger_execution.sql` aynı fonksiyon iznini mevcut projede de kilitler.
 - Yerel `npm run check`, Astro typecheck ve 1.131 sayfalık production build temizdir. 1.920 px masaüstü ile 390 px mobil Hesabım ve Rota yerleşimleri gerçek tarayıcıda doğrulandı; uygulama konsol hatası yoktur.
 - Migration production'a uygulanmadı; commit/push ve Pages deploy yapılmadı. Bunlar ayrı onay bekler.
 
