@@ -171,6 +171,8 @@ Resend Free'nin günlük 100 e-posta sınırı nedeniyle her girişte kota tüke
 
 Rota'nın karakter dili ana ekranlar, paylaşım ve sistem durumlarına ayrılan 100'ü aşkın kısa replikle genişletildi; aynı sahnenin son sözü oturum içinde art arda tekrarlanmaz. Hesap ekranındaki görünen ad düzenleyicisi kaldırıldı: adın tek kaynağı Orbit OIDC kimliğidir, Rota yalnız paylaşılan raf ve incelemeler için yerel bir kopya tutar.
 
+Bu katman `504a2ff` ve `89e9af3` ile production'a yayımlandı. Orbit adını yerel profile taşıyan trigger ile sütun/fonksiyon yetki sınırları canlı sorguyla; Rota replikleri ve yeni salt-okunur hesap kartı masaüstü/mobil canlı tarayıcı kabulüyle doğrulandı.
+
 Katalog üretimi ayrıca veri bütünlüğü için sağlamlaştırıldı: aynı başlık/yıl/formatta kalan kesin upstream kopyalar tek kanonik kayıtta birleştiriliyor ve seçkiye giren açık sezon devamlarının mevcut önceki sezonları 900 kayıt sınırı içinde korunuyor. TMDB görsel eşleştiricisi açık sezonları normal aramadan önce seri soyundan çözüyor, sezon görsellerini tercih ediyor ve TMDB ile anime sezon modelinin uyuşmadığı doğrulanmış istisnalar için ayrı manuel override katmanı kullanıyor.
 
 Public yayın modeli de kilitlendi: GitHub deposu public olacak; uygulama kodu AGPL-3.0-only altında, özgün editoryal içerik ile Rota/Equinox marka katmanı korumalı kalacak ve katalog verisinin ODbL/DbCL koşulları ayrı sürdürülecek.

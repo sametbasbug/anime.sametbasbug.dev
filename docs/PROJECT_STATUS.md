@@ -62,14 +62,14 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Katalog yenileme hattı exact başlık/yıl/format gölge kayıtlarını tek kanonik kayıtta birleştiriyor; önemli başlıklarda en güçlü kayıt korunuyor ve seçkiye giren açık devam sezonlarının mevcut önceki sezonları 900 kayıt sınırı içinde tutuluyor. One Piece gölge kopyası kaldırıldı; Dandadan 1/2/3 birlikte katalogda. TMDB sezon eşlemesi ve doğrulanmış manuel override katmanı da devrede.
 - Son doğrulama: `npm run check` sıfır hata/uyarı/ipucu; `npm run build` 1.131 statik sayfa.
 
-## 13 Ağustos 2026 — yerel çalışma durumu
+## 13 Ağustos 2026 — Rota replikleri ve Orbit adı
 
 - Rota'nın tek cümlelik sekme tekrarları 17 bağlama ayrılmış 118 özgün Türkçe replikle değiştirildi. Aynı bağlamda son gösterilen replik oturum boyunca yeniden seçilmez; sabit mesaj desteği korunur.
 - Ana sayfa, katalog, anime detayı, kişisel liste, hesap ve paylaşılan profil durumları kendi replik havuzlarını kullanır. `dialogue:check` havuz sayısını, en az replik sayısını, uzunlukları ve bağlam içi tekrarları doğrular.
 - Hesabım ekranındaki görünen ad düzenleme alanı kaldırıldı. Arayüz adı salt okunur gösterir ve kullanıcının Orbit hesap ekranına gitmesini sağlar.
 - `202608130001_orbit_managed_display_names.sql`, görünen adı Orbit OIDC metadata'sından (`name`, `preferred_username`, eski hesaplar için `full_name`) yerel profil kopyasına aktarır; metadata değişim trigger'ı ekler, tarayıcıdan `display_name` güncellemesini kapatır ve trigger fonksiyonunu Data API çağrısına kapatır. Production sırasını koruyan `202608130002_restrict_orbit_profile_trigger_execution.sql` aynı fonksiyon iznini mevcut projede de kilitler.
 - Yerel `npm run check`, Astro typecheck ve 1.131 sayfalık production build temizdir. 1.920 px masaüstü ile 390 px mobil Hesabım ve Rota yerleşimleri gerçek tarayıcıda doğrulandı; uygulama konsol hatası yoktur.
-- Migration production'a uygulanmadı; commit/push ve Pages deploy yapılmadı. Bunlar ayrı onay bekler.
+- İki migration production'a uygulandı. İki profilin yerel adı Orbit metadata'sıyla birebir eşleşiyor; metadata trigger'ı çalışır durumda, `authenticated` rolü `display_name` sütununu güncelleyemiyor ve trigger fonksiyonunu `anon`/`authenticated` rolleri çalıştıramıyor. `504a2ff` ile `89e9af3` main dalına push edildi; GitHub Pages çalıştırması `31653922774` başarıyla tamamlandı. Canlı ana sayfada art arda farklı Rota replikleri; girişli Hesabım'da Orbit adı, kaldırılmış ad input'u ve 1.920/390 px taşmasız yerleşim doğrulandı. Konsoldaki tek hata tarayıcının engellediği Cloudflare Analytics isteğiydi, uygulama hatası yoktu.
 
 ## Açık işler
 
