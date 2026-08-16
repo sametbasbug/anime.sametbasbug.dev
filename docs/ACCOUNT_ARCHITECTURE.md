@@ -31,6 +31,7 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 
 - Orbit OIDC kimliğinden alınan görünen adın yerel kopyası; liste, puan, not ve türetilmiş istatistik görünürlüğü tercihleri;
 - anime durumu, bölüm ilerlemesi, kişisel puan ve özel not;
+- bölüm aralığı, izleme tarihi ve 280 karakterlik özel günlük notu;
 - cihazlar arası silme işlemlerini taşıyan tombstone kayıtları.
 
 ## Güven sınırı
@@ -84,6 +85,18 @@ Migration dosyaları:
 - `supabase/migrations/202608120003_shareable_profiles.sql`
 - `supabase/migrations/202608120004_personal_statistics.sql`
 - `supabase/migrations/202608130001_orbit_managed_display_names.sql`
+- `supabase/migrations/202608170001_watch_journal.sql`
+
+## İzleme günlüğü
+
+13. aşamadaki günlük, `personal_list_entries` tablosuna gömülmez. Her izleme olayı ayrı kimlik, anime kimliği, bölüm aralığı, `watched_on`, özel not ve istemci sürüm zamanlarını taşıyan `watch_journal_entries` tablosundadır.
+
+- Yerel kaynak `rota.watch-journal.v1`; yazma ve silme önce tarayıcıda gerçekleşir.
+- Silme fiziksel kayıp yerine tombstone üretir; çevrimdışı cihaz eski kaydı geri getiremez.
+- RLS yalnız `auth.uid() = user_id` sahibine okuma/yazma verir; `anon` rolünün tablo erişimi yoktur.
+- Eşzamanlı cihaz yarışında `keep_newer_watch_journal_version` daha eski istemci sürümünü atlar.
+- Günlük paylaşılabilir profile veya topluluk RPC'lerine dahil değildir; özel kullanıcı verisi olarak kalır.
+- Migration dosyası yerelde hazırdır ancak production'a henüz uygulanmamıştır. Kod migration'dan önce yayımlanmamalıdır; aksi hâlde birleşik eşitleme günlük tablosunu bulamadığı için bekler.
 
 ## Orbit ile giriş
 

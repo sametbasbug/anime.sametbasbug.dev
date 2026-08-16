@@ -329,7 +329,7 @@ main { overflow: visible; }
     height: 64px;
     padding: 5px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     border: 1px solid rgba(255,255,255,.15);
     border-radius: 18px;
     background: rgba(18,20,26,.92);

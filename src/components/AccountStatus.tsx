@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { syncPersonalList } from "../lib/cloud-sync";
+import { syncRotaData } from "../lib/cloud-sync";
 import { subscribeToPersonalList } from "../lib/personal-list";
+import { subscribeToWatchJournal } from "../lib/watch-journal";
 import { getSupabaseClient } from "../lib/supabase";
 
 // `partial`, sunucunun bazı kayıtları reddettiği ama geri kalanının gönderildiği
@@ -33,7 +34,7 @@ export default function AccountStatus() {
       syncing = true;
       setSyncState("syncing");
       try {
-        const result = await syncPersonalList(client, current.user.id);
+        const result = await syncRotaData(client, current.user.id);
         if (active) {
           setRejectedCount(result.rejected.length);
           setSyncState(result.rejected.length > 0 ? "partial" : "synced");
@@ -73,12 +74,14 @@ export default function AccountStatus() {
       if (nextSession) window.setTimeout(() => void runSync(), 0);
     });
     const unsubscribeList = subscribeToPersonalList(scheduleSync);
+    const unsubscribeJournal = subscribeToWatchJournal(scheduleSync);
 
     return () => {
       active = false;
       if (timerRef.current) window.clearTimeout(timerRef.current);
       authListener.subscription.unsubscribe();
       unsubscribeList();
+      unsubscribeJournal();
     };
   }, []);
 

@@ -125,6 +125,13 @@ Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanıl
 - Masaüstü hassas işaretçide yıldız/kalp detaylı Rota cursor'ları kullanılır; dokunmatik cihazlarda sistem imleci korunur. Metin alanı ve devre dışı kontrol gibi semantik cursor durumları dekor uğruna ezilmez.
 - Dikey scrollbar lavanta–sakura renklerini taşır; ince, yüksek kontrastlı ve platformun doğal kaydırma davranışını bozmayan bir görsel katmandır.
 
+## İzleme günlüğü
+
+- Günlük, liste rafının kopyası değildir; tarih, bölüm aralığı ve kısa kişisel hafıza etrafında kurulan ayrı bir defter yüzeyidir.
+- Aylık özet ve takvim yoğunluk gösterir ancak rekabetçi seri, rozet veya suçluluk üreten devam serileri kullanmaz.
+- Anime detayındaki hızlı kayıt ilerlemeyi yalnız ileri taşır; geçmiş bir günlüğü düzenlemek mevcut liste ilerlemesini geriye çekmez.
+- Günlük notları özel kalır ve paylaşılabilir profil yüzeyine kendiliğinden taşınmaz.
+
 ## Paylaşım kimliği
 
 - Varsayılan Open Graph/Twitter kartı `public/social/equinox-rota-share.png` dosyasıdır; düzenlenebilir kaynak SVG aynı klasörde tutulur.

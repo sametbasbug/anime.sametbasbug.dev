@@ -47,6 +47,30 @@ export const rotaDialogue = {
     "Ben olsam açılışı da dinlerdim.",
     "Not defterimi açtım.",
   ],
+  journal: [
+    "Bugünün izi burada.",
+    "Hangi bölüme yıldız koyuyoruz?",
+    "Hafıza rafını açtım.",
+    "Bir bölüm, küçük bir hatıra.",
+    "Tarihleri ben düzenlerim.",
+    "İzlediklerin kaybolmasın.",
+  ],
+  journalLoading: [
+    "Sayfaları çeviriyorum…",
+    "Tarihleri sıraya koyuyorum…",
+    "Not defteri açılıyor…",
+    "Bölüm izlerini topluyorum…",
+    "Takvim birazdan hazır…",
+    "Son sayfayı da buldum…",
+  ],
+  journalEmpty: [
+    "İlk satırı birlikte yazalım.",
+    "Bugün ne izledin?",
+    "Bu sayfa bir bölüm bekliyor.",
+    "Boş günlük, taze başlangıç.",
+    "İlk tarihi sen seç.",
+    "Bir bölümle başlarız.",
+  ],
   accountReady: [
     "Rafın hazır!",
     "Her şey yerli yerinde.",
@@ -154,4 +178,3 @@ export const rotaDialogue = {
 } as const;
 
 export type RotaDialogueScene = keyof typeof rotaDialogue;
-

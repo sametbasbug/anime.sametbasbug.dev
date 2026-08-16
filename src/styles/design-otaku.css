@@ -516,6 +516,11 @@ body.design-otaku .list-editor select,
 body.design-otaku .list-editor input,
 body.design-otaku .list-editor textarea,
 body.design-otaku .progress-input button { border-color: var(--line); color: var(--ink); background: var(--surface-soft); }
+body.design-otaku .journal-composer { border: 2px solid var(--ink); border-radius: 16px; background: #fff; box-shadow: 5px 5px 0 var(--mint); }
+body.design-otaku .journal-composer input,
+body.design-otaku .journal-composer textarea { border-color: var(--line); border-radius: 9px; background: var(--surface-soft); }
+body.design-otaku .journal-composer > footer button { border-radius: 9px; background: var(--lavender-deep); box-shadow: 3px 3px 0 var(--ink); }
+body.design-otaku .journal-composer > footer button b { color: #fff; }
 body.design-otaku .detail-facts div { border: 1px solid var(--line) !important; background: rgba(255,255,255,.75); }
 body.design-otaku .detail-section,
 body.design-otaku .detail-sidebar > div { border: 1px solid var(--line); background: rgba(255,255,255,.78); box-shadow: var(--shadow); }
@@ -600,7 +605,23 @@ body.design-otaku .my-list-hero { position: relative; }
 body.design-otaku .my-list-hero::after { content: "MY SHELF ♡"; position: absolute; right: 0; top: 34px; color: rgba(168,139,234,.16); font-family: var(--display); font-size: clamp(42px,7vw,82px); font-weight: 950; transform: rotate(4deg); }
 body.design-otaku .my-list-hero > :not(.rota-companion) { position: relative; z-index: 1; }
 body.design-otaku .my-list-hero > p { padding-right: 152px; }
+body.design-otaku .journal-hero::after { content: "WATCH LOG ✦"; position: absolute; right: 0; top: 34px; color: rgba(168,139,234,.15); font-family: var(--display); font-size: clamp(42px,7vw,82px); font-weight: 950; transform: rotate(4deg); }
+body.design-otaku .journal-hero > :not(.rota-companion) { position: relative; z-index: 1; }
+body.design-otaku .journal-month-bar { border: 2px solid var(--ink); border-radius: 18px; background: #fff; box-shadow: 6px 6px 0 var(--sakura); }
+body.design-otaku .journal-month-bar select { border-radius: 9px; background: var(--surface-soft); }
+body.design-otaku .journal-calendar { border: 2px solid var(--ink); border-radius: 18px; background: rgba(255,255,255,.72); }
+body.design-otaku .journal-calendar > span.has-entry { background: linear-gradient(145deg, #eee5ff, #ffe9ef); }
+body.design-otaku .journal-calendar > span em { border-radius: 999px; background: var(--lavender-deep); }
+body.design-otaku .journal-day > header { border-color: var(--lavender-deep); }
+body.design-otaku .journal-entry:nth-child(4n+1) { transform: rotate(-.35deg); }
+body.design-otaku .journal-entry:nth-child(4n+2) { transform: rotate(.25deg); }
+body.design-otaku .journal-entry__art { border-radius: 11px 11px 24px 11px; overflow: hidden; box-shadow: 4px 4px 0 var(--lavender); }
+body.design-otaku .journal-entry__edit input,
+body.design-otaku .journal-entry__edit textarea { border-radius: 7px; background: var(--surface-soft); }
+body.design-otaku .journal-entry__edit button { border-radius: 7px; }
+body.design-otaku .journal-entry__edit button.is-primary { background: var(--lavender-deep); }
 .rota-companion--list-hero { right: -18px; bottom: 28px; transform: rotate(4deg); }
+.rota-companion--journal-hero { right: -18px; bottom: 28px; transform: rotate(4deg); }
 body.design-otaku .my-list-hero h1 em,
 body.design-otaku .account-hero h1 em { color: var(--coral); font-family: inherit; font-style: normal; }
 body.design-otaku .list-overview button { border: 2px solid var(--ink) !important; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 rgba(52,43,74,.14); }
@@ -832,6 +853,11 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
   body.design-otaku .my-list-hero { padding-bottom: 116px; }
   body.design-otaku .my-list-hero > p { padding-right: 0; }
+  body.design-otaku .journal-hero::after { top: 55px; right: 0; font-size: 38px; }
+  body.design-otaku .journal-hero { padding-bottom: 108px; }
+  .rota-companion--journal-hero { right: -8px; bottom: -4px; transform: scale(.72) rotate(4deg); transform-origin: right bottom; }
+  .rota-companion--journal-hero .rota-companion__bubble { max-width: 158px; }
+  body.design-otaku .journal-entry:nth-child(n) { transform: none; }
   .rota-companion--list-hero { right: -11px; bottom: -3px; transform: scale(.72) rotate(4deg); transform-origin: right bottom; }
   .rota-companion--list-hero .rota-companion__bubble { max-width: 164px; }
   body.design-otaku .account-hero { grid-template-columns: 1fr; }

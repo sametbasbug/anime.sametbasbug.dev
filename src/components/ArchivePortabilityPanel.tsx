@@ -5,11 +5,13 @@ import {
   RotaBackupError,
   createPersonalListCsv,
   mergePersonalListStores,
-  parseRotaBackup,
+  mergeWatchJournalStores,
+  parseRotaArchive,
   serializeRotaBackup,
   type MergeSummary,
 } from "../lib/list-portability";
 import { readPersonalList, replacePersonalList } from "../lib/personal-list";
+import { readWatchJournal, replaceWatchJournal } from "../lib/watch-journal";
 
 type Props = {
   catalogue: CatalogueAnime[];
@@ -42,7 +44,7 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
   const [error, setError] = useState(false);
 
   const exportJson = () => {
-    download(`equinox-rota-yedek-${dateStamp()}.json`, "application/json;charset=utf-8", serializeRotaBackup(readPersonalList()));
+    download(`equinox-rota-yedek-${dateStamp()}.json`, "application/json;charset=utf-8", serializeRotaBackup(readPersonalList(), undefined, readWatchJournal()));
     setError(false);
     setFeedback("Sürümlü Rota JSON yedeğin indirildi.");
   };
@@ -57,11 +59,13 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
     if (!file) return;
     try {
       if (file.size > MAX_BACKUP_BYTES) throw new RotaBackupError("Yedek dosyası 10 MB sınırını aşıyor.");
-      const incoming = parseRotaBackup(await file.text());
-      const incomingCount = Object.keys(incoming.entries).length;
-      const deletionCount = Object.keys(incoming.tombstones).length;
+      const incoming = parseRotaArchive(await file.text());
+      const incomingCount = Object.keys(incoming.list.entries).length;
+      const deletionCount = Object.keys(incoming.list.tombstones).length;
+      const journalCount = Object.keys(incoming.journal.entries).length;
+      const journalDeletionCount = Object.keys(incoming.journal.tombstones).length;
       const approved = window.confirm(
-        `${incomingCount} aktif kayıt ve ${deletionCount} silme kaydı mevcut arşivinle birleştirilecek. Daha yeni cihaz kayıtların korunacak. Devam edilsin mi?`,
+        `${incomingCount} aktif liste kaydı, ${journalCount} günlük kaydı ve toplam ${deletionCount + journalDeletionCount} silme kaydı mevcut arşivinle birleştirilecek. Daha yeni cihaz kayıtların korunacak. Devam edilsin mi?`,
       );
       if (!approved) {
         setError(false);
@@ -69,10 +73,12 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
         return;
       }
 
-      const { store, summary } = mergePersonalListStores(readPersonalList(), incoming);
+      const { store, summary } = mergePersonalListStores(readPersonalList(), incoming.list);
+      const { store: journalStore, summary: journalSummary } = mergeWatchJournalStores(readWatchJournal(), incoming.journal);
       replacePersonalList(store);
+      replaceWatchJournal(journalStore);
       setError(false);
-      setFeedback(`${summary.added} yeni, ${summary.updated} güncellenen ve ${summary.deleted} silme kaydı birleştirildi; ${summary.kept} daha yeni cihaz kaydı korundu.`);
+      setFeedback(`Liste: ${summary.added} yeni, ${summary.updated} güncellenen. Günlük: ${journalSummary.added} yeni, ${journalSummary.updated} güncellenen. Toplam ${summary.deleted + journalSummary.deleted} silme işlendi; ${summary.kept + journalSummary.kept} daha yeni cihaz kaydı korundu.`);
       onImported?.(summary);
     } catch (caught) {
       setError(true);
@@ -88,9 +94,9 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
         <div><p>ARŞİVİN SENİN</p><h2>Rota’nı yanında taşı</h2></div>
         <span aria-hidden="true">↗</span>
       </header>
-      <p className="archive-portability__intro">Tam Rota JSON yedeği geri yüklenebilir; CSV ise rafını tablo olarak okumak ve saklamak içindir.</p>
+      <p className="archive-portability__intro">Tam Rota JSON yedeği rafını, izleme günlüğünü ve güvenli silme geçmişini taşır; CSV ise rafını tablo olarak okumak içindir.</p>
       <div className="archive-portability__actions">
-        <button type="button" onClick={exportJson}><span>JSON</span><b>Tam yedeği indir</b><small>Kayıtlar, notlar ve güvenli silme geçmişi</small></button>
+        <button type="button" onClick={exportJson}><span>JSON</span><b>Tam yedeği indir</b><small>Raf, günlük, notlar ve güvenli silme geçmişi</small></button>
         <button type="button" onClick={exportCsv} disabled={catalogueLoading}><span>CSV</span><b>Okunabilir listeyi indir</b><small>{catalogueLoading ? "Katalog hazırlanıyor…" : "Başlıklar ve liste ayrıntıları"}</small></button>
         <button type="button" onClick={() => inputRef.current?.click()}><span>GERİ YÜKLE</span><b>Rota JSON’unu birleştir</b><small>Daha yeni cihaz kayıtlarını ezmez</small></button>
       </div>

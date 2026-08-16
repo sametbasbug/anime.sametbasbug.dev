@@ -6,10 +6,13 @@ import {
   RotaBackupError,
   createPersonalListCsv,
   mergePersonalListStores,
+  mergeWatchJournalStores,
+  parseRotaArchive,
   parseRotaBackup,
   serializeRotaBackup,
 } from "../src/lib/list-portability";
 import type { PersonalListStore } from "../src/lib/personal-list";
+import type { WatchJournalStore } from "../src/lib/watch-journal";
 
 const current: PersonalListStore = {
   version: 2,
@@ -32,11 +35,35 @@ const backupStore: PersonalListStore = {
   tombstones: { deleted_by_backup: "2026-08-13T11:00:00.000Z" },
 };
 
-const raw = serializeRotaBackup(backupStore, "2026-08-13T12:00:00.000Z");
+const currentJournal: WatchJournalStore = {
+  version: 1,
+  entries: {
+    journal_newer_here: { id: "journal_newer_here", animeId: "added", episodeStart: 1, episodeEnd: 2, watchedOn: "2026-08-13", note: "Cihaz günlüğü", createdAt: "2026-08-13T08:00:00.000Z", updatedAt: "2026-08-13T10:00:00.000Z" },
+  },
+  tombstones: { journal_stays_deleted: "2026-08-13T10:30:00.000Z" },
+};
+
+const backupJournal: WatchJournalStore = {
+  version: 1,
+  entries: {
+    journal_newer_here: { id: "journal_newer_here", animeId: "added", episodeStart: 1, episodeEnd: 1, watchedOn: "2026-08-12", note: "Eski günlük", createdAt: "2026-08-12T08:00:00.000Z", updatedAt: "2026-08-12T09:00:00.000Z" },
+    journal_added: { id: "journal_added", animeId: "added", episodeStart: 3, episodeEnd: 4, watchedOn: "2026-08-13", note: "Yeni günlük", createdAt: "2026-08-13T08:00:00.000Z", updatedAt: "2026-08-13T09:00:00.000Z" },
+    journal_stays_deleted: { id: "journal_stays_deleted", animeId: "added", episodeStart: 5, episodeEnd: 5, watchedOn: "2026-08-12", note: "Dirilmemeli", createdAt: "2026-08-12T07:00:00.000Z", updatedAt: "2026-08-12T07:00:00.000Z" },
+  },
+  tombstones: {},
+};
+
+const raw = serializeRotaBackup(backupStore, "2026-08-13T12:00:00.000Z", backupJournal);
 const document = JSON.parse(raw);
 assert.equal(document.format, ROTA_BACKUP_FORMAT);
 assert.equal(document.version, ROTA_BACKUP_VERSION);
 assert.deepEqual(parseRotaBackup(raw), backupStore);
+assert.deepEqual(parseRotaArchive(raw).journal, backupJournal);
+
+const legacyDocument = { ...document, version: 1 };
+delete legacyDocument.journalEntries;
+delete legacyDocument.journalTombstones;
+assert.deepEqual(parseRotaArchive(JSON.stringify(legacyDocument)).journal, { version: 1, entries: {}, tombstones: {} }, "Eski v1 yedekleri günlük olmadan okunmalı.");
 
 const { store: merged, summary } = mergePersonalListStores(current, parseRotaBackup(raw));
 assert.deepEqual(summary, { added: 1, updated: 1, deleted: 1, kept: 2 });
@@ -47,6 +74,12 @@ assert.equal(merged.entries.deleted_by_backup, undefined);
 assert.equal(merged.tombstones.deleted_by_backup, "2026-08-13T11:00:00.000Z");
 assert.equal(merged.entries.stays_deleted, undefined, "Daha yeni tombstone eski yedek kaydını diriltmemeli.");
 
+const { store: mergedJournal, summary: journalSummary } = mergeWatchJournalStores(currentJournal, parseRotaArchive(raw).journal);
+assert.deepEqual(journalSummary, { added: 1, updated: 0, deleted: 0, kept: 2 });
+assert.equal(mergedJournal.entries.journal_newer_here.note, "Cihaz günlüğü");
+assert.equal(mergedJournal.entries.journal_added.episodeEnd, 4);
+assert.equal(mergedJournal.entries.journal_stays_deleted, undefined);
+
 for (const invalid of [
   "not-json",
   JSON.stringify({ ...document, format: "başka-format" }),
@@ -55,6 +88,8 @@ for (const invalid of [
   JSON.stringify({ ...document, entries: [{ ...document.entries[0], score: 11 }] }),
   JSON.stringify({ ...document, entries: [{ ...document.entries[0], updatedAt: "dün" }] }),
   JSON.stringify({ ...document, entries: [{ ...document.entries[0], updatedAt: "2027-08-13T00:00:00.000Z" }] }),
+  JSON.stringify({ ...document, journalEntries: [{ ...document.journalEntries[0], episodeStart: 8, episodeEnd: 7 }] }),
+  JSON.stringify({ ...document, journalEntries: [...document.journalEntries, document.journalEntries[0]] }),
 ]) {
   assert.throws(() => parseRotaBackup(invalid), RotaBackupError);
 }

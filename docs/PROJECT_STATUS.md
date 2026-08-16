@@ -1,6 +1,6 @@
 # Equinox Rota proje durumu
 
-Son güncelleme: 13 Ağustos 2026
+Son güncelleme: 17 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -89,9 +89,18 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-Aktif sıradaki ürün aşaması yok. 5. aşama, AniList'in yazılı yanıtı gelene kadar bilinçli olarak beklemede.
+Aktif ürün işi **13. aşama: İzleme günlüğü ve kişisel hafıza**dır. İlk teslim; bölüm/tarih/not kaydı, günlük ekranı, local-first veri modeli, hesap senkronizasyonu ve tam yedek kapsamını birlikte ele alır.
 
-9–12. aşamalar tamamlandı; 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+Ardından **14. aşama: Akıllı kişisel keşif** ve **15. aşama: Editoryal derinlik** planlanmıştır. Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 17 Ağustos 2026 — 13. aşama yerel ilk teslim
+
+- Anime detayına bölüm aralığı, izleme tarihi ve 280 karakterlik özel not kaydeden günlük bestecisi eklendi. Günlük kaydı animeyi gerekirse listeye alır ve ilerlemeyi yalnız ileri taşır.
+- `/gunluk` ekranı kayıtları güne göre gruplar; aylık bölüm/anime/izleme günü özetini ve kayıt yoğunluklu takvimi gösterir. Kayıtlar düzenlenebilir ve tombstone bırakarak silinebilir.
+- `rota.watch-journal.v1` local-first veri alanı kişisel listeden ayrı tutulur. `watch_journal_entries` için sahip-kullanıcı RLS, sürüm yarışı koruması ve istemci tombstone'ları içeren `202608170001_watch_journal.sql` migration'ı hazırdır.
+- Hesap eşitlemesi raf ile günlüğü birlikte çalıştıracak biçimde genişletildi. JSON yedek biçimi v2'ye yükseltildi; günlük ile silme geçmişi tam yedeğe katıldı ve v1 yedekleri geriye uyumlu okunuyor.
+- `journal:check`, yerel sanitizasyonu, silme sürümünü, bulut birleşimini ve migration güvenlik kurallarını ana kontrol zincirinde doğrular.
+- **Henüz yapılmadı:** migration production'a uygulanmadı; push/deploy ve iki cihazlı production kabulü gerçekleştirilmedi.
 
 ## 12. aşama durumu
 

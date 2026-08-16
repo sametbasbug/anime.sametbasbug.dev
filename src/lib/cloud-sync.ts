@@ -6,6 +6,7 @@ import {
   type PersonalListStore,
   type PersonalStatus,
 } from "./personal-list";
+import { syncWatchJournal } from "./journal-sync";
 
 type CloudListRow = {
   anime_id: string;
@@ -189,4 +190,17 @@ export async function syncPersonalList(client: SupabaseClient, userId: string): 
 
   const { uploaded, rejected } = await uploadRows(client, uploads);
   return { downloaded, uploaded, rejected };
+}
+
+/** Kişisel raf ile izleme günlüğünü tek kullanıcı eyleminde eşitler. */
+export async function syncRotaData(client: SupabaseClient, userId: string): Promise<SyncResult> {
+  const [list, journal] = await Promise.all([
+    syncPersonalList(client, userId),
+    syncWatchJournal(client, userId),
+  ]);
+  return {
+    downloaded: list.downloaded + journal.downloaded,
+    uploaded: list.uploaded + journal.uploaded,
+    rejected: [...list.rejected, ...journal.rejected.map((id) => `journal:${id}`)],
+  };
 }

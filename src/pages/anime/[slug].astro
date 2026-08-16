@@ -6,6 +6,7 @@ import CommunityReviews from "../../components/CommunityReviews";
 import DataAttribution from "../../components/DataAttribution.astro";
 import DiscoveryCard from "../../components/DiscoveryCard.astro";
 import ListEditor from "../../components/ListEditor";
+import JournalComposer from "../../components/JournalComposer";
 import RotaCompanion from "../../components/RotaCompanion";
 import {
   catalogue,
@@ -68,6 +69,7 @@ const usefulSources = anime.sources
         {editorial?.summary && <div class="detail-intro-panel"><p class="detail-deck">{editorial.summary}</p><span aria-hidden="true">♡</span></div>}
         {aliases[0] && <p class="detail-alias">Diğer adlar: {aliases.slice(0, 2).join(" · ")}</p>}
         <ListEditor animeId={anime.id} title={anime.title} episodes={anime.episodes} client:load />
+        <JournalComposer animeId={anime.id} title={anime.title} episodes={anime.episodes} client:load />
         <dl class="detail-facts">
           <div><dt>Puan</dt><dd>{anime.score ? `★ ${anime.score.toFixed(1)}` : "—"}</dd></div>
           <div><dt>Bölüm</dt><dd>{anime.episodes || "—"}</dd></div>

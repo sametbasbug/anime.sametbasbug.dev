@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { syncPersonalList, type SyncResult } from "../lib/cloud-sync";
+import { syncRotaData, type SyncResult } from "../lib/cloud-sync";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
 import { readPersonalList, subscribeToPersonalList, type PersonalListEntry } from "../lib/personal-list";
 import { calculateRotaStatistics } from "../lib/personal-statistics";
@@ -82,7 +82,7 @@ export default function AccountExperience({ dataVersion }: Props) {
     setBusy(true);
     if (announceSuccess) setMessage("");
     try {
-      const result = await syncPersonalList(client, userId);
+      const result = await syncRotaData(client, userId);
       setSyncResult(result);
       refreshLocalCount();
       if (result.rejected.length > 0) {

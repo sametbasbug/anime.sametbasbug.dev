@@ -30,6 +30,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Statik üretilmiş 900 anime detay sayfası
 - Dört durumlu, tarayıcıda yerel olarak saklanan kişisel anime listesi
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
+- Bölüm aralığı, izleme tarihi ve kısa notlarla local-first izleme günlüğü; aylık özet ve takvim
 - Durumlara ayrılan koleksiyon rafları, sayaçlar, filtreler ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
 - Manga açılımı ritmine sahip anime detayları ve otaku köşesi olarak tasarlanan hesap ekranı
 - Ana ekranlar ile boş, yükleme, hata, senkronizasyon ve kutlama hâllerine göre 100'ü aşkın kısa replikten konuşan marka yüzü ve göksel yoldaş **Rota**
@@ -89,6 +90,8 @@ Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime mo
 ## Kişisel liste ve hesap verisi
 
 Kişisel liste local-first çalışır: her değişiklik önce sürümlü `rota.personal-list.v1` kaydıyla mevcut tarayıcıya yazılır. Depolama biçimi geriye uyumlu v2'ye yükseltilmiştir; silmeler çevrimdışı cihazlarda geri gelmesin diye tombstone olarak korunur.
+
+İzleme günlüğü ayrı `rota.watch-journal.v1` alanında aynı local-first ilkeyle çalışır. Bölüm/tarih/not kayıtları kişisel listeden bağımsız kimlik taşır; silmeler günlük tombstone'larıyla korunur. Anime detayından günlük eklemek ilerlemeyi yalnız ileri taşır. Hesap eşitlemesi migration uygulandıktan sonra raf ile günlüğü birlikte taşır.
 
 İsteğe bağlı hesap açıldığında yalnız profil ve kişisel liste verisi Supabase'e eşitlenir. Görünen ad Rota içinde düzenlenmez; Orbit OIDC kimliğinden gelir ve girişte yerel profil görünümüne yansıtılır. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır. `PUBLIC`/`UNLISTED` paylaşımı temel tablo erişimi açmaz; yüksek entropili bağlantı koduyla çalışan dar RPC yalnız görünen ad, aktif liste durumu ve bölüm ilerlemesini verir. Puan ile kişisel not ayrı tercihlerdir; e-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları paylaşılmaz. Bağlantı kapatılabilir veya kodu yenilenerek eskisi geçersiz kılınabilir.
 
@@ -152,6 +155,9 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 10. ~~Kişisel istatistikler~~ — production migration ve gerçek hesap kabulüyle tamamlandı
 11. ~~Yedekleme ve taşınabilirlik~~ — sürümlü JSON/CSV, doğrulamalı geri yükleme ve canlı kabulüyle tamamlandı
 12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
+13. İzleme günlüğü ve kişisel hafıza — yerel ürün, senkronizasyon migration'ı ve yedek v2 hazır; production kabulü bekliyor
+14. Akıllı kişisel keşif — planlandı
+15. Editoryal derinlik — planlandı
 
 ## Sahiplik
 

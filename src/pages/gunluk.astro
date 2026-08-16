@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import JournalExperience from "../components/JournalExperience";
+import RotaCompanion from "../components/RotaCompanion";
+import DataAttribution from "../components/DataAttribution.astro";
+import { catalogueMeta } from "../lib/catalogue";
+---
+
+<BaseLayout title="İzleme Günlüğü — Equinox Rota" description="İzlediğin bölümleri tarihe göre kaydet, kısa notlarını sakla ve anime yolculuğuna aylık olarak dönüp bak.">
+  <SiteHeader active="journal" />
+  <main class="journal-page">
+    <section class="journal-hero">
+      <div><p class="eyebrow">BÖLÜMLER · TARİHLER · HATIRALAR</p><h1>İzleme<br /><em>günlüğüm.</em></h1></div>
+      <p>Hangi dünyaya ne zaman döndüğünü kaydet. Bölümler ilerler; küçük notlar yolculuğunun izini tutar.</p>
+      <RotaCompanion scene="journal" mood="curious" className="rota-companion--journal-hero" client:load />
+    </section>
+    <section class="journal-experience"><JournalExperience dataVersion={catalogueMeta.generatedAt} client:load /></section>
+    <DataAttribution />
+  </main>
+</BaseLayout>
