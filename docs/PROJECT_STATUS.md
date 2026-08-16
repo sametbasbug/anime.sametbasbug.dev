@@ -89,18 +89,21 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-Aktif ürün işi **13. aşama: İzleme günlüğü ve kişisel hafıza**dır. İlk teslim; bölüm/tarih/not kaydı, günlük ekranı, local-first veri modeli, hesap senkronizasyonu ve tam yedek kapsamını birlikte ele alır.
+13. aşama production kabulüyle tamamlandı. Aktif ürün işi **14. aşama: Akıllı kişisel keşif**tir.
 
 Ardından **14. aşama: Akıllı kişisel keşif** ve **15. aşama: Editoryal derinlik** planlanmıştır. Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
 
-## 17 Ağustos 2026 — 13. aşama yerel ilk teslim
+## 17 Ağustos 2026 — 13. aşama production teslimi
 
 - Anime detayına bölüm aralığı, izleme tarihi ve 280 karakterlik özel not kaydeden günlük bestecisi eklendi. Günlük kaydı animeyi gerekirse listeye alır ve ilerlemeyi yalnız ileri taşır.
 - `/gunluk` ekranı kayıtları güne göre gruplar; aylık bölüm/anime/izleme günü özetini ve kayıt yoğunluklu takvimi gösterir. Kayıtlar düzenlenebilir ve tombstone bırakarak silinebilir.
-- `rota.watch-journal.v1` local-first veri alanı kişisel listeden ayrı tutulur. `watch_journal_entries` için sahip-kullanıcı RLS, sürüm yarışı koruması ve istemci tombstone'ları içeren `202608170001_watch_journal.sql` migration'ı hazırdır.
+- `rota.watch-journal.v1` local-first veri alanı kişisel listeden ayrı tutulur. `watch_journal_entries` için sahip-kullanıcı RLS, sürüm yarışı koruması ve istemci tombstone'ları içeren `202608170001_watch_journal.sql` migration'ı production'a uygulanmıştır.
 - Hesap eşitlemesi raf ile günlüğü birlikte çalıştıracak biçimde genişletildi. JSON yedek biçimi v2'ye yükseltildi; günlük ile silme geçmişi tam yedeğe katıldı ve v1 yedekleri geriye uyumlu okunuyor.
 - `journal:check`, yerel sanitizasyonu, silme sürümünü, bulut birleşimini ve migration güvenlik kurallarını ana kontrol zincirinde doğrular.
-- **Henüz yapılmadı:** migration production'a uygulanmadı; push/deploy ve iki cihazlı production kabulü gerçekleştirilmedi.
+- Production şeması canlı sorguda tablo, açık RLS, dört sahip politikası, iki trigger, kapalı anonim erişim ve kapalı trigger-fonksiyonu çağrı yetkisiyle doğrulandı. Migration sırasında mevcut kişisel liste satırları değişmedi.
+- `b4d72f9` main dalına push edildi; GitHub Pages çalıştırması `31976802987` başarıyla tamamlandı. Canlı Nyx hesabında 1–2. bölüm kaydı liste ilerlemesini 2'ye taşıdı, buluta çıktı, boş yerel günlük durumuna geri indirildi ve tombstone olarak eşitlendi. Kesin kimlikli günlük/liste test satırları ile yerel tombstone'ları kabul sonunda temizlendi; production günlük satırı `0`, kişisel liste satırı `4` toplam / `3` aktif oldu. Kabul öncesinden kalan aynı Death Note test tombstone'u da temizlendi; mevcut aktif liste verisi korundu.
+- Deploy sonrası Dependabot'un işaretlediği transitive `nanoid <3.3.18` açığı güvenli `3.3.18` override'ıyla kapatıldı (`c6db4e5`). `npm audit` sıfır açık; tam kontrol ve 1.132 sayfalık production build temizdir.
+- Canlı `/gunluk/` 1.920×950 ve 390×844 görünümde yatay taşma üretmedi; konsol uygulama hatası vermedi. 13. aşama tamamlandı.
 
 ## 12. aşama durumu
 
@@ -166,6 +169,8 @@ Ardından **14. aşama: Akıllı kişisel keşif** ve **15. aşama: Editoryal de
 
 ## Son commitler
 
+- `c6db4e5` — `fix: pin patched nanoid dependency`
+- `b4d72f9` — `feat: add local-first watch journal`
 - `584a962` — `fix: harden catalogue source labels`
 - `f38415a` — `docs: polish the public repository`
 - `096d64e` — `ci: add repository security automation`

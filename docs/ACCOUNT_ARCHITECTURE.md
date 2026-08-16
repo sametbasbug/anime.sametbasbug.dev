@@ -96,7 +96,8 @@ Migration dosyaları:
 - RLS yalnız `auth.uid() = user_id` sahibine okuma/yazma verir; `anon` rolünün tablo erişimi yoktur.
 - Eşzamanlı cihaz yarışında `keep_newer_watch_journal_version` daha eski istemci sürümünü atlar.
 - Günlük paylaşılabilir profile veya topluluk RPC'lerine dahil değildir; özel kullanıcı verisi olarak kalır.
-- Migration dosyası yerelde hazırdır ancak production'a henüz uygulanmamıştır. Kod migration'dan önce yayımlanmamalıdır; aksi hâlde birleşik eşitleme günlük tablosunu bulamadığı için bekler.
+- Migration production'a uygulanmıştır. Canlı şemada RLS, dört sahip politikası, iki trigger, kapalı anonim tablo erişimi ve tarayıcı rollerine kapalı trigger fonksiyonu doğrulanmıştır.
+- Gerçek Nyx hesabında günlük yazma, otomatik liste ilerlemesi, boş yerel günlük durumundan bulut indirme ve tombstone eşitlemesi geçti. Kabul kayıtları kesin kimlikleriyle temizlendi; kullanıcının önceki liste verisi korundu.
 
 ## Orbit ile giriş
 

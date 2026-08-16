@@ -145,15 +145,15 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Editoryal sınır:** Seçkiler yalnız `PUBLISHED` ve `spoilerSafe` onaylı profilleri kullanır. Her yayımlanmış profil rotasyonda tam bir kez yer alır; taslak veya kontroldeki metin ana sayfaya çıkamaz.
 
-### 13. İzleme günlüğü ve kişisel hafıza — devam ediyor
+### 13. İzleme günlüğü ve kişisel hafıza — tamamlandı
 
 - [x] Bölüm veya bölüm aralığını izleme tarihiyle birlikte günlüğe kaydet.
 - [x] Anime detayından hızlı kayıt oluştur; yeni kayıt ilerleme sayacını güvenli biçimde ileri taşısın.
 - [x] Günlük kayıtlarını tarihe göre gruplayan, aylık özeti olan ayrı bir ekran hazırla.
 - [x] Kısa bölüm notlarını düzenleme ve günlük kaydını silme akışlarını ekle.
-- [ ] Günlüğü local-first sakla; tombstone, cihazlar arası senkronizasyon ve RLS sınırlarını kişisel listeyle aynı güven düzeyinde uygula.
+- [x] Günlüğü local-first sakla; tombstone, cihazlar arası senkronizasyon ve RLS sınırlarını kişisel listeyle aynı güven düzeyinde uygula.
 - [x] Tam JSON yedeğine günlük kayıtlarını ve silme geçmişini ekle; eski yedek sürümünü geriye uyumlu okumaya devam et.
-- [ ] Yerel otomasyon, production migration ve iki cihazlı kabul turunu tamamla.
+- [x] Yerel otomasyon, production migration ve boş ikinci cihaz durumundan indirme dâhil cihazlar arası kabul turunu tamamla.
 
 **Tamamlanma ölçütü:** Kullanıcı neyi, hangi gün ve hangi bölüm aralığında izlediğini kaydedebilir; kayıtlar çevrimdışı cihaz yazımını kaybetmeden hesapla eşitlenir ve tam yedekle taşınır.
 
@@ -177,7 +177,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–12. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Aktif ürün işi 13. aşamadaki izleme günlüğü ve kişisel hafızadır. Ardından açıklanabilir kişisel keşif ve editoryal derinlik gelir. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
+İlk dört aşama ile 6–13. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sıradaki aktif ürün işi 14. aşamadaki açıklanabilir kişisel keşiftir; ardından editoryal derinlik gelir. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
 
 9. aşama tamamlandı: yüksek entropili bağlantı kodu, dar paylaşım RPC'si, alan bazlı puan/not izinleri, hesap kontrolleri ve `/paylas` salt-okunur görünümü production altyapısına taşındı. Gerçek Nyx hesabıyla `PRIVATE → UNLISTED`, bağlantıyı açma, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma akışları geçti. Son durumda test hesabının paylaşımı kapalıdır; otomatik güvenlik kontrolleri ile 1.920×950 ve 390×844 tarayıcı doğrulaması temizdir.
 
