@@ -5,36 +5,43 @@
       "id": "sessizce-derinlesenler",
       "label": "SAKİN AMA UZUN SÜREN",
       "title": "Sessizce derinleşen hikâyeler",
-      "description": "Büyük duygularını acele etmeden kuran, ayrıntıları izleyenin yanında kalan dört dünya.",
-      "animeIds": ["52991", "46102", "47917", "54492"]
+      "description": "Büyük duygularını acele etmeden kuran, ayrıntıları izleyenin yanında kalan beş dünya.",
+      "animeIds": ["52991", "46102", "47917", "54492", "31646"]
     },
     {
       "id": "dunya-dar-gelirken",
       "label": "SINIRLAR VE SEÇİMLER",
       "title": "Dünya dar gelirken verilen kararlar",
       "description": "Özgürlük, savaş ve hayatta kalma fikrini kolay cevaplara sığınmadan tartışan yapımlar.",
-      "animeIds": ["16498", "41457", "37521", "42310"]
+      "animeIds": ["16498", "41457", "37521", "42310", "35737"]
     },
     {
       "id": "ritmi-yuksek-baslangiclar",
       "label": "İLK BÖLÜMDEN YAKALAYAN",
       "title": "Ritmi yüksek başlangıçlar",
       "description": "Enerjisini berrak karakter hedefleriyle birleştiren, hızla içine çeken modern seriler.",
-      "animeIds": ["40748", "38000", "44511", "57334"]
+      "animeIds": ["40748", "38000", "44511", "57334", "52034"]
     },
     {
       "id": "yol-arkadaslari",
       "label": "BİRLİKTE BÜYÜYENLER",
       "title": "İyi yol arkadaşlarıyla büyümek",
       "description": "Macera kadar ekip ruhuna, güvene ve birlikte değişmenin küçük anlarına da yer açanlar.",
-      "animeIds": ["5114", "52701", "40834", "20583"]
+      "animeIds": ["5114", "52701", "40834", "20583", "20"]
     },
     {
       "id": "klasikten-buyuye",
       "label": "ROTA'NIN TEMEL TAŞLARI",
-      "title": "Klasikten büyüye dört durak",
-      "description": "Suç geriliminden ruhlar dünyasına, animeye açılan birbirinden farklı dört güçlü kapı.",
-      "animeIds": ["1", "1535", "32281", "199"]
+      "title": "Klasikten büyüye beş durak",
+      "description": "Suç geriliminden ruhlar dünyasına, animeye açılan birbirinden farklı beş güçlü kapı.",
+      "animeIds": ["1", "1535", "32281", "199", "5081"]
+    },
+    {
+      "id": "meraktan-yola-cikanlar",
+      "label": "MERAKIN PEŞİNDEN",
+      "title": "Bir soruyla açılan büyük rotalar",
+      "description": "Uzak denizlerden çizim masasına, bilime ve aile oyunlarına uzanan merak dolu beş ayrı başlangıç.",
+      "animeIds": ["21", "34798", "50265", "58125", "52215"]
     }
   ],
   "entries": [
@@ -360,9 +367,163 @@
     },
     {
       "animeId": "21",
-      "status": "DRAFT",
+      "status": "PUBLISHED",
       "headline": "Özgürlüğün peşinde bitmeyen bir deniz rotası",
-      "updatedAt": "2026-08-06"
+      "summary": "Korsanlar çağında Monkey D. Luffy, efsanevi One Piece hazinesini bulup Korsanlar Kralı olmak için denize açılır. Yol boyunca kurduğu tayfa, her yeni adada yalnız güçlü rakiplerle değil; özgürlüğü kimin hak ettiğine karar veren düzenlerle de karşılaşır.",
+      "whyWatch": [
+        "Her ada kendi kültürü, çatışması ve görsel kimliğiyle küçük bir dünya kurarken uzun vadeli sırları ana yolculuğa bağlar.",
+        "Hasır Şapka tayfasının üyeleri ayrı hedefler taşır; dostlukları aynı hayale inanmak kadar birbirlerinin hayallerine yer açmakla büyür.",
+        "Komedi, macera ve duygusal doruklar yüzlerce bölüm boyunca aynı iyimser özgürlük fikrinin farklı yüzlerini gösterebilir."
+      ],
+      "verdict": "One Piece'in uzunluğu gerçek bir eşik; fakat gücü de dünyasını ve insanlarını acele etmeden biriktirebilmesinde. Başlangıçtaki sade korsan macerası, özgürlük ve iktidar üzerine genişleyen samimi bir destana dönüşüyor.",
+      "audience": "Uzun yolculukları, geniş ekipleri ve bölüm bölüm büyüyen dünyaları seven; eski yapım ritmine ve sabırlı izlemeye açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "20",
+      "status": "PUBLISHED",
+      "headline": "Yalnız bir çocuğun köyüne kendini kabul ettirme yolu",
+      "summary": "Konoha köyünde dışlanarak büyüyen Naruto Uzumaki, bir gün Hokage olup herkesin saygısını kazanmak ister. Ninja eğitiminde Sakura ve Sasuke ile aynı takıma düşmesi, gürültülü iddiasını disiplin, dayanışma ve başkalarının yaralarını görme sınavına çevirir.",
+      "whyWatch": [
+        "Naruto'nun kabul görme arzusu, dövüşlerin altında kolay anlaşılan ve yıllar içinde farklı karakterlere yansıyan duygusal bir omurga kurar.",
+        "Ninja teknikleri yalnız güç artışına değil; hazırlık, aldatma ve ekip üyelerinin birbirini tamamlamasına dayanan okunaklı çatışmalar üretir.",
+        "Rakipler ve öğretmenler kendi kayıplarıyla tanımlandığı için köyün geçmişi, ana karakterin büyümesiyle birlikte katman katman açılır."
+      ],
+      "verdict": "Naruto yer yer uzayan anlatısına rağmen yalnızlıktan bağ kurmaya uzanan merkezini güçlü tutuyor. Büyük shounen formülünü anlamak için tarihsel bir durak, karakterlerine zaman ayırınca hâlâ etkili bir büyüme hikâyesi.",
+      "audience": "Klasik shounen yapısını, uzun karakter gelişimini ve takım temelli ninja çatışmalarını seven; dolgu bölümlerini ayıklamaya hazır izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "5081",
+      "status": "PUBLISHED",
+      "headline": "Sözcüklerin arasında saklanan tuhaflıklarla yüzleşmek",
+      "summary": "Doğaüstü bir karşılaşmanın ardından sıradan hayatına dönmeye çalışan Koyomi Araragi, açıklanamaz yükler taşıyan farklı genç kadınlarla karşılaşır. Yardım etmeye çalıştıkça her tuhaflığın, sahibinin konuşamadığı bir korku veya çatışmayla bağlı olduğunu görür.",
+      "whyWatch": [
+        "Uzun diyaloglar kelime oyunları, güvenilmez bakış ve karakterlerin birbirinden sakladığı anlamlarla başlı başına bir gerilim kurar.",
+        "Sınırlı mekânlar; keskin tipografi, renk blokları ve beklenmedik kadrajlarla zihinsel bir sahneye dönüştürülür.",
+        "Doğaüstü vakalar kolay çözüm sunmak yerine yardım etmekle birinin sorununu onun adına çözmek arasındaki sınırı tartışır."
+      ],
+      "verdict": "Bakemonogatari anlatım biçimiyle ya hemen bağ kurulan ya da mesafe bırakılan bir seri. Görsel deneyi ve dili çok güçlü; buna karşılık erkek bakışıyla kurulan kimi şakaları, iyi taraflarının yanında açık bir pürüz.",
+      "audience": "Yoğun diyalog, deneysel kurgu ve doğaüstü karakter çalışmalarını seven; fan servis tercihleri konusunda toleranslı yetişkin izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "31646",
+      "status": "PUBLISHED",
+      "headline": "Sessiz bir odadan yeniden hayata karışmayı öğrenmek",
+      "summary": "Genç profesyonel shogi oyuncusu Rei Kiriyama, tek başına yaşadığı Tokyo'da hem rekabetin hem geçmişinin ağırlığını taşır. Kawamoto kardeşlerle kurduğu bağ, kazanma zorunluluğunun ötesinde yemek, komşuluk ve kabul edilme gibi küçük dayanakları yeniden fark etmesini sağlar.",
+      "whyWatch": [
+        "Depresyonu tek bir konuşmayla çözülen engel gibi değil; gündelik ritmi, bedeni ve ilişkileri etkileyen uzun bir süreç olarak anlatır.",
+        "Shogi karşılaşmaları rakiplerin korku ve hırslarını görselleştiren metaforlarla, oyunu bilmeyen izleyici için bile duygusal gerilim taşır.",
+        "Kawamoto evinin sıcaklığı ile Rei'nin yalnız dairesi arasındaki görsel karşıtlık, aidiyet duygusunu söze ihtiyaç duymadan kurar."
+      ],
+      "verdict": "3-gatsu no Lion ağır duyguları hafifletmeye çalışmadan şefkate yer açıyor. Shogiyi merkezine alsa da asıl meselesi bir insanın başkalarıyla bağ kurarak kendi hayatına yavaşça geri dönebilmesi.",
+      "audience": "İçe dönük karakter çalışmalarını, sakin tempoyu ve ruh sağlığına özenli yaklaşan büyüme hikâyelerini seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "34798",
+      "status": "PUBLISHED",
+      "headline": "Soğuk bir gecede kamp ateşinin çevresinde yavaşlamak",
+      "summary": "Tek başına kamp yapmayı seven Rin Shima ile hevesli ama deneyimsiz Nadeshiko Kagamihara'nın yolları Fuji Dağı yakınında kesişir. Farklı sosyallik ihtiyaçlarına sahip iki gencin kamp merakı, birlikte vakit geçirmek ile yalnız kalabilmek arasında sıcak bir denge kurar.",
+      "whyWatch": [
+        "Kamp hazırlığı, yemek ve yolculuk ayrıntıları pratik bilgi verirken bölümün sakin ritmini bozmayan doğal bir merak duygusu yaratır.",
+        "Rin'in yalnızlıktan keyif alması değiştirilmesi gereken bir kusur sayılmaz; arkadaşlık onun kişisel alanına saygıyla yaklaşır.",
+        "Mevsim ışığı, geniş doğa kadrajları ve ölçülü müzik, küçük gezileri gerçek bir dinlenme hissine dönüştürür."
+      ],
+      "verdict": "Yuru Camp△ büyük çatışmalar olmadan da bölüm sonunda belirgin bir yolculuk hissi bırakabiliyor. Sakinliğini boşlukla değil, mekân ve arkadaşlık ayrıntılarıyla dolduran güvenilir bir iyileşme serisi.",
+      "audience": "Gündelik yaşam, doğa ve yemek ayrıntılarını seven; düşük çatışmalı, huzurlu ve bölüm bölüm izlenebilen bir seri arayanlara göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "35737",
+      "status": "PUBLISHED",
+      "headline": "İnsan ile makine arasındaki yasın izini süren cinayetler",
+      "summary": "Dünyanın en gelişmiş robotları sırayla öldürülürken Europol dedektifi Gesicht, vakaların hem robotları hem insanları hedefleyen ortak bir nefrete bağlandığını fark eder. Soruşturma ilerledikçe savaş hafızası, yapay zekâ ve insanlığın ölçüsü aynı dosyada buluşur.",
+      "whyWatch": [
+        "Cinayet soruşturması her bölümde yeni bir karaktere alan açar; gizem çözülürken kayıp ve hafıza temaları genişler.",
+        "Robotlar ile insanlar arasındaki ayrım büyük nutuklardan çok aile, emek ve yas tutma gibi gündelik davranışlar üzerinden sorgulanır.",
+        "Sekiz uzun bölüm, Naoki Urasawa'nın ağır gerilimini acele etmeden koruyan sinematografik ve tutarlı bir uyarlama sunar."
+      ],
+      "verdict": "Pluto, bilim kurgu gizemini teknolojinin ne kadar gelişeceği sorusundan çok nefretin nasıl öğrenildiğine yöneltiyor. Düşünceli temposu, yetişkin kadrosu ve güçlü yan hikâyeleriyle yoğun ama berrak bir uyarlama.",
+      "audience": "Yetişkin bilim kurgu, polisiye ve savaş karşıtı anlatılar arayan; uzun bölümlere ve ağır duygusal tempoya açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "50265",
+      "status": "PUBLISHED",
+      "headline": "Dünya barışını korumak için kurulmuş sahte bir aile",
+      "summary": "Ajan Twilight, kritik görevi için kısa sürede eş ve çocuk sahibi bir aile babası gibi görünmek zorundadır. Yor'un gizli suikastçılığı ve evlat edindikleri Anya'nın zihin okuma yeteneği, kimsenin diğerinin sırrını bilmediği bu düzeni tehlikeli ama giderek gerçek bir yuvaya çevirir.",
+      "whyWatch": [
+        "Casusluk gerilimi ile aile komedisi aynı yanlış anlaşılmadan beslenir; sırlar hem görev riskini hem karakter yakınlığını artırır.",
+        "Anya'nın yetişkinlerin sakladığı düşünceleri duyması, olayları çocuk bakışından komik ve beklenmedik biçimde yeniden çerçeveler.",
+        "Loid ile Yor'un kusursuz rol yapma çabası, iyi ebeveynliğin performanstan çok dikkat ve emek istediğini küçük anlarla gösterir."
+      ],
+      "verdict": "Spy x Family yüksek konseptini kolay tüketilen skeçlere bırakmıyor; üç yalnız insanın rol yaparken birbirine bağlanmasını sıcak bir merkezde tutuyor. Aksiyonu erişilebilir, komedisi geniş kitleye açık.",
+      "audience": "Ailece izlenebilen komedi, hafif casusluk ve sevimli karakter ilişkileri arayan; sert gerilim yerine sıcak tempo isteyenlere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "52034",
+      "status": "PUBLISHED",
+      "headline": "Sahne ışıklarının arkasında kim olmak istediğini aramak",
+      "summary": "Ünlü idol Ai Hoshino'nun çocukları Aqua ile Ruby, eğlence sektörüne birbirinden farklı amaçlarla yaklaşır. Kamera önündeki ışıltı; oyunculuk, idol kültürü ve yapım dünyasının görünmeyen emeğiyle yan yana gelirken iki kardeş kendi geçmişlerinin izini taşır.",
+      "whyWatch": [
+        "Eğlence sektörünü yalnız kötü niyetli kişilerle açıklamaz; ölçüm, rekabet ve görünürlük baskısının normalleşmiş yapısını farklı iş kollarında gösterir.",
+        "Uzun açılış bölümü karakterlerin motivasyonuna güçlü bir temel kurar ve sonraki tür değişimlerinin duygusal ağırlığını hazırlar.",
+        "Parlak sahne renkleri ile kulislerin daha soğuk görüntüsü, hayranın gördüğü persona ile onu üreten emek arasındaki mesafeyi büyütür."
+      ],
+      "verdict": "[Oshi no Ko] sektör eleştirisi, gençlik draması ve gizemi aynı potada her zaman eşit tutamasa da güçlü bir merak yaratıyor. En iyi anlarında görünür olmanın bedelini karakterlerinin farklı seçimleriyle tartışıyor.",
+      "audience": "Eğlence sektörünün perde arkasını, gençlik dramasını ve uzun süreli gizemleri seven; ton değişimlerine açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "58125",
+      "status": "PUBLISHED",
+      "headline": "Aynı çizgiye bakan iki genç sanatçının sessiz ortaklığı",
+      "summary": "Sınıf gazetesinde çizimleri yayımlanan Fujino, okula gelmeyen Kyomoto'nun ayrıntılı işleriyle karşılaşınca yeteneğine duyduğu güven sarsılır. Rekabetle başlayan çizim emeği, iki genç sanatçının birbirini cesaretlendirdiği yaratıcı bir ortaklığa dönüşür.",
+      "whyWatch": [
+        "Çizim becerisini doğuştan gelen sihir gibi değil; tekrar, kıskançlık, vazgeçme ve yeniden masaya oturma döngüsüyle anlatır.",
+        "Diyalogdan çok beden hareketi, kâğıt sesi ve mevsim geçişleri kullanan yönetim, kısa sürede yılların biriktiği hissini verir.",
+        "Yaratıcı emeğin hem insanları birbirine bağlayan hem de hayatın belirsizliği karşısında anlam kuran yönünü duygusal sömürüye kaçmadan taşır."
+      ],
+      "verdict": "Look Back, sanat üretmenin nedenini başarı veya yetenek tartışmasından çıkarıp başka bir insanla kurulan bağa yerleştiriyor. Kısa süresinde yoğun, ölçülü ve çizme eylemine karşı dürüst bir film.",
+      "audience": "Tek oturuşta tamamlanan duygusal filmleri, yaratıcı süreç hikâyelerini ve sessiz görsel anlatımı seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "52215",
+      "status": "PUBLISHED",
+      "headline": "Gökyüzüne bakmanın suç sayıldığı bir çağda gerçeği aramak",
+      "summary": "On beşinci yüzyılı andıran bir dünyada gök cisimlerinin hareketini sorgulayan insanlar, kabul edilmiş düzenle çatışan bir fikri korumak için hayatlarını riske atar. Bilgi tek bir kahramanın değil, birbirine dokunan farklı yaşamların taşıdığı kırılgan bir mirasa dönüşür.",
+      "whyWatch": [
+        "Bilimsel keşfi yalnız parlak zekâya bağlamaz; notların, tanıklığın ve kuşaklar arasında aktarılan küçük cesaretlerin önemini gösterir.",
+        "Düşünce ile kurum arasındaki çatışma, karakterlerin inançlarını basitçe küçümsemeden bilgiye kimin karar verdiğini sorgular.",
+        "Gece göğü ve dar iç mekânlar arasındaki karşıtlık, özgür merak ile baskı arasındaki mesafeyi sürekli görünür tutar."
+      ],
+      "verdict": "Chi. Chikyuu no Undou ni Tsuite, bilim tarihini birebir yeniden kurmaktan çok bir fikrin insanlardan daha uzun yaşayabilmesini anlatıyor. Sert, düşünceli ve kahramanlığın ortak bir emek olabileceğini hatırlatan bir seri.",
+      "audience": "Tarihsel atmosferi, fikir çatışmalarını ve farklı karakterlere geçen anlatıları seven; karanlık şiddete hazırlıklı izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
     }
   ]
 }

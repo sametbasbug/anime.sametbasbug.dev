@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import RotaCompanion from "../../components/RotaCompanion";
+import AnimeArtwork from "../../components/AnimeArtwork";
+import DataAttribution from "../../components/DataAttribution.astro";
+import { catalogue, visualFor } from "../../lib/catalogue";
+import { editorialEssays, editorialGuideKindLabels, permanentGuides } from "../../lib/editorial-guides";
+
+const catalogueById = new Map(catalogue.map((anime) => [anime.id, anime]));
+const withLead = (entry: (typeof permanentGuides)[number]) => ({
+  ...entry,
+  lead: catalogueById.get(entry.selections[0]?.animeId),
+});
+const guides = permanentGuides.map(withLead);
+const essays = editorialEssays.map(withLead);
+---
+
+<BaseLayout title="Anime rehberleri ve editoryal yazılar — Equinox Rota" description="Yeni başlayanlar, kısa seriler, filmler, temalar, yönetmenler ve stüdyolar için özgün Türkçe anime rehberleri.">
+  <SiteHeader active="guides" />
+  <main class="editorial-guides-page">
+    <section class="editorial-guides-hero">
+      <div>
+        <p class="eyebrow">ROTA EDİTÖRLÜĞÜ · SPOILER KONTROLLÜ</p>
+        <h1>Bir liste değil,<br /><em>bakış açısı.</em></h1>
+        <p>Ne izleyeceğini söylemekle kalmayan; seçimlerin nasıl çalıştığını, hangi izleyiciye göre olduğunu ve nereden başlanabileceğini anlatan kalıcı rotalar.</p>
+      </div>
+      <RotaCompanion scene="catalogue" mood="curious" className="rota-companion--guides" client:load />
+    </section>
+
+    <section class="editorial-guide-section" aria-labelledby="permanent-guide-title">
+      <header><div><p>KALICI BAŞLANGIÇ NOKTALARI</p><h2 id="permanent-guide-title">Bir akşamlık seçimden uzun ömürlü rehbere.</h2></div><span>{guides.length} REHBER</span></header>
+      <div class="editorial-guide-grid">
+        {guides.map((guide, index) => {
+          const visual = guide.lead ? visualFor(guide.lead.id) : undefined;
+          return <article class:list={["editorial-guide-card", index === 0 && "editorial-guide-card--wide"]}>
+            {guide.lead && visual && <a class="editorial-guide-card__art" href={`/rehberler/${guide.id}`}><AnimeArtwork {...visual} posterPath={guide.lead.poster?.path} title={guide.lead.title} /></a>}
+            <div><p>{guide.focus}</p><h3><a href={`/rehberler/${guide.id}`}>{guide.title}</a></h3><span>{guide.description}</span><footer><small>{editorialGuideKindLabels[guide.kind]} · {guide.selections.length} durak</small><a href={`/rehberler/${guide.id}`}>Rehberi aç ↗</a></footer></div>
+          </article>;
+        })}
+      </div>
+    </section>
+
+    <section class="editorial-guide-section editorial-guide-section--essays" aria-labelledby="editorial-essay-title">
+      <header><div><p>YÖNETMEN · STÜDYO · ANLATI</p><h2 id="editorial-essay-title">Bir yapımdan diğerine uzanan izler.</h2></div><span>{essays.length} YAZI</span></header>
+      <div class="editorial-essay-grid">
+        {essays.map((essay) => <article>
+          <p>{essay.focus}</p><h3><a href={`/rehberler/${essay.id}`}>{essay.title}</a></h3><span>{essay.description}</span><a href={`/rehberler/${essay.id}`}>Yazıyı oku <b>↗</b></a>
+        </article>)}
+      </div>
+    </section>
+
+    <aside class="editorial-guide-method"><strong>Rota'nın editoryal sözü</strong><p>Metinler özgün yazılır, bağlantı kopyalamaz, yayımdan önce spoiler kontrolünden geçer. Popülerlik tek başına seçim gerekçesi değildir.</p></aside>
+    <DataAttribution />
+  </main>
+</BaseLayout>

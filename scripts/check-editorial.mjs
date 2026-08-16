@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const editorialPath = resolve("src/data/editorial.json");
+const guidePath = resolve("src/data/editorial-guides.json");
 const cataloguePath = resolve("src/data/catalogue.json");
 const statuses = new Set(["DRAFT", "IN_REVIEW", "PUBLISHED"]);
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -12,8 +13,9 @@ const normalizeSentence = (value) => value
   .replace(/[^a-z0-9çğıöşü]+/giu, " ")
   .trim();
 
-const [editorial, catalogue] = await Promise.all([
+const [editorial, guides, catalogue] = await Promise.all([
   readFile(editorialPath, "utf8").then(JSON.parse),
+  readFile(guidePath, "utf8").then(JSON.parse),
   readFile(cataloguePath, "utf8").then(JSON.parse),
 ]);
 
@@ -100,8 +102,8 @@ if (!Array.isArray(editorial.homepageCollections) || editorial.homepageCollectio
     if (typeof collection.label !== "string" || collection.label.length < 10 || collection.label.length > 60) errors.push(`${label}: etiket 10–60 karakter olmalı.`);
     if (typeof collection.title !== "string" || collection.title.length < 20 || collection.title.length > 80) errors.push(`${label}: başlık 20–80 karakter olmalı.`);
     if (typeof collection.description !== "string" || collection.description.length < 70 || collection.description.length > 180) errors.push(`${label}: açıklama 70–180 karakter olmalı.`);
-    if (!Array.isArray(collection.animeIds) || collection.animeIds.length !== 4) {
-      errors.push(`${label}: seçki dört anime içermeli.`);
+    if (!Array.isArray(collection.animeIds) || collection.animeIds.length !== 5) {
+      errors.push(`${label}: seçki beş anime içermeli.`);
       continue;
     }
     for (const animeId of collection.animeIds) {
@@ -112,9 +114,66 @@ if (!Array.isArray(editorial.homepageCollections) || editorial.homepageCollectio
   }
 }
 
-if (publishedIds.size < 20 || publishedIds.size > 30) errors.push(`Yayımlanmış profil sayısı 20–30 aralığında olmalı; mevcut: ${publishedIds.size}.`);
+if (publishedIds.size < 30 || publishedIds.size > 50) errors.push(`Yayımlanmış profil sayısı 30–50 aralığında olmalı; mevcut: ${publishedIds.size}.`);
 for (const animeId of publishedIds) {
   if (!rotatedAnimeIds.has(animeId)) errors.push(`${animeId}: yayımlanmış profil ana sayfa rotasyonunda yer almıyor.`);
+}
+
+const guideIds = new Set();
+if (guides.version !== 1) errors.push("Editoryal rehber veri sürümü 1 olmalı.");
+if (!Array.isArray(guides.entries) || guides.entries.length < 7) {
+  errors.push("En az yedi editoryal rehber/yazı yayımlanmalı.");
+} else {
+  const kindCounts = { GUIDE: 0, ESSAY: 0 };
+  const focusKinds = new Set();
+  for (const [index, guide] of guides.entries.entries()) {
+    const label = `guides[${index}] (${guide?.id ?? "kimliksiz"})`;
+    if (!guide || typeof guide !== "object") {
+      errors.push(`${label}: kayıt nesne olmalı.`);
+      continue;
+    }
+    if (!/^[a-z0-9-]{5,80}$/.test(guide.id ?? "")) errors.push(`${label}: id geçersiz.`);
+    if (guideIds.has(guide.id)) errors.push(`${label}: id tekrar ediyor.`);
+    guideIds.add(guide.id);
+    if (!(guide.kind in kindCounts)) errors.push(`${label}: tür GUIDE veya ESSAY olmalı.`);
+    else kindCounts[guide.kind] += 1;
+    if (typeof guide.focus !== "string" || guide.focus.length < 8 || guide.focus.length > 40) errors.push(`${label}: odak etiketi 8–40 karakter olmalı.`);
+    focusKinds.add(guide.focus);
+    if (typeof guide.title !== "string" || guide.title.length < 25 || guide.title.length > 90) errors.push(`${label}: başlık 25–90 karakter olmalı.`);
+    if (typeof guide.description !== "string" || guide.description.length < 80 || guide.description.length > 200) errors.push(`${label}: açıklama 80–200 karakter olmalı.`);
+    if (typeof guide.intro !== "string" || guide.intro.length < 160 || guide.intro.length > 500) errors.push(`${label}: giriş 160–500 karakter olmalı.`);
+    if (!Array.isArray(guide.sections) || guide.sections.length !== 2) {
+      errors.push(`${label}: iki yazı bölümü olmalı.`);
+    } else {
+      for (const section of guide.sections) {
+        if (typeof section.heading !== "string" || section.heading.length < 12 || section.heading.length > 80) errors.push(`${label}: bölüm başlığı 12–80 karakter olmalı.`);
+        if (typeof section.body !== "string" || section.body.length < 160 || section.body.length > 520) errors.push(`${label}: bölüm metni 160–520 karakter olmalı.`);
+      }
+    }
+    if (!Array.isArray(guide.selections) || guide.selections.length < 2 || guide.selections.length > 5) {
+      errors.push(`${label}: seçki 2–5 anime içermeli.`);
+    } else {
+      const selected = new Set();
+      for (const selection of guide.selections) {
+        if (!ids.has(selection.animeId)) errors.push(`${label}: ${selection.animeId} katalogda yok.`);
+        if (selected.has(selection.animeId)) errors.push(`${label}: ${selection.animeId} seçkide tekrar ediyor.`);
+        selected.add(selection.animeId);
+        if (typeof selection.note !== "string" || selection.note.length < 45 || selection.note.length > 180) errors.push(`${label}: seçim notu 45–180 karakter olmalı.`);
+      }
+    }
+    if (guide.spoilerSafe !== true) errors.push(`${label}: spoilerSafe onayı zorunlu.`);
+    for (const [field, value] of [["publishedAt", guide.publishedAt], ["reviewedAt", guide.reviewedAt]]) {
+      if (!datePattern.test(value ?? "") || Number.isNaN(Date.parse(`${value}T00:00:00Z`))) errors.push(`${label}: ${field} geçerli tarih olmalı.`);
+    }
+    if (guide.reviewedAt < guide.publishedAt) errors.push(`${label}: reviewedAt publishedAt tarihinden eski olamaz.`);
+    const copyFields = [guide.title, guide.description, guide.intro, ...(guide.sections ?? []).flatMap((section) => [section.heading, section.body]), ...(guide.selections ?? []).map((selection) => selection.note)];
+    if (copyFields.some((value) => /https?:\/\/|www\./i.test(value ?? ""))) errors.push(`${label}: metin bağlantı içeremez.`);
+  }
+  if (kindCounts.GUIDE < 4) errors.push(`Kalıcı rehber sayısı en az 4 olmalı; mevcut: ${kindCounts.GUIDE}.`);
+  if (kindCounts.ESSAY < 3) errors.push(`Editoryal yazı sayısı en az 3 olmalı; mevcut: ${kindCounts.ESSAY}.`);
+  for (const focus of ["YÖNETMEN ODAĞI", "STÜDYO ODAĞI", "ANLATI TEMASI"]) {
+    if (!focusKinds.has(focus)) errors.push(`${focus}: zorunlu editoryal odak eksik.`);
+  }
 }
 
 if (errors.length) {
@@ -123,5 +182,5 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   const counts = Object.fromEntries([...statuses].map((status) => [status, editorial.entries.filter((entry) => entry.status === status).length]));
-  console.log(`Editoryal veri doğrulandı: ${counts.PUBLISHED} yayımlanmış, ${counts.IN_REVIEW} kontrolde, ${counts.DRAFT} taslak.`);
+  console.log(`Editoryal veri doğrulandı: ${counts.PUBLISHED} yayımlanmış profil, ${guides.entries.length} rehber/yazı, ${counts.IN_REVIEW} kontrolde, ${counts.DRAFT} taslak.`);
 }

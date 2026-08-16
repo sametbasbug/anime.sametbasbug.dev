@@ -117,13 +117,13 @@ Hesapsız local-first kullanım aynen korunur.
 
 ## Editoryal içerik
 
-Özgün Türkçe içerikler katalogdan ayrı olarak `src/data/editorial.json` içinde tutulur; böylece katalog yenilemeleri editoryal metinleri değiştirmez. Her kayıt `DRAFT`, `IN_REVIEW` veya `PUBLISHED` durumundadır. Ürün yalnızca yayımlanmış kayıtları gösterir; kontroldeki ve taslak metinler halka açık sayfalara aktarılmaz.
+Özgün Türkçe profiller `src/data/editorial.json`, kalıcı rehberler ve editoryal yazılar `src/data/editorial-guides.json` içinde katalogdan ayrı tutulur; böylece katalog yenilemeleri editoryal metinleri değiştirmez. Profil kayıtları `DRAFT`, `IN_REVIEW` veya `PUBLISHED` durumundadır. Ürün yalnızca yayımlanmış, spoiler kontrolü tamamlanmış metinleri halka açık sayfalara aktarır.
 
 ```bash
 npm run content:check
 ```
 
-Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü, spoiler onayı, yinelenen uzun cümleler ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. Haftalık ana sayfa seçkilerinin yalnız yayımlanmış profillerden oluşmasını, tekrar etmemesini ve 20–30 profil hedefini de korur. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
+Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü, spoiler onayı, yinelenen uzun cümleler ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. Altı haftalık ana sayfa seçkisinin yalnız yayımlanmış 30–50 profilden oluşmasını ve tekrar etmemesini; `/rehberler` yüzeyindeki kalıcı rehberlerle yönetmen, stüdyo ve anlatı yazılarının içerik kapılarını da korur. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
 
 `npm run auth:check` (yine `npm run check` içinde) Orbit girişinin **dışarıyla
 eşleşmesi gereken** kısımlarını korur: sağlayıcı adının birebir `custom:orbit`
@@ -158,7 +158,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
 13. ~~İzleme günlüğü ve kişisel hafıza~~ — local-first kayıt, senkronizasyon, yedek v2 ve production kabulüyle tamamlandı
 14. ~~Akıllı kişisel keşif~~ — açıklanabilir öneriler ve production kabulüyle tamamlandı
-15. Editoryal derinlik — planlandı
+15. Editoryal derinlik — ilk yerel dilim hazır: 30 profil ve 7 rehber/yazı; 50 profil hedefi sürüyor
 
 ## Sahiplik
 

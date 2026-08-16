@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "animeye-nereden-baslamali",
+      "kind": "GUIDE",
+      "focus": "BAŞLANGIÇ REHBERİ",
+      "title": "Animeye nereden başlamalı? Beş ayrı kapı",
+      "description": "Tek bir doğru başlangıç yok. Gerilimden sıcak komediye, spordan fantastiğe beş farklı ilk rota.",
+      "intro": "Anime bir tür değil, farklı anlatım geleneklerini aynı çatı altında buluşturan geniş bir alan. Bu yüzden ilk seçimde en popüler başlığı değil, zaten sevdiğin hikâye duygusuna en yakın kapıyı bulmak daha iyi çalışır.",
+      "sections": [
+        {"heading": "Önce tanıdık duyguyu seç", "body": "Suç gerilimi seviyorsan Death Note, sıcak aile komedisi arıyorsan Spy x Family iyi bir eşik olur. Romantik film, takım sporu ve sakin fantastik arayanlar için diğer duraklar aynı alanın ne kadar farklı ritimlere sahip olduğunu gösterir."},
+        {"heading": "Bir yapım bütün alanı temsil etmez", "body": "İlk seçimin sana uymaması animeyle aranda sorun olduğu anlamına gelmez. Formatı, dönemi ve hedeflediği izleyici değiştir; kısa bir filmden uzun seriye geçmek bile deneyimi baştan kurabilir."}
+      ],
+      "selections": [
+        {"animeId": "1535", "note": "Zekâ düellosu ve suç gerilimi isteyenlere doğrudan bir giriş."},
+        {"animeId": "50265", "note": "Aile komedisi, casusluk ve kolay bağ kurulan karakterler."},
+        {"animeId": "32281", "note": "Tek oturuşta romantik fantastik ve güçlü görsel anlatım."},
+        {"animeId": "20583", "note": "Takım ruhunu kuralları bilmeyen izleyiciye bile hissettiren spor rotası."},
+        {"animeId": "52991", "note": "Sakin tempo, fantastik yolculuk ve zaman üzerine düşünmek isteyenlere."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "id": "kisa-seriler-guclu-hikayeler",
+      "kind": "GUIDE",
+      "focus": "KISA SERİLER",
+      "title": "Az bölümde güçlü bir iz bırakan seriler",
+      "description": "Yüzlerce bölüme girmeden tamamlanabilen veya ilk sezonunda belirgin bir bütünlük kuran beş kısa rota.",
+      "intro": "Kısa seri yalnız vakit tasarrufu değildir. Dar bölüm sayısı, yan yolları azaltıp anlatının temel fikrini daha görünür kılabilir. Buradaki seçimler farklı türlerde yoğun ve kontrollü bir ilk durak sunuyor.",
+      "sections": [
+        {"heading": "Süre değil yoğunluk", "body": "Odd Taxi konuşmalarını, Pluto soruşturmasını, Cyberpunk ise hızını sıkı bir yapıya dönüştürür. Dandadan ve Yuru Camp ilk sezonlarında bambaşka enerjilerle olsa da kendi ritimlerini açıkça kurar."},
+        {"heading": "Devam etmek zorunlu değil", "body": "Bazı evrenlerin sonraki sezonları bulunsa bile ilk seçimi küçük bir sözleşme gibi düşün: Bu rota sana uyarsa devam edersin. İzleme listesi borç defteri değildir."}
+      ],
+      "selections": [
+        {"animeId": "46102", "note": "On üç bölümde düğümlenen diyalog ağırlıklı şehir gizemi."},
+        {"animeId": "35737", "note": "Sekiz uzun bölümde tamamlanan yetişkin bilim kurgu polisiyesi."},
+        {"animeId": "42310", "note": "On bölümde yükselip kırılan hızlı ve sert bir cyberpunk trajedisi."},
+        {"animeId": "57334", "note": "On iki bölümde korku, komedi, romantizm ve aksiyon arasında koşar."},
+        {"animeId": "34798", "note": "On iki bölümlük sakin bir kamp ve arkadaşlık molası."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "id": "tek-oturumluk-anime-filmleri",
+      "kind": "GUIDE",
+      "focus": "FİLM REHBERİ",
+      "title": "Tek oturumda tamamlanan beş anime filmi",
+      "description": "Romantizmden büyüme hikâyesine, farklı duygulara açılan ve önceden seri bilgisi istemeyen filmler.",
+      "intro": "Bir akşamda tamamlanan film, animeye girişin en düşük eşikli yollarından biri. Seçkideki üç yapım bağımsız izlenebilir; seri devamı olan iki alternatif ise tanıdık dünyalara dönmek isteyenler için ayrı bir durak sunar.",
+      "sections": [
+        {"heading": "Bağımsız başlangıçlar", "body": "Kimi no Na wa., Ruhların Kaçışı ve Look Back başka bölüm gerektirmeden kendi duygusal yayını tamamlar. Biri romantik fantastik, biri masalsı büyüme, diğeri yaratıcı ortaklık üzerinden ilerler."},
+        {"heading": "Tanıdık dünyalara dönüş", "body": "Violet Evergarden ve Chainsaw Man filmleri güçlü sinema işçiliği taşır fakat karakter bağlarının tam karşılığı için önce ana serileri izlemek daha doğru olur. Rehber bu ayrımı görünür tutar."}
+      ],
+      "selections": [
+        {"animeId": "32281", "note": "Bağımsız izlenebilen romantik fantastik bir zaman ve mesafe hikâyesi."},
+        {"animeId": "199", "note": "Her yaşta başka ayrıntı sunan masalsı bir büyüme yolculuğu."},
+        {"animeId": "58125", "note": "Çizim, rekabet ve ortaklık üzerine kısa ama yoğun bir film."},
+        {"animeId": "37987", "note": "Ana seriden sonra izlenmesi gereken duygusal bir devam filmi."},
+        {"animeId": "57555", "note": "Chainsaw Man dizisinin ardından gelen yüksek tempolu sinema bölümü."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "id": "iyilesmek-ve-devam-etmek",
+      "kind": "GUIDE",
+      "focus": "TEMA REHBERİ",
+      "title": "İyileşmek, yas tutmak ve yeniden devam etmek",
+      "description": "Acıyı hızlı çözüme çevirmeyen; zaman, emek ve küçük bağlarla ilerleyen beş şefkatli hikâye.",
+      "intro": "İyileşme anlatıları en güçlü hâlini karakteri eski durumuna döndürmeye çalışmadığında bulur. Bu seçki kaybın kalabildiğini, buna rağmen yeni bir gündelik hayat ve yeni ilişkiler kurulabildiğini anlatan yapımları bir araya getiriyor.",
+      "sections": [
+        {"heading": "Büyük sözlerden küçük rutinlere", "body": "3-gatsu no Lion'da sıcak bir yemek, Yuru Camp'ta hazırlanmış bir çadır, Frieren'de eski bir yolun yeniden yürünmesi dönüşümün taşıyıcısıdır. İyileşme burada tek sahnelik karar değil, tekrar edilen bir pratiktir."},
+        {"heading": "Duygu sömürüsüne karşı mesafe", "body": "Look Back ve Violet Evergarden Movie yoğun duygular taşır. İki film de kaybı yalnız gözyaşı üretmek için değil, yaratmanın ve iletişim kurmanın neden hâlâ önemli olduğunu düşünmek için kullanır."}
+      ],
+      "selections": [
+        {"animeId": "52991", "note": "Geç kalmış merakın yeni ilişkilere dönüşebileceğini gösterir."},
+        {"animeId": "31646", "note": "Ruh sağlığını gündelik bağlar ve uzun zaman içinde ele alır."},
+        {"animeId": "34798", "note": "Dinlenmenin ve kişisel alanın değerini küçük gezilerle kurar."},
+        {"animeId": "58125", "note": "Yaratıcı emeğin kayıp karşısında nasıl anlam taşıdığını düşünür."},
+        {"animeId": "37987", "note": "Yasın ardından sözcüklerle yeniden bağ kurmaya odaklanır."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "id": "makoto-shinkai-mesafe-ve-gokyuzu",
+      "kind": "ESSAY",
+      "focus": "YÖNETMEN ODAĞI",
+      "title": "Makoto Shinkai'de mesafe, gökyüzü ve yetişememek",
+      "description": "İki popüler film üzerinden Shinkai'nin coğrafi uzaklığı duygusal bir engel ve görsel ritim olarak kullanması.",
+      "intro": "Makoto Shinkai filmlerinde gökyüzü yalnız güzel bir arka plan değildir. Tren hatları, şehir kalabalığı, kapılar ve ufuk çizgileri birbirine ulaşmak isteyen karakterlerin önüne hem gerçek hem duygusal mesafeler koyar.",
+      "sections": [
+        {"heading": "Manzaranın dramatik görevi", "body": "Kimi no Na wa. şehir ile kırsalı farklı hızlarda yaşatırken Suzume no Tojimari terk edilmiş mekânları ülke boyunca birbirine bağlar. Geniş manzara, karakterlerin kişisel duygusunu küçültmek yerine onun ne kadar yol katetmesi gerektiğini hissettirir."},
+        {"heading": "Hareket hâlindeki bağlar", "body": "Shinkai'nin karakterleri çoğu zaman trende, otobüste veya bir kapının eşiğindedir. İlişki sabit bir güven alanı değil, hatırlamak ve yetişmek için sürdürülen fiziksel bir harekettir; filmlerin popüler romantizmi bu huzursuzluktan beslenir."}
+      ],
+      "selections": [
+        {"animeId": "32281", "note": "Mesafe ve hafızayı beden değişimiyle birleştiren en erişilebilir başlangıç."},
+        {"animeId": "50594", "note": "Yas ile mekân hafızasını ülke boyunca açılan kapılar üzerinden izler."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "id": "kyoto-animation-hareketin-inceligi",
+      "kind": "ESSAY",
+      "focus": "STÜDYO ODAĞI",
+      "title": "Kyoto Animation ve küçük hareketlerin taşıdığı duygu",
+      "description": "Stüdyonun oyunculuk animasyonu, gündelik mekân ve ekip emeğiyle karakter duygusunu görünür kılma biçimi.",
+      "intro": "Kyoto Animation denince yalnız yüksek çizim kalitesi demek eksik kalır. Stüdyonun ayırt edici gücü, karakterin söylemediği şeyi parmak hareketi, bakış süresi, yürüyüş ritmi ve yaşadığı mekânın ayrıntılarıyla kurabilmesidir.",
+      "sections": [
+        {"heading": "Oyunculuk olarak animasyon", "body": "Violet Evergarden Movie'nin kontrollü jestleri ile Hibike! Euphonium 3'ün prova odasındaki bakışları farklı dünyalarda aynı yaklaşımı taşır: Duygu, yalnız yüz yakın planında değil bütün bedenin mekânla ilişkisinde görünür."},
+        {"heading": "Mekânın sürekliliği", "body": "Okul koridoru, ev mutfağı veya şehir sokağı tekrar tekrar kullanıldığında karakter değişiminin ölçüsüne dönüşür. Bu süreklilik gösterişli kesitlerden çok ekip hâlinde gözlenen gündelik hayatın ürünüdür."}
+      ],
+      "selections": [
+        {"animeId": "37987", "note": "Jest ve mektup dili üzerinden duygusal kapanış kuran sinema işi."},
+        {"animeId": "39894", "note": "Topluluk içindeki küçük gerilimleri prova ve performans ayrıntılarıyla taşır."},
+        {"animeId": "59898", "note": "Gündelik şehir hareketini fiziksel komedi ve yoğun arka planlarla canlandırır."},
+        {"animeId": "59897", "note": "Tanıdık karakter oyunculuğunu daha geniş sinema kadrajına taşır."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "id": "bulunmus-aileler-ayni-yola-cikmak",
+      "kind": "ESSAY",
+      "focus": "ANLATI TEMASI",
+      "title": "Bulunmuş aileler: Aynı evden önce aynı yola çıkmak",
+      "description": "Kan bağından çok ortak emek, güven ve birbirinin hayaline alan açmakla kurulan anime aileleri.",
+      "intro": "Bulunmuş aile anlatısı karakterleri bir masanın çevresine toplamakla tamamlanmaz. İyi örnekler, birlikte kalmanın sürekli yeniden seçilen bir sorumluluk olduğunu; yakınlığın ortak zafer kadar anlaşmazlık ve bakım emeğiyle de kurulduğunu gösterir.",
+      "sections": [
+        {"heading": "Rol yaparken gerçek olmak", "body": "Spy x Family'nin üyeleri başta görevleri için aile rolü oynar. Dungeon Meshi'nin ekibi ise zorunlu yol arkadaşlığını yemek ve risk paylaşımıyla dönüştürür. İki yapıda da yakınlık ilan edilmez; tekrar edilen bakım davranışlarında birikir."},
+        {"heading": "Birbirinin hayaline yer açmak", "body": "One Piece ve Cowboy Bebop aynı gemi fikrini çok farklı tonlarda kullanır. Biri ortak yolculuğu iyimser bir özgürlük vaadine, diğeri geçmişlerinden kaçan yetişkinlerin kırılgan sığınağına dönüştürür."}
+      ],
+      "selections": [
+        {"animeId": "50265", "note": "Sahte bir aile düzeninde gerçek bakımın yavaşça oluşması."},
+        {"animeId": "52701", "note": "Yemek, risk ve anlaşmazlık üzerinden ekip güveni kurulması."},
+        {"animeId": "21", "note": "Her üyenin ayrı hayaline yer açan uzun soluklu tayfa yolculuğu."},
+        {"animeId": "1", "note": "Geçmişlerinden kaçan yetişkinlerin geçici ama anlamlı uzay evi."},
+        {"animeId": "40834", "note": "Yalnız bir prens ile gölgeden gelen dostunun karşılıklı güveni."}
+      ],
+      "spoilerSafe": true,
+      "publishedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    }
+  ]
+}

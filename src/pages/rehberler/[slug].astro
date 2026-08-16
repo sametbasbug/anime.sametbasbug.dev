@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import AnimeArtwork from "../../components/AnimeArtwork";
+import DataAttribution from "../../components/DataAttribution.astro";
+import { catalogue, displayTags, typeLabels, visualFor } from "../../lib/catalogue";
+import { editorialGuideKindLabels, editorialGuides } from "../../lib/editorial-guides";
+
+export function getStaticPaths() {
+  return editorialGuides.map((guide) => ({ params: { slug: guide.id }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const catalogueById = new Map(catalogue.map((anime) => [anime.id, anime]));
+const selections = guide.selections.flatMap((selection) => {
+  const anime = catalogueById.get(selection.animeId);
+  return anime ? [{ anime, note: selection.note }] : [];
+});
+const related = editorialGuides.filter((entry) => entry.id !== guide.id).slice(0, 3);
+---
+
+<BaseLayout title={`${guide.title} — Equinox Rota`} description={guide.description}>
+  <SiteHeader active="guides" />
+  <main class="editorial-article-page">
+    <header class="editorial-article-hero">
+      <p class="eyebrow">{guide.focus} · {editorialGuideKindLabels[guide.kind].toLocaleUpperCase("tr-TR")}</p>
+      <h1>{guide.title}</h1>
+      <p>{guide.intro}</p>
+      <div><span>✓ Spoiler kontrollü</span><span>Son kontrol · {guide.reviewedAt.split("-").reverse().join(".")}</span><span>{selections.length} durak</span></div>
+    </header>
+
+    <article class="editorial-article-copy">
+      {guide.sections.map((section, index) => <section>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <div><h2>{section.heading}</h2><p>{section.body}</p></div>
+      </section>)}
+    </article>
+
+    <section class="editorial-article-picks" aria-labelledby="article-picks-title">
+      <header><p>REHBERİN DURAKLARI</p><h2 id="article-picks-title">Fikri ekranda görmek için.</h2></header>
+      <div>
+        {selections.map(({ anime, note }, index) => {
+          const visual = visualFor(anime.id);
+          return <article>
+            <a class="editorial-article-pick__art" href={`/anime/${anime.slug}`}><AnimeArtwork {...visual} posterPath={anime.poster?.path} title={anime.title} compact /></a>
+            <div><p>{String(index + 1).padStart(2, "0")} · {typeLabels[anime.type] ?? anime.type}</p><h3><a href={`/anime/${anime.slug}`}>{anime.title}</a></h3><span>{note}</span><small>{displayTags(anime.tags, 2).join(" · ")}</small><a href={`/anime/${anime.slug}`}>Anime detayına git ↗</a></div>
+          </article>;
+        })}
+      </div>
+    </section>
+
+    <nav class="editorial-related" aria-label="Diğer editoryal rotalar">
+      <p>ROTAYI SÜRDÜR</p>
+      <div>{related.map((entry) => <a href={`/rehberler/${entry.id}`}><span>{entry.focus}</span><strong>{entry.title}</strong><b>↗</b></a>)}</div>
+    </nav>
+    <DataAttribution />
+  </main>
+</BaseLayout>

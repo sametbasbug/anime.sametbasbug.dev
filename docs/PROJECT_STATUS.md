@@ -93,6 +93,15 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
 
+## 17 Ağustos 2026 — 15. aşama ilk yerel dilimi
+
+- Yayımlanmış, spoiler kontrollü özgün Türkçe profil sayısı 20'den 30'a çıktı. One Piece taslağı sonuçlandırıldı; Naruto, Bakemonogatari, 3-gatsu no Lion, Yuru Camp△, Pluto, Spy x Family, [Oshi no Ko], Look Back ve Chi. Chikyuu no Undou ni Tsuite eklendi.
+- Ana sayfa rotasyonu altı seçkiye ve seçki başına beş profile genişledi. Her yayımlanmış profil rotasyonda tam bir kez görünür.
+- Yeni `/rehberler` indeksi ile yedi statik detay sayfası eklendi: yeni başlayanlar, kısa seriler, filmler ve iyileşme teması için dört kalıcı rehber; Makoto Shinkai, Kyoto Animation ve bulunmuş aile anlatısı için üç odak yazısı.
+- Editoryal doğrulama; profil sayısı ve alanlarına ek olarak rehber/yazı türünü, odak çeşitliliğini, metin sınırlarını, katalog bağlarını, yinelenen seçimleri ve spoiler/kontrol tarihlerini de korur.
+- Tam `npm run build` 77 Astro dosyasında hata/uyarı vermedi ve 1.141 statik sayfa üretti. `/rehberler`, başlangıç rehberi, ana sayfa rotasyonu ve One Piece profili 1.920×950 ile 390×844 görünümde incelendi; yatay taşma, kırık poster veya uygulama konsol hatası yoktur.
+- **Devam ediyor:** 50 güçlü profil hedefi için kalan 20 profil, push/deploy ve production kabulü.
+
 ## 17 Ağustos 2026 — 14. aşama production teslimi
 
 - `/oneriler` sayfası kişisel liste, puan, izleme durumu ve günlük geçmişini 900 yapımlık statik katalogla yalnız tarayıcıda eşleştirir. Tamamlanan, bırakılan, hâlen izlenen ve henüz yayımlanmamış yapımlar yeni öneri havuzuna alınmaz; planlanan raf adayları açık etiketiyle öncelendirilebilir.

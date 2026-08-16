@@ -37,7 +37,7 @@ export type HomepageEditorialCollection = {
   label: string;
   title: string;
   description: string;
-  animeIds: [string, string, string, string];
+  animeIds: [string, string, string, string, string];
 };
 
 const entries = rawEditorial.entries as EditorialEntry[];
