@@ -800,6 +800,8 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
 
 @media (max-width: 760px) {
   body.design-otaku { padding-bottom: 76px; }
+  body.design-otaku .hero.home-hero,
+  body.design-otaku .manifesto.fan-space { overflow-x: clip; }
   body.design-otaku .site-header { background: rgba(255,249,244,.92); }
   body.design-otaku .brand .rota-mark { width: 38px; height: 38px; }
   body.design-otaku .mobile-nav {
