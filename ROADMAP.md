@@ -157,12 +157,14 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Kullanıcı neyi, hangi gün ve hangi bölüm aralığında izlediğini kaydedebilir; kayıtlar çevrimdışı cihaz yazımını kaybetmeden hesapla eşitlenir ve tam yedekle taşınır.
 
-### 14. Akıllı kişisel keşif — planlandı
+### 14. Akıllı kişisel keşif — devam ediyor
 
-- [ ] Kişisel puan, tür, stüdyo, format ve izleme geçmişinden açıklanabilir öneriler üret.
-- [ ] “Kısa bir şey”, “film”, “tek sezon” ve ruh hâli odaklı seçim yolları ekle.
-- [ ] Uzun süredir bekleyen veya yarım kalan yapımları baskıcı olmayan biçimde hatırlat.
-- [ ] “Bu akşam ne izlesem?” seçicisini katalog ve kişisel arşiv üzerinde çalıştır.
+- [x] Kişisel puan, tür, stüdyo, format ve izleme geçmişinden açıklanabilir öneriler üret.
+- [x] “Kısa bir şey”, “film”, “tek sezon” ve ruh hâli odaklı seçim yolları ekle.
+- [x] Uzun süredir bekleyen veya yarım kalan yapımları baskıcı olmayan biçimde hatırlat.
+- [x] “Bu akşam ne izlesem?” seçicisini katalog ve kişisel arşiv üzerinde çalıştır.
+- [x] Soğuk başlangıç, aday eleme, gerekçe, seçim yolları ve hatırlatma dilini otomatik kontrol hattına ekle.
+- [ ] Yerel teslimi yayımla; gerçek production arşiviyle masaüstü/mobil kabul turunu tamamla.
 
 **Ürün sınırı:** Öneriler gizli bir puan veya dış profil çıkarımı gibi davranmaz; kullanıcıya neden gösterildiğini açıkça anlatır ve harici API gerektirmeden çalışır.
 
@@ -177,7 +179,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–13. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sıradaki aktif ürün işi 14. aşamadaki açıklanabilir kişisel keşiftir; ardından editoryal derinlik gelir. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
+İlk dört aşama ile 6–13. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. 14. aşamadaki açıklanabilir kişisel keşfin yerel teslimi hazırdır; yayın ve production kabulü bekler. Ardından editoryal derinlik gelir. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
 
 9. aşama tamamlandı: yüksek entropili bağlantı kodu, dar paylaşım RPC'si, alan bazlı puan/not izinleri, hesap kontrolleri ve `/paylas` salt-okunur görünümü production altyapısına taşındı. Gerçek Nyx hesabıyla `PRIVATE → UNLISTED`, bağlantıyı açma, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma akışları geçti. Son durumda test hesabının paylaşımı kapalıdır; otomatik güvenlik kontrolleri ile 1.920×950 ve 390×844 tarayıcı doğrulaması temizdir.
 

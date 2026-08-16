@@ -9,7 +9,7 @@
 
 [![Equinox Rota — Türkçe anime keşif ve kişisel arşiv](./public/social/equinox-rota-share.png)](https://anime.sametbasbug.dev/)
 
-Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 900 yapımlık aranabilir katalog; kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
+Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 900 yapımlık aranabilir katalog; açıklanabilir kişisel öneriler, kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
 
 **Canlı soft alpha:** [anime.sametbasbug.dev](https://anime.sametbasbug.dev/)
 
@@ -26,6 +26,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Türkçe tür, format, yayın durumu ve sıralama filtreleri
 - 20 Türkçe tür keşif sayfası ve normalize edilmiş stüdyo sayfaları
 - Ortak tür, stüdyo, etiket, yıl ve formata göre üretilen benzer yapım önerileri
+- Puan, tür, stüdyo, format, liste ve günlük geçmişini yalnız tarayıcıda eşleştiren açıklanabilir `/oneriler` seçicisi; kısa, film, tek sezon ve ruh hâli yolları
 - Yayımlanmamış yapımları geriye alan, sonuç niteliği iyileştirilmiş arama sıralaması
 - Statik üretilmiş 900 anime detay sayfası
 - Dört durumlu, tarayıcıda yerel olarak saklanan kişisel anime listesi
@@ -156,7 +157,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 11. ~~Yedekleme ve taşınabilirlik~~ — sürümlü JSON/CSV, doğrulamalı geri yükleme ve canlı kabulüyle tamamlandı
 12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
 13. ~~İzleme günlüğü ve kişisel hafıza~~ — local-first kayıt, senkronizasyon, yedek v2 ve production kabulüyle tamamlandı
-14. Akıllı kişisel keşif — planlandı
+14. Akıllı kişisel keşif — yerel teslim hazır; production kabulü bekliyor
 15. Editoryal derinlik — planlandı
 
 ## Sahiplik

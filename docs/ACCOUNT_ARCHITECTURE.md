@@ -99,6 +99,16 @@ Migration dosyaları:
 - Migration production'a uygulanmıştır. Canlı şemada RLS, dört sahip politikası, iki trigger, kapalı anonim tablo erişimi ve tarayıcı rollerine kapalı trigger fonksiyonu doğrulanmıştır.
 - Gerçek Nyx hesabında günlük yazma, otomatik liste ilerlemesi, boş yerel günlük durumundan bulut indirme ve tombstone eşitlemesi geçti. Kabul kayıtları kesin kimlikleriyle temizlendi; kullanıcının önceki liste verisi korundu.
 
+## Kişisel keşif ve veri sınırı
+
+14. aşamadaki öneri motoru için yeni tablo, RPC, profil sütunu veya harici öneri servisi yoktur.
+
+- `/oneriler`, mevcut `rota.personal-list.v1` ve `rota.watch-journal.v1` yerel görünümlerini statik katalogla tarayıcı içinde eşleştirir.
+- Tür, stüdyo ve format ağırlıkları yalnız sayfa açıkken bellekte türetilir; ayrı bir kullanıcı profili veya görünür/gizli uyum yüzdesi saklanmaz.
+- Öneri filtreleri kalıcı tercih değildir. Listeye ekleme yalnız kullanıcının açık düğme eylemiyle mevcut local-first kişisel liste akışını kullanır.
+- Öneri sinyalleri, sonuçları ve hatırlatmalar paylaşılabilir profil RPC'sine, topluluk verisine veya analitik isteğine dahil edilmez.
+- Kişisel keşif yeni server-side veri işlemediği için production migration gerektirmez.
+
 ## Orbit ile giriş
 
 - Supabase sağlayıcısı: **Custom / OIDC**, tanımlayıcı `custom:orbit`, görünen ad

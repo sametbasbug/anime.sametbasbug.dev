@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import PersonalDiscoveryExperience from "../components/PersonalDiscoveryExperience";
+import RotaCompanion from "../components/RotaCompanion";
+import DataAttribution from "../components/DataAttribution.astro";
+import { catalogueMeta, posterMeta } from "../lib/catalogue";
+---
+
+<BaseLayout title="Bu akşam ne izlesem? — Equinox Rota" description="Kişisel arşivin ve izleme geçmişinden açıklanabilir anime önerileri al; kısa, film, tek sezon veya ruh hâline göre seç.">
+  <SiteHeader active="picker" />
+  <main class="personal-discovery-page">
+    <section class="personal-discovery-hero">
+      <div><p class="eyebrow">KİŞİSEL KEŞİF · AÇIK GEREKÇELER</p><h1>Bu akşam<br /><em>ne izlesem?</em></h1></div>
+      <p>Rafın, puanların ve izleme günlüğün küçük ipuçları verir. Rota bunları katalogla eşleştirir; seçimin nedenini saklamaz.</p>
+      <RotaCompanion scene="catalogue" mood="curious" className="rota-companion--personal-discovery" client:load />
+    </section>
+    <section class="personal-discovery-experience"><PersonalDiscoveryExperience dataVersion={`${catalogueMeta.generatedAt}-${posterMeta.generatedAt}`} client:load /></section>
+    <DataAttribution />
+  </main>
+</BaseLayout>

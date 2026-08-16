@@ -89,9 +89,19 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-13. aşama production kabulüyle tamamlandı. Aktif ürün işi **14. aşama: Akıllı kişisel keşif**tir.
+13. aşama production kabulüyle tamamlandı. **14. aşama: Akıllı kişisel keşif** yerelde hazırdır; push/deploy ve production kabulü bekler.
 
-Ardından **14. aşama: Akıllı kişisel keşif** ve **15. aşama: Editoryal derinlik** planlanmıştır. Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+14. aşamanın production kabulünden sonra **15. aşama: Editoryal derinlik** gelir. Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 17 Ağustos 2026 — 14. aşama yerel teslimi
+
+- `/oneriler` sayfası kişisel liste, puan, izleme durumu ve günlük geçmişini 900 yapımlık statik katalogla yalnız tarayıcıda eşleştirir. Tamamlanan, bırakılan, hâlen izlenen ve henüz yayımlanmamış yapımlar yeni öneri havuzuna alınmaz; planlanan raf adayları açık etiketiyle öncelendirilebilir.
+- Her öneri tür, stüdyo, format, plan rafı veya katalog başlangıcı gerekçelerinden en az birini gösterir. Kullanıcıya gizli uyum yüzdesi sunulmaz; harici profil veya öneri servisi kullanılmaz.
+- “Kısa bir şey”, film, tamamlanmış 6–26 bölümlük tek sezon ve sakin/enerjik/duygusal/gizemli ruh hâli yolları eklendi. “Başka seç” aynı yol içindeki adayı değiştirir; katalog sonucu tek hareketle planlananlara eklenebilir.
+- Uzun süredir bekleyen planlar ile ara verilen aktif yapımlar yalnız eşik aşıldığında, “zorunda değilsin” ve “acelesi yok” diliyle hatırlatılır. Bu yüzey yeni veri saklamaz ve mevcut paylaşılabilir profile katılmaz.
+- `discovery:check` kişisel sinyalleri, aday dışlamalarını, sekiz seçim yolunu, plan rafı önceliğini, gerekçe zorunluluğunu ve baskıcı olmayan hatırlatma metnini doğrular.
+- Yerel `/oneriler` 1.920 px masaüstü ve 390×844 mobil görünümde incelendi; yatay taşma ve konsol hatası yoktur. Film yolu yalnız film döndürdü, “Başka seç” adayı değiştirdi.
+- **Henüz yapılmadı:** push/deploy ve gerçek production arşiviyle canlı kabul turu.
 
 ## 17 Ağustos 2026 — 13. aşama production teslimi
 

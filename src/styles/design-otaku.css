@@ -945,3 +945,28 @@ body.design-otaku .moderation-notice,
 body.design-otaku .moderation-empty { border-radius: 18px; background: rgba(255,255,255,.72); }
 body.design-otaku .community-notice--warning { border-color: var(--coral); background: #fff2f5; }
 body.design-otaku .moderation-list footer button { border-radius: 8px; }
+
+body.design-otaku .personal-discovery__signals,
+body.design-otaku .personal-pick,
+body.design-otaku .personal-alternatives article,
+body.design-otaku .gentle-reminders article { border-radius: 20px; box-shadow: var(--shadow); }
+body.design-otaku .personal-discovery__signals { background: linear-gradient(120deg, rgba(255,255,255,.92), rgba(245,239,251,.9)); }
+body.design-otaku .personal-discovery__signals li { border-radius: 13px 17px 13px 18px; }
+body.design-otaku .personal-discovery__paths button { border-radius: 14px 18px 14px 20px; background: rgba(255,255,255,.7); }
+body.design-otaku .personal-discovery__paths button:nth-child(4n+2) { background: rgba(255,209,220,.35); }
+body.design-otaku .personal-discovery__paths button:nth-child(4n+3) { background: rgba(142,215,239,.22); }
+body.design-otaku .personal-discovery__paths button.is-active { border-color: var(--ink); background: var(--ink); box-shadow: 4px 4px 0 var(--sakura); transform: translate(-2px, -2px); }
+body.design-otaku .personal-pick { overflow: hidden; border: 2px solid var(--ink); box-shadow: 7px 7px 0 var(--sakura); }
+body.design-otaku .personal-pick__art > span { border: 2px solid var(--ink); border-radius: 8px; box-shadow: 3px 3px 0 var(--ink); transform: rotate(-2deg); }
+body.design-otaku .personal-pick__actions a,
+body.design-otaku .personal-pick__actions button { border-radius: 10px; }
+body.design-otaku .personal-pick__actions a { box-shadow: 3px 3px 0 var(--lavender); }
+body.design-otaku .personal-alternatives article:nth-child(3n+2) { transform: rotate(.35deg); }
+body.design-otaku .personal-alternatives article:nth-child(3n) { transform: rotate(-.35deg); }
+body.design-otaku .gentle-reminders article { background: linear-gradient(145deg, #fff, rgba(255,232,117,.18)); }
+body.design-otaku .gentle-reminders__empty { border-radius: 16px; background: rgba(255,255,255,.55); }
+
+@media (max-width: 760px) {
+  body.design-otaku .personal-pick { box-shadow: 4px 4px 0 var(--sakura); }
+  body.design-otaku .personal-alternatives article:nth-child(n) { transform: none; }
+}
