@@ -157,7 +157,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 11. ~~Yedekleme ve taşınabilirlik~~ — sürümlü JSON/CSV, doğrulamalı geri yükleme ve canlı kabulüyle tamamlandı
 12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
 13. ~~İzleme günlüğü ve kişisel hafıza~~ — local-first kayıt, senkronizasyon, yedek v2 ve production kabulüyle tamamlandı
-14. Akıllı kişisel keşif — yerel teslim hazır; production kabulü bekliyor
+14. ~~Akıllı kişisel keşif~~ — açıklanabilir öneriler ve production kabulüyle tamamlandı
 15. Editoryal derinlik — planlandı
 
 ## Sahiplik
