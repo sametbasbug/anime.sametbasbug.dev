@@ -98,7 +98,8 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 - Medalist, Girls Band Cry, Blue Giant, Kimi wa Houkago Insomnia, Ao no Hako, Takopii no Genzai, Tengoku Daimakyou, Summertime Render, Vivy: Fluorite Eye's Song, Fumetsu no Anata e, Kaoru Hana wa Rin to Saku, Horimiya, Josee to Tora to Sakana-tachi, Watashi no Shiawase na Kekkon, Suzume no Tojimari, Dorohedoro, Honzuki no Gekokujou, Grand Blue, The First Slam Dunk ve Kidou Senshi Gundam: Tekketsu no Orphans için özgün, spoiler kontrollü Türkçe profiller eklendi.
 - Yayımlanmış profil sayısı 30'dan 50'ye, ana sayfa rotasyonu altıdan on adet beşli seçkiye çıktı. Her profil rotasyonda tam bir kez görünür; içerik kontrolü artık yayımlanmış profil sayısını tam 50'de tutar.
 - Tam `npm run build` 77 Astro dosyasında hata, uyarı veya ipucu vermedi; 1.141 statik sayfa üretildi. Ana sayfa 1.920×950 ve 390×844 görünümde incelendi; on seçki düğmesi, beş kart, taşmasız yerleşim ve yüklenmiş posterler doğrulandı. Medalist detayında üç editoryal gerekçe ve 390 px taşmasız yerleşim ayrıca kontrol edildi.
-- Production commit ve GitHub Actions kimlikleri canlı kabul tamamlandığında bu kayda eklenecek.
+- `ce388e8` main dalına push edildi. GitHub Pages `31981670683`, CI `31981670681` ve CodeQL `31981670694` başarıyla tamamlandı.
+- Canlı ana sayfada 10. seçki elle açıldı; beş doğru kart, yüklenmiş posterler ve 1.920×950 ile 390×844 görünümde sıfır yatay taşma doğrulandı. Medalist profili üç editoryal gerekçe, HTTP 200, 390 px taşmasız görünüm ve hatasız uygulama konsoluyla geçti. 15. aşama tamamlandı.
 
 ## 17 Ağustos 2026 — 15. aşama ilk production dilimi
 
