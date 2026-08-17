@@ -194,9 +194,48 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Kişisel sınır:** Koleksiyonlar izleme durumunun yerine geçmez ve animeyi otomatik olarak kişisel listeye eklemez. Ad, açıklama ve koleksiyon üyeliği kullanıcıya aittir; paylaşım açıkça etkinleştirilmedikçe özel kalır.
 
+### 17. Sezon panosu — sıradaki
+
+- [ ] Yeni başlayan, devam eden ve yaklaşan animeleri tek bir sezon görünümünde topla.
+- [ ] Sezon, yıl, yayın durumu, format ve tür filtrelerini Türkçe ürün diliyle sun.
+- [ ] Kişisel listedeki `Planlıyorum` ve `İzliyorum` kayıtlarını sezon kataloğuyla birleştir; kullanıcının kendi izleme planını öne çıkar.
+- [ ] Anime detayına, kişisel listeye ve uygun editoryal profile doğrudan geçişler ekle.
+- [ ] Katalog sürümü ile veri tazeliğini görünür kıl; kesin yayın saati veya bildirim sözü verme.
+- [ ] İzinli mevcut katalog verisiyle çalış; harici API, scraping veya arka planda yayın takibi ekleme.
+- [ ] Sezon sınıflandırması, filtreler, kişisel durum eşleşmesi ve boş durumları otomatik kontrollerle koru.
+- [ ] Masaüstü/mobil yerel kabulü tamamla; yayın için ayrıca production kabulü yap.
+
+**Ürün sınırı:** Sezon panosu bir yayın takvimi veya bölüm bildirimi servisi değildir. Kaynağın doğrulayabildiği sezon/yıl ve yayın durumu verisini kişisel planla birleştirir; veri belirsizliğini kesin bilgi gibi sunmaz.
+
+**Tamamlanma ölçütü:** Kullanıcı güncel ve yaklaşan sezonları tek ekranda gezebilir, kişisel planındakileri ayırt edebilir ve seçtiği yapıma liste ya da detay akışından devam edebilir.
+
+### 18. Rota yıllığı — planlandı
+
+- [ ] Günlük ve kişisel arşivden aylık/yıllık izleme özeti üret.
+- [ ] İzlenen anime, bölüm, yaklaşık süre, tamamlanan yapım ve aktif gün sayılarını dönem bazında göster.
+- [ ] En çok izlenen türleri, stüdyoları, en yüksek puan verilen yapımları ve kişisel dönüm noktalarını öne çıkar.
+- [ ] Veri azlığında uydurma içgörü üretmeyen, sakin ve açıklanabilir boş/erken dönem durumları hazırla.
+- [ ] Özetin cihazda çalışmasını sağla; hesaplı kullanımda mevcut local-first senkronize arşivden türet.
+- [ ] Paylaşılabilir yıllık kartı ayrı, varsayılanı kapalı gizlilik kontrolüyle sun; kişisel notları ve özel kimlik alanlarını hiçbir zaman karta taşıma.
+- [ ] Dönem sınırları, zaman dilimi, istatistik tutarlılığı, gizlilik ve kart içeriğini otomatik kontrollerle koru.
+- [ ] Masaüstü/mobil görünüm ile paylaşım kartını görsel kabul turundan geçir.
+
+**Gizlilik sınırı:** Yıllık özet varsayılan olarak özeldir. Paylaşım yalnız kullanıcının açık eylemiyle üretilir; kişisel notlar, hesap kimlikleri, tombstone ve senkronizasyon metadatası paylaşılmaz.
+
+**Tamamlanma ölçütü:** Kullanıcı seçtiği ay veya yıl için anime yolculuğunu tutarlı sayılar ve açıklanabilir öne çıkanlarla görebilir; isterse güvenli bir özet kartını ayrıca paylaşabilir.
+
+## Sürekli bakım hattı
+
+- [ ] Supabase Free planının duraklama, yedekleme ve kurtarma sınırlarını düzenli olarak yeniden değerlendir.
+- [ ] Bağımlılık, CodeQL, RLS/RPC ve veri taşınabilirliği kontrollerini sürdür.
+- [ ] Katalog/poster tazeliğini, kırık bağlantıları, erişilebilirliği ve temel performansı periyodik olarak denetle.
+- [ ] AniList'in yazılı yanıtını takip et; izin ve koşullar netleşmeden 5. aşama entegrasyonuna dokunma.
+
+Bakım hattı bağımsız bir özellik aşaması değildir; 17–18. aşamalarla birlikte düşük riskli, dar turlar hâlinde yürütülür.
+
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–16. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Kişisel koleksiyonlar local-first yönetim, yedek v3, sahip-kullanıcı senkronizasyonu ve ayrı izinli salt-okunur paylaşım ile production'a taşındı. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
+İlk dört aşama ile 6–16. aşamalar tamamlandı. Sıradaki aktif ürün işi 17. aşama **Sezon panosu**; ardından 18. aşama **Rota yıllığı** gelecek. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sürekli bakım hattı ürün aşamalarına paralel, dar ve doğrulanabilir turlarla yürütülecek.
 
 16. aşama tamamlandı: koleksiyonlar izleme durumundan bağımsız çalışır, silmeler tombstone olarak yakınsar ve JSON yedek v3 eski v1/v2 dosyalarını okumaya devam eder. `personal_collections` migration'ı sahip-kullanıcı RLS, yenisi-kazanır trigger'ı ve doğrulamalı JSON sınırıyla production'a uygulandı. Ayrı `share_collections` izni varsayılan kapalıdır; gerçek hesapla geçici `UNLISTED` kabulünde koleksiyon ve Medalist salt okunur göründü, özel kimlik/senkron alanları görünmedi. Test sonunda profil yeniden `PRIVATE`, koleksiyon paylaşımı kapalı ve geçici kayıtlar temizlenmiş durumdadır.
 

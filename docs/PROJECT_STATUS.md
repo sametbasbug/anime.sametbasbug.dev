@@ -82,16 +82,24 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
-2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir.
-4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+1. 17. aşama Sezon panosunu izinli mevcut katalog verisi ve kişisel plan eşleşmesiyle uygula.
+2. 18. aşama Rota yıllığını günlük ve kişisel arşivden türetilen gizlilik kontrollü özetlerle uygula.
+3. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
+4. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+5. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
+6. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
 
 ## Sıradaki ürün işleri
 
-16. aşama production kabulüyle tamamlandı. Yol haritasında AniList'in yazılı yanıtını bekleyen 5. aşama dışında açık ana ürün aşaması yoktur.
+16. aşama production kabulüyle tamamlandı. Sıradaki aktif ürün işi 17. aşama **Sezon panosu**; ardından 18. aşama **Rota yıllığı** gelecek. İki aşama da `ROADMAP.md` içinde kapsam, sınır ve tamamlanma ölçütleriyle kayıtlıdır.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 17 Ağustos 2026 — 17–18. aşamalar kanonik plana eklendi
+
+- 17. aşama Sezon panosu; yeni başlayan, devam eden ve yaklaşan yapımları izinli katalog verisiyle tek ekranda toplar, kişisel `Planlıyorum`/`İzliyorum` kayıtlarını görünür kılar. Kesin yayın saati, bölüm bildirimi, scraping veya yeni harici API bağımlılığı vaat etmez.
+- 18. aşama Rota yıllığı; günlük ve arşivden aylık/yıllık özet, tür/stüdyo eğilimleri ve kişisel dönüm noktaları üretir. Paylaşım kartı ayrı ve varsayılanı kapalıdır; kişisel notlar ile kimlik/senkronizasyon alanları dışarı çıkmaz.
+- Supabase Free sınırları, güvenlik/bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans ayrı bir sürekli bakım hattı olarak iki ürün aşamasına paralel yürütülecek.
 
 ## 17 Ağustos 2026 — 16. aşama tamamlandı
 
