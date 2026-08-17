@@ -19,6 +19,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Açık ve kawaii **Soft Celestial Otaku** tasarım sistemi; manga editoryali, masaüstü üst menüsü ve mobil alt gezinme
 - Ana sayfada doğrudan katalog araması ve yerel kişisel arşiv özeti
 - Gerçek katalogdan üretilen güncel sezon rafı, haftalık dönüşümlü editoryal seçki ve katalog haritası
+- Yeni başlayan, devam eden ve yaklaşan yapımları kişisel planla buluşturan açıklanabilir `/sezonlar` panosu
 - Duruma göre çalışan anime kartı filtreleri
 - Proje içinde CSS ile üretilmiş özgün görsel kompozisyonlar
 - 900 yapımlık gerçek, aranabilir katalog
@@ -38,7 +39,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Ana ekranlar ile boş, yükleme, hata, senkronizasyon ve kutlama hâllerine göre 100'ü aşkın kısa replikten konuşan marka yüzü ve göksel yoldaş **Rota**
 - Mevsimsel renk katmanı, erişilebilir mikro animasyonlar, karakterli sayfa geçişleri, kawaii cursor ve scrollbar
 - Rota'nın ortak yüz anatomisini kullanan site ikonu, favicon ve 1200×630 Open Graph/Twitter paylaşım kartı
-- 30 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
+- 50 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
 - İsteğe bağlı **Equinox Orbit** girişi (Supabase'de `custom:orbit` OIDC sağlayıcısı); profil ve liste görünürlüğü ekranı
 - Yerel listeyi, izleme günlüğünü ve özel koleksiyonları koruyan tombstone destekli Supabase senkronizasyon katmanı
@@ -161,6 +162,8 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 14. ~~Akıllı kişisel keşif~~ — açıklanabilir öneriler ve production kabulüyle tamamlandı
 15. ~~Editoryal derinlik~~ — 50 özgün profil, on adet beşli seçki, 7 rehber/yazı ve production kabulüyle tamamlandı
 16. ~~Kişisel koleksiyonlar~~ — local-first yönetim, yedek v3, sahip-kullanıcı senkronu ve izinli paylaşım kabulüyle tamamlandı
+17. Sezon panosu — mevcut katalog verisi ve kişisel plan eşleşmesiyle geliştirme aşamasında
+18. Rota yıllığı — günlük ve kişisel arşivden gizlilik kontrollü özetler üretmek üzere planlandı
 
 ## Sahiplik
 

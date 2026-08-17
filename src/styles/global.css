@@ -137,6 +137,9 @@ main { overflow: hidden; }
 .season { padding: 84px 0 110px; }
 .section-heading--season { align-items: center; }
 .section-intro { width: 325px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.section-heading__side { display: grid; justify-items: end; gap: 12px; }
+.section-heading__side > a { padding-bottom: 4px; border-bottom: 1px solid currentColor; color: var(--ink); font-size: 10px; font-weight: 800; }
+.section-heading__side > a span { margin-left: 18px; color: var(--coral); }
 .filter-bar { display: flex; gap: 8px; margin-bottom: 28px; }
 .filter-bar button { padding: 10px 15px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 700; cursor: pointer; }
 .filter-bar button.is-active { border-color: var(--ink); background: var(--ink); color: white; }
@@ -772,6 +775,86 @@ main { overflow: hidden; }
   .shared-collection-anime .art { height: 145px; }
   .shared-shelf__grid { grid-template-columns: 1fr; }
   .shared-anime-card { grid-template-columns: 105px minmax(0, 1fr); gap: 14px; }
+}
+
+/* Sezon panosu */
+.season-board-page { width: min(1420px, calc(100% - 64px)); min-height: calc(100vh - 92px); margin: 0 auto; overflow: visible; }
+.season-board-hero { position: relative; min-height: 460px; padding: 80px 0 64px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; align-items: center; gap: 70px; border-bottom: 1px solid var(--line); }
+.season-board-hero > div { position: relative; z-index: 1; }
+.season-board-hero h1 { max-width: 900px; margin: 14px 0 26px; font-family: var(--display); font-size: clamp(70px, 8vw, 124px); line-height: .82; letter-spacing: -.07em; text-transform: uppercase; }
+.season-board-hero h1 em { color: var(--coral); font-family: Georgia, serif; font-weight: 400; text-transform: none; }
+.season-board-hero > div > p:last-child { max-width: 670px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.rota-companion--season-board { justify-self: end; transform: rotate(3deg); }
+.season-board__summary { margin-top: 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); background: rgba(255,255,255,.62); }
+.season-board__summary > div { min-height: 126px; padding: 24px 26px; border-right: 1px solid var(--line); }
+.season-board__summary > div:last-child { border-right: 0; }
+.season-board__summary p, .season-board__controls header p, .season-board__results header p { margin: 0; color: var(--coral); font-size: 8px; font-weight: 900; letter-spacing: .14em; }
+.season-board__summary h2 { margin: 9px 0 6px; font-family: var(--display); font-size: 30px; letter-spacing: -.04em; }
+.season-board__summary small { color: var(--muted); font-size: 9px; line-height: 1.5; }
+.season-board__controls { padding: 70px 0 44px; }
+.season-board__controls > header, .season-board__results > header { margin-bottom: 25px; display: flex; align-items: end; justify-content: space-between; gap: 32px; }
+.season-board__controls header h2, .season-board__results header h2 { margin: 8px 0 0; font-family: var(--display); font-size: 34px; letter-spacing: -.04em; }
+.season-board__controls header small { max-width: 440px; color: var(--muted); font-size: 9px; line-height: 1.65; text-align: right; }
+.season-board__period { padding: 18px; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 14px; border: 2px solid var(--ink); background: var(--paper-deep); }
+.season-board__period > label, .season-board__filters > label:not(.season-board__personal) { display: grid; gap: 6px; color: var(--muted); font-size: 7px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.season-board__period select, .season-board__filters select { width: 100%; height: 43px; padding: 0 11px; border: 1px solid var(--line); border-radius: 0; background: #fff; color: var(--ink); font-size: 10px; }
+.season-board__period > div { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+.season-board__period button { border: 1px solid var(--line); background: #fff; color: var(--muted); font-size: 9px; font-weight: 800; cursor: pointer; }
+.season-board__period button.is-active { border-color: var(--ink); background: var(--ink); color: #fff; }
+.season-board__views { margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.season-board__views button { min-height: 84px; padding: 16px 18px; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; align-items: center; gap: 5px 18px; border: 1px solid var(--line); background: rgba(255,255,255,.68); text-align: left; cursor: pointer; }
+.season-board__views button b { font-size: 11px; }
+.season-board__views button span { color: var(--muted); font-size: 8px; }
+.season-board__views button strong { grid-column: 2; grid-row: 1 / 3; color: var(--lavender-deep); font-family: var(--display); font-size: 30px; }
+.season-board__views button.is-active { border: 2px solid var(--ink); background: var(--sun); box-shadow: 4px 4px 0 var(--ink); transform: translate(-2px,-2px); }
+.season-board__filters { margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)) auto; align-items: end; gap: 10px; }
+.season-board__personal { min-height: 43px; padding: 0 14px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--line); background: rgba(255,255,255,.7); color: var(--ink); font-size: 8px; font-weight: 800; cursor: pointer; }
+.season-board__personal input { width: 16px; height: 16px; accent-color: var(--lavender-deep); }
+.season-board__results { padding: 22px 0 90px; }
+.season-board__results header a { padding-bottom: 5px; border-bottom: 1px solid currentColor; color: var(--lavender-deep); font-size: 9px; font-weight: 900; }
+.season-board__results header a span { margin-left: 20px; color: var(--coral); }
+.season-board__grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px 18px; row-gap: 44px; }
+.season-board-card { position: relative; min-width: 0; }
+.season-board-card__personal { position: absolute; z-index: 6; top: 12px; left: 10px; max-width: calc(100% - 64px); padding: 7px 9px; border: 2px solid var(--ink); background: var(--sun); box-shadow: 2px 2px 0 var(--ink); font-size: 7px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.season-board-card__personal.is-watching { background: var(--mint); }
+.season-board-card__personal.is-completed { background: var(--sky); }
+.season-board-card__personal.is-dropped { background: var(--sakura); }
+.season-board__empty { min-height: 400px; padding: 45px; display: grid; place-content: center; justify-items: center; border: 2px dashed var(--lavender); background: rgba(255,255,255,.52); text-align: center; }
+.season-board__empty .rota-companion { position: relative; inset: auto; transform: scale(.72); }
+.season-board__empty h2 { margin: 12px 0 4px; font-family: var(--display); font-size: 38px; }
+.season-board__empty p { max-width: 520px; color: var(--muted); font-size: 10px; line-height: 1.65; }
+.season-board__source { margin-bottom: 70px; padding: 24px 28px; display: grid; grid-template-columns: 230px 1fr; gap: 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.season-board__source strong { font-family: var(--display); font-size: 20px; }
+.season-board__source p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.7; }
+
+@media (max-width: 1100px) {
+  .season-board__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .season-board__filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .section-heading__side { justify-items: start; }
+  .section-intro { width: auto; }
+  .season-board-page { width: calc(100% - 32px); }
+  .season-board-hero { min-height: 0; padding: 52px 0 120px; grid-template-columns: 1fr; gap: 20px; }
+  .season-board-hero h1 { font-size: 55px; }
+  .season-board-hero > div > p:last-child { padding-right: 54px; font-size: 12px; }
+  .rota-companion--season-board { position: absolute; right: -6px; bottom: 4px; transform: scale(.64) rotate(3deg); transform-origin: right bottom; }
+  .season-board__summary { grid-template-columns: 1fr; }
+  .season-board__summary > div { min-height: 105px; padding: 18px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .season-board__summary > div:last-child { border-bottom: 0; }
+  .season-board__controls { padding-top: 52px; }
+  .season-board__controls > header, .season-board__results > header { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .season-board__controls header small { max-width: none; text-align: left; }
+  .season-board__period { padding: 13px; grid-template-columns: 1fr; }
+  .season-board__period > div { min-height: 44px; }
+  .season-board__views { display: flex; overflow-x: auto; padding: 3px 3px 7px; }
+  .season-board__views button { flex: 0 0 220px; }
+  .season-board__filters { grid-template-columns: 1fr; }
+  .season-board__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; row-gap: 32px; }
+  .season-board__grid .anime-card__link > .art { height: 260px; }
+  .season-board-card__personal { top: 9px; left: 7px; max-width: calc(100% - 54px); padding: 5px 6px; font-size: 6px; }
+  .season-board__source { padding: 20px 0; grid-template-columns: 1fr; gap: 8px; }
 }
 
 @media (max-width: 1100px) {

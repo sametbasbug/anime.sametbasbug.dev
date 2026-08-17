@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SeasonBoardExperience from "../components/SeasonBoardExperience";
+import RotaCompanion from "../components/RotaCompanion";
+import DataAttribution from "../components/DataAttribution.astro";
+import { catalogueMeta, posterMeta } from "../lib/catalogue";
+import { seasonForDate } from "../lib/season-board";
+
+const current = seasonForDate(new Date());
+---
+
+<BaseLayout title="Sezon panosu — Equinox Rota" description="Yeni başlayan, devam eden ve yaklaşan animeleri kişisel izleme planınla birlikte keşfet.">
+  <SiteHeader active="season" />
+  <main class="season-board-page">
+    <section class="season-board-hero">
+      <div>
+        <p class="eyebrow">SEZON PANOSU · KİŞİSEL İZLEME PLANI</p>
+        <h1>Sezonun <em>rotasını</em> çiz.</h1>
+        <p>Yeni başlayanları, devam edenleri ve yaklaşan dünyaları tek panoda gör. Planladıkların kalabalığın içinde kaybolmasın.</p>
+      </div>
+      <RotaCompanion scene="catalogue" mood="curious" className="rota-companion--season-board" client:load />
+    </section>
+    <SeasonBoardExperience
+      dataVersion={`${catalogueMeta.generatedAt}-${posterMeta.generatedAt}`}
+      initialYear={current.year}
+      initialSeason={current.season}
+      sourceRelease={catalogueMeta.release}
+      sourceLastUpdate={catalogueMeta.lastUpdate}
+      client:load
+    />
+    <DataAttribution />
+  </main>
+</BaseLayout>
