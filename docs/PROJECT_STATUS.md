@@ -30,7 +30,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 - 900 yapımlık aranabilir katalog, 900 detay sayfası, tür/stüdyo keşfi ve benzer yapım yolları.
 - Dört durumlu kişisel liste; bölüm ilerlemesi, puan ve kişisel not.
-- 20 yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
+- 30 yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
 - Orbit hesabı, profil ve liste görünürlüğü tercihleri.
 - Equinox organizasyonu altında Frankfurt bölgesinde Supabase Free `Equinox Rota` projesi.
 - İki RLS tablosu ve yedi sahip-kullanıcı politikası içeren migration.
@@ -93,14 +93,16 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
 
-## 17 Ağustos 2026 — 15. aşama ilk yerel dilimi
+## 17 Ağustos 2026 — 15. aşama ilk production dilimi
 
 - Yayımlanmış, spoiler kontrollü özgün Türkçe profil sayısı 20'den 30'a çıktı. One Piece taslağı sonuçlandırıldı; Naruto, Bakemonogatari, 3-gatsu no Lion, Yuru Camp△, Pluto, Spy x Family, [Oshi no Ko], Look Back ve Chi. Chikyuu no Undou ni Tsuite eklendi.
 - Ana sayfa rotasyonu altı seçkiye ve seçki başına beş profile genişledi. Her yayımlanmış profil rotasyonda tam bir kez görünür.
 - Yeni `/rehberler` indeksi ile yedi statik detay sayfası eklendi: yeni başlayanlar, kısa seriler, filmler ve iyileşme teması için dört kalıcı rehber; Makoto Shinkai, Kyoto Animation ve bulunmuş aile anlatısı için üç odak yazısı.
 - Editoryal doğrulama; profil sayısı ve alanlarına ek olarak rehber/yazı türünü, odak çeşitliliğini, metin sınırlarını, katalog bağlarını, yinelenen seçimleri ve spoiler/kontrol tarihlerini de korur.
 - Tam `npm run build` 77 Astro dosyasında hata/uyarı vermedi ve 1.141 statik sayfa üretti. `/rehberler`, başlangıç rehberi, ana sayfa rotasyonu ve One Piece profili 1.920×950 ile 390×844 görünümde incelendi; yatay taşma, kırık poster veya uygulama konsol hatası yoktur.
-- **Devam ediyor:** 50 güçlü profil hedefi için kalan 20 profil, push/deploy ve production kabulü.
+- `13c51ea` production'a yayımlandı. GitHub Pages `31980481152`, CI `31980481147` ve CodeQL `31980481140` başarıyla tamamlandı. Canlı `/rehberler`, başlangıç rehberi, One Piece profili ve ana sayfadaki altı seçki doğrulandı.
+- Production mobil kabulünde ana sayfanın dekoratif hero/manifesto katmanlarında 19 px yatay taşma yakalandı. `d775efe` bu katmanları 760 px altında güvenle sınırladı; Pages `31980626015`, CI `31980626078` ve CodeQL `31980626033` başarıyla tamamlandı. Canlı ana sayfa 390×844 görünümde yeniden incelendi: belge genişliği 390 px, altı seçki düğmesi, beş editoryal kart, rehber bağlantısı, kırık görsel sayısı sıfır ve konsol hatasızdır.
+- **Devam ediyor:** 50 güçlü profil hedefi için kalan 20 profil.
 
 ## 17 Ağustos 2026 — 14. aşama production teslimi
 

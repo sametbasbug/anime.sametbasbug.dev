@@ -37,7 +37,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Ana ekranlar ile boş, yükleme, hata, senkronizasyon ve kutlama hâllerine göre 100'ü aşkın kısa replikten konuşan marka yüzü ve göksel yoldaş **Rota**
 - Mevsimsel renk katmanı, erişilebilir mikro animasyonlar, karakterli sayfa geçişleri, kawaii cursor ve scrollbar
 - Rota'nın ortak yüz anatomisini kullanan site ikonu, favicon ve 1200×630 Open Graph/Twitter paylaşım kartı
-- 20 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
+- 30 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
 - İsteğe bağlı **Equinox Orbit** girişi (Supabase'de `custom:orbit` OIDC sağlayıcısı); profil ve liste görünürlüğü ekranı
 - Yerel listeyi koruyan, tombstone destekli Supabase senkronizasyon katmanı
@@ -158,7 +158,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
 13. ~~İzleme günlüğü ve kişisel hafıza~~ — local-first kayıt, senkronizasyon, yedek v2 ve production kabulüyle tamamlandı
 14. ~~Akıllı kişisel keşif~~ — açıklanabilir öneriler ve production kabulüyle tamamlandı
-15. Editoryal derinlik — ilk yerel dilim hazır: 30 profil ve 7 rehber/yazı; 50 profil hedefi sürüyor
+15. Editoryal derinlik — ilk production dilimi yayında: 30 profil ve 7 rehber/yazı; 50 profil hedefi sürüyor
 
 ## Sahiplik
 
