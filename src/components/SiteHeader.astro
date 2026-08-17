@@ -7,6 +7,19 @@ interface Props {
 }
 
 const { active = "discover" } = Astro.props;
+
+const sectionLinks = [
+  { key: "discover", href: "/", label: "Ana", description: "Kişisel dönüş ve güncel seçkiler" },
+  { key: "search", href: "/ara", label: "Keşfet", description: "Katalog, tür ve stüdyo yolları" },
+  { key: "season", href: "/sezonlar", label: "Sezonlar", description: "Yeni, devam eden ve yaklaşanlar" },
+  { key: "picker", href: "/oneriler", label: "Bana seç", description: "Açıklanabilir kişisel öneriler" },
+  { key: "guides", href: "/rehberler", label: "Rehberler", description: "Türkçe seçkiler ve odak yazıları" },
+  { key: "lists", href: "/listem", label: "Listem", description: "İzleme durumun ve ilerlemen" },
+  { key: "collections", href: "/koleksiyonlar", label: "Koleksiyonlar", description: "Kendi tematik anime rafların" },
+  { key: "journal", href: "/gunluk", label: "Günlük", description: "Bölüm kayıtların ve aylık özet" },
+] as const;
+
+const mobileMoreActive = ["season", "picker", "guides", "collections"].includes(active);
 ---
 
 <header class="site-header">
@@ -16,14 +29,9 @@ const { active = "discover" } = Astro.props;
   </a>
 
   <nav class="desktop-nav" aria-label="Ana menü">
-    <a class:list={{ "is-active": active === "discover" }} href="/">Ana</a>
-    <a class:list={{ "is-active": active === "search" }} href="/ara">Keşfet</a>
-    <a class:list={{ "is-active": active === "season" }} href="/sezonlar">Sezonlar</a>
-    <a class:list={{ "is-active": active === "picker" }} href="/oneriler">Bana seç</a>
-    <a class:list={{ "is-active": active === "guides" }} href="/rehberler">Rehberler</a>
-    <a class:list={{ "is-active": active === "lists" }} href="/listem">Listem</a>
-    <a class:list={{ "is-active": active === "collections" }} href="/koleksiyonlar">Koleksiyonlar</a>
-    <a class:list={{ "is-active": active === "journal" }} href="/gunluk">Günlük</a>
+    {sectionLinks.map((item) => (
+      <a class:list={{ "is-active": active === item.key }} href={item.href}>{item.label}</a>
+    ))}
   </nav>
 
   <div class="header-actions">
@@ -52,8 +60,37 @@ const { active = "discover" } = Astro.props;
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h10.5A1.5 1.5 0 0 1 18 5v15.5H7.5A1.5 1.5 0 0 1 6 19Z" /><path d="M6 18.5A1.5 1.5 0 0 1 7.5 17H18M9 8h6M9 11.5h5" /></svg>
     <span>Günlük</span>
   </a>
-  <a class:list={{ "is-active": active === "account" }} href="/hesap">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4.5 21c.8-4.4 3.3-6.5 7.5-6.5s6.7 2.1 7.5 6.5" /></svg>
-    <span>Hesap</span>
-  </a>
+  <details class:list={["mobile-more", { "is-active": mobileMoreActive }]}>
+    <summary aria-label="Tüm Rota bölümlerini aç">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
+      <span>Menü</span>
+    </summary>
+    <section class="mobile-more__sheet" aria-label="Tüm Rota bölümleri">
+      <header>
+        <div><small>ROTA MENÜSÜ</small><strong>Tüm duraklar</strong></div>
+        <span>Bir bölüme dokun ve yoluna devam et.</span>
+      </header>
+      <div class="mobile-more__grid">
+        {sectionLinks.map((item) => (
+          <a class:list={{ "is-active": active === item.key }} href={item.href}>
+            <strong>{item.label}</strong>
+            <small>{item.description}</small>
+          </a>
+        ))}
+      </div>
+    </section>
+  </details>
 </nav>
+
+<script>
+  const closeMobileMenus = (except?: Node | null) => {
+    document.querySelectorAll<HTMLDetailsElement>(".mobile-more[open]").forEach((menu) => {
+      if (!except || !menu.contains(except)) menu.removeAttribute("open");
+    });
+  };
+
+  document.addEventListener("click", (event) => closeMobileMenus(event.target as Node));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMobileMenus();
+  });
+</script>

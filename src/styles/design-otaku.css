@@ -810,8 +810,19 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
     background: rgba(255,255,255,.93);
     box-shadow: 4px 5px 0 var(--ink);
   }
-  body.design-otaku .mobile-nav a { color: var(--muted); }
-  body.design-otaku .mobile-nav a.is-active { color: #fff; background: var(--lavender-deep); }
+  body.design-otaku .mobile-nav > a,
+  body.design-otaku .mobile-more > summary { color: var(--muted); }
+  body.design-otaku .mobile-nav > a.is-active,
+  body.design-otaku .mobile-more.is-active > summary,
+  body.design-otaku .mobile-more[open] > summary { color: #fff; background: var(--lavender-deep); }
+  body.design-otaku .mobile-more__sheet {
+    border: 2px solid var(--ink);
+    background: rgba(255, 249, 244, .98);
+    box-shadow: 6px 7px 0 var(--ink);
+  }
+  body.design-otaku .mobile-more__sheet > header small { color: var(--lavender-deep); }
+  body.design-otaku .mobile-more__grid a { border-color: var(--line); background: rgba(255,255,255,.84); color: var(--ink); }
+  body.design-otaku .mobile-more__grid a.is-active { border-color: var(--lavender-deep); background: var(--surface-soft); }
   body.design-otaku .hero.home-hero::before { display: none; }
   body.design-otaku .home-hero .feature-card { box-shadow: 6px 7px 0 var(--sakura), 8px 9px 0 var(--ink); }
   .hero-sticker--top { right: -7px; }

@@ -57,14 +57,14 @@ Tasarımın başarı testi şudur:
 
 ## Bilgi mimarisi
 
-Ana gezinme dört kalıcı hedef taşır:
+Masaüstü üst gezinmesi ürünün tüm ana bölümlerini doğrudan gösterir. Mobilde sabit alt gezinme dört sık kullanılan hedefi korur:
 
 - **Ana:** kişisel dönüş, güncel sezon ve keşif
 - **Keşfet:** arama, tür, format, durum ve stüdyo yolları
-- **Listem:** koleksiyon rafı, bölüm ilerlemesi ve kişisel notlar
-- **Hesap:** otaku profili, cihaz özeti, senkronizasyon ve gizlilik
+- **Listem:** izleme durumu, bölüm ilerlemesi ve kişisel notlar
+- **Günlük:** izlenen bölüm kayıtları ve aylık hafıza
 
-Masaüstünde üst gezinme, mobilde sabit ve erişilebilir alt gezinme kullanılır.
+Alt gezinmedeki beşinci **Menü** kontrolü; Sezonlar, Bana seç, Rehberler ve Koleksiyonlar dâhil masaüstündeki tüm ürün duraklarını erişilebilir bir panelde açar. Yeni kalıcı bölüm yalnız masaüstü menüsüne eklenmez; aynı ortak bağlantı kaynağı mobil tam menüyü de besler. Hesap kontrolü masaüstünde olduğu gibi mobil header'da ayrı durur.
 
 ## Ekran ilkeleri
 

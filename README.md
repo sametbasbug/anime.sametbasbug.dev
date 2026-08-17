@@ -16,7 +16,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 ## Bugünkü durum
 
 - Mobil öncelikli, responsive ana sayfa
-- Açık ve kawaii **Soft Celestial Otaku** tasarım sistemi; manga editoryali, masaüstü üst menüsü ve mobil alt gezinme
+- Açık ve kawaii **Soft Celestial Otaku** tasarım sistemi; manga editoryali, masaüstü üst menüsü, mobil alt gezinme ve tüm bölümlere açılan mobil menü
 - Ana sayfada doğrudan katalog araması ve yerel kişisel arşiv özeti
 - Gerçek katalogdan üretilen güncel sezon rafı, haftalık dönüşümlü editoryal seçki ve katalog haritası
 - Yeni başlayan, devam eden ve yaklaşan yapımları kişisel planla buluşturan açıklanabilir `/sezonlar` panosu
