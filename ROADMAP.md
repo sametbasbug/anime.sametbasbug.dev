@@ -181,9 +181,22 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Editoryal sınır:** Sayı uğruna otomatik veya yüzeysel metin üretilmez; her profil özgünlük, spoiler ve editoryal kontrol kapılarından geçer.
 
+### 16. Kişisel koleksiyonlar — başladı
+
+- [x] Kullanıcının ad, kısa açıklama ve renk kimliğiyle kendi anime koleksiyonlarını oluşturmasını sağla.
+- [x] Bir animeyi izleme durumu listesine eklemek zorunda bırakmadan birden fazla koleksiyona ekle veya koleksiyondan çıkar.
+- [x] Koleksiyon yönetimi için arama, düzenleme, sıralama ve güvenli silme akışlarını masaüstü ile mobilde hazırla.
+- [ ] Veriyi local-first, sürümlü ve tombstone destekli tut; eski cihaz yazımının yeni koleksiyonu veya silmeyi ezmesini önle.
+- [ ] Tam Rota JSON yedeğini koleksiyonlar ve silme geçmişiyle yeni sürüme yükselt; eski yedekleri geriye uyumlu okumayı sürdür.
+- [ ] Supabase tablosu, sahip-kullanıcı RLS politikaları ve yenisi-kazanır trigger'ıyla cihazlar arası koleksiyon senkronizasyonu ekle.
+- [ ] Koleksiyon paylaşımını ayrı ve varsayılanı kapalı bir izinle mevcut salt-okunur Rota profiline bağla.
+- [ ] Yerel otomasyon, production migration, iki cihazlı yakınsama ve masaüstü/mobil canlı kabul turunu tamamla.
+
+**Kişisel sınır:** Koleksiyonlar izleme durumunun yerine geçmez ve animeyi otomatik olarak kişisel listeye eklemez. Ad, açıklama ve koleksiyon üyeliği kullanıcıya aittir; paylaşım açıkça etkinleştirilmedikçe özel kalır.
+
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–15. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Editoryal derinlik 50 özgün profil, on adet beşli ana sayfa seçkisi, dört kalıcı rehber ve üç odak yazısıyla production kabulünü tamamladı. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
+İlk dört aşama ile 6–15. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Aktif ürün işi 16. aşama “Kişisel koleksiyonlar”dır; ilk dilim local-first veri modeli, koleksiyon yönetimi ve anime detayından üyelik akışını kurar. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
 
 9. aşama tamamlandı: yüksek entropili bağlantı kodu, dar paylaşım RPC'si, alan bazlı puan/not izinleri, hesap kontrolleri ve `/paylas` salt-okunur görünümü production altyapısına taşındı. Gerçek Nyx hesabıyla `PRIVATE → UNLISTED`, bağlantıyı açma, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma akışları geçti. Son durumda test hesabının paylaşımı kapalıdır; otomatik güvenlik kontrolleri ile 1.920×950 ve 390×844 tarayıcı doğrulaması temizdir.
 

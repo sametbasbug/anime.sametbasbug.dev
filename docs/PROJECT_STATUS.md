@@ -89,9 +89,18 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-15. aşama production kabulüyle tamamlandı. Yeni aktif ürün aşaması henüz tanımlanmadı.
+15. aşama production kabulüyle tamamlandı. Aktif ürün işi **16. aşama: Kişisel koleksiyonlar**dır.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 17 Ağustos 2026 — 16. aşama başladı
+
+- İlk dilim, izleme durumu listesinden bağımsız local-first özel koleksiyon modelini ve `/koleksiyonlar` yönetim yüzeyini kurar.
+- Koleksiyonlar ad, kısa açıklama, renk kimliği, anime üyeleri, sürüm ve silme tombstone'u taşır. Anime detayından bir yapım birden fazla koleksiyona eklenebilir; bu işlem yapımı otomatik olarak “Planlıyorum” rafına sokmaz.
+- İlk yerel dilim tamamlandı: koleksiyon oluşturma, düzenleme, katalogda arayıp anime ekleme, üyeleri sıralama/çıkarma ve iki adımlı silme akışları hazırlandı. Anime detayındaki kompakt seçici aynı yapımı birden fazla koleksiyonda yönetiyor.
+- `collections:check` yerel sanitizasyonu, sınırları, sürüm artışını, üyelik sıralamasını ve tombstone davranışını doğruluyor. Tam `npm run build` 82 Astro dosyasında hata, uyarı veya ipucu vermedi; 1.142 statik sayfa üretildi.
+- `/koleksiyonlar` 1.920×950 masaüstünde, `/anime/medalist-55318` koleksiyon seçicisi 390×844 mobilde gerçek tarayıcıyla incelendi. İki görünümde yatay taşma, kırık görsel veya konsol hatası yoktu; Medalist'i koleksiyona eklemek kişisel izleme listesinde kayıt oluşturmadı.
+- Sonraki dilimler sırasıyla Rota JSON yedeği v3, Supabase sahip-kullanıcı RLS senkronizasyonu ve varsayılanı kapalı koleksiyon paylaşımıdır. Migration veya production değişikliği ilk yerel dilimin parçası değildir.
 
 ## 17 Ağustos 2026 — 15. aşama tamamlandı
 

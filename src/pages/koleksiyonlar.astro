@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CollectionsExperience from "../components/CollectionsExperience";
+import DataAttribution from "../components/DataAttribution.astro";
+import RotaCompanion from "../components/RotaCompanion";
+import SiteHeader from "../components/SiteHeader.astro";
+import { catalogueMeta } from "../lib/catalogue";
+---
+
+<BaseLayout title="Koleksiyonlarım — Equinox Rota" description="Animelerini kendi adını verdiğin kişisel koleksiyonlarda biriktir, sırala ve hatırla.">
+  <SiteHeader active="collections" />
+  <main class="collections-page">
+    <section class="collections-hero">
+      <div><p class="eyebrow">KENDİ SEÇKİLERİN · ÖNCE BU CİHAZDA</p><h1>Rafların,<br />senin hikâyen.</h1></div>
+      <p>İzleme durumlarından bağımsız özel raflar kur. Favorilerini, gece rotalarını veya dönmek istediğin dünyaları kendi sıranla biriktir.</p>
+      <RotaCompanion scene="list" mood="happy" className="rota-companion--collections-hero" client:load />
+    </section>
+    <CollectionsExperience dataVersion={catalogueMeta.generatedAt} client:load />
+    <DataAttribution />
+  </main>
+</BaseLayout>

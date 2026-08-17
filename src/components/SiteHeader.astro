@@ -3,7 +3,7 @@ import AccountStatus from "./AccountStatus";
 import RotaMark from "./RotaMark.astro";
 
 interface Props {
-  active?: "discover" | "search" | "picker" | "guides" | "lists" | "journal" | "account" | "none";
+  active?: "discover" | "search" | "picker" | "guides" | "lists" | "collections" | "journal" | "account" | "none";
 }
 
 const { active = "discover" } = Astro.props;
@@ -21,6 +21,7 @@ const { active = "discover" } = Astro.props;
     <a class:list={{ "is-active": active === "picker" }} href="/oneriler">Bana seç</a>
     <a class:list={{ "is-active": active === "guides" }} href="/rehberler">Rehberler</a>
     <a class:list={{ "is-active": active === "lists" }} href="/listem">Listem</a>
+    <a class:list={{ "is-active": active === "collections" }} href="/koleksiyonlar">Koleksiyonlar</a>
     <a class:list={{ "is-active": active === "journal" }} href="/gunluk">Günlük</a>
   </nav>
 
@@ -42,7 +43,7 @@ const { active = "discover" } = Astro.props;
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
     <span>Keşfet</span>
   </a>
-  <a class:list={{ "is-active": active === "lists" }} href="/listem">
+  <a class:list={{ "is-active": active === "lists" || active === "collections" }} href="/listem">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-3.7L6 21Z" /></svg>
     <span>Listem</span>
   </a>

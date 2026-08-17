@@ -33,6 +33,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
 - Bölüm aralığı, izleme tarihi ve kısa notlarla local-first izleme günlüğü; aylık özet ve takvim
 - Durumlara ayrılan koleksiyon rafları, sayaçlar, filtreler ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
+- Ad, açıklama ve renk kimliğiyle oluşturulan; izleme durumundan bağımsız, tarayıcıda yerel özel koleksiyonlar ve anime detayından çoklu koleksiyon üyeliği
 - Manga açılımı ritmine sahip anime detayları ve otaku köşesi olarak tasarlanan hesap ekranı
 - Ana ekranlar ile boş, yükleme, hata, senkronizasyon ve kutlama hâllerine göre 100'ü aşkın kısa replikten konuşan marka yüzü ve göksel yoldaş **Rota**
 - Mevsimsel renk katmanı, erişilebilir mikro animasyonlar, karakterli sayfa geçişleri, kawaii cursor ve scrollbar
