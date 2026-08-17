@@ -168,22 +168,22 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Ürün sınırı:** Öneriler gizli bir puan veya dış profil çıkarımı gibi davranmaz; kullanıcıya neden gösterildiğini açıkça anlatır ve harici API gerektirmeden çalışır.
 
-### 15. Editoryal derinlik — devam ediyor
+### 15. Editoryal derinlik — tamamlandı
 
-- [ ] Yayımlanmış özgün Türkçe profil sayısını önce 50 güçlü yapıma çıkar.
+- [x] Yayımlanmış özgün Türkçe profil sayısını önce 50 güçlü yapıma çıkar.
 - [x] İlk derinlik diliminde profil sayısını 20'den 30'a çıkar; ana sayfa rotasyonunu altı beşli seçkiye genişlet.
 - [x] Yeni başlayanlar, kısa seriler, filmler ve temalar için kalıcı editoryal rehberler hazırla.
 - [x] Yönetmen, stüdyo ve anlatı teması odaklı keşif yazıları ekle.
 - [x] One Piece taslağını doğrulayıp editoryal akış içinde sonuçlandır.
 - [x] Rehber/yazı türü, metin sınırı, katalog bağı, spoiler onayı ve odak çeşitliliğini otomatik kontrolde koru.
 - [x] İlk 30 profillik dilimi yayımla; masaüstü/mobil production kabulünü tamamla.
-- [ ] Kalan 20 güçlü profili tamamla; son teslimi yayımla ve production kabulünü bitir.
+- [x] Kalan 20 güçlü profili tamamla; son teslimi yayımla ve production kabulünü bitir.
 
 **Editoryal sınır:** Sayı uğruna otomatik veya yüzeysel metin üretilmez; her profil özgünlük, spoiler ve editoryal kontrol kapılarından geçer.
 
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–14. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. 15. aşamanın ilk production dilimi 30 profil, dört kalıcı rehber ve üç odak yazısıyla yayındadır; 50 profil hedefi için kalan 20 profil sürer. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
+İlk dört aşama ile 6–15. aşamalar tamamlandı. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Editoryal derinlik 50 özgün profil, on adet beşli ana sayfa seçkisi, dört kalıcı rehber ve üç odak yazısıyla production kabulünü tamamladı. Topluluğun ilk dilimi genel sosyal akış yerine anime başlığına bağlı inceleme, spoiler perdesi, raporlama ve insan kararlı moderasyon kuyruğu olarak production'da çalışıyor.
 
 9. aşama tamamlandı: yüksek entropili bağlantı kodu, dar paylaşım RPC'si, alan bazlı puan/not izinleri, hesap kontrolleri ve `/paylas` salt-okunur görünümü production altyapısına taşındı. Gerçek Nyx hesabıyla `PRIVATE → UNLISTED`, bağlantıyı açma, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma akışları geçti. Son durumda test hesabının paylaşımı kapalıdır; otomatik güvenlik kontrolleri ile 1.920×950 ve 390×844 tarayıcı doğrulaması temizdir.
 

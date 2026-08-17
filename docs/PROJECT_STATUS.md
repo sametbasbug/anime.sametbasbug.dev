@@ -30,7 +30,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 - 900 yapımlık aranabilir katalog, 900 detay sayfası, tür/stüdyo keşfi ve benzer yapım yolları.
 - Dört durumlu kişisel liste; bölüm ilerlemesi, puan ve kişisel not.
-- 30 yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
+- 50 yayımlanmış özgün Türkçe editoryal profil; taslak ve kontrol durumları ayrılmış içerik akışı.
 - Orbit hesabı, profil ve liste görünürlüğü tercihleri.
 - Equinox organizasyonu altında Frankfurt bölgesinde Supabase Free `Equinox Rota` projesi.
 - İki RLS tablosu ve yedi sahip-kullanıcı politikası içeren migration.
@@ -89,9 +89,16 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-14. aşama production kabulüyle tamamlandı. Sıradaki aktif ürün işi **15. aşama: Editoryal derinlik**tir.
+15. aşama production kabulüyle tamamlandı. Yeni aktif ürün aşaması henüz tanımlanmadı.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 17 Ağustos 2026 — 15. aşama tamamlandı
+
+- Medalist, Girls Band Cry, Blue Giant, Kimi wa Houkago Insomnia, Ao no Hako, Takopii no Genzai, Tengoku Daimakyou, Summertime Render, Vivy: Fluorite Eye's Song, Fumetsu no Anata e, Kaoru Hana wa Rin to Saku, Horimiya, Josee to Tora to Sakana-tachi, Watashi no Shiawase na Kekkon, Suzume no Tojimari, Dorohedoro, Honzuki no Gekokujou, Grand Blue, The First Slam Dunk ve Kidou Senshi Gundam: Tekketsu no Orphans için özgün, spoiler kontrollü Türkçe profiller eklendi.
+- Yayımlanmış profil sayısı 30'dan 50'ye, ana sayfa rotasyonu altıdan on adet beşli seçkiye çıktı. Her profil rotasyonda tam bir kez görünür; içerik kontrolü artık yayımlanmış profil sayısını tam 50'de tutar.
+- Tam `npm run build` 77 Astro dosyasında hata, uyarı veya ipucu vermedi; 1.141 statik sayfa üretildi. Ana sayfa 1.920×950 ve 390×844 görünümde incelendi; on seçki düğmesi, beş kart, taşmasız yerleşim ve yüklenmiş posterler doğrulandı. Medalist detayında üç editoryal gerekçe ve 390 px taşmasız yerleşim ayrıca kontrol edildi.
+- Production commit ve GitHub Actions kimlikleri canlı kabul tamamlandığında bu kayda eklenecek.
 
 ## 17 Ağustos 2026 — 15. aşama ilk production dilimi
 
@@ -102,7 +109,7 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 - Tam `npm run build` 77 Astro dosyasında hata/uyarı vermedi ve 1.141 statik sayfa üretti. `/rehberler`, başlangıç rehberi, ana sayfa rotasyonu ve One Piece profili 1.920×950 ile 390×844 görünümde incelendi; yatay taşma, kırık poster veya uygulama konsol hatası yoktur.
 - `13c51ea` production'a yayımlandı. GitHub Pages `31980481152`, CI `31980481147` ve CodeQL `31980481140` başarıyla tamamlandı. Canlı `/rehberler`, başlangıç rehberi, One Piece profili ve ana sayfadaki altı seçki doğrulandı.
 - Production mobil kabulünde ana sayfanın dekoratif hero/manifesto katmanlarında 19 px yatay taşma yakalandı. `d775efe` bu katmanları 760 px altında güvenle sınırladı; Pages `31980626015`, CI `31980626078` ve CodeQL `31980626033` başarıyla tamamlandı. Canlı ana sayfa 390×844 görünümde yeniden incelendi: belge genişliği 390 px, altı seçki düğmesi, beş editoryal kart, rehber bağlantısı, kırık görsel sayısı sıfır ve konsol hatasızdır.
-- **Devam ediyor:** 50 güçlü profil hedefi için kalan 20 profil.
+- Bu ilk dilimin ardından kalan 20 profil tamamlandı; son teslim yukarıdaki kayıtta belgelenmiştir.
 
 ## 17 Ağustos 2026 — 14. aşama production teslimi
 

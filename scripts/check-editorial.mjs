@@ -114,7 +114,7 @@ if (!Array.isArray(editorial.homepageCollections) || editorial.homepageCollectio
   }
 }
 
-if (publishedIds.size < 30 || publishedIds.size > 50) errors.push(`Yayımlanmış profil sayısı 30–50 aralığında olmalı; mevcut: ${publishedIds.size}.`);
+if (publishedIds.size !== 50) errors.push(`Yayımlanmış profil sayısı tam 50 olmalı; mevcut: ${publishedIds.size}.`);
 for (const animeId of publishedIds) {
   if (!rotatedAnimeIds.has(animeId)) errors.push(`${animeId}: yayımlanmış profil ana sayfa rotasyonunda yer almıyor.`);
 }

@@ -42,6 +42,34 @@
       "title": "Bir soruyla açılan büyük rotalar",
       "description": "Uzak denizlerden çizim masasına, bilime ve aile oyunlarına uzanan merak dolu beş ayrı başlangıç.",
       "animeIds": ["21", "34798", "50265", "58125", "52215"]
+    },
+    {
+      "id": "kendi-ritmini-bulanlar",
+      "label": "EMEK VE İFADE",
+      "title": "Kendi ritmini bulmak için çalışanlar",
+      "description": "Buz pistinden caz sahnesine, yeteneği sabırlı emek ve kişisel bir sesle büyüten beş yolculuk.",
+      "animeIds": ["55318", "55102", "50183", "50796", "57181"]
+    },
+    {
+      "id": "zaman-daralirken",
+      "label": "ZAMAN VE HAFIZA",
+      "title": "Dünya değişirken elde kalan bağlar",
+      "description": "Döngüler, makineler ve yıkılmış dünyalar içinde hafızanın kimi koruduğunu soran beş karanlık rota.",
+      "animeIds": ["60489", "53393", "47194", "46095", "41025"]
+    },
+    {
+      "id": "kalbe-yaklasanlar",
+      "label": "YAKINLIK KURMAK",
+      "title": "Bir başkasına yaklaşmanın inceliği",
+      "description": "İlk izlenimleri aşan, bakım vermeyi ve birlikte değişmeyi küçük hareketlerde bulan beş sıcak hikâye.",
+      "animeIds": ["59845", "42897", "40787", "51552", "50594"]
+    },
+    {
+      "id": "beklenmedik-yuvalar",
+      "label": "EKİP VE AİDİYET",
+      "title": "En beklenmedik yerde bir ekip olmak",
+      "description": "Tuhaf şehirlerden basketbol sahasına, seçilmiş bağların insanı ayakta tuttuğu beş ayrı dünya.",
+      "animeIds": ["38668", "39468", "37105", "45649", "31251"]
     }
   ],
   "entries": [
@@ -521,6 +549,326 @@
       ],
       "verdict": "Chi. Chikyuu no Undou ni Tsuite, bilim tarihini birebir yeniden kurmaktan çok bir fikrin insanlardan daha uzun yaşayabilmesini anlatıyor. Sert, düşünceli ve kahramanlığın ortak bir emek olabileceğini hatırlatan bir seri.",
       "audience": "Tarihsel atmosferi, fikir çatışmalarını ve farklı karakterlere geçen anlatıları seven; karanlık şiddete hazırlıklı izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "55318",
+      "status": "PUBLISHED",
+      "headline": "Buz üzerinde kendi dönüşünü bulmaya çalışan iki acemi",
+      "summary": "Paten kaymayı herkesten geç öğrenen Inori, yarışmacı olma isteğini çevresinden saklamak zorunda kalır. Kendi sporculuk geçmişi yarım kalmış antrenör Tsukasa onun kararlılığını fark edince, ikisi küçük bir pistten büyük hedeflere uzanan ortak bir çalışma düzeni kurar.",
+      "whyWatch": [
+        "Figür patenini yalnız zarif final hareketleriyle değil; düşüş, tekrar, kenar kullanımı ve program hazırlığı gibi somut emeklerle gösterir.",
+        "Inori ile Tsukasa arasındaki bağ tek yönlü bir öğretmenlik değildir; sporcunun güveni büyürken antrenör de kendi değerini yeniden kurar.",
+        "Yarış sahneleri rakipleri engel olarak küçültmez; farklı bedenlerin, başlangıç yaşlarının ve hedeflerin aynı pistte nasıl yer bulduğunu anlatır."
+      ],
+      "verdict": "Medalist, yeteneği keşfedilecek gizli bir cevaptan çok doğru destekle işlenebilen bir ihtimal olarak görüyor. Teknik ayrıntısı güçlü, duygusu açık ve küçük ilerlemeleri gerçek bir zafer gibi hissettiren bir spor hikâyesi.",
+      "audience": "Spor animelerini, öğretmen-öğrenci ilişkilerini ve sabırlı gelişim öykülerini seven; rekabet kadar emeği de izlemek isteyenlere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "55102",
+      "status": "PUBLISHED",
+      "headline": "Öfkesini bastırmadan kendi sesini arayan beş genç kadın",
+      "summary": "Okulu bırakarak Tokyo'ya gelen Nina, hayatını değiştiren şarkının sahibi Momoka ile tesadüfen karşılaşır. Farklı nedenlerle kenara sıkışmış genç kadınların kurduğu grup, sahneye çıkmayı bir kaçıştan ziyade kim olduklarını yüksek sesle söylemenin yoluna dönüştürür.",
+      "whyWatch": [
+        "Nina'nın zorlayıcı öfkesi törpülenecek bir kusur gibi sunulmaz; çatışmaları grubun sınırlarını ve dürüstlük ihtiyacını görünür kılar.",
+        "Üç boyutlu karakter animasyonu yüz ifadeleri ile beden diline canlı bir esneklik verir, konserlerde kamera özgürce hareket eder.",
+        "Müzik sektörü hayali romantikleştirilmez; para, prova, tanıtım ve ortak karar alma yükü şarkılar kadar anlatının parçasıdır."
+      ],
+      "verdict": "Girls Band Cry, kusursuz uyum sağlayan bir ekipten çok birbirini kızdırsa da aynı sahneyi seçen insanlarla ilgileniyor. Gürültülü, inatçı ve duygusal olarak filtresiz tavrı onu sıradan yükseliş hikâyelerinden ayırıyor.",
+      "audience": "Karakter çatışması yoğun müzik serilerini, kadın arkadaşlığını ve dışavurumcu sahne enerjisini seven; sivri kahramanlara açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "50183",
+      "status": "PUBLISHED",
+      "headline": "Cazı hayatının merkezine koyan bir gencin büyük sesi",
+      "summary": "Sendai'de tenor saksofona tutulan Dai Miyamoto, profesyonel cazcı olacağına dair sarsılmaz bir inançla Tokyo'ya gider. Piyanist Yukinori ve davulcu Shunji ile kurduğu üçlü, teknik beceri, sahne cesareti ve birlikte dinlemeyi aynı anda öğrenmek zorundadır.",
+      "whyWatch": [
+        "Konserler yalnız parçayı çalmaz; renk, çizgi ve soyut görüntülerle müziğin icracı ile dinleyicide bıraktığı fiziksel hissi görünür kılar.",
+        "Üç müzisyenin yetenek düzeyi ve çalışma biçimi farklıdır, bu yüzden grubun uyumu kolay bir dostluk montajından daha inandırıcı gelişir.",
+        "Dai'nin büyük özgüveni romantikleştirilirken bile pratik yapmanın tekrarı, mekân bulma ve seyirci kazanma emeği gözden kaçırılmaz."
+      ],
+      "verdict": "Blue Giant cazı anlamak için ön bilgi istemiyor; bir insanın sesini bulduğunda o sesi başkalarına ulaştırma arzusunu doğrudan seyirciye geçiriyor. Bazı üç boyutlu planları sert görünse de konser enerjisi çok güçlü.",
+      "audience": "Müzik filmlerini, yaratıcı hırsı ve yoğun konser sekanslarını seven; tek oturuşta yükselen bir ekip hikâyesi arayanlara göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "50796",
+      "status": "PUBLISHED",
+      "headline": "Uyuyamayan iki gencin gece göğünde kurduğu sakin bağ",
+      "summary": "Uykusuzluklarını çevrelerinden saklayan Ganta ile Isaki, okulun kullanılmayan gözlemevinde karşılaşır. Bu gizli sığınağı korumak için astronomi kulübünü yeniden canlandırırken geceleri, kaygılarını açıklamak zorunda kalmadan birbirlerini anlayabildikleri ortak bir zamana dönüşür.",
+      "whyWatch": [
+        "Romantik yakınlığı büyük yanlış anlaşılmalar yerine birlikte yürümek, ekipman taşımak ve sessizce dinlemek gibi gündelik hareketlerle kurar.",
+        "Gece çekimlerinin yumuşak ışığı ile ayrıntılı ses tasarımı, uykusuzluğun yalnızlığını huzurlu ama kırılgan bir atmosfere çevirir.",
+        "Astronomi kulübü yalnız dekor değildir; gözlem planı, hava koşulları ve fotoğraf pratiği karakterlerin ortak amaç kazanmasını sağlar."
+      ],
+      "verdict": "Kimi wa Houkago Insomnia, gençlik romantizmini acele ettirmeden iki kişinin birbirine güvenli bir alan açması üzerinden anlatıyor. Sıcaklığı sorunları yok saymasından değil, onları paylaşılabilir hâle getirmesinden geliyor.",
+      "audience": "Sakin romantizmi, gece atmosferini ve doğal diyalogları seven; yüksek dram yerine yavaş gelişen güven arayan izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "57181",
+      "status": "PUBLISHED",
+      "headline": "Aynı spor salonunda hedeflerine koşan iki genç",
+      "summary": "Badminton oyuncusu Taiki her sabah antrenmana geldiğinde basketbol takımının yıldızı Chinatsu'yu kendinden önce salonda bulur. Beklenmedik biçimde yakınlaşan hayatları, Taiki'nin duygularıyla birlikte ulusal turnuva hedefini de ciddiye almasını gerektirir.",
+      "whyWatch": [
+        "Spor ile romantizmi birbirinin rakibi yapmaz; karakterlerin antrenman disiplini, duygularını ifade etme biçimlerini de şekillendirir.",
+        "Tek taraflı hayranlık zamanla Chinatsu'nun kendi hedefleri ve baskıları görünür oldukça daha dengeli bir karakter ilişkisine dönüşür.",
+        "Badminton ve basketbol sahneleri sonucu hızla geçmek yerine küçük teknik gelişmeleri, yorgunluğu ve okul takımı ritmini izletir."
+      ],
+      "verdict": "Ao no Hako, ilk aşkın heyecanını kişisel hedeflerden vazgeçmenin bahanesi yapmayan ölçülü bir gençlik hikâyesi. Sabırlı temposu ve karakterlerine tanıdığı alan, tanıdık malzemeyi içten kılıyor.",
+      "audience": "Okul romantizmini, spor kulübü atmosferini ve yavaş gelişen ilişkileri seven; büyük melodramdan çok gündelik ilerleme isteyenlere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "60489",
+      "status": "PUBLISHED",
+      "headline": "Mutluluk dağıtmak isteyen bir uzaylının anlayamadığı acı",
+      "summary": "Mutluluk saçmak amacıyla Dünya'ya gelen saf uzaylı Takopii, zorbalık gören Shizuka ile tanışır. İyi niyetle kullandığı araçlar çocuğun evde ve okulda taşıdığı yükü çözemeyince, yardım etmenin yalnız gülümsetmekten çok daha ağır bir sorumluluk olduğunu öğrenir.",
+      "whyWatch": [
+        "Sevimli tasarım ile çocukların yaşadığı sert gerçeklik arasındaki uçurum, kolay çözümlere duyulan güveni ilk andan itibaren sarsar.",
+        "Kısa bölüm sayısı her ayrıntıyı işlevli kılar; farklı bakış açıları suçlu ve mağdur etiketlerinin arkasındaki ihmal zincirini açar.",
+        "Bilim kurgu araçları birer kaçış düğmesi olmaktan çok sonuçları geri alma arzusunun ve dinlememenin bedelini görünür hâle getirir."
+      ],
+      "verdict": "Takopii no Genzai, çocukların acısını şok malzemesi yapma sınırına tehlikeli biçimde yaklaşsa da iyi niyetin tek başına bakım olmadığını güçlü biçimde anlatıyor. Yoğun, rahatsız edici ve dikkatle izlenmesi gereken kısa bir seri.",
+      "audience": "Karanlık psikolojik dramalara açık, zorbalık ve aile içi ihmal temalarına hazırlıklı; hafif bir bilim kurgu beklemeyen yetişkin izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "53393",
+      "status": "PUBLISHED",
+      "headline": "Yıkılmış Japonya'nın yollarında cenneti arayan iki genç",
+      "summary": "Kiruko ile Maru, medeniyetin çöküşünden yıllar sonra tehlikeli yaratıkların dolaştığı Japonya'da Cennet denilen yeri arar. Duvarlarla çevrili gizemli bir okulda yaşayan çocukların düzeni ise yolculukla paralel ilerleyerek iki dünyanın bağını sorgulatır.",
+      "whyWatch": [
+        "Harabe şehirler yalnız kasvet üretmez; terk edilmiş oteller, tabelalar ve gündelik eşyalar geçmiş hayatın izlerini ayrıntılı biçimde taşır.",
+        "Kiruko ile Maru arasındaki şakalaşma, sürekli tehlike altındaki yolculuğa sıcaklık verirken karakterlerin sınırlarına da dikkat eder.",
+        "Paralel anlatı cevapları hemen açıklamak yerine görsel benzerlikler ve küçük bilgilerle kurar, seyircinin bağlantıları kendisinin toplamasını ister."
+      ],
+      "verdict": "Tengoku Daimakyou, kıyamet sonrası gizemi güçlü karakter kimyası ve olağanüstü çevre tasarımıyla taşıyor. Bazı ağır konuları işleyişi tartışmalı olsa da dünyası, hareket duygusu ve merak örgüsü akılda kalıcı.",
+      "audience": "Kıyamet sonrası yolculukları, parça parça açılan gizemleri ve karanlık bilim kurguyu seven; rahatsız edici temalara hazırlıklı izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "47194",
+      "status": "PUBLISHED",
+      "headline": "Bir ada cenazesinde tekrar başlayan ölümcül yaz",
+      "summary": "Shinpei, çocukluk arkadaşı Ushio'nun cenazesi için yıllar sonra doğduğu adaya döner. Ölümün kaza olmayabileceğine dair işaretler ve adalıların gölge benzerleri hakkındaki söylentiler, onu aynı günleri yeni bilgilerle yeniden yaşadığı tehlikeli bir döngüye çeker.",
+      "whyWatch": [
+        "Zaman döngüsü her tekrarın bilgi, konum ve güven ilişkilerini değiştirdiği anlaşılır kurallarla çalışır; ilerleme somut biçimde hissedilir.",
+        "Ada topluluğunun dar coğrafyası kovalamacaları güçlendirir, feribot saatinden eski tünellere kadar mekânlar stratejinin parçası olur.",
+        "Gizem zamanla aksiyona dönüşse de Shinpei'nin gözlemci tavrı ve arkadaş grubunun paylaşılan hafızası olayları yalnız kaba güce bırakmaz."
+      ],
+      "verdict": "Summertime Render, uzun soluklu gizem ile giderek büyüyen doğaüstü çatışmayı şaşırtıcı ölçüde düzenli bir yapıda birleştiriyor. Orta bölümden sonra tonu değişse de kurallarına bağlı kalan tatmin edici bir gerilim.",
+      "audience": "Zaman döngülerini, ada gizemlerini ve stratejik doğaüstü aksiyonu seven; şiddet ile yoğun tempoya açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "46095",
+      "status": "PUBLISHED",
+      "headline": "Yüz yıllık bir görevde şarkı söylemeyi öğrenen yapay zekâ",
+      "summary": "Tema parkında şarkılarıyla insanları mutlu etmek için çalışan yapay zekâ Vivy, gelecekten gönderilen Matsumoto ile karşılaşır. İnsanlık ile yapay zekâlar arasında yaşanacak savaşı önlemek için bir asra yayılan kritik olaylara müdahale etmeleri gerekir.",
+      "whyWatch": [
+        "Yüz yıllık zaman aralığı teknolojideki değişimi gösterirken Vivy'nin görev, kimlik ve hatıra kavrayışını aşamalı olarak dönüştürür.",
+        "Aksiyon koreografisi dar koridorlarda bile ağırlık ve hız duygusunu korur; şarkılar yalnız süs değil karakter gelişiminin ölçüsüdür.",
+        "Matsumoto'nun hesapçı yaklaşımı ile Vivy'nin insanları anlamaya çalışan tavrı, doğru sonuca hangi bedelle ulaşılacağı konusunda sürekli çatışır."
+      ],
+      "verdict": "Vivy: Fluorite Eye's Song, tanıdık yapay zekâ sorularını yoğun aksiyon ve müzikle akıcı bir özgün seriye dönüştürüyor. Her zaman aynı derinliğe ulaşmasa da zamanın karakter üzerinde bıraktığı iz güçlü.",
+      "audience": "Kısa bilim kurgu serilerini, zaman çizgisi müdahalelerini ve müzikle birleşen aksiyonu seven; hızlı geçişlere açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "41025",
+      "status": "PUBLISHED",
+      "headline": "Her kayıpla insan olmayı biraz daha öğrenen ölümsüz",
+      "summary": "Dünyaya bırakılan biçimsiz bir varlık, karşılaştığı canlıların şeklini ve deneyimlerini edinerek yolculuğa başlar. Fushi adıyla tanınırken farklı çağlarda kurduğu bağlar ona dil, korku, sevgi ve ölümün ölümsüz biri için ne anlama geldiğini öğretir.",
+      "whyWatch": [
+        "Ölümsüzlük bir üstün güçten önce hafızanın yükü olarak ele alınır; her yeni biçim Fushi'nin taşıdığı ilişkinin görünür bir izidir.",
+        "Farklı coğrafya ve topluluklara uğrayan yapı, dünyanın ölçeğini genişletirken karakterin öğrenme sürecini küçük adımlarla sürdürür.",
+        "Yoshitoki Ooima'nın insanın başkalarıyla geliştiği fikri, söz bilmeyen bir varlığın giderek karmaşık seçimler yapmasında karşılık bulur."
+      ],
+      "verdict": "Fumetsu no Anata e, seyircinin gözyaşını hedeflediğini zaman zaman fazla açık etse de ölümsüzlüğü kayıpsız bir güç saymayan duygusal bir yolculuk kuruyor. En iyi bölümleri bağ kurmanın öğretici yanını çok sade anlatıyor.",
+      "audience": "Duygusal fantastik yolculukları, dönemler boyunca büyüyen karakterleri ve yas temasını seven; tekrarlanan kayıplara hazırlıklı izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "59845",
+      "status": "PUBLISHED",
+      "headline": "Komşu okulların önyargısını aşan nazik bir yakınlık",
+      "summary": "Sert görünüşü yüzünden kolayca yanlış anlaşılan Rintarou, ailesinin pastanesinde neşeli müşteri Kaoruko ile tanışır. Kaoruko'nun rakip sayılan seçkin kız okulunda okuduğunu öğrendiklerinde, aralarındaki açıklık iki okulun köklü önyargılarıyla sınanır.",
+      "whyWatch": [
+        "Rintarou'nun görünüşü ile davranışları arasındaki farkı tek şakaya indirmez; insanların onu nasıl okuduğunun özgüvenine etkisini gösterir.",
+        "Kaoruko sorun çözen kusursuz bir figür değildir; kendi çekincelerini açıkça konuşması ilişkinin karşılıklı güven üzerinde kurulmasını sağlar.",
+        "Arkadaş grupları romantizmin çevresinde dekor kalmaz, sınıf ayrımı ve okul rekabetine dair önyargılarını yüzleşerek değiştirmek zorunda kalır."
+      ],
+      "verdict": "Kaoru Hana wa Rin to Saku, iyi insanların konuşarak anlaşmasını dramatik gerilim eksikliği saymayan samimi bir gençlik romantizmi. Duygularını açık söyleyen karakterleri ve arkadaşlığa verdiği alanla ferahlatıcı.",
+      "audience": "Nazik okul romantizmini, açık iletişimi ve destekleyici arkadaş gruplarını seven; sert çatışma yerine sıcaklık arayan izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "42897",
+      "status": "PUBLISHED",
+      "headline": "Okuldaki yüzlerinin ardında birbirini gören iki genç",
+      "summary": "Sınıfta sosyal ve kusursuz görünen Hori evde kardeşiyle ilgilenen pratik bir hayat sürer; sessiz Miyamura ise okul dışında sakladığı bambaşka bir görünüme sahiptir. Tesadüfi karşılaşmaları, birbirlerinin gösterilmeyen hâllerine güvenebildikleri bir ilişki başlatır.",
+      "whyWatch": [
+        "Merkezdeki yakınlaşmayı uzun süre yapay engellerle ertelemez; ilişki başladıktan sonra gündelik uyum, kıskançlık ve sınırlar üzerine ilerler.",
+        "Yan karakterler yalnız rakip değildir, karşılıksız hislerin ve değişen arkadaşlıkların farklı biçimlerini kendi küçük hikâyelerinde taşır.",
+        "Miyamura'nın geçmiş yalnızlığı romantik bir mucizeyle silinmez; yeni bağlar onun kendisine dair sert yargılarını yavaşça gevşetir."
+      ],
+      "verdict": "Horimiya, hızlı uyarlama temposu yüzünden bazı yan hikâyeleri aceleye getirse de romantik ilişkinin başlangıçtan sonrasıyla ilgilenmesi sayesinde canlı kalıyor. Karakterleri kusurlarıyla sevilebilir kılan sıcak bir seri.",
+      "audience": "İlişkinin erken geliştiği okul romantizmlerini, geniş arkadaş kadrosunu ve gündelik komediyi seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "40787",
+      "status": "PUBLISHED",
+      "headline": "Denizi görmek isteyen genç kadınla hayallerini erteleyen öğrenci",
+      "summary": "Üniversite öğrencisi Tsuneo, yurt dışında deniz biyolojisi okuma hayali için para biriktirirken tekerlekli sandalye kullanan ve kendisine Josee diyen Kumiko'nun yardımcılığını kabul eder. Çatışmalı başlayan düzen, ikisinin de dünyaya koyduğu sınırları sorgular.",
+      "whyWatch": [
+        "Josee'yi yalnız ilham veren bir engelli karaktere dönüştürmez; öfkesi, arzuları ve hatalarıyla ilişkinin karar alan eşit tarafı olarak kurar.",
+        "Deniz, çizim ve seyahat imgeleri iki karakterin bağımsız hayallerini ortak bir romantik hedefte eritmeden yan yana getirir.",
+        "Bones'un akıcı karakter animasyonu Osaka'nın gündelik hareketini, küçük evin darlığını ve açık kıyının özgürlük hissini belirginleştirir."
+      ],
+      "verdict": "Josee to Tora to Sakana-tachi tanıdık romantik drama dönemeçlerini kullansa da iki karakterin birbirini kurtarmaktan çok harekete geçirmesine odaklanıyor. Görsel olarak canlı, duygusal olarak erişilebilir bir film.",
+      "audience": "Genç yetişkin romantizmini, yaratıcı hayalleri ve tek filmde tamamlanan duygusal gelişimi seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "51552",
+      "status": "PUBLISHED",
+      "headline": "Sevginin yabancı olduğu bir evde güvenmeyi öğrenmek",
+      "summary": "Doğaüstü yetenekleriyle tanınan bir ailede değersizleştirilerek büyüyen Miyo, soğuk ve acımasız olduğu söylenen asker Kiyoka ile görücü usulü nişanlanır. Yeni evindeki ölçülü nezaket, Miyo'nun korkuyla şekillenmiş alışkanlıklarını fark etmesine alan açar.",
+      "whyWatch": [
+        "Miyo'nun sessizliğini doğuştan gelen uysallık diye romantikleştirmez; yıllarca süren istismarın beden dilinde ve kararlarında bıraktığı izi gösterir.",
+        "Kiyoka'nın ilgisi büyük kahramanlıklardan önce yemek, kıyafet ve kişisel sınır gibi gündelik bakım hareketleri üzerinden güven oluşturur.",
+        "Taishou dönemini andıran dünya ile doğaüstü aile güçleri, evlilik pazarındaki sınıf ve soy baskısını görünür kılan bir çerçeve sunar."
+      ],
+      "verdict": "Watashi no Shiawase na Kekkon, masalsı romantizmini travmadan iyileşmenin yavaşlığıyla birleştiriyor. Fantastik çatışma bazen merkezdeki inceliği gölgelese de Miyo'nun kendi sesini bulma çizgisi etkili.",
+      "audience": "Tarihsel esintili romantik fanteziyi ve iyileşme hikâyelerini seven; aile içi istismar temalarına hazırlıklı izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "50594",
+      "status": "PUBLISHED",
+      "headline": "Açık kalan kapıları kapatırken yasın içinden geçmek",
+      "summary": "Kyushu'da yaşayan lise öğrencisi Suzume, terk edilmiş bir bölgede gizemli bir kapı arayan Souta ile karşılaşır. Kapının ardındaki güç ülkenin farklı noktalarında felaket tehdidi yaratınca ikili, harabelere uzanan uzun bir yolculuğa çıkar.",
+      "whyWatch": [
+        "Japonya boyunca yapılan yolculuk turistik manzaralarla yetinmez; boşalmış kasaba, okul ve eğlence alanlarında mekân hafızasını öne çıkarır.",
+        "Shinkai'nin ışık ve hava konusundaki ayrıntılı görselliği, fantastik tehdidi gündelik trenler, feribotlar ve geçici evlerle aynı dünyaya bağlar.",
+        "Suzume'nin yol boyunca tanıştığı kadınlar ve ailesiyle ilişkisi, merkezdeki romantik kıvılcımdan daha geniş bir bakım ağı oluşturur."
+      ],
+      "verdict": "Suzume no Tojimari, büyük felaket gösterisini kişisel ve toplumsal yasla birleştiren hareketli bir yol filmi. Bazı fantastik kuralları gevşek kalsa da mekânlara veda etme fikri duygusal merkezini sağlam tutuyor.",
+      "audience": "Makoto Shinkai görselliğini, fantastik yol filmlerini ve yasla umut arasında kurulan hikâyeleri seven izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "38668",
+      "status": "PUBLISHED",
+      "headline": "Kertenkele kafalı bir adamın büyücü avında tuhaf dostluklar",
+      "summary": "Hafızasını kaybetmiş ve başı kertenkeleye dönüşmüş Caiman, bu büyüyü yapan kişiyi bulmak için arkadaşı Nikaido ile büyücüleri avlar. Hole'un kirli sokakları ile büyücülerin gösterişli dünyası arasında süren arayış, her iki tarafta da garip aileler kurar.",
+      "whyWatch": [
+        "Aşırı şiddet ile gündelik komediyi aynı sahnede tutar; mantı yemek, dükkân işletmek ve arkadaşını kollamak kaosun içinde samimi bir ritim yaratır.",
+        "Büyücüler tek boyutlu düşmanlar değildir; En'in ekibi kendi sadakati, iş düzeni ve komik alışkanlıklarıyla paralel bir ana kadroya dönüşür.",
+        "Endüstriyel çevre tasarımı, kirli dokular ve üç boyutlu karakterler dünyanın punk estetiğini pürüzlü ama tutarlı biçimde taşır."
+      ],
+      "verdict": "Dorohedoro, karmaşık gizemini açıklamaktan önce dünyasında vakit geçirmenin keyfine güveniyor. Kanlı, komik ve şaşırtıcı derecede sıcak; tuhaflığını düzenlemek yerine ondan canlı bir topluluk çıkarıyor.",
+      "audience": "Kara mizahı, beden korkusunu ve alışılmadık fantastik dünyaları seven; yoğun şiddet ile bilinçli görsel kabalığa açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "39468",
+      "status": "PUBLISHED",
+      "headline": "Kitapsız bir dünyada okumak için her şeyi yeniden kurmak",
+      "summary": "Kitaplara tutkuyla bağlı Urano, öldükten sonra kitapların yalnız zenginlere ait olduğu bir dünyada küçük ve hastalıklı Myne olarak uyanır. Okuyacak hiçbir şey bulamayınca kâğıttan mürekkebe kadar gereken araçları kendi imkânlarıyla üretmeye karar verir.",
+      "whyWatch": [
+        "İsekai fikrini savaş gücü yerine bilgi ve üretim zinciri üzerinden kurar; basit bir kitabın arkasındaki malzeme, emek ve sınıf ilişkisini açar.",
+        "Myne'ın modern bilgisi sınırsız çözüm değildir; zayıf bedeni, çocuk konumu ve yerel insanların deneyimi her girişimin sınırlarını belirler.",
+        "Aile hayatı ile küçük ticaret adımları dünyanın ekonomisini doğal biçimde tanıtır, büyük hedefleri gündelik ev işlerine sağlamca bağlar."
+      ],
+      "verdict": "Honzuki no Gekokujou, ilerlemeyi seviye atlamakla değil bir ürünü mümkün kılan toplumsal ağı anlamakla ölçen sabırlı bir isekai. Mütevazı görüntüsünün altında ayrıntılı ve karakter odaklı bir dünya kuruyor.",
+      "audience": "Yavaş dünya inşasını, üretim süreçlerini ve aile merkezli fanteziyi seven; aksiyon yerine küçük kazanımlardan keyif alan izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "37105",
+      "status": "PUBLISHED",
+      "headline": "Dalış kulübünde mavi denizden önce gelen büyük kaos",
+      "summary": "Üniversite için deniz kenarındaki akraba dükkânına taşınan Iori, sakin bir kampüs hayatı beklerken kendini gürültülü dalış kulübünün ortasında bulur. Kulübün ölçüsüz eğlencesi yüzünden sürekli kaçmaya çalışsa da deniz altındaki dünyanın çekimine direnemez.",
+      "whyWatch": [
+        "Yüz ifadelerini sonuna kadar esneten fiziksel komedi, sıradan bir yanlış anlaşılmayı bile bölümün ana felaketine çevirecek enerjiye sahiptir.",
+        "Dalış sahneleri gürültülü kulüp hayatından bilinçli biçimde ayrılır; su altında renk, sessizlik ve ekip güvenliği gerçekten önem kazanır.",
+        "Yetişkinliğe yeni adım atan kadronun arkadaşlığı cilalı değildir, fakat zor anlarda birbirlerini sahiplenmeleri şakaların altında sağlam bir bağ kurar."
+      ],
+      "verdict": "Grand Blue, alkol ve çıplaklık şakalarını fazlasıyla tekrarlasa da oyuncu kadrosunun kusursuz komedi zamanlamasıyla çok güçlü kahkahalar çıkarıyor. Dalışa duyduğu gerçek sevgi de seriyi yalnız kampüs taşkınlığından kurtarıyor.",
+      "audience": "Abartılı yüz komedisini, yetişkin kampüs ortamını ve dağınık arkadaş gruplarını seven; yoğun içki mizahına açık izleyicilere göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "45649",
+      "status": "PUBLISHED",
+      "headline": "Bir basketbol maçının içinde yıllarca taşınan kardeşlik",
+      "summary": "Shohoku lisesi, güçlü rakibi Sannoh ile ulusal turnuvada karşılaşırken oyun kurucu Ryota Miyagi sahanın merkezine yerleşir. Tek bir maçın temposu, Ryota'nın ailesiyle geçmişini ve basketbolda kendisine açtığı alanı kısa geri dönüşlerle birbirine bağlar.",
+      "whyWatch": [
+        "Üç boyutlu animasyon ayak yerleşimi, perdeleme ve topun ağırlığı gibi basketbol ayrıntılarını okunaklı ve fiziksel bir akışla gösterir.",
+        "Maçın bilinen yıldızları yerine Ryota'yı merkeze almak, takım hikâyesine kayıp, beklenti ve küçük kalma korkusu üzerinden yeni bir giriş açar.",
+        "Sesin çekildiği kritik anlar ile tribün gürültüsü arasındaki karşıtlık, skor bilgisinden bağımsız olarak maçın baskısını seyirciye geçirir."
+      ],
+      "verdict": "The First Slam Dunk, eski hayranlara saygı duyarken seriyi hiç bilmeyen bir seyirci için de güçlü bir spor filmi olarak çalışıyor. Duygusal geçmiş ile gerçek zamanlı maç arasındaki kurgu, iki hattı birbirini boğmadan yükseltiyor.",
+      "audience": "Basketbolu, aile dramını ve sinematik spor anlatılarını seven; ana seriye başlamadan da yoğun bir maç deneyimi arayanlara göre.",
+      "spoilerSafe": true,
+      "updatedAt": "2026-08-17",
+      "reviewedAt": "2026-08-17"
+    },
+    {
+      "animeId": "31251",
+      "status": "PUBLISHED",
+      "headline": "Mars'ın çocuklarının kendilerine ait bir yer arayışı",
+      "summary": "Güvenlik şirketinde tehlikeli işlere sürülen çocuk askerler, bir bağımsızlık elçisini Dünya'ya götürme görevi sırasında yetişkin yönetime başkaldırır. Tekkadan adını alan yeni ekip, Gundam Barbatos'un gücüyle kendi geleceğini kurmaya çalışır.",
+      "whyWatch": [
+        "Savaşın bedelini soyut siyasetle sınırlamaz; eğitimsiz bırakılan çocukların bedenleri, çalışma koşulları ve seçenek yoksunluğu üzerinden gösterir.",
+        "Mikazuki ile Orga arasındaki güçlü güven, ekibi ileri taşırken kararların sorgulanmasını zorlaştıran tehlikeli bir bağımlılık da yaratır.",
+        "Barbatos'un ağır yakın dövüşleri temiz kahramanlık gösterisinden çok metalin, yakıtın ve pilot üzerindeki fiziksel baskının hissini verir."
+      ],
+      "verdict": "Kidou Senshi Gundam: Tekketsu no Orphans, Gundam evrenine ön bilgi istemeyen sert bir giriş sunuyor. Bulunmuş aile sıcaklığını çocuk emeği, sınıf ve militarizm eleştirisiyle birleştiren ağır ama sürükleyici bir seri.",
+      "audience": "Politik bilim kurguyu, mecha çatışmalarını ve seçilmiş aile hikâyelerini seven; çocuk askerlik ve yoğun şiddet temalarına açık izleyicilere göre.",
       "spoilerSafe": true,
       "updatedAt": "2026-08-17",
       "reviewedAt": "2026-08-17"

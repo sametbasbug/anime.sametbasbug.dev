@@ -123,7 +123,7 @@ Hesapsız local-first kullanım aynen korunur.
 npm run content:check
 ```
 
-Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü, spoiler onayı, yinelenen uzun cümleler ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. Altı haftalık ana sayfa seçkisinin yalnız yayımlanmış 30–50 profilden oluşmasını ve tekrar etmemesini; `/rehberler` yüzeyindeki kalıcı rehberlerle yönetmen, stüdyo ve anlatı yazılarının içerik kapılarını da korur. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
+Bu kontrol anime kimliklerini katalogla karşılaştırır; durum, alan uzunluğu, üç maddelik “neden izlenir?” bölümü, spoiler onayı, yinelenen uzun cümleler ve yayımlanmış kayıtlardaki kontrol tarihini doğrular. On haftalık ana sayfa seçkisinin yalnız yayımlanmış 50 profilden oluşmasını ve tekrar etmemesini; `/rehberler` yüzeyindeki kalıcı rehberlerle yönetmen, stüdyo ve anlatı yazılarının içerik kapılarını da korur. `npm run check` ile üretim derlemesi bu adımı otomatik çalıştırır.
 
 `npm run auth:check` (yine `npm run check` içinde) Orbit girişinin **dışarıyla
 eşleşmesi gereken** kısımlarını korur: sağlayıcı adının birebir `custom:orbit`
@@ -158,7 +158,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 12. ~~Editoryal genişleme~~ — 20 özgün profil, beş haftalık seçki ve production kabulüyle tamamlandı
 13. ~~İzleme günlüğü ve kişisel hafıza~~ — local-first kayıt, senkronizasyon, yedek v2 ve production kabulüyle tamamlandı
 14. ~~Akıllı kişisel keşif~~ — açıklanabilir öneriler ve production kabulüyle tamamlandı
-15. Editoryal derinlik — ilk production dilimi yayında: 30 profil ve 7 rehber/yazı; 50 profil hedefi sürüyor
+15. ~~Editoryal derinlik~~ — 50 özgün profil, on adet beşli seçki, 7 rehber/yazı ve production kabulüyle tamamlandı
 
 ## Sahiplik
 
