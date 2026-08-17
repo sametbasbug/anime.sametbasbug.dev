@@ -82,18 +82,26 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. 17. aşama Sezon panosunu izinli mevcut katalog verisi ve kişisel plan eşleşmesiyle uygula.
-2. 18. aşama Rota yıllığını günlük ve kişisel arşivden türetilen gizlilik kontrollü özetlerle uygula.
-3. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
-4. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-5. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
-6. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+1. 18. aşama Rota yıllığını günlük ve kişisel arşivden türetilen gizlilik kontrollü özetlerle uygula.
+2. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
+3. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
+5. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
 
 ## Sıradaki ürün işleri
 
-16. aşama production kabulüyle tamamlandı. Sıradaki aktif ürün işi 17. aşama **Sezon panosu**; ardından 18. aşama **Rota yıllığı** gelecek. İki aşama da `ROADMAP.md` içinde kapsam, sınır ve tamamlanma ölçütleriyle kayıtlıdır.
+17. aşama production kabulüyle tamamlandı. Sıradaki aktif ürün işi 18. aşama **Rota yıllığı**; kapsam, gizlilik sınırı ve tamamlanma ölçütleri `ROADMAP.md` içinde kayıtlıdır.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 17 Ağustos 2026 — 17. aşama tamamlandı
+
+- Yeni `/sezonlar` panosu seçili sezon/yılda başlayan, önceki dönemlerden devam eden ve yaklaşan yapımları ayrı görünümlerde toplar. Yıl, sezon, yayın durumu, format ve tür filtreleri Türkçe ürün diliyle sunulur.
+- `Planlıyorum` ve `İzliyorum` kayıtları yalnız tarayıcıda katalogla eşleştirilir; kişisel durum etiketi, kişisel-plan sayacı ve yalnız kendi planını gösteren filtre eklenmiştir. Kartlar mevcut anime detayı ile liste akışlarını kullanır.
+- Pano yalnız izinli statik katalogdan çalışır. Kaynak sürümü ve son veri tarihi görünürdür; kesin yayın saati, bölüm bildirimi, scraping, yeni harici API veya yeni kişisel veri alanı yoktur.
+- `season:check` sezon sınırlarını, devam/yaklaşan pencerelerini, başlık tekilleştirmesini ve kullanılabilir yılları korur. Tam `npm run check`, `npm run build` ve `npm audit` temizdir; build 1.143 statik sayfa üretmiştir.
+- Yerel ve canlı `/sezonlar` 1.920×950 ile 390×844 görünümde doğrulandı: Yaz 2026 için 26 sezon kaydı, 57 devam eden ve 49 yaklaşan sonuç; sıfır yatay taşma, sıfır kırık görsel ve hatasız uygulama konsolu. Kişisel-plan filtresi boş kesişimde mevcut arşivi değiştirmeden güvenli boş durum gösterdi.
+- `d46eb7f` main dalına push edildi. GitHub Pages `31985521359`, CI `31985521405` ve CodeQL `31985521466` başarıyla tamamlandı; canlı sayfa `https://anime.sametbasbug.dev/sezonlar/` üzerinden kabul edildi.
 
 ## 17 Ağustos 2026 — 17–18. aşamalar kanonik plana eklendi
 

@@ -194,16 +194,16 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Kişisel sınır:** Koleksiyonlar izleme durumunun yerine geçmez ve animeyi otomatik olarak kişisel listeye eklemez. Ad, açıklama ve koleksiyon üyeliği kullanıcıya aittir; paylaşım açıkça etkinleştirilmedikçe özel kalır.
 
-### 17. Sezon panosu — sıradaki
+### 17. Sezon panosu — tamamlandı
 
-- [ ] Yeni başlayan, devam eden ve yaklaşan animeleri tek bir sezon görünümünde topla.
-- [ ] Sezon, yıl, yayın durumu, format ve tür filtrelerini Türkçe ürün diliyle sun.
-- [ ] Kişisel listedeki `Planlıyorum` ve `İzliyorum` kayıtlarını sezon kataloğuyla birleştir; kullanıcının kendi izleme planını öne çıkar.
-- [ ] Anime detayına, kişisel listeye ve uygun editoryal profile doğrudan geçişler ekle.
-- [ ] Katalog sürümü ile veri tazeliğini görünür kıl; kesin yayın saati veya bildirim sözü verme.
-- [ ] İzinli mevcut katalog verisiyle çalış; harici API, scraping veya arka planda yayın takibi ekleme.
-- [ ] Sezon sınıflandırması, filtreler, kişisel durum eşleşmesi ve boş durumları otomatik kontrollerle koru.
-- [ ] Masaüstü/mobil yerel kabulü tamamla; yayın için ayrıca production kabulü yap.
+- [x] Yeni başlayan, devam eden ve yaklaşan animeleri tek bir sezon görünümünde topla.
+- [x] Sezon, yıl, yayın durumu, format ve tür filtrelerini Türkçe ürün diliyle sun.
+- [x] Kişisel listedeki `Planlıyorum` ve `İzliyorum` kayıtlarını sezon kataloğuyla birleştir; kullanıcının kendi izleme planını öne çıkar.
+- [x] Anime detayına, kişisel listeye ve uygun editoryal profile doğrudan geçişler ekle.
+- [x] Katalog sürümü ile veri tazeliğini görünür kıl; kesin yayın saati veya bildirim sözü verme.
+- [x] İzinli mevcut katalog verisiyle çalış; harici API, scraping veya arka planda yayın takibi ekleme.
+- [x] Sezon sınıflandırması, filtreler, kişisel durum eşleşmesi ve boş durumları otomatik kontrollerle koru.
+- [x] Masaüstü/mobil yerel kabulü tamamla; yayın için ayrıca production kabulü yap.
 
 **Ürün sınırı:** Sezon panosu bir yayın takvimi veya bölüm bildirimi servisi değildir. Kaynağın doğrulayabildiği sezon/yıl ve yayın durumu verisini kişisel planla birleştirir; veri belirsizliğini kesin bilgi gibi sunmaz.
 
@@ -231,11 +231,13 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [ ] Katalog/poster tazeliğini, kırık bağlantıları, erişilebilirliği ve temel performansı periyodik olarak denetle.
 - [ ] AniList'in yazılı yanıtını takip et; izin ve koşullar netleşmeden 5. aşama entegrasyonuna dokunma.
 
-Bakım hattı bağımsız bir özellik aşaması değildir; 17–18. aşamalarla birlikte düşük riskli, dar turlar hâlinde yürütülür.
+Bakım hattı bağımsız bir özellik aşaması değildir; 18. aşama ve sonraki ürün işleriyle birlikte düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–16. aşamalar tamamlandı. Sıradaki aktif ürün işi 17. aşama **Sezon panosu**; ardından 18. aşama **Rota yıllığı** gelecek. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sürekli bakım hattı ürün aşamalarına paralel, dar ve doğrulanabilir turlarla yürütülecek.
+İlk dört aşama ile 6–17. aşamalar tamamlandı. Sıradaki aktif ürün işi 18. aşama **Rota yıllığı**. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sürekli bakım hattı ürün aşamalarına paralel, dar ve doğrulanabilir turlarla yürütülecek.
+
+17. aşama tamamlandı: `/sezonlar` yeni başlayan, devam eden ve yaklaşan yapımları seçili sezon/yıl çevresinde toplar; durum, format ve tür filtreleri ile `Planlıyorum`/`İzliyorum` eşleşmesini cihazda birleştirir. Katalog sürümü ile veri tarihi görünürdür; kesin yayın saati, bildirim, scraping veya yeni harici API bağımlılığı yoktur. `season:check`, tam kontrol/build ve 1.920×950 ile 390×844 yerel/canlı tarayıcı kabulü geçti. `d46eb7f` production'a yayımlandı; Pages `31985521359`, CI `31985521405` ve CodeQL `31985521466` başarıyla tamamlandı.
 
 16. aşama tamamlandı: koleksiyonlar izleme durumundan bağımsız çalışır, silmeler tombstone olarak yakınsar ve JSON yedek v3 eski v1/v2 dosyalarını okumaya devam eder. `personal_collections` migration'ı sahip-kullanıcı RLS, yenisi-kazanır trigger'ı ve doğrulamalı JSON sınırıyla production'a uygulandı. Ayrı `share_collections` izni varsayılan kapalıdır; gerçek hesapla geçici `UNLISTED` kabulünde koleksiyon ve Medalist salt okunur göründü, özel kimlik/senkron alanları görünmedi. Test sonunda profil yeniden `PRIVATE`, koleksiyon paylaşımı kapalı ve geçici kayıtlar temizlenmiş durumdadır.
 
