@@ -104,6 +104,7 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 - Paylaşım izni varsayılan kapalıdır. Geçici `UNLISTED` kabulünde koleksiyon adı/açıklaması ile Medalist görünürken e-posta, kullanıcı UUID'si, koleksiyon UUID'si, tombstone ve istemci zamanları görünmedi. Son durumda profil `PRIVATE`, koleksiyon paylaşımı kapalı ve açık koleksiyon satırı yoktur.
 - `collections:check`, `portability:check`, `sharing:check`, Astro typecheck ve tam production build koleksiyon yakınsaması, yedek v3 ve RPC sınırlarını korur.
 - `/koleksiyonlar` 1.920×950 masaüstünde, `/anime/medalist-55318` koleksiyon seçicisi 390×844 mobilde gerçek tarayıcıyla incelendi. İki görünümde yatay taşma, kırık görsel veya konsol hatası yoktu; Medalist'i koleksiyona eklemek kişisel izleme listesinde kayıt oluşturmadı.
+- `406ac56` main dalına push edildi. GitHub Pages `31984237536`, CI `31984237560` ve CodeQL `31984237537` başarıyla tamamlandı. Canlı `/hesap` ile `/koleksiyonlar` 1.920×950 ve 390×844 görünümde yeniden doğrulandı: belge genişliği viewport'u aşmadı, kırık görsel ve uygulama konsol hatası yoktu; koleksiyon paylaşım izni kapalı, JSON yedek metni v3 kapsamıyla uyumluydu.
 
 ## 17 Ağustos 2026 — 15. aşama tamamlandı
 
@@ -211,6 +212,8 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 
 ## Son commitler
 
+- `406ac56` — `feat: complete personal collections`
+- `6b0a584` — `feat: start personal collections`
 - `c6db4e5` — `fix: pin patched nanoid dependency`
 - `b4d72f9` — `feat: add local-first watch journal`
 - `584a962` — `fix: harden catalogue source labels`
