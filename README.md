@@ -41,12 +41,12 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - 30 güçlü yapım için özgün, spoiler kontrollü Türkçe editoryal profil
 - Taslak, editoryal kontrol ve yayımlanmış durumlarını ayıran doğrulamalı içerik akışı
 - İsteğe bağlı **Equinox Orbit** girişi (Supabase'de `custom:orbit` OIDC sağlayıcısı); profil ve liste görünürlüğü ekranı
-- Yerel listeyi koruyan, tombstone destekli Supabase senkronizasyon katmanı
+- Yerel listeyi, izleme günlüğünü ve özel koleksiyonları koruyan tombstone destekli Supabase senkronizasyon katmanı
 - Sahip kullanıcıyla sınırlı Postgres RLS migration'ı
 - Anime başına tek topluluk incelemesi, spoiler perdesi, özel rapor kuyruğu ve rol korumalı moderasyon arayüzü
 - E-posta, kullanıcı UUID'si ve senkronizasyon metadatasını açmayan dar RPC üzerinden salt okunur Rota paylaşım bağlantıları
 - Toplam anime/bölüm, izleme süresi, tamamlama oranı, ortalama puan ve tür/stüdyo dağılımı üreten kişisel istatistikler
-- JSON tam yedek, okunabilir CSV dışa aktarımı ve yenisi-kazanır kurallı güvenli JSON geri yükleme
+- Liste, günlük ve koleksiyonları taşıyan JSON yedek v3; okunabilir CSV dışa aktarımı ve yenisi-kazanır kurallı güvenli geri yükleme
 - Dependabot, CodeQL ve her değişiklikte tam kontrol/build çalıştıran GitHub Actions bakım hattı
 - Astro static build
 
@@ -95,7 +95,7 @@ Kişisel liste local-first çalışır: her değişiklik önce sürümlü `rota.
 
 İzleme günlüğü ayrı `rota.watch-journal.v1` alanında aynı local-first ilkeyle çalışır. Bölüm/tarih/not kayıtları kişisel listeden bağımsız kimlik taşır; silmeler günlük tombstone'larıyla korunur. Anime detayından günlük eklemek ilerlemeyi yalnız ileri taşır. Hesap eşitlemesi migration uygulandıktan sonra raf ile günlüğü birlikte taşır.
 
-İsteğe bağlı hesap açıldığında yalnız profil ve kişisel liste verisi Supabase'e eşitlenir. Görünen ad Rota içinde düzenlenmez; Orbit OIDC kimliğinden gelir ve girişte yerel profil görünümüne yansıtılır. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır. `PUBLIC`/`UNLISTED` paylaşımı temel tablo erişimi açmaz; yüksek entropili bağlantı koduyla çalışan dar RPC yalnız görünen ad, aktif liste durumu ve bölüm ilerlemesini verir. Puan ile kişisel not ayrı tercihlerdir; e-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları paylaşılmaz. Bağlantı kapatılabilir veya kodu yenilenerek eskisi geçersiz kılınabilir.
+İsteğe bağlı hesap açıldığında profil, kişisel liste, izleme günlüğü ve özel koleksiyon verisi Supabase'e eşitlenir. Görünen ad Rota içinde düzenlenmez; Orbit OIDC kimliğinden gelir ve girişte yerel profil görünümüne yansıtılır. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır. `PUBLIC`/`UNLISTED` paylaşımı temel tablo erişimi açmaz; yüksek entropili bağlantı koduyla çalışan dar RPC yalnız sahibin açtığı alanları verir. Koleksiyon paylaşımı puan, not ve istatistiklerden ayrı ve varsayılanı kapalı bir izindir; e-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları paylaşılmaz. Bağlantı kapatılabilir veya kodu yenilenerek eskisi geçersiz kılınabilir.
 
 Yerel yapılandırma için `.env.example` dosyasını `.env` olarak kopyala ve
 Supabase publishable değerlerini ekle. Giriş için siteye ait ayrı bir istemci
@@ -160,6 +160,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 13. ~~İzleme günlüğü ve kişisel hafıza~~ — local-first kayıt, senkronizasyon, yedek v2 ve production kabulüyle tamamlandı
 14. ~~Akıllı kişisel keşif~~ — açıklanabilir öneriler ve production kabulüyle tamamlandı
 15. ~~Editoryal derinlik~~ — 50 özgün profil, on adet beşli seçki, 7 rehber/yazı ve production kabulüyle tamamlandı
+16. ~~Kişisel koleksiyonlar~~ — local-first yönetim, yedek v3, sahip-kullanıcı senkronu ve izinli paylaşım kabulüyle tamamlandı
 
 ## Sahiplik
 

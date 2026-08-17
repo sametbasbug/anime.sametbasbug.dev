@@ -711,7 +711,7 @@ main { overflow: hidden; }
 .shared-profile__identity p { margin: 0 0 6px; color: var(--coral); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
 .shared-profile__identity h2 { margin: 0; font-family: var(--display); font-size: clamp(38px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
 .shared-profile__identity small { display: block; margin-top: 8px; color: var(--muted); font-size: 9px; }
-.shared-profile__summary { display: grid; grid-template-columns: repeat(6, 1fr); border: 1px solid var(--line); border-top: 0; }
+.shared-profile__summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); border: 1px solid var(--line); border-top: 0; }
 .shared-profile__summary div { min-height: 90px; padding: 14px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
 .shared-profile__summary div:last-child { border: 0; }
 .shared-profile__summary strong { font-family: var(--display); font-size: 28px; }
@@ -720,6 +720,22 @@ main { overflow: hidden; }
 .shared-profile__empty > span { color: var(--coral); font-size: 28px; }
 .shared-profile__empty h3 { margin: 12px 0 8px; font-family: var(--display); font-size: 34px; }
 .shared-profile__empty p { margin: 0; color: var(--muted); font-size: 11px; }
+.shared-collections { margin-top: 52px; }
+.shared-collections > header { margin-bottom: 22px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 5px 30px; }
+.shared-collections > header p { margin: 0; color: var(--coral); font-size: 8px; font-weight: 900; letter-spacing: .12em; }
+.shared-collections > header h2 { margin: 0; font-family: var(--display); font-size: 38px; letter-spacing: -.04em; }
+.shared-collections > header small { grid-column: 2; grid-row: 1 / 3; max-width: 360px; color: var(--muted); font-size: 9px; line-height: 1.6; text-align: right; }
+.shared-collections__list { display: grid; gap: 16px; }
+.shared-collection { padding: 22px; border: 1px solid var(--line); background: var(--collection-soft); box-shadow: 7px 7px 0 var(--collection-shadow); }
+.shared-collection > header { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; gap: 16px; }
+.shared-collection > header i { width: 12px; height: 48px; border-radius: 999px; background: var(--collection-accent); }
+.shared-collection > header h3 { margin: 0; font-family: var(--display); font-size: 28px; letter-spacing: -.035em; }
+.shared-collection > header p { margin: 5px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.shared-collection > header strong { font-family: var(--display); font-size: 40px; }
+.shared-collection__grid { margin-top: 20px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.shared-collection-anime { min-width: 0; }
+.shared-collection-anime .art { height: 210px; }
+.shared-collection-anime > span { margin-top: 8px; display: block; overflow: hidden; font-family: var(--display); font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .shared-shelves { margin-top: 46px; display: grid; gap: 48px; }
 .shared-shelf > header { padding: 14px 16px; display: grid; grid-template-columns: 46px 1fr auto; gap: 13px; align-items: center; border: 1px solid var(--line); }
 .shared-shelf > header > span { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--paper-deep); font-size: 16px; }
@@ -739,6 +755,24 @@ main { overflow: hidden; }
 .shared-anime-card__meta b { color: var(--ink); font-size: 10px; }
 .shared-anime-card__meta > strong { color: var(--coral); font-size: 10px; }
 .shared-anime-card blockquote { margin: 14px 0 0; color: var(--muted); font-family: Georgia, serif; font-size: 10px; font-style: italic; line-height: 1.5; }
+
+@media (max-width: 760px) {
+  .shared-profile-page { width: calc(100% - 32px); }
+  .shared-profile-hero { padding: 52px 0 42px; grid-template-columns: 1fr; gap: 24px; }
+  .shared-profile-hero h1 { font-size: 56px; }
+  .shared-profile__identity { padding: 24px 20px 130px; align-items: flex-start; }
+  .shared-profile__summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shared-profile__summary div { border-bottom: 1px solid var(--line); }
+  .shared-collections > header { grid-template-columns: 1fr; }
+  .shared-collections > header small { grid-column: auto; grid-row: auto; text-align: left; }
+  .shared-collection { padding: 17px; }
+  .shared-collection > header { grid-template-columns: 10px minmax(0, 1fr) auto; gap: 10px; }
+  .shared-collection > header h3 { font-size: 22px; }
+  .shared-collection__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .shared-collection-anime .art { height: 145px; }
+  .shared-shelf__grid { grid-template-columns: 1fr; }
+  .shared-anime-card { grid-template-columns: 105px minmax(0, 1fr); gap: 14px; }
+}
 
 @media (max-width: 1100px) {
   .site-header { grid-template-columns: 1fr auto; }

@@ -34,6 +34,13 @@ export type PersonalCollectionsStore = {
 
 export type NewPersonalCollection = Pick<PersonalCollection, "name" | "description" | "color">;
 
+export type CollectionMergeSummary = {
+  added: number;
+  updated: number;
+  deleted: number;
+  kept: number;
+};
+
 const collectionColors = new Set<CollectionColor>(Object.keys(COLLECTION_COLORS) as CollectionColor[]);
 
 export class PersonalCollectionError extends Error {
@@ -121,6 +128,12 @@ export function readPersonalCollections(): PersonalCollectionsStore {
         if (validIdentifier(id) && validInstant(deletedAt)) tombstones[id] = deletedAt;
       }
     }
+    for (const id of new Set([...Object.keys(collections), ...Object.keys(tombstones)])) {
+      const collectionTime = Date.parse(collections[id]?.updatedAt ?? "");
+      const tombstoneTime = Date.parse(tombstones[id] ?? "");
+      if (Number.isNaN(collectionTime) || (!Number.isNaN(tombstoneTime) && tombstoneTime >= collectionTime)) delete collections[id];
+      else delete tombstones[id];
+    }
     return { version: 1, collections, tombstones };
   } catch {
     return emptyStore();
@@ -190,6 +203,42 @@ export function moveAnimeInCollection(collectionId: string, animeId: string, dir
   if (index < 0 || nextIndex < 0 || nextIndex >= animeIds.length) return collection;
   [animeIds[index], animeIds[nextIndex]] = [animeIds[nextIndex], animeIds[index]];
   return writePersonalCollection({ ...collection, animeIds });
+}
+
+function collectionVersion(store: PersonalCollectionsStore, id: string) {
+  return store.collections[id]?.updatedAt ?? store.tombstones[id] ?? null;
+}
+
+export function mergePersonalCollectionStores(current: PersonalCollectionsStore, incoming: PersonalCollectionsStore) {
+  const store: PersonalCollectionsStore = structuredClone(current);
+  const summary: CollectionMergeSummary = { added: 0, updated: 0, deleted: 0, kept: 0 };
+  const incomingIds = new Set([...Object.keys(incoming.collections), ...Object.keys(incoming.tombstones)]);
+
+  for (const id of incomingIds) {
+    const incomingVersion = collectionVersion(incoming, id);
+    const currentVersion = collectionVersion(store, id);
+    const incomingTime = incomingVersion ? Date.parse(incomingVersion) : Number.NaN;
+    const currentTime = currentVersion ? Date.parse(currentVersion) : Number.NEGATIVE_INFINITY;
+    if (Number.isNaN(incomingTime) || incomingTime <= currentTime) {
+      summary.kept += 1;
+      continue;
+    }
+
+    const existed = currentVersion !== null;
+    const collection = incoming.collections[id];
+    if (collection) {
+      store.collections[id] = { ...collection, animeIds: [...collection.animeIds] };
+      delete store.tombstones[id];
+      if (existed) summary.updated += 1;
+      else summary.added += 1;
+    } else {
+      delete store.collections[id];
+      store.tombstones[id] = incoming.tombstones[id];
+      summary.deleted += 1;
+    }
+  }
+
+  return { store, summary };
 }
 
 export function subscribeToPersonalCollections(callback: () => void) {

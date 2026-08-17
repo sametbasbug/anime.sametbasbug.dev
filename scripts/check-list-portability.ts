@@ -13,6 +13,7 @@ import {
 } from "../src/lib/list-portability";
 import type { PersonalListStore } from "../src/lib/personal-list";
 import type { WatchJournalStore } from "../src/lib/watch-journal";
+import { mergePersonalCollectionStores, type PersonalCollectionsStore } from "../src/lib/personal-collections";
 
 const current: PersonalListStore = {
   version: 2,
@@ -53,17 +54,41 @@ const backupJournal: WatchJournalStore = {
   tombstones: {},
 };
 
-const raw = serializeRotaBackup(backupStore, "2026-08-13T12:00:00.000Z", backupJournal);
+const currentCollections: PersonalCollectionsStore = {
+  version: 1,
+  collections: {
+    collection_newer_here: { id: "collection_newer_here", name: "Cihaz", description: "", color: "mint", animeIds: ["newer_here"], createdAt: "2026-08-12T08:00:00.000Z", updatedAt: "2026-08-13T10:00:00.000Z" },
+  },
+  tombstones: { collection_stays_deleted: "2026-08-13T10:30:00.000Z" },
+};
+
+const backupCollections: PersonalCollectionsStore = {
+  version: 1,
+  collections: {
+    collection_newer_here: { id: "collection_newer_here", name: "Eski yedek", description: "", color: "coral", animeIds: ["added"], createdAt: "2026-08-12T08:00:00.000Z", updatedAt: "2026-08-12T09:00:00.000Z" },
+    collection_added: { id: "collection_added", name: "Filmler", description: "Seçtiklerim", color: "sky", animeIds: ["added"], createdAt: "2026-08-13T08:00:00.000Z", updatedAt: "2026-08-13T09:00:00.000Z" },
+    collection_stays_deleted: { id: "collection_stays_deleted", name: "Dirilmemeli", description: "", color: "sun", animeIds: [], createdAt: "2026-08-12T07:00:00.000Z", updatedAt: "2026-08-12T07:00:00.000Z" },
+  },
+  tombstones: {},
+};
+
+const raw = serializeRotaBackup(backupStore, "2026-08-13T12:00:00.000Z", backupJournal, backupCollections);
 const document = JSON.parse(raw);
 assert.equal(document.format, ROTA_BACKUP_FORMAT);
 assert.equal(document.version, ROTA_BACKUP_VERSION);
 assert.deepEqual(parseRotaBackup(raw), backupStore);
 assert.deepEqual(parseRotaArchive(raw).journal, backupJournal);
+assert.deepEqual(parseRotaArchive(raw).collections, backupCollections);
 
 const legacyDocument = { ...document, version: 1 };
 delete legacyDocument.journalEntries;
 delete legacyDocument.journalTombstones;
 assert.deepEqual(parseRotaArchive(JSON.stringify(legacyDocument)).journal, { version: 1, entries: {}, tombstones: {} }, "Eski v1 yedekleri günlük olmadan okunmalı.");
+assert.deepEqual(parseRotaArchive(JSON.stringify(legacyDocument)).collections, { version: 1, collections: {}, tombstones: {} }, "Eski v1 yedekleri koleksiyon olmadan okunmalı.");
+const versionTwoDocument = { ...document, version: 2 };
+delete versionTwoDocument.collections;
+delete versionTwoDocument.collectionTombstones;
+assert.deepEqual(parseRotaArchive(JSON.stringify(versionTwoDocument)).collections, { version: 1, collections: {}, tombstones: {} }, "Eski v2 yedekleri koleksiyon olmadan okunmalı.");
 
 const { store: merged, summary } = mergePersonalListStores(current, parseRotaBackup(raw));
 assert.deepEqual(summary, { added: 1, updated: 1, deleted: 1, kept: 2 });
@@ -80,6 +105,12 @@ assert.equal(mergedJournal.entries.journal_newer_here.note, "Cihaz günlüğü")
 assert.equal(mergedJournal.entries.journal_added.episodeEnd, 4);
 assert.equal(mergedJournal.entries.journal_stays_deleted, undefined);
 
+const { store: mergedCollections, summary: collectionSummary } = mergePersonalCollectionStores(currentCollections, parseRotaArchive(raw).collections);
+assert.deepEqual(collectionSummary, { added: 1, updated: 0, deleted: 0, kept: 2 });
+assert.equal(mergedCollections.collections.collection_newer_here.name, "Cihaz");
+assert.equal(mergedCollections.collections.collection_added.color, "sky");
+assert.equal(mergedCollections.collections.collection_stays_deleted, undefined);
+
 for (const invalid of [
   "not-json",
   JSON.stringify({ ...document, format: "başka-format" }),
@@ -90,6 +121,9 @@ for (const invalid of [
   JSON.stringify({ ...document, entries: [{ ...document.entries[0], updatedAt: "2027-08-13T00:00:00.000Z" }] }),
   JSON.stringify({ ...document, journalEntries: [{ ...document.journalEntries[0], episodeStart: 8, episodeEnd: 7 }] }),
   JSON.stringify({ ...document, journalEntries: [...document.journalEntries, document.journalEntries[0]] }),
+  JSON.stringify({ ...document, collections: [...document.collections, document.collections[0]] }),
+  JSON.stringify({ ...document, collections: [{ ...document.collections[0], color: "neon" }] }),
+  JSON.stringify({ ...document, collections: [{ ...document.collections[0], animeIds: ["1", "1"] }] }),
 ]) {
   assert.throws(() => parseRotaBackup(invalid), RotaBackupError);
 }

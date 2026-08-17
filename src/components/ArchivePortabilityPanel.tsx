@@ -8,15 +8,15 @@ import {
   mergeWatchJournalStores,
   parseRotaArchive,
   serializeRotaBackup,
-  type MergeSummary,
 } from "../lib/list-portability";
 import { readPersonalList, replacePersonalList } from "../lib/personal-list";
+import { mergePersonalCollectionStores, readPersonalCollections, replacePersonalCollections } from "../lib/personal-collections";
 import { readWatchJournal, replaceWatchJournal } from "../lib/watch-journal";
 
 type Props = {
   catalogue: CatalogueAnime[];
   catalogueLoading?: boolean;
-  onImported?: (summary: MergeSummary) => void;
+  onImported?: () => void;
 };
 
 function dateStamp() {
@@ -44,7 +44,7 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
   const [error, setError] = useState(false);
 
   const exportJson = () => {
-    download(`equinox-rota-yedek-${dateStamp()}.json`, "application/json;charset=utf-8", serializeRotaBackup(readPersonalList(), undefined, readWatchJournal()));
+    download(`equinox-rota-yedek-${dateStamp()}.json`, "application/json;charset=utf-8", serializeRotaBackup(readPersonalList(), undefined, readWatchJournal(), readPersonalCollections()));
     setError(false);
     setFeedback("Sürümlü Rota JSON yedeğin indirildi.");
   };
@@ -64,8 +64,10 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
       const deletionCount = Object.keys(incoming.list.tombstones).length;
       const journalCount = Object.keys(incoming.journal.entries).length;
       const journalDeletionCount = Object.keys(incoming.journal.tombstones).length;
+      const collectionCount = Object.keys(incoming.collections.collections).length;
+      const collectionDeletionCount = Object.keys(incoming.collections.tombstones).length;
       const approved = window.confirm(
-        `${incomingCount} aktif liste kaydı, ${journalCount} günlük kaydı ve toplam ${deletionCount + journalDeletionCount} silme kaydı mevcut arşivinle birleştirilecek. Daha yeni cihaz kayıtların korunacak. Devam edilsin mi?`,
+        `${incomingCount} aktif liste kaydı, ${journalCount} günlük kaydı, ${collectionCount} koleksiyon ve toplam ${deletionCount + journalDeletionCount + collectionDeletionCount} silme kaydı mevcut arşivinle birleştirilecek. Daha yeni cihaz kayıtların korunacak. Devam edilsin mi?`,
       );
       if (!approved) {
         setError(false);
@@ -75,11 +77,13 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
 
       const { store, summary } = mergePersonalListStores(readPersonalList(), incoming.list);
       const { store: journalStore, summary: journalSummary } = mergeWatchJournalStores(readWatchJournal(), incoming.journal);
+      const { store: collectionStore, summary: collectionSummary } = mergePersonalCollectionStores(readPersonalCollections(), incoming.collections);
       replacePersonalList(store);
       replaceWatchJournal(journalStore);
+      replacePersonalCollections(collectionStore);
       setError(false);
-      setFeedback(`Liste: ${summary.added} yeni, ${summary.updated} güncellenen. Günlük: ${journalSummary.added} yeni, ${journalSummary.updated} güncellenen. Toplam ${summary.deleted + journalSummary.deleted} silme işlendi; ${summary.kept + journalSummary.kept} daha yeni cihaz kaydı korundu.`);
-      onImported?.(summary);
+      setFeedback(`Liste: ${summary.added} yeni, ${summary.updated} güncellenen. Günlük: ${journalSummary.added} yeni, ${journalSummary.updated} güncellenen. Koleksiyon: ${collectionSummary.added} yeni, ${collectionSummary.updated} güncellenen. Toplam ${summary.deleted + journalSummary.deleted + collectionSummary.deleted} silme işlendi; ${summary.kept + journalSummary.kept + collectionSummary.kept} daha yeni cihaz kaydı korundu.`);
+      onImported?.();
     } catch (caught) {
       setError(true);
       setFeedback(caught instanceof RotaBackupError ? caught.message : "Yedek okunamadı; dosya değişmeden bırakıldı.");
@@ -94,9 +98,9 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
         <div><p>ARŞİVİN SENİN</p><h2>Rota’nı yanında taşı</h2></div>
         <span aria-hidden="true">↗</span>
       </header>
-      <p className="archive-portability__intro">Tam Rota JSON yedeği rafını, izleme günlüğünü ve güvenli silme geçmişini taşır; CSV ise rafını tablo olarak okumak içindir.</p>
+      <p className="archive-portability__intro">Tam Rota JSON yedeği rafını, izleme günlüğünü, özel koleksiyonlarını ve güvenli silme geçmişini taşır; CSV ise rafını tablo olarak okumak içindir.</p>
       <div className="archive-portability__actions">
-        <button type="button" onClick={exportJson}><span>JSON</span><b>Tam yedeği indir</b><small>Raf, günlük, notlar ve güvenli silme geçmişi</small></button>
+        <button type="button" onClick={exportJson}><span>JSON</span><b>Tam yedeği indir</b><small>Raf, günlük, koleksiyonlar ve güvenli silme geçmişi</small></button>
         <button type="button" onClick={exportCsv} disabled={catalogueLoading}><span>CSV</span><b>Okunabilir listeyi indir</b><small>{catalogueLoading ? "Katalog hazırlanıyor…" : "Başlıklar ve liste ayrıntıları"}</small></button>
         <button type="button" onClick={() => inputRef.current?.click()}><span>GERİ YÜKLE</span><b>Rota JSON’unu birleştir</b><small>Daha yeni cihaz kayıtlarını ezmez</small></button>
       </div>

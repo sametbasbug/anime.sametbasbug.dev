@@ -15,9 +15,10 @@ gidiyor, kullanıcı orada onay veriyor ve `/hesap` adresine dönüyor. Google,
 e-posta/parola, magic-link ve Discord sunulmaz. Hesap açmak istemeyen kullanıcı
 için local-first kullanım değişmeden devam eder.
 
-Bunun Rota tarafındaki maliyeti bilerek küçük tutuldu: RLS politikaları,
-`profiles`, `personal_list_entries` ve `cloud-sync.ts` **hiç değişmedi**. Supabase
-Auth bırakılmadı; yalnız kimliği getiren sağlayıcı değişti.
+Orbit geçişinde RLS politikaları, kullanıcı tabloları ve senkronizasyon katmanı
+değişmedi. Supabase Auth bırakılmadı; yalnız kimliği getiren sağlayıcı değişti.
+Sonraki ürün aşamaları izleme günlüğünü ve kişisel koleksiyonları aynı sahip
+kullanıcı güven sınırına ayrıca ekledi.
 
 Kimlik yönteminin geçmişi, tekrar edilmemesi için duruyor: ilk üretim
 doğrulaması şifresiz e-posta bağlantıları ve Resend özel SMTP ile yapıldı; her
@@ -32,12 +33,13 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 - Orbit OIDC kimliğinden alınan görünen adın yerel kopyası; liste, puan, not ve türetilmiş istatistik görünürlüğü tercihleri;
 - anime durumu, bölüm ilerlemesi, kişisel puan ve özel not;
 - bölüm aralığı, izleme tarihi ve 280 karakterlik özel günlük notu;
+- özel koleksiyon adı, açıklaması, renk kimliği ve sıralı anime üyeleri;
 - cihazlar arası silme işlemlerini taşıyan tombstone kayıtları.
 
 ## Güven sınırı
 
 - Tarayıcıya yalnız Supabase URL'si ve **publishable** anahtar verilir. Secret/service-role anahtarı istemciye konmaz.
-- `profiles` ve `personal_list_entries` tablolarında RLS zorunludur.
+- `profiles`, `personal_list_entries`, `watch_journal_entries` ve `personal_collections` tablolarında RLS zorunludur.
 - Temel tablolar yalnız sahip kullanıcı tarafından okunabilir ve değiştirilebilir.
 - Görünen ad Rota'da düzenlenmez. Orbit `name` talebi bu alanın tek kaynağıdır; Supabase Auth metadatası değiştiğinde tetikleyici `profiles.display_name` kopyasını yeniler. Tarayıcının bu kolonu doğrudan güncelleme yetkisi yoktur.
 - `PUBLIC` veya `UNLISTED` tercihi temel tablolara anonim erişim açmaz. Paylaşım ekranı yüksek entropili UUID token ve `get_shared_profile` security-definer RPC'sini kullanır; yalnız aktif kayıtları ve sahibin açtığı alanları döndürür. E-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları yanıt şemasında yoktur.
@@ -45,22 +47,23 @@ Bu karar katalog veya editoryal içeriği veritabanına taşımaz. Bunlar sürü
 
 ## Local-first senkronizasyon
 
-1. Her değişiklik önce `rota.personal-list.v1` yerel kaydına yazılır.
-2. Yerel kayıt biçimi v2'ye yükseltilmiştir; eski v1 kayıtları otomatik okunur.
+1. Her değişiklik önce ilgili `rota.personal-list.v1`, `rota.watch-journal.v1` veya `rota.personal-collections.v1` yerel kaydına yazılır.
+2. Liste depolama biçimi v2'ye yükseltilmiştir; eski v1 liste kayıtları otomatik okunur. Günlük ve koleksiyonlar bağımsız sürümlü depolardır.
 3. Giriş yapılmışsa değişiklikler kısa bir debounce sonrasında buluta gönderilir.
 4. İlk girişte yerel ve bulut kayıtları `client_updated_at` üzerinden birleştirilir; daha yeni değişiklik korunur. Karşılaştırma metin olarak değil anlık değer olarak yapılır: PostgREST timestamptz'i `+00:00` ofsetiyle döndürürken yerel kayıt `Z` biçimindedir ve iki biçim metin olarak asla eşit görünmez. Aynı cihazda art arda gelen iki değişiklik saat aynı milisaniyeyi verse bile yerel sürüm en az bir milisaniye ilerletilir.
 5. Silmeler fiziksel olarak hemen kaldırılmaz. `deleted_at` tombstone'u çevrimdışı cihazların silinen kaydı geri getirmesini önler.
 6. İndirilen kayıtlar gönderimden önce yerele yazılır; gönderim yarıda kesilse bile uzaktan alınan değişiklik kaybolmaz.
-7. Gönderim 200'lük parçalara bölünür. Sunucu bir parçayı veri (22xxx) veya kısıt (23xxx) hatasıyla reddederse satırlar tek tek denenir; yalnız bozuk kayıt elenir, cihazda korunur ve hesap ekranında bildirilir. Ağ, JWT ve RLS hataları isteğin tamamını ilgilendirdiği için satır satır yeniden denenmez.
+7. Gönderim sınırlı parçalara bölünür. Sunucu bir parçayı veri (22xxx) veya kısıt (23xxx) hatasıyla reddederse satırlar tek tek denenir; yalnız bozuk kayıt elenir, cihazda korunur ve hesap ekranında bildirilir. Ağ, JWT ve RLS hataları isteğin tamamını ilgilendirdiği için satır satır yeniden denenmez.
 8. Senkronizasyon hatası yerel yazmayı engellemez; daha sonra yeniden denenebilir.
-9. İkinci migration uygulandığında, iki cihaz aynı eski bulut sürümünü okuyup eşzamanlı yükleme yaparsa `personal_list_entries_keep_newer_version` tetikleyicisi daha eski `client_updated_at` değerini taşıyan güncellemeyi atlar. Böylece istemcideki “yenisi kazanır” kararı koşulsuz `upsert` yarışıyla tersine dönmez.
+9. Liste, günlük ve koleksiyon tablolarındaki yenisi-kazanır trigger'ları; iki cihaz aynı eski bulut sürümünü okuyup eşzamanlı yükleme yaptığında daha eski `client_updated_at` değerini taşıyan güncellemeyi atlar. Böylece istemcideki karar koşulsuz `upsert` yarışıyla tersine dönmez.
 
 Bu ilk senkronizasyon modeli cihaz saatine dayanır. Ürün geniş kullanıcı kitlesine açılmadan önce saat sapması telemetrisi incelenmeli; gerekirse sunucu revizyonu/optimistic concurrency protokolüne geçilmelidir.
 
 ## Yedekleme ve taşınabilirlik
 
-- Sürümlü Rota JSON yedeği aktif liste kayıtlarıyla tombstone geçmişini birlikte taşır. E-posta, kullanıcı UUID'si, paylaşım tokenı, profil tercihleri veya Supabase oturum bilgisi yedeğe girmez.
-- Geri yükleme tarayıcıda doğrulanır ve mevcut v2 local-first depoya birleşir; toplu silme/üstüne yazma yapılmaz. Aynı anime kimliğinde daha yeni `updatedAt` veya tombstone zamanı kazanır.
+- Rota JSON yedeği v3; aktif liste, günlük ve koleksiyon kayıtlarıyla üç veri kümesinin tombstone geçmişini birlikte taşır. E-posta, kullanıcı UUID'si, paylaşım tokenı, profil tercihleri veya Supabase oturum bilgisi yedeğe girmez.
+- Geri yükleme tarayıcıda doğrulanır ve ilgili local-first depolara birleşir; toplu silme/üstüne yazma yapılmaz. Her kayıt kimliğinde daha yeni `updatedAt` veya tombstone zamanı kazanır.
+- V1 liste yedekleri ile v2 liste+günlük yedekleri geriye uyumlu okunur; eksik koleksiyon alanları boş kabul edilir.
 - Geçerli birleşim giriş yapılmış cihazda normal sahip-kullanıcı senkronizasyonunu tetikler; Supabase RLS ve satır kısıtları değişmez.
 - CSV yalnız okunabilir taşınabilirlik çıktısıdır. İç tombstone geçmişini içermez ve geri yükleme girdisi olarak kabul edilmez.
 
@@ -86,6 +89,9 @@ Migration dosyaları:
 - `supabase/migrations/202608120004_personal_statistics.sql`
 - `supabase/migrations/202608130001_orbit_managed_display_names.sql`
 - `supabase/migrations/202608170001_watch_journal.sql`
+- `supabase/migrations/202608170002_personal_collections.sql`
+- `supabase/migrations/202608170003_allow_collection_constraint_validation.sql`
+- `supabase/migrations/202608170004_require_unique_collection_anime_ids.sql`
 
 ## İzleme günlüğü
 
@@ -98,6 +104,17 @@ Migration dosyaları:
 - Günlük paylaşılabilir profile veya topluluk RPC'lerine dahil değildir; özel kullanıcı verisi olarak kalır.
 - Migration production'a uygulanmıştır. Canlı şemada RLS, dört sahip politikası, iki trigger, kapalı anonim tablo erişimi ve tarayıcı rollerine kapalı trigger fonksiyonu doğrulanmıştır.
 - Gerçek Nyx hesabında günlük yazma, otomatik liste ilerlemesi, boş yerel günlük durumundan bulut indirme ve tombstone eşitlemesi geçti. Kabul kayıtları kesin kimlikleriyle temizlendi; kullanıcının önceki liste verisi korundu.
+
+## Kişisel koleksiyonlar
+
+16. aşamadaki koleksiyonlar `personal_list_entries` durum raflarından bağımsızdır. Her koleksiyon ayrı kimlik, ad, açıklama, renk, sıralı anime kimlikleri ve istemci sürüm zamanlarını taşır.
+
+- Yerel kaynak `rota.personal-collections.v1`; oluşturma, üyelik ve silme önce tarayıcıda gerçekleşir.
+- Silme tombstone üretir. İstemci ve `keep_newer_personal_collection_version` trigger'ı eski cihazın yeni koleksiyonu veya silmeyi ezmesini engeller.
+- `personal_collections` tablosunun dört sahip-kullanıcı RLS politikası vardır; `anon` rolünün temel tablo erişimi yoktur.
+- `anime_ids` en fazla 200, benzersiz ve 1–300 karakterlik metin kimliklerinden oluşur. Saf `valid_collection_anime_ids(jsonb)` fonksiyonu yalnız bu `CHECK` kısıtını değerlendirir; tablo yazarı `authenticated` çalıştırabilir, `anon` çalıştıramaz.
+- `profiles.share_collections` varsayılan `false` değerindedir. Yalnız açıkça etkinleştirildiğinde dar `get_shared_profile` RPC'si aktif koleksiyonların adını, açıklamasını, rengini ve anime üyelerini verir; koleksiyon kimliği arayüzde gösterilmez, tombstone ve zamanlar yanıt şemasına girmez.
+- Production kabulünde gerçek hesapla oluşturma, senkronizasyon, `UNLISTED` salt-okunur görünüm ve tombstone silme geçti. Profil yeniden `PRIVATE`, izin kapalı duruma getirildi; geçici test satırı temizlendi.
 
 ## Kişisel keşif ve veri sınırı
 
@@ -161,10 +178,11 @@ değerlendirilir.
 - Supabase organizasyonu: `Equinox`; proje: `Equinox Rota`.
 - Plan ve bölge: Free, Central EU (Frankfurt).
 - Data API açık; yeni tabloları otomatik yayımlama kapalı; otomatik RLS açık.
-- Migration uygulanmış ve doğrulanmıştır: iki RLS tablosu, yedi sahip-kullanıcı politikası.
+- Kullanıcı veri migration'ları uygulanmış ve temel tabloların RLS/sahip-kullanıcı politika sınırları canlı sorgularla doğrulanmıştır.
 - Eşzamanlı cihaz yarışında eski sürümün yeniyi ezmesini önleyen ikinci migration production veritabanına uygulanmış; fonksiyon ile trigger'ın varlığı canlı sorguyla ve davranışı otomatik yakınsama senaryosuyla doğrulanmıştır.
 - Paylaşılabilir profil migration'ı production'a uygulanmıştır. Tokenların dolu/benzersiz oluşu, temel tabloların anonim erişime kapalı kalması ve RPC yetki sınırları canlı sorguyla doğrulandı. Gerçek Nyx hesabında `PRIVATE → UNLISTED`, paylaşım görünümü, token yenileme, eski bağlantının kapanması ve yeniden `PRIVATE` yapma kabulü geçti; test sonunda açık profil bırakılmadı.
 - Kişisel istatistikler tarayıcıda mevcut liste ile statik katalogdan türetilir; ayrı bir istatistik kaydı tutulmaz. Paylaşım için varsayılanı kapalı `profiles.share_statistics` tercihini ve dar RPC yanıtını genişleten migration production'a uygulanmıştır. Gerçek hesapla tercih kaydı, tokenlı salt-okunur görünüm ve yeniden kapatma kabulü geçmiştir; test sonunda dışarıya açık profil bırakılmamıştır.
+- Kişisel koleksiyon migration'ları production'a uygulanmıştır. RLS, dört sahip politikası, iki trigger, kapalı anonim tablo erişimi ve yalnız tablo `CHECK` değerlendirmesi için açılan saf doğrulayıcı yetkisi canlı sorgularla doğrulandı. Gerçek hesapta yazma/eşitleme, ayrı izinli paylaşım ve silme geçti; test sonunda görünür profil, açık koleksiyon izni veya geçici koleksiyon satırı bırakılmadı.
 - Orbit yönetimli görünen ad migration'ları production'a uygulanmıştır. Mevcut iki profil Orbit'in `name` metadata'sıyla dolduruldu ve birebir eşleşti; metadata güncelleme trigger'ı doğrulandı. İstemci `display_name` sütununu güncelleyemez, güvenlik tanımlayıcı trigger fonksiyonu da Data API üzerinden `anon` veya `authenticated` rolleri tarafından çağrılamaz.
 - Yedekleme ve taşınabilirlik production'a yayımlandı. Canlı girişli hesapta JSON/CSV indirmeleri ile aynı yedeğin değişikliksiz birleşimi doğrulandı; daha yeni/eşit cihaz kaydı korunduğu için bulut yazımı tetiklenmedi. Masaüstü ve 390 px mobil görünüm taşmasız, tarayıcı konsolu hatasızdır.
 - Auth site URL'si `https://anime.sametbasbug.dev` (jokersiz); production `/hesap` ile `localhost:4321` ve `127.0.0.1:4321` hesap dönüş adresleri izinlidir. Supabase bu listeyi **dönüş bacağında** doğruluyor: `/authorize`'a verilen `redirect_to` başlangıçta hiç denetlenmiyor, yani listeyi istekle ölçmeye çalışmak yanıltır — panelden bakmak gerekir.

@@ -18,6 +18,7 @@ type Profile = {
   share_scores: boolean;
   share_notes: boolean;
   share_statistics: boolean;
+  share_collections: boolean;
   share_token: string;
 };
 
@@ -60,6 +61,7 @@ export default function AccountExperience({ dataVersion }: Props) {
     share_scores: true,
     share_notes: false,
     share_statistics: false,
+    share_collections: false,
     share_token: "",
   });
   const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
@@ -126,7 +128,7 @@ export default function AccountExperience({ dataVersion }: Props) {
       if (!nextSession) return;
       const { data, error } = await client
         .from("profiles")
-        .select("display_name,list_visibility,share_scores,share_notes,share_statistics,share_token")
+        .select("display_name,list_visibility,share_scores,share_notes,share_statistics,share_collections,share_token")
         .eq("id", nextSession.user.id)
         .maybeSingle();
       if (active && data && !error) setProfile(data as Profile);
@@ -196,6 +198,7 @@ export default function AccountExperience({ dataVersion }: Props) {
         share_scores: next.share_scores,
         share_notes: next.share_notes,
         share_statistics: next.share_statistics,
+        share_collections: next.share_collections,
       })
       .eq("id", session.user.id);
     setBusy(false);
@@ -367,6 +370,10 @@ export default function AccountExperience({ dataVersion }: Props) {
             <input type="checkbox" checked={profile.share_statistics} onChange={(event) => setProfile({ ...profile, share_statistics: event.target.checked })} />
             <span><b>Yolculuk istatistiklerimi göster</b><small>Yaklaşık süre, tamamlama oranı, tür ve stüdyo eğilimleri paylaşılır.</small></span>
           </label>
+          <label className="sharing-toggle">
+            <input type="checkbox" checked={profile.share_collections} onChange={(event) => setProfile({ ...profile, share_collections: event.target.checked })} />
+            <span><b>Özel koleksiyonlarımı göster</b><small>Koleksiyon adları, açıklamaları ve içlerindeki animeler paylaşılır. Varsayılan olarak kapalıdır.</small></span>
+          </label>
         </div>
         <p className="account-caveat">E-posta adresin, kullanıcı kimliğin ve senkronizasyon geçmişin hiçbir paylaşım görünümünde gösterilmez.</p>
         <button className="account-save" onClick={() => saveProfile(profile)} disabled={busy}>Tercihlerimi kaydet ✦</button>
@@ -392,9 +399,7 @@ export default function AccountExperience({ dataVersion }: Props) {
       <ArchivePortabilityPanel
         catalogue={catalogue}
         catalogueLoading={catalogueLoading}
-        onImported={(summary) => {
-          if (session && summary.added + summary.updated + summary.deleted > 0) void syncForUser(session.user.id, false);
-        }}
+        onImported={() => { if (session) void syncForUser(session.user.id, false); }}
       />
     </div>
   );

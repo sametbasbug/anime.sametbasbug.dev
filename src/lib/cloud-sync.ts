@@ -7,6 +7,7 @@ import {
   type PersonalStatus,
 } from "./personal-list";
 import { syncWatchJournal } from "./journal-sync";
+import { syncPersonalCollections } from "./collection-sync";
 
 type CloudListRow = {
   anime_id: string;
@@ -192,15 +193,16 @@ export async function syncPersonalList(client: SupabaseClient, userId: string): 
   return { downloaded, uploaded, rejected };
 }
 
-/** Kişisel raf ile izleme günlüğünü tek kullanıcı eyleminde eşitler. */
+/** Kişisel raf, izleme günlüğü ve özel koleksiyonları tek kullanıcı eyleminde eşitler. */
 export async function syncRotaData(client: SupabaseClient, userId: string): Promise<SyncResult> {
-  const [list, journal] = await Promise.all([
+  const [list, journal, collections] = await Promise.all([
     syncPersonalList(client, userId),
     syncWatchJournal(client, userId),
+    syncPersonalCollections(client, userId),
   ]);
   return {
-    downloaded: list.downloaded + journal.downloaded,
-    uploaded: list.uploaded + journal.uploaded,
-    rejected: [...list.rejected, ...journal.rejected.map((id) => `journal:${id}`)],
+    downloaded: list.downloaded + journal.downloaded + collections.downloaded,
+    uploaded: list.uploaded + journal.uploaded + collections.uploaded,
+    rejected: [...list.rejected, ...journal.rejected.map((id) => `journal:${id}`), ...collections.rejected.map((id) => `collection:${id}`)],
   };
 }

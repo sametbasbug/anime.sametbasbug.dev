@@ -1,4 +1,5 @@
 import type { PersonalStatus } from "./personal-list";
+import { COLLECTION_COLORS, MAX_COLLECTIONS, MAX_COLLECTION_DESCRIPTION_LENGTH, MAX_COLLECTION_ITEMS, MAX_COLLECTION_NAME_LENGTH, type CollectionColor } from "./personal-collections";
 
 export type SharedListEntry = {
   anime_id: string;
@@ -14,11 +15,22 @@ export type SharedProfile = {
   share_scores: boolean;
   share_notes: boolean;
   share_statistics: boolean;
+  share_collections: boolean;
   entries: SharedListEntry[];
+  collections: SharedCollection[];
+};
+
+export type SharedCollection = {
+  id: string;
+  name: string;
+  description: string;
+  color: CollectionColor;
+  anime_ids: string[];
 };
 
 const shareTokenPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 const shareableStatuses = new Set<PersonalStatus>(["WATCHING", "COMPLETED", "PLANNED", "DROPPED"]);
+const collectionColors = new Set<CollectionColor>(Object.keys(COLLECTION_COLORS) as CollectionColor[]);
 
 export function isShareToken(value: string): boolean {
   return shareTokenPattern.test(value.trim());
@@ -52,6 +64,26 @@ export function normalizeSharedProfile(value: unknown): SharedProfile | null {
         }];
       })
     : [];
+  const shareCollections = candidate.share_collections === true;
+  const collections = shareCollections && Array.isArray(candidate.collections)
+    ? candidate.collections.flatMap((value) => {
+        if (!value || typeof value !== "object") return [];
+        const collection = value as Partial<SharedCollection>;
+        if (typeof collection.id !== "string" || !collection.id || collection.id.length > 100) return [];
+        if (typeof collection.name !== "string" || !collection.name.trim()) return [];
+        if (!collection.color || !collectionColors.has(collection.color)) return [];
+        const animeIds = Array.isArray(collection.anime_ids)
+          ? [...new Set(collection.anime_ids.filter((id): id is string => typeof id === "string" && id.length > 0 && id.length <= 300))].slice(0, MAX_COLLECTION_ITEMS)
+          : [];
+        return [{
+          id: collection.id,
+          name: collection.name.trim().slice(0, MAX_COLLECTION_NAME_LENGTH),
+          description: typeof collection.description === "string" ? collection.description.trim().slice(0, MAX_COLLECTION_DESCRIPTION_LENGTH) : "",
+          color: collection.color,
+          anime_ids: animeIds,
+        }];
+      }).slice(0, MAX_COLLECTIONS)
+    : [];
 
   return {
     display_name: typeof candidate.display_name === "string" && candidate.display_name.trim()
@@ -61,6 +93,8 @@ export function normalizeSharedProfile(value: unknown): SharedProfile | null {
     share_scores: candidate.share_scores === true,
     share_notes: candidate.share_notes === true,
     share_statistics: candidate.share_statistics === true,
+    share_collections: shareCollections,
     entries,
+    collections,
   };
 }

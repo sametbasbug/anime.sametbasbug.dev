@@ -66,6 +66,14 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
       .filter((record): record is SharedRecord => Boolean(record.anime));
   }, [catalogue, profile]);
 
+  const sharedCollections = useMemo(() => {
+    const byId = new Map(catalogue.map((anime) => [anime.id, anime]));
+    return (profile?.collections ?? []).map((collection) => ({
+      collection,
+      anime: collection.anime_ids.map((animeId) => byId.get(animeId)).filter((anime): anime is CatalogueAnime => Boolean(anime)),
+    }));
+  }, [catalogue, profile]);
+
   const statistics = useMemo(() => calculateRotaStatistics(
     (profile?.entries ?? []).map((entry) => ({
       animeId: entry.anime_id,
@@ -106,9 +114,27 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
         <div><strong>{records.length}</strong><span>anime</span></div>
         {shelfOrder.map((status) => <div key={status}><strong>{counts[status]}</strong><span>{personalStatusLabels[status]}</span></div>)}
         <div><strong>{average === null ? "—" : average.toFixed(1)}</strong><span>ortalama puan</span></div>
+        {profile.share_collections && <div><strong>{sharedCollections.length}</strong><span>koleksiyon</span></div>}
       </section>
 
       {profile.share_statistics && <PersonalStatisticsPanel statistics={statistics} mode="shared" />}
+
+      {profile.share_collections && sharedCollections.length > 0 && (
+        <section className="shared-collections" aria-label="Paylaşılan özel koleksiyonlar">
+          <header><p>ÖZEL KOLEKSİYONLAR</p><h2>Seçilmiş rotalar</h2><small>Hesap sahibinin paylaşmayı seçtiği kişisel anime rafları.</small></header>
+          <div className="shared-collections__list">
+            {sharedCollections.map(({ collection, anime }) => (
+              <article className={`shared-collection collection-color--${collection.color}`} key={collection.id}>
+                <header><i aria-hidden="true"></i><div><h3>{collection.name}</h3><p>{collection.description || "Bu koleksiyon için kısa bir not eklenmemiş."}</p></div><strong>{anime.length.toString().padStart(2, "0")}</strong></header>
+                {anime.length > 0 && <div className="shared-collection__grid">{anime.map((item) => {
+                  const visual = visualFor(item.id);
+                  return <a className="shared-collection-anime" href={`/anime/${item.slug}`} key={item.id}><AnimeArtwork art={visual.art} palette={visual.palette} posterPath={item.poster?.path} title={item.title} compact /><span>{item.title}</span></a>;
+                })}</div>}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       {records.length === 0 ? (
         <div className="shared-profile__empty"><span>♡</span><h3>Bu rafta henüz anime yok.</h3><p>Rota yeni başladığında boş raf da hikâyenin parçasıdır.</p></div>

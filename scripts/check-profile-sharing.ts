@@ -13,19 +13,29 @@ const normalized = normalizeSharedProfile({
   share_scores: true,
   share_notes: false,
   share_statistics: true,
+  share_collections: true,
   entries: [
     { anime_id: "1", status: "WATCHING", progress: 4.9, score: 8, note: null },
     { anime_id: "bad", status: "UNKNOWN", progress: 0, score: 5, note: "drop me" },
+  ],
+  collections: [
+    { id: "night", name: "  Gece rotaları  ", description: "Sessiz dünyalar", color: "mint", anime_ids: ["1", "1", "2"] },
+    { id: "bad", name: "Bozuk", description: "", color: "neon", anime_ids: [] },
   ],
 });
 assert.ok(normalized);
 assert.equal(normalized.display_name, "Nyx");
 assert.equal(normalized.share_statistics, true);
+assert.equal(normalized.share_collections, true);
 assert.equal(normalized.entries.length, 1);
 assert.equal(normalized.entries[0]?.progress, 4);
+assert.deepEqual(normalized.collections[0]?.anime_ids, ["1", "2"]);
+assert.equal(normalizeSharedProfile({ list_visibility: "UNLISTED", share_collections: false, collections: [{ id: "x", name: "Gizli", color: "mint", anime_ids: [] }], entries: [] })?.collections.length, 0);
 assert.equal(normalizeSharedProfile({ list_visibility: "PRIVATE", entries: [] }), null);
 
-const migration = await readFile(new URL("../supabase/migrations/202608120003_shareable_profiles.sql", import.meta.url), "utf8");
+const baseMigration = await readFile(new URL("../supabase/migrations/202608120003_shareable_profiles.sql", import.meta.url), "utf8");
+const collectionMigration = await readFile(new URL("../supabase/migrations/202608170002_personal_collections.sql", import.meta.url), "utf8");
+const migration = `${baseMigration}\n${collectionMigration}`;
 const accountExperience = await readFile(new URL("../src/components/AccountExperience.tsx", import.meta.url), "utf8");
 for (const requiredRule of [
   "profiles_share_token_idx",
@@ -36,15 +46,15 @@ for (const requiredRule of [
   "case when profile.share_notes",
   "rotate_profile_share_token",
   "revoke all on function public.get_shared_profile(uuid) from public",
+  "profile.share_collections",
+  "collection.deleted_at is null",
+  "else '[]'::jsonb end",
 ]) {
   assert.ok(migration.includes(requiredRule), `Paylaşım migration'ında eksik koruma: ${requiredRule}`);
 }
 
 for (const forbiddenField of ["auth.users", "email", "client_updated_at'", "user_id'"]) {
-  const rpcBody = migration.slice(
-    migration.indexOf("create or replace function public.get_shared_profile"),
-    migration.indexOf("create or replace function public.rotate_profile_share_token"),
-  );
+  const rpcBody = collectionMigration.slice(collectionMigration.indexOf("create or replace function public.get_shared_profile"));
   assert.equal(rpcBody.includes(forbiddenField), false, `Paylaşım RPC'si özel alan sızdırıyor: ${forbiddenField}`);
 }
 

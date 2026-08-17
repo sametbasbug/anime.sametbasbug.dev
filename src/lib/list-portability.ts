@@ -12,9 +12,18 @@ import {
   type WatchJournalEntry,
   type WatchJournalStore,
 } from "./watch-journal";
+import {
+  COLLECTION_COLORS,
+  MAX_COLLECTION_DESCRIPTION_LENGTH,
+  MAX_COLLECTION_ITEMS,
+  MAX_COLLECTION_NAME_LENGTH,
+  type CollectionColor,
+  type PersonalCollection,
+  type PersonalCollectionsStore,
+} from "./personal-collections";
 
 export const ROTA_BACKUP_FORMAT = "equinox-rota.personal-list";
-export const ROTA_BACKUP_VERSION = 2;
+export const ROTA_BACKUP_VERSION = 3;
 export const MAX_BACKUP_BYTES = 10 * 1024 * 1024;
 export const MAX_BACKUP_RECORDS = 20_000;
 const MAX_BACKUP_CLOCK_SKEW_MS = 5 * 60 * 1000;
@@ -29,6 +38,11 @@ type BackupJournalTombstone = {
   deletedAt: string;
 };
 
+type BackupCollectionTombstone = {
+  id: string;
+  deletedAt: string;
+};
+
 export type RotaListBackup = {
   format: typeof ROTA_BACKUP_FORMAT;
   version: typeof ROTA_BACKUP_VERSION;
@@ -37,11 +51,14 @@ export type RotaListBackup = {
   tombstones: BackupTombstone[];
   journalEntries: WatchJournalEntry[];
   journalTombstones: BackupJournalTombstone[];
+  collections: PersonalCollection[];
+  collectionTombstones: BackupCollectionTombstone[];
 };
 
 export type ParsedRotaArchive = {
   list: PersonalListStore;
   journal: WatchJournalStore;
+  collections: PersonalCollectionsStore;
 };
 
 export type MergeSummary = {
@@ -52,6 +69,7 @@ export type MergeSummary = {
 };
 
 const statuses = new Set<PersonalStatus>(Object.keys(personalStatusLabels) as PersonalStatus[]);
+const collectionColors = new Set<CollectionColor>(Object.keys(COLLECTION_COLORS) as CollectionColor[]);
 
 export class RotaBackupError extends Error {
   constructor(message: string) {
@@ -158,6 +176,42 @@ function parseJournalTombstone(value: unknown, index: number): BackupJournalTomb
   };
 }
 
+function parseCollection(value: unknown, index: number): PersonalCollection {
+  const collection = objectValue(value, `collections[${index}]`);
+  const id = validJournalId(collection.id, `collections[${index}].id`);
+  if (typeof collection.name !== "string" || !collection.name.trim() || collection.name.length > MAX_COLLECTION_NAME_LENGTH) {
+    throw new RotaBackupError(`collections[${index}].name geçerli değil.`);
+  }
+  if (typeof collection.description !== "string" || collection.description.length > MAX_COLLECTION_DESCRIPTION_LENGTH) {
+    throw new RotaBackupError(`collections[${index}].description ${MAX_COLLECTION_DESCRIPTION_LENGTH} karakteri aşamaz.`);
+  }
+  if (typeof collection.color !== "string" || !collectionColors.has(collection.color as CollectionColor)) {
+    throw new RotaBackupError(`collections[${index}].color desteklenmiyor.`);
+  }
+  if (!Array.isArray(collection.animeIds) || collection.animeIds.length > MAX_COLLECTION_ITEMS) {
+    throw new RotaBackupError(`collections[${index}].animeIds en fazla ${MAX_COLLECTION_ITEMS} kayıt içerebilir.`);
+  }
+  const animeIds = collection.animeIds.map((animeId, animeIndex) => validAnimeId(animeId, `collections[${index}].animeIds[${animeIndex}]`));
+  if (new Set(animeIds).size !== animeIds.length) throw new RotaBackupError(`collections[${index}].animeIds yinelenen kimlik içeriyor.`);
+  return {
+    id,
+    name: collection.name.trim(),
+    description: collection.description,
+    color: collection.color as CollectionColor,
+    animeIds,
+    createdAt: validInstant(collection.createdAt, `collections[${index}].createdAt`),
+    updatedAt: validInstant(collection.updatedAt, `collections[${index}].updatedAt`),
+  };
+}
+
+function parseCollectionTombstone(value: unknown, index: number): BackupCollectionTombstone {
+  const tombstone = objectValue(value, `collectionTombstones[${index}]`);
+  return {
+    id: validJournalId(tombstone.id, `collectionTombstones[${index}].id`),
+    deletedAt: validInstant(tombstone.deletedAt, `collectionTombstones[${index}].deletedAt`),
+  };
+}
+
 function sortByAnimeId<T extends { animeId: string }>(items: T[]) {
   return items.sort((a, b) => a.animeId.localeCompare(b.animeId, "en"));
 }
@@ -166,7 +220,12 @@ function sortById<T extends { id: string }>(items: T[]) {
   return items.sort((a, b) => a.id.localeCompare(b.id, "en"));
 }
 
-export function createRotaBackup(store: PersonalListStore, exportedAt = new Date().toISOString(), journal: WatchJournalStore = { version: 1, entries: {}, tombstones: {} }): RotaListBackup {
+export function createRotaBackup(
+  store: PersonalListStore,
+  exportedAt = new Date().toISOString(),
+  journal: WatchJournalStore = { version: 1, entries: {}, tombstones: {} },
+  collections: PersonalCollectionsStore = { version: 1, collections: {}, tombstones: {} },
+): RotaListBackup {
   return {
     format: ROTA_BACKUP_FORMAT,
     version: ROTA_BACKUP_VERSION,
@@ -175,11 +234,13 @@ export function createRotaBackup(store: PersonalListStore, exportedAt = new Date
     tombstones: sortByAnimeId(Object.entries(store.tombstones).map(([animeId, deletedAt]) => ({ animeId, deletedAt }))),
     journalEntries: sortById(Object.values(journal.entries).map((entry) => ({ ...entry }))),
     journalTombstones: sortById(Object.entries(journal.tombstones).map(([id, deletedAt]) => ({ id, deletedAt }))),
+    collections: sortById(Object.values(collections.collections).map((collection) => ({ ...collection, animeIds: [...collection.animeIds] }))),
+    collectionTombstones: sortById(Object.entries(collections.tombstones).map(([id, deletedAt]) => ({ id, deletedAt }))),
   };
 }
 
-export function serializeRotaBackup(store: PersonalListStore, exportedAt?: string, journal?: WatchJournalStore): string {
-  return `${JSON.stringify(createRotaBackup(store, exportedAt, journal), null, 2)}\n`;
+export function serializeRotaBackup(store: PersonalListStore, exportedAt?: string, journal?: WatchJournalStore, collections?: PersonalCollectionsStore): string {
+  return `${JSON.stringify(createRotaBackup(store, exportedAt, journal, collections), null, 2)}\n`;
 }
 
 export function parseRotaArchive(raw: string): ParsedRotaArchive {
@@ -192,22 +253,28 @@ export function parseRotaArchive(raw: string): ParsedRotaArchive {
 
   const backup = objectValue(parsed, "Yedek");
   if (backup.format !== ROTA_BACKUP_FORMAT) throw new RotaBackupError("Bu dosya Equinox Rota yedeği değil.");
-  if (backup.version !== 1 && backup.version !== ROTA_BACKUP_VERSION) throw new RotaBackupError("Bu Rota yedek sürümü henüz desteklenmiyor.");
+  if (backup.version !== 1 && backup.version !== 2 && backup.version !== ROTA_BACKUP_VERSION) throw new RotaBackupError("Bu Rota yedek sürümü henüz desteklenmiyor.");
   const exportedAt = validInstant(backup.exportedAt, "exportedAt");
   if (!Array.isArray(backup.entries) || !Array.isArray(backup.tombstones)) {
     throw new RotaBackupError("Yedekte kayıt veya silme listesi eksik.");
   }
   const journalEntries = backup.version === 1 ? [] : backup.journalEntries;
   const journalTombstones = backup.version === 1 ? [] : backup.journalTombstones;
+  const collectionEntries = backup.version === 3 ? backup.collections : [];
+  const collectionTombstones = backup.version === 3 ? backup.collectionTombstones : [];
   if (!Array.isArray(journalEntries) || !Array.isArray(journalTombstones)) {
     throw new RotaBackupError("Yedekte günlük kayıtları veya günlük silme geçmişi eksik.");
   }
-  if (backup.entries.length + backup.tombstones.length + journalEntries.length + journalTombstones.length > MAX_BACKUP_RECORDS) {
+  if (!Array.isArray(collectionEntries) || !Array.isArray(collectionTombstones)) {
+    throw new RotaBackupError("Yedekte koleksiyonlar veya koleksiyon silme geçmişi eksik.");
+  }
+  if (backup.entries.length + backup.tombstones.length + journalEntries.length + journalTombstones.length + collectionEntries.length + collectionTombstones.length > MAX_BACKUP_RECORDS) {
     throw new RotaBackupError(`Yedek en fazla ${MAX_BACKUP_RECORDS.toLocaleString("tr-TR")} kayıt içerebilir.`);
   }
 
   const store: PersonalListStore = { version: 2, entries: {}, tombstones: {} };
   const journal: WatchJournalStore = { version: 1, entries: {}, tombstones: {} };
+  const collections: PersonalCollectionsStore = { version: 1, collections: {}, tombstones: {} };
   const seen = new Set<string>();
   backup.entries.forEach((value, index) => {
     const entry = parseEntry(value, index);
@@ -234,18 +301,33 @@ export function parseRotaArchive(raw: string): ParsedRotaArchive {
     seenJournal.add(tombstone.id);
     journal.tombstones[tombstone.id] = tombstone.deletedAt;
   });
+  const seenCollections = new Set<string>();
+  collectionEntries.forEach((value, index) => {
+    const collection = parseCollection(value, index);
+    if (seenCollections.has(collection.id)) throw new RotaBackupError(`Koleksiyon kimliği yedekte birden fazla kez geçiyor: ${collection.id}`);
+    seenCollections.add(collection.id);
+    collections.collections[collection.id] = collection;
+  });
+  collectionTombstones.forEach((value, index) => {
+    const tombstone = parseCollectionTombstone(value, index);
+    if (seenCollections.has(tombstone.id)) throw new RotaBackupError(`Koleksiyon kimliği yedekte birden fazla kez geçiyor: ${tombstone.id}`);
+    seenCollections.add(tombstone.id);
+    collections.tombstones[tombstone.id] = tombstone.deletedAt;
+  });
   const newestAllowed = Date.parse(exportedAt) + MAX_BACKUP_CLOCK_SKEW_MS;
   for (const [animeId, version] of [
     ...Object.values(store.entries).map((entry) => [entry.animeId, entry.updatedAt] as const),
     ...Object.entries(store.tombstones),
     ...Object.values(journal.entries).flatMap((entry) => [[`journal:${entry.id}:created`, entry.createdAt] as const, [`journal:${entry.id}`, entry.updatedAt] as const]),
     ...Object.entries(journal.tombstones).map(([id, deletedAt]) => [`journal:${id}`, deletedAt] as const),
+    ...Object.values(collections.collections).flatMap((collection) => [[`collection:${collection.id}:created`, collection.createdAt] as const, [`collection:${collection.id}`, collection.updatedAt] as const]),
+    ...Object.entries(collections.tombstones).map(([id, deletedAt]) => [`collection:${id}`, deletedAt] as const),
   ]) {
     if (Date.parse(version) > newestAllowed) {
       throw new RotaBackupError(`Kayıt zamanı yedek oluşturma zamanından ileride: ${animeId}`);
     }
   }
-  return { list: store, journal };
+  return { list: store, journal, collections };
 }
 
 /** Eski çağıranlar için yalnız kişisel liste bölümünü döndürür. */

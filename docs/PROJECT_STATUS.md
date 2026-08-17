@@ -89,18 +89,21 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-15. aşama production kabulüyle tamamlandı. Aktif ürün işi **16. aşama: Kişisel koleksiyonlar**dır.
+16. aşama production kabulüyle tamamlandı. Yol haritasında AniList'in yazılı yanıtını bekleyen 5. aşama dışında açık ana ürün aşaması yoktur.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
 
-## 17 Ağustos 2026 — 16. aşama başladı
+## 17 Ağustos 2026 — 16. aşama tamamlandı
 
-- İlk dilim, izleme durumu listesinden bağımsız local-first özel koleksiyon modelini ve `/koleksiyonlar` yönetim yüzeyini kurar.
+- İzleme durumu listesinden bağımsız local-first özel koleksiyon modeli ve `/koleksiyonlar` yönetim yüzeyi production'a taşındı.
 - Koleksiyonlar ad, kısa açıklama, renk kimliği, anime üyeleri, sürüm ve silme tombstone'u taşır. Anime detayından bir yapım birden fazla koleksiyona eklenebilir; bu işlem yapımı otomatik olarak “Planlıyorum” rafına sokmaz.
-- İlk yerel dilim tamamlandı: koleksiyon oluşturma, düzenleme, katalogda arayıp anime ekleme, üyeleri sıralama/çıkarma ve iki adımlı silme akışları hazırlandı. Anime detayındaki kompakt seçici aynı yapımı birden fazla koleksiyonda yönetiyor.
-- `collections:check` yerel sanitizasyonu, sınırları, sürüm artışını, üyelik sıralamasını ve tombstone davranışını doğruluyor. Tam `npm run build` 82 Astro dosyasında hata, uyarı veya ipucu vermedi; 1.142 statik sayfa üretildi.
+- Koleksiyon oluşturma, düzenleme, katalogda arayıp anime ekleme, üyeleri sıralama/çıkarma ve iki adımlı silme akışları hazırlandı. Anime detayındaki kompakt seçici aynı yapımı birden fazla koleksiyonda yönetiyor.
+- Tam Rota JSON yedeği v3 koleksiyonları ve silme geçmişini taşır; v1/v2 yedekleri geriye uyumlu okunur. Birleşimde her kayıt için daha yeni koleksiyon veya tombstone kazanır.
+- `personal_collections` production migration'ı dört sahip-kullanıcı RLS politikası, iki trigger, JSON üye doğrulaması ve ayrı `profiles.share_collections` izniyle uygulandı. Doğrulama fonksiyonunun tablo `CHECK` değerlendirmesi için gereken dar `authenticated` yürütme izni takip migration'ıyla düzeltildi; anonim erişim kapalı kaldı.
+- Koleksiyon senkronu liste ve günlükle aynı hesap eyleminde çalışır. Gerçek Nyx hesabında koleksiyon yazma, buluta yükleme, tombstone silme ve yeniden boş duruma dönme kabulü geçti; geçici production satırı sonrasında fiziksel olarak temizlendi.
+- Paylaşım izni varsayılan kapalıdır. Geçici `UNLISTED` kabulünde koleksiyon adı/açıklaması ile Medalist görünürken e-posta, kullanıcı UUID'si, koleksiyon UUID'si, tombstone ve istemci zamanları görünmedi. Son durumda profil `PRIVATE`, koleksiyon paylaşımı kapalı ve açık koleksiyon satırı yoktur.
+- `collections:check`, `portability:check`, `sharing:check`, Astro typecheck ve tam production build koleksiyon yakınsaması, yedek v3 ve RPC sınırlarını korur.
 - `/koleksiyonlar` 1.920×950 masaüstünde, `/anime/medalist-55318` koleksiyon seçicisi 390×844 mobilde gerçek tarayıcıyla incelendi. İki görünümde yatay taşma, kırık görsel veya konsol hatası yoktu; Medalist'i koleksiyona eklemek kişisel izleme listesinde kayıt oluşturmadı.
-- Sonraki dilimler sırasıyla Rota JSON yedeği v3, Supabase sahip-kullanıcı RLS senkronizasyonu ve varsayılanı kapalı koleksiyon paylaşımıdır. Migration veya production değişikliği ilk yerel dilimin parçası değildir.
 
 ## 17 Ağustos 2026 — 15. aşama tamamlandı
 
