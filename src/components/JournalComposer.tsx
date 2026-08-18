@@ -105,20 +105,21 @@ export default function JournalComposer({ animeId, title, episodes }: Props) {
       <div className="journal-composer__fields">
         <label>
           İlk bölüm
-          <input type="number" min="1" max={episodes || undefined} value={episodeStart} onChange={(event) => changeStart(Number(event.target.value))} />
+          <input name="journal-episode-start" type="number" min="1" max={episodes || undefined} value={episodeStart} onChange={(event) => changeStart(Number(event.target.value))} />
         </label>
         <label>
           Son bölüm
-          <input type="number" min={episodeStart} max={episodes || undefined} value={episodeEnd} onChange={(event) => changeEnd(Number(event.target.value))} />
+          <input name="journal-episode-end" type="number" min={episodeStart} max={episodes || undefined} value={episodeEnd} onChange={(event) => changeEnd(Number(event.target.value))} />
         </label>
         <label>
           İzleme tarihi
-          <input type="date" value={watchedOn} max={todayForJournal()} onChange={(event) => setWatchedOn(event.target.value)} />
+          <input name="journal-watched-on" type="date" value={watchedOn} max={todayForJournal()} onChange={(event) => setWatchedOn(event.target.value)} />
         </label>
       </div>
       <label className="journal-composer__note">
         Kısa bölüm notu
         <textarea
+          name="journal-note"
           rows={3}
           maxLength={MAX_JOURNAL_NOTE_LENGTH}
           value={note}

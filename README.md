@@ -9,7 +9,7 @@
 
 [![Equinox Rota — Türkçe anime keşif ve kişisel arşiv](./public/social/equinox-rota-share.png)](https://anime.sametbasbug.dev/)
 
-Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 900 yapımlık aranabilir katalog; açıklanabilir kişisel öneriler, kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
+Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 2.500 yapımlık aranabilir katalog; açıklanabilir kişisel öneriler, kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
 
 **Canlı soft alpha:** [anime.sametbasbug.dev](https://anime.sametbasbug.dev/)
 
@@ -22,14 +22,14 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Yeni başlayan, devam eden ve yaklaşan yapımları kişisel planla buluşturan açıklanabilir `/sezonlar` panosu
 - Duruma göre çalışan anime kartı filtreleri
 - Proje içinde CSS ile üretilmiş özgün görsel kompozisyonlar
-- 900 yapımlık gerçek, aranabilir katalog
+- 2.500 yapımlık gerçek, aranabilir ve %100 posterli katalog
 - Başlık, alternatif ad, stüdyo, Türkçe tür etiketi ve yıla göre arama
 - Türkçe tür, format, yayın durumu ve sıralama filtreleri
 - 20 Türkçe tür keşif sayfası ve normalize edilmiş stüdyo sayfaları
 - Ortak tür, stüdyo, etiket, yıl ve formata göre üretilen benzer yapım önerileri
 - Puan, tür, stüdyo, format, liste ve günlük geçmişini yalnız tarayıcıda eşleştiren açıklanabilir `/oneriler` seçicisi; kısa, film, tek sezon ve ruh hâli yolları
 - Yayımlanmamış yapımları geriye alan, sonuç niteliği iyileştirilmiş arama sıralaması
-- Statik üretilmiş 900 anime detay sayfası
+- Statik üretilmiş 2.500 anime detay sayfası
 - Dört durumlu, tarayıcıda yerel olarak saklanan kişisel anime listesi
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
 - Bölüm aralığı, izleme tarihi ve kısa notlarla local-first izleme günlüğü; aylık özet ve takvim
@@ -79,17 +79,17 @@ CI, pull request ve `main` push'larında Node.js 24 üzerinde `npm ci` ile tam s
 
 ## Katalog verisi
 
-Katalog, [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) sürümlerinden üretilir. Kaynak veritabanı **Open Database License (ODbL) v1.0**, içeriği **Database Contents License (DbCL) v1.0** kapsamındadır. Üretimde kullanılan sürüm ve atıf bilgisi hem katalog ekranında hem anime detaylarında görünür.
+Anime metadata, poster ve kapaklarının tek harici kaynağı [Kitsu](https://kitsu.io/) REST API ve Kitsu media CDN'dir. Rota, GitHub Pages'in statik çalışma modeli için yalnız kullandığı normalize alanları `src/data/catalogue.json` içinde sürüm kontrollü bir ürün indeksi olarak tutar; ham API yanıtlarını veya görsel dosyalarını aynalamaz.
 
 ```bash
 npm run data:refresh
 ```
 
-Komut en güncel GitHub sürümünü indirir, beklenen lisansı doğrular ve `src/data/catalogue.json` dosyasını yeniden üretir. Üretim sırasında aynı başlık/yıl/formatta kalan kesin upstream kopyalar tek kanonik kayıtta birleştirilir; seçkiye giren açık devam sezonlarının kaynakta bulunan önceki sezonları da 900 kayıt sınırı içinde korunur. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur; detay sayfaları derleme sırasında statik oluşturulur.
+Komut kararlı `src/data/kitsu-catalogue-seed.json` seçkisini Kitsu API'den yeniden çeker, şemaya normalize eder ve ancak 2.500 kaydın tamamı geçerli bir Kitsu posteriyle geldiyse `src/data/catalogue.json` dosyasını yeniler. Timeout, sınırlı retry ve `Retry-After` desteği vardır; eksik veya postersiz yenileme mevcut sağlam katalogu ezmez. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur, detay sayfaları derleme sırasında statik oluşturulur. `npm run catalogue:check` veri sözleşmesini, `npm run kitsu:media-check` CDN erişimini denetler.
 
 AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan veri kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. MAL veya başka siteler de scrape edilmez.
 
-Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime model uyuşmazlıkları önce doğrulanmış `src/data/tmdb-poster-overrides.json` kayıtlarıyla çözülür; açık numaralı TV sezonları normal aramadan önce ana seri üzerinden eşleştirilir ve mevcutsa sezona özgü görsel tercih edilir. Kalan yapımlar bilinen İngilizce/Japonca adlar genelinde sıkı başlık-yıl-tür eşleşmesiyle çözülür; güvenli eşleşme kurulamayanlar proje içinde üretilen Rota CSS kompozisyonlarını korur. Zorunlu TMDB atfı globaldir ve anime-offline-database içindeki üçüncü taraf poster URL'leri kullanılmaz. Türkçe editoryal açıklamalar doğrudan kopyalanmaz; sürüm kontrollü özgün metin olarak hazırlanır. Ana sayfa seçkisi ve sayaçları derleme sırasında gerçek katalogdan üretilir.
+Poster ve cover URL'leri doğrudan kararlı `media.kitsu.app` adresleridir; kısa ömürlü imzalı URL'ler katalog üretiminde elenir. Responsive görsel varyantları kullanılır ve beklenmedik CDN hatasında yerleşimi koruyan Rota fallback'i görünür. Türkçe editoryal açıklamalar Kitsu synopsis metninden otomatik üretilmez; sürüm kontrollü özgün içerik olarak kalır. İlk geçiş 900 eski Rota kimliğinin 797'sini ve 50 editoryal bağın tamamını korudu; güvenli eşleşmeyen veya görsel kapısını geçmeyen 103 eski kayıt, daha geniş 2.500 yapımlık seçkide yer almadı. Geçişin kararları ve kabul kanıtı [`docs/KITSU_MIGRATION_PLAN.md`](./docs/KITSU_MIGRATION_PLAN.md) içindedir.
 
 ## Kişisel liste ve hesap verisi
 
@@ -178,6 +178,6 @@ Katkı akışı, kalite kapıları ve ürün sınırları için [`CONTRIBUTING.m
 
 ## Lisans
 
-Uygulama kaynak kodu **GNU AGPL v3.0 only** ile lisanslanır; ayrıntılar [`LICENSE`](./LICENSE) dosyasındadır. Özgün Türkçe editoryal içerikler, ürün metinleri, görsel kimlik ile Rota ve Equinox marka unsurları açık kaynak lisansına dahil değildir ve tüm hakları saklıdır. Katalog verisi kendi ODbL v1.0 ve DbCL v1.0 koşullarına tabidir.
+Uygulama kaynak kodu **GNU AGPL v3.0 only** ile lisanslanır; ayrıntılar [`LICENSE`](./LICENSE) dosyasındadır. Özgün Türkçe editoryal içerikler, ürün metinleri, görsel kimlik ile Rota ve Equinox marka unsurları açık kaynak lisansına dahil değildir ve tüm hakları saklıdır. Kitsu'dan gelen metadata ve görseller sağlayıcının kendi koşullarına tabidir.
 
 Kapsam ayrımı ve üçüncü taraf materyalleri için [`CONTENT_LICENSE.md`](./CONTENT_LICENSE.md) dosyasına bakın.

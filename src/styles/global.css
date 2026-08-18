@@ -283,9 +283,9 @@ main { overflow: hidden; }
 
 .site-footer { min-height: 190px; padding: 50px max(32px, calc((100vw - 1420px)/2)); display: grid; grid-template-columns: auto minmax(180px, 1fr) minmax(220px, .8fr) auto; gap: 32px; align-items: center; background: var(--paper-deep); }
 .site-footer > p { color: var(--muted); font-family: Georgia, serif; font-size: 13px; font-style: italic; }
-.tmdb-attribution { max-width: 350px; display: flex; align-items: center; gap: 13px; }
-.tmdb-attribution img { width: 68px; height: auto; display: block; }
-.tmdb-attribution small { color: var(--muted); font-size: 8px; line-height: 1.5; }
+.data-provider-attribution { max-width: 350px; display: flex; align-items: center; gap: 13px; }
+.data-provider-attribution a { color: var(--coral); font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.data-provider-attribution small { color: var(--muted); font-size: 8px; line-height: 1.5; }
 .site-footer__meta { display: grid; justify-items: end; gap: 16px; }
 .site-footer__meta nav { display: flex; gap: 18px; }
 .site-footer__meta a, .site-footer__meta small { color: var(--muted); font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }

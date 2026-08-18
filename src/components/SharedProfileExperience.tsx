@@ -128,7 +128,7 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
                 <header><i aria-hidden="true"></i><div><h3>{collection.name}</h3><p>{collection.description || "Bu koleksiyon için kısa bir not eklenmemiş."}</p></div><strong>{anime.length.toString().padStart(2, "0")}</strong></header>
                 {anime.length > 0 && <div className="shared-collection__grid">{anime.map((item) => {
                   const visual = visualFor(item.id);
-                  return <a className="shared-collection-anime" href={`/anime/${item.slug}`} key={item.id}><AnimeArtwork art={visual.art} palette={visual.palette} posterPath={item.poster?.path} title={item.title} compact /><span>{item.title}</span></a>;
+                  return <a className="shared-collection-anime" href={`/anime/${item.slug}`} key={item.id}><AnimeArtwork art={visual.art} palette={visual.palette} poster={item.poster} title={item.title} compact /><span>{item.title}</span></a>;
                 })}</div>}
               </article>
             ))}
@@ -152,7 +152,7 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
                     const progressPercent = anime.episodes > 0 ? Math.min(100, (entry.progress / anime.episodes) * 100) : 0;
                     return (
                       <article className="shared-anime-card" key={anime.id}>
-                        <a className="shared-anime-card__art" href={`/anime/${anime.slug}`} aria-label={`${anime.title} detayını aç`}><AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} compact /></a>
+                        <a className="shared-anime-card__art" href={`/anime/${anime.slug}`} aria-label={`${anime.title} detayını aç`}><AnimeArtwork art={visual.art} palette={visual.palette} poster={anime.poster} title={anime.title} compact /></a>
                         <div className="shared-anime-card__body">
                           <p>{typeLabels[anime.type]} · {seasonLabels[anime.season.season]} {anime.season.year}</p>
                           <h3><a href={`/anime/${anime.slug}`}>{anime.title}</a></h3>

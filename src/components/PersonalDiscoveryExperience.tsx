@@ -95,7 +95,7 @@ export default function PersonalDiscoveryExperience({ dataVersion }: Props) {
 
       {featured ? <section className="personal-pick" aria-live="polite">
         <div className="personal-pick__art">
-          <AnimeArtwork {...visualFor(featured.anime.id)} posterPath={featured.anime.poster?.path} title={featured.anime.title} />
+          <AnimeArtwork {...visualFor(featured.anime.id)} poster={featured.anime.poster} title={featured.anime.title} />
           <span>{featured.source === "PLANNED" ? "PLANLADIĞIN RAFTAN" : "KATALOGDAN"}</span>
         </div>
         <div className="personal-pick__copy">
@@ -117,7 +117,7 @@ export default function PersonalDiscoveryExperience({ dataVersion }: Props) {
         <div>{alternatives.map((recommendation) => {
           const visual = visualFor(recommendation.anime.id);
           return <article key={recommendation.anime.id}>
-            <a className="personal-alternatives__art" href={`/anime/${recommendation.anime.slug}`}><AnimeArtwork {...visual} posterPath={recommendation.anime.poster?.path} title={recommendation.anime.title} compact /></a>
+            <a className="personal-alternatives__art" href={`/anime/${recommendation.anime.slug}`}><AnimeArtwork {...visual} poster={recommendation.anime.poster} title={recommendation.anime.title} compact /></a>
             <div><p>{recommendation.source === "PLANNED" ? "PLANLADIĞIN RAFTAN" : displayTags(recommendation.anime.tags, 1)[0] ?? "KATALOG"}</p><h3><a href={`/anime/${recommendation.anime.slug}`}>{recommendation.anime.title}</a></h3><small>{recommendation.reasons[0]}</small></div>
           </article>;
         })}</div>

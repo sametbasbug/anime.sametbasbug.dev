@@ -42,7 +42,7 @@ const related = editorialGuides.filter((entry) => entry.id !== guide.id).slice(0
         {selections.map(({ anime, note }, index) => {
           const visual = visualFor(anime.id);
           return <article>
-            <a class="editorial-article-pick__art" href={`/anime/${anime.slug}`}><AnimeArtwork {...visual} posterPath={anime.poster?.path} title={anime.title} compact /></a>
+            <a class="editorial-article-pick__art" href={`/anime/${anime.slug}`}><AnimeArtwork {...visual} poster={anime.poster} title={anime.title} compact /></a>
             <div><p>{String(index + 1).padStart(2, "0")} · {typeLabels[anime.type] ?? anime.type}</p><h3><a href={`/anime/${anime.slug}`}>{anime.title}</a></h3><span>{note}</span><small>{displayTags(anime.tags, 2).join(" · ")}</small><a href={`/anime/${anime.slug}`}>Anime detayına git ↗</a></div>
           </article>;
         })}

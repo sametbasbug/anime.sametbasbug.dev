@@ -203,13 +203,14 @@ export default function CommunityReviews({ animeId, animeTitle }: Props) {
                 <div className="review-composer__topline">
                   <div><b>{myReview ? "İncelemeni düzenle" : "İncelemeni yaz"}</b><span>Anime başına tek inceleme yayımlayabilirsin.</span></div>
                   <label>Puan
-                    <select value={draft.score ?? ""} onChange={(event) => setDraft({ ...draft, score: event.target.value ? Number(event.target.value) : null })}>
+                    <select name="review-score" value={draft.score ?? ""} onChange={(event) => setDraft({ ...draft, score: event.target.value ? Number(event.target.value) : null })}>
                       <option value="">Puansız</option>
                       {Array.from({ length: 10 }, (_, index) => 10 - index).map((score) => <option key={score} value={score}>{score} / 10</option>)}
                     </select>
                   </label>
                 </div>
                 <textarea
+                  name="review-body"
                   value={draft.body}
                   maxLength={REVIEW_BODY_MAX_LENGTH}
                   placeholder="Neyi sevdin, kimlere önerirsin? Konuyu özetlemek yerine kendi deneyimini anlat."
@@ -217,7 +218,7 @@ export default function CommunityReviews({ animeId, animeTitle }: Props) {
                 />
                 <div className="review-composer__footer">
                   <label className="review-spoiler-toggle">
-                    <input type="checkbox" checked={draft.containsSpoiler} onChange={(event) => setDraft({ ...draft, containsSpoiler: event.target.checked })} />
+                    <input name="review-contains-spoiler" type="checkbox" checked={draft.containsSpoiler} onChange={(event) => setDraft({ ...draft, containsSpoiler: event.target.checked })} />
                     <span><b>Spoiler içeriyor</b><small>Okuyucu açana kadar metin gizlenir.</small></span>
                   </label>
                   <span className={draftLength > REVIEW_BODY_MAX_LENGTH ? "is-error" : ""}>{draftLength}/{REVIEW_BODY_MAX_LENGTH}</span>
@@ -258,12 +259,12 @@ export default function CommunityReviews({ animeId, animeTitle }: Props) {
                           {!session ? <a href="/hesap">Raporlamak için giriş yap →</a> : (
                             <>
                               <label>Neden
-                                <select value={reportReason} onChange={(event) => setReportReason(event.target.value as ReportReason)}>
+                                <select name="report-reason" value={reportReason} onChange={(event) => setReportReason(event.target.value as ReportReason)}>
                                   {Object.entries(reportReasons).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
                                 </select>
                               </label>
                               <label>Ayrıntı <small>(isteğe bağlı)</small>
-                                <textarea value={reportDetail} maxLength={REPORT_DETAIL_MAX_LENGTH} onChange={(event) => setReportDetail(event.target.value)} />
+                                <textarea name="report-detail" value={reportDetail} maxLength={REPORT_DETAIL_MAX_LENGTH} onChange={(event) => setReportDetail(event.target.value)} />
                               </label>
                               <div><button onClick={() => setReportingId(null)}>Vazgeç</button><button onClick={() => submitReport(review.id)} disabled={busy}>Raporu gönder</button></div>
                             </>

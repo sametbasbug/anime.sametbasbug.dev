@@ -1,6 +1,6 @@
 # Equinox Rota proje durumu
 
-Son güncelleme: 18 Ağustos 2026
+Son güncelleme: 19 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -11,7 +11,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Statik yayın hedefi: **GitHub Pages**.
 - GitHub deposu: **public**.
 - Kanonik GitHub deposu: **`sametbasbug/anime.sametbasbug.dev`**.
-- Lisans modeli: uygulama kaynak kodu **AGPL-3.0-only**; özgün içerik, görsel kimlik ve marka unsurları korumalı; katalog verisi ODbL/DbCL koşullarında.
+- Lisans modeli: uygulama kaynak kodu **AGPL-3.0-only**; özgün içerik, görsel kimlik ve marka unsurları korumalı; Kitsu kaynaklı metadata ve görseller sağlayıcının koşullarında.
 - Korunan içerik ve marka katmanının hak sahibi: **Samet Başbuğ**.
 - Uygulama: Astro 7 + React 19 + strict TypeScript; statik katalog ve editoryal içerik.
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
@@ -19,6 +19,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
+- Yeni aktif ürün işi: **19. aşama Kitsu katalog geçişi** yerelde uygulanıyor. 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ hazırdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir; push/production kesimi henüz yapılmadı.
 
 ## Tamamlananlar
 
@@ -82,16 +83,25 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
-2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
-4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+1. 19. aşama Kitsu yayın adayını Samet'in incelemesine sun; açık onay olmadan commit/push/deploy yapma.
+2. AniList API başvurusunun e-posta yanıtını yalnız 5. aşamadaki kullanıcı listesi içe aktarma fizibilitesi için takip et; Kitsu katalog geçişini buna bağlama.
+3. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
+5. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
 
 ## Sıradaki ürün işleri
 
-18. aşama production kabulüyle tamamlandı. Tanımlı yeni bir aktif ürün aşaması yoktur. Sonraki ürün yönü ayrıca kararlaştırılmalıdır.
+18. aşama production kabulüyle tamamlandı. Aktif ürün işi 19. aşama **Kitsu katalog geçişi**dir. API/adapter, 2.500 yapımlık katalog, tam regresyon ve masaüstü/mobil tarayıcı kabulü yerelde tamamlandı; yalnız inceleme ile commit/push/deploy onayı bekleniyor.
 
-Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşamadaki MAL/AniList içe aktarma fizibilitesi, 19. aşamadaki katalog kaynağı değişiminden ayrı kalır.
+
+## 19 Ağustos 2026 — 19. aşama yerel yayın adayı
+
+- Anime metadata, poster ve cover hattı tek harici kaynak olarak Kitsu REST API/CDN'ye geçirildi; Manami/TMDB runtime, yenileme script'i, snapshot ve override dosyaları kaldırıldı.
+- Katalog 900'den 2.500 yapımla genişledi. 2.500/2.500 kayıt kararlı `media.kitsu.app` posterine sahip; 1.778 cover, 566 doğrulanmış stüdyo ve 2.487 etiketli kayıt var.
+- 797 eski Rota kimliği ve 50/50 editoryal bağ korundu. Güvenli Kitsu eşleşmesi veya poster kapısından geçmeyen 103 eski kayıt, ürün sahibinin onayıyla daha geniş seçkide değiştirildi; eski kullanıcı kayıtları migration ile silinmedi.
+- Tam CDN HEAD taramasında 2.499 istek ilk turda geçti; timeout veren tek URL kontrollü tekrarında HTTP 200 verdi. `npm run check` 93 dosyada sıfır hata/uyarı/ipucu, `npm audit` sıfır açık ve `npm run build` 2.627 statik sayfayla geçti.
+- 1.920×950 ana sayfa ile 390×844 Naruto arama/detay kabulünde yatay taşma sıfır; görünür ve kaydırılarak yüklenen Kitsu görselleri başarılı, konsol hata/uyarı/issue sayısı sıfır. Push/deploy yapılmadı.
 
 ## 18 Ağustos 2026 — 18. aşama production teslimi
 
@@ -233,7 +243,7 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 - Repo, Pages deploy hattı, özel domain ve HTTPS canlıdır; `main` push'ları Actions deploy'unu tetikler.
 - Supabase üretim Auth URL yapılandırması canlıdır. Orbit istemci sırrı yalnız Supabase sağlayıcı ayarında ve Orbit veritabanındaki HMAC özeti olarak tutulur; düz metin hâli hiçbir yerde saklanmaz.
 - `.env` içindeki Supabase public değerleri yereldir ve git tarafından yok sayılır.
-- TMDB poster yenilemesi yerelde `npm run posters:refresh` ile çalıştırılır. Script önce `TMDB_API_READ_TOKEN` ortam değişkenine, macOS'ta yoksa `equinox-rota-tmdb` Keychain kaydına bakar; poster yenilemek için ayrı GitHub Actions workflow'u kullanılmaz.
+- Katalog yenilemesi yerelde `npm run data:refresh` ile Kitsu REST API üzerinden çalışır; poster erişimi `npm run kitsu:media-check` ile doğrulanır. Ayrı bir görsel sağlayıcı, token veya poster workflow'u yoktur.
 - Secret/service-role anahtarı tarayıcıya veya repoya konmaz.
 
 ## Son commitler

@@ -12,9 +12,9 @@ Bu materyaller için açıkça aksi belirtilmedikçe tüm haklar saklıdır. Kay
 
 **Telif hakkı © 2026 Samet Başbuğ.**
 
-## Katalog verisi
+## Katalog verisi ve görselleri
 
-Katalog verisi [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) kaynağından türetilmiştir ve kaynak veritabanının **Open Database License (ODbL) v1.0** ile **Database Contents License (DbCL) v1.0** koşullarına tabidir. Bu veriler AGPL-3.0-only kapsamında yeniden lisanslanmaz.
+Anime metadata, poster ve kapaklarının harici kaynağı [Kitsu](https://kitsu.io/)'dur. Rota'nın normalize katalog indeksi, Kitsu'dan gelen metadata ve `media.kitsu.app` görsel bağlantılarını içerir; ham API yanıtları ve görsel dosyaları aynalanmaz. Bu üçüncü taraf veriler ve görseller AGPL-3.0-only kapsamında yeniden lisanslanmaz, Kitsu'nun kendi koşullarına tabi kalır.
 
 ## Üçüncü taraf materyalleri
 

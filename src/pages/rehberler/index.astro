@@ -34,7 +34,7 @@ const essays = editorialEssays.map(withLead);
         {guides.map((guide, index) => {
           const visual = guide.lead ? visualFor(guide.lead.id) : undefined;
           return <article class:list={["editorial-guide-card", index === 0 && "editorial-guide-card--wide"]}>
-            {guide.lead && visual && <a class="editorial-guide-card__art" href={`/rehberler/${guide.id}`}><AnimeArtwork {...visual} posterPath={guide.lead.poster?.path} title={guide.lead.title} /></a>}
+            {guide.lead && visual && <a class="editorial-guide-card__art" href={`/rehberler/${guide.id}`}><AnimeArtwork {...visual} poster={guide.lead.poster} title={guide.lead.title} /></a>}
             <div><p>{guide.focus}</p><h3><a href={`/rehberler/${guide.id}`}>{guide.title}</a></h3><span>{guide.description}</span><footer><small>{editorialGuideKindLabels[guide.kind]} · {guide.selections.length} durak</small><a href={`/rehberler/${guide.id}`}>Rehberi aç ↗</a></footer></div>
           </article>;
         })}

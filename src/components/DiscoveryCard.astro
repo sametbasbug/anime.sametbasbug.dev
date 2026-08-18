@@ -9,7 +9,7 @@ const tags = displayTags(anime.tags);
 ---
 
 <a class="catalogue-card" href={`/anime/${anime.slug}`}>
-  <AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} />
+  <AnimeArtwork art={visual.art} palette={visual.palette} poster={anime.poster} title={anime.title} />
   <div class="catalogue-card__body">
     <div class="catalogue-card__kicker">
       <span>{seasonLabels[anime.season.season]} {anime.season.year}</span>

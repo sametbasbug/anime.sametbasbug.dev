@@ -81,7 +81,7 @@ export default function ListEditor({ animeId, title, episodes }: Props) {
               <div className="list-editor__fields">
                 <label>
                   Durum
-                  <select value={entry.status} onChange={(event) => changeStatus(event.target.value as PersonalStatus)}>
+                  <select name="list-status" value={entry.status} onChange={(event) => changeStatus(event.target.value as PersonalStatus)}>
                     {Object.entries(personalStatusLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
                   </select>
                 </label>
@@ -91,6 +91,7 @@ export default function ListEditor({ animeId, title, episodes }: Props) {
                   <div className="progress-input">
                     <button onClick={() => changeProgress(entry.progress - 1)} aria-label="Bir bölüm azalt">−</button>
                     <input
+                      name="list-progress"
                       type="number"
                       min="0"
                       max={episodes || undefined}
@@ -106,6 +107,7 @@ export default function ListEditor({ animeId, title, episodes }: Props) {
                 <label>
                   Kişisel puan
                   <select
+                    name="list-score"
                     value={entry.score ?? ""}
                     onChange={(event) => persist({ ...entry, score: event.target.value ? Number(event.target.value) : null })}
                   >
@@ -118,6 +120,7 @@ export default function ListEditor({ animeId, title, episodes }: Props) {
               <label className="list-editor__note">
                 Kişisel not
                 <textarea
+                  name="list-note"
                   value={entry.note}
                   maxLength={600}
                   rows={4}

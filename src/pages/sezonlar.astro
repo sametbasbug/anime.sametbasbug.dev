@@ -4,7 +4,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import SeasonBoardExperience from "../components/SeasonBoardExperience";
 import RotaCompanion from "../components/RotaCompanion";
 import DataAttribution from "../components/DataAttribution.astro";
-import { catalogueMeta, posterMeta } from "../lib/catalogue";
+import { catalogueMeta } from "../lib/catalogue";
 import { seasonForDate } from "../lib/season-board";
 
 const current = seasonForDate(new Date());
@@ -22,7 +22,7 @@ const current = seasonForDate(new Date());
       <RotaCompanion scene="catalogue" mood="curious" className="rota-companion--season-board" client:load />
     </section>
     <SeasonBoardExperience
-      dataVersion={`${catalogueMeta.generatedAt}-${posterMeta.generatedAt}`}
+      dataVersion={catalogueMeta.generatedAt}
       initialYear={current.year}
       initialSeason={current.season}
       sourceRelease={catalogueMeta.release}

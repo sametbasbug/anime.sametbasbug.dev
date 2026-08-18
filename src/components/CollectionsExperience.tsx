@@ -239,7 +239,7 @@ export default function CollectionsExperience({ dataVersion }: Props) {
                   const visual = visualFor(anime.id);
                   return (
                     <article className="collection-anime" key={anime.id}>
-                      <a href={`/anime/${anime.slug}`} className="collection-anime__art"><AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} compact /></a>
+                      <a href={`/anime/${anime.slug}`} className="collection-anime__art"><AnimeArtwork art={visual.art} palette={visual.palette} poster={anime.poster} title={anime.title} compact /></a>
                       <div>
                         <p>{typeLabels[anime.type]} · {seasonLabels[anime.season.season]} {anime.season.year}</p>
                         <h3><a href={`/anime/${anime.slug}`}>{anime.title}</a></h3>

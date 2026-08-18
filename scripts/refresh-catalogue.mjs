@@ -1,319 +1,372 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import {
+  fetchAnimeByIds,
+  kitsuRequest,
+  kitsuTitles,
+  legacyKitsuId,
+  normalizeTitle,
+} from "./lib/kitsu-api.mjs";
 
-const REPOSITORY = "manami-project/anime-offline-database";
-const EXPECTED_LICENSE = "Open Data Commons Open Database License";
 const OUTPUT = resolve("src/data/catalogue.json");
-const MAX_ITEMS = 900;
-const TAG_LIMIT = 36;
-const PRIMARY_TAGS = [
-  "action", "adventure", "comedy", "drama", "fantasy", "romance", "mystery",
-  "psychological", "thriller", "horror", "supernatural", "science fiction", "scifi",
-  "sports", "music", "historical", "crime", "isekai", "slice of life", "daily life",
-  "martial arts", "school", "high school", "dark fantasy", "contemporary fantasy",
-];
-const primaryTagRank = new Map(PRIMARY_TAGS.map((tag, index) => [tag, index]));
-const LANDMARK_TITLES = new Set([
-  "Cowboy Bebop",
-  "Death Note",
-  "Fullmetal Alchemist: Brotherhood",
-  "Jujutsu Kaisen",
-  "Kimi no Na wa.",
-  "Kimetsu no Yaiba",
-  "Naruto",
-  "One Piece",
-  "Sen to Chihiro no Kamikakushi",
-  "Shingeki no Kyojin",
-  "Sousou no Frieren",
+const SEED_OUTPUT = resolve("src/data/kitsu-catalogue-seed.json");
+const TARGET_ITEMS = 2_500;
+const API_INCLUDE = "genres,categories,productions.company";
+const CURRENT_YEAR = new Date().getUTCFullYear();
+const RESEED = process.argv.includes("--reseed");
+
+const typeMap = new Map([
+  ["tv", "TV"],
+  ["movie", "MOVIE"],
+  ["ova", "OVA"],
+  ["ona", "ONA"],
+  ["special", "SPECIAL"],
+  ["music", "SPECIAL"],
+]);
+const statusMap = new Map([
+  ["finished", "FINISHED"],
+  ["current", "ONGOING"],
+  ["upcoming", "UPCOMING"],
+  ["unreleased", "UPCOMING"],
+  ["tba", "UPCOMING"],
 ]);
 
-const ordinalWords = { second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6 };
-
-const normalizeIdentityTitle = (value) => value
-  .normalize("NFKD")
-  .replace(/[\u0300-\u036f]/g, "")
-  .toLocaleLowerCase("en-US")
-  .replace(/&/g, " and ")
-  .replace(/[^\p{L}\p{N}]+/gu, " ")
-  .trim()
-  .replace(/\s+/g, " ");
-
-function semanticDuplicateKey(anime) {
-  return `${normalizeIdentityTitle(anime.title)}|${anime.type}|${anime.animeSeason?.year ?? "?"}`;
+function slugify(value) {
+  return String(value)
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("en-US")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+    .slice(0, 72) || "anime";
 }
 
-function mergeStringLists(...lists) {
-  return [...new Set(lists.flat().filter(Boolean))];
+async function readJson(path) {
+  return JSON.parse(await readFile(path, "utf8"));
 }
 
-function collapseExactDuplicates(entries) {
-  const groups = new Map();
-  for (const anime of entries) {
-    const key = semanticDuplicateKey(anime);
-    const group = groups.get(key) ?? [];
-    group.push(anime);
-    groups.set(key, group);
+async function readOptionalJson(path) {
+  try {
+    return await readJson(path);
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
   }
-
-  let collapsedCount = 0;
-  const collapsed = [];
-  for (const group of groups.values()) {
-    if (group.length === 1) {
-      collapsed.push(group[0]);
-      continue;
-    }
-
-    const ranked = [...group].sort((left, right) =>
-      right.sources.length - left.sources.length
-      || (right.score?.arithmeticGeometricMean ?? 0) - (left.score?.arithmeticGeometricMean ?? 0));
-    const primary = ranked[0];
-    const merged = ranked.slice(1).reduce((result, duplicate) => ({
-      ...result,
-      synonyms: mergeStringLists(result.synonyms, duplicate.synonyms),
-      studios: mergeStringLists(result.studios, duplicate.studios),
-      tags: mergeStringLists(result.tags, duplicate.tags),
-      sources: mergeStringLists(result.sources, duplicate.sources),
-    }), primary);
-    collapsed.push(merged);
-    collapsedCount += ranked.length - 1;
-  }
-
-  return { entries: collapsed, collapsedCount };
 }
 
-function parseSeasonLineage(value) {
-  let base = value.replace(/\s*\((?:19|20)\d{2}\)\s*$/, "").trim();
-  const seasonRules = [
-    [/\s*\((?:Season|Saison)\s*(\d+)\)\s*$/i, (match) => Number(match[1])],
-    [/\s+(\d+)(?:st|nd|rd|th)\s+Season(?:\s*[:\-].*)?$/i, (match) => Number(match[1])],
-    [/\s+Season\s*(\d+)(?:\s*[:\-].*)?$/i, (match) => Number(match[1])],
-    [/\s+(Second|Third|Fourth|Fifth|Sixth)\s+Season$/i, (match) => ordinalWords[match[1].toLowerCase()]],
-  ];
-
-  for (const [pattern, getSeason] of seasonRules) {
-    const match = base.match(pattern);
-    if (!match) continue;
-    base = base.replace(pattern, "").trim();
-    return { base, seasonNumber: getSeason(match) };
-  }
-
-  return { base, seasonNumber: null };
+function indexIncluded(resources) {
+  return new Map(resources.map((resource) => [`${resource.type}:${resource.id}`, resource]));
 }
 
-function seasonDescriptor(anime) {
-  const primary = parseSeasonLineage(anime.title);
-  const variants = [anime.title, ...anime.synonyms]
-    .map(parseSeasonLineage)
-    .filter((item) => item.base.length >= 3);
-  return {
-    seasonNumber: primary.seasonNumber,
-    bases: new Set(variants.map((item) => normalizeIdentityTitle(item.base))),
-  };
+function seasonFromDate(startDate) {
+  const match = String(startDate ?? "").match(/^(\d{4})-(\d{2})-/);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  if (!Number.isInteger(year) || !Number.isInteger(month)) return null;
+  const season = month <= 3 ? "WINTER" : month <= 6 ? "SPRING" : month <= 9 ? "SUMMER" : "FALL";
+  return { season, year };
 }
 
-function sharesLineage(left, right) {
-  return [...left.bases].some((base) => right.bases.has(base));
+function relationshipResources(resource, relationship, includedIndex) {
+  const references = resource.relationships?.[relationship]?.data ?? [];
+  return references
+    .map((reference) => includedIndex.get(`${reference.type}:${reference.id}`))
+    .filter(Boolean);
 }
 
-const slugify = (value) => value
-  .normalize("NFKD")
-  .replace(/[\u0300-\u036f]/g, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/(^-|-$)/g, "")
-  .slice(0, 72) || "anime";
-
-function stableId(anime) {
-  const preferred = anime.sources.find((source) => source.includes("myanimelist.net/anime/"))
-    ?? anime.sources.find((source) => source.includes("anidb.net/anime/"))
-    ?? anime.sources[0];
-  const numeric = preferred?.match(/(?:anime\/|aid=)(\d+)/)?.[1];
-  if (numeric) return numeric;
-
-  let hash = 2166136261;
-  for (const char of preferred ?? anime.title) {
-    hash ^= char.charCodeAt(0);
-    hash = Math.imul(hash, 16777619);
-  }
-  return String(hash >>> 0);
-}
-
-function compactTags(tags) {
-  return [...tags]
-    .sort((a, b) => {
-      const aRank = primaryTagRank.get(a.toLowerCase()) ?? 999;
-      const bRank = primaryTagRank.get(b.toLowerCase()) ?? 999;
-      return aRank - bRank || a.localeCompare(b, "en");
+function studiosFor(resource, includedIndex) {
+  const productions = relationshipResources(resource, "productions", includedIndex);
+  return [...new Set(productions
+    .filter((production) => production.attributes?.role === "studio")
+    .map((production) => {
+      const company = production.relationships?.company?.data;
+      if (!company) return null;
+      return includedIndex.get(`${company.type}:${company.id}`)?.attributes?.name ?? null;
     })
-    .slice(0, TAG_LIMIT);
+    .filter(Boolean))]
+    .slice(0, 8);
 }
 
-function compact(anime) {
-  const id = stableId(anime);
-  const score = anime.score?.arithmeticGeometricMean ?? anime.score?.median ?? null;
+function tagsFor(resource, includedIndex) {
+  const related = [
+    ...relationshipResources(resource, "genres", includedIndex),
+    ...relationshipResources(resource, "categories", includedIndex),
+  ];
+  return [...new Set(related
+    .filter((item) => item.attributes?.nsfw !== true)
+    .map((item) => item.attributes?.slug ?? item.attributes?.name ?? item.attributes?.title)
+    .filter(Boolean)
+    .map((value) => String(value).toLocaleLowerCase("en-US").replace(/-/g, " ")))]
+    .slice(0, 36);
+}
+
+function stableKitsuMediaUrl(value) {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === "media.kitsu.app" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+function imageSet(image) {
+  const large = stableKitsuMediaUrl(image?.large);
+  if (!large) return null;
   return {
-    id,
-    slug: `${slugify(anime.title)}-${id}`,
-    title: anime.title,
-    type: anime.type,
-    episodes: anime.episodes,
-    status: anime.status,
-    season: anime.animeSeason,
-    durationSeconds: anime.duration?.value ?? null,
-    score: score === null ? null : Math.round(score * 10) / 10,
-    synonyms: anime.synonyms.slice(0, 24),
-    studios: anime.studios.slice(0, 8),
-    tags: compactTags(anime.tags),
-    sources: anime.sources,
+    tiny: stableKitsuMediaUrl(image.tiny),
+    small: stableKitsuMediaUrl(image.small),
+    medium: stableKitsuMediaUrl(image.medium),
+    large,
+    original: stableKitsuMediaUrl(image.original) ?? large,
   };
 }
 
-const releaseResponse = await fetch(`https://api.github.com/repos/${REPOSITORY}/releases/latest`, {
-  headers: { Accept: "application/vnd.github+json", "User-Agent": "rota-data-refresh" },
-});
-if (!releaseResponse.ok) throw new Error(`GitHub release request failed: ${releaseResponse.status}`);
+function normalizeResource(resource, includedIndex, identity) {
+  const attributes = resource.attributes ?? {};
+  const type = typeMap.get(String(attributes.subtype ?? "").toLocaleLowerCase("en-US"));
+  const status = statusMap.get(String(attributes.status ?? "").toLocaleLowerCase("en-US"));
+  const season = seasonFromDate(attributes.startDate);
+  const poster = imageSet(attributes.posterImage);
+  if (!attributes.canonicalTitle || !type || !status || !season || !poster || attributes.nsfw === true) return null;
 
-const release = await releaseResponse.json();
-const asset = release.assets.find((item) => item.name === "anime-offline-database-minified.json");
-if (!asset) throw new Error("Latest release does not contain the expected dataset asset.");
+  const scoreValue = Number(attributes.averageRating);
+  const score = Number.isFinite(scoreValue) ? Math.round(scoreValue) / 10 : null;
+  const episodeCount = Number(attributes.episodeCount);
+  const episodeLength = Number(attributes.episodeLength);
+  const rotaId = identity?.rotaId ?? `kitsu-${resource.id}`;
+  const slug = identity?.slug ?? `${slugify(attributes.canonicalTitle)}-kitsu-${resource.id}`;
 
-console.log(`Downloading ${release.tag_name} (${Math.round(asset.size / 1024 / 1024)} MB)...`);
-const datasetResponse = await fetch(asset.browser_download_url, { headers: { "User-Agent": "rota-data-refresh" } });
-if (!datasetResponse.ok) throw new Error(`Dataset download failed: ${datasetResponse.status}`);
-const dataset = await datasetResponse.json();
-
-if (!dataset.license?.name?.includes(EXPECTED_LICENSE)) {
-  throw new Error(`Unexpected dataset license: ${dataset.license?.name ?? "missing"}`);
+  return {
+    id: rotaId,
+    kitsuId: resource.id,
+    slug,
+    title: attributes.canonicalTitle,
+    type,
+    episodes: Number.isFinite(episodeCount) && episodeCount > 0 ? episodeCount : 0,
+    status,
+    season,
+    durationSeconds: Number.isFinite(episodeLength) && episodeLength > 0 ? episodeLength * 60 : null,
+    score,
+    popularityRank: Number.isFinite(Number(attributes.popularityRank)) ? Number(attributes.popularityRank) : null,
+    ratingRank: Number.isFinite(Number(attributes.ratingRank)) ? Number(attributes.ratingRank) : null,
+    userCount: Number.isFinite(Number(attributes.userCount)) ? Number(attributes.userCount) : 0,
+    synonyms: kitsuTitles(resource)
+      .filter((title) => title !== attributes.canonicalTitle)
+      .slice(0, 24),
+    studios: studiosFor(resource, includedIndex),
+    tags: tagsFor(resource, includedIndex),
+    sources: [`https://kitsu.app/anime/${resource.id}`],
+    poster: { provider: "kitsu", ...poster },
+    cover: imageSet(attributes.coverImage),
+  };
 }
 
-const semantic = collapseExactDuplicates(dataset.data);
-
-const usable = semantic.entries.filter((anime) =>
-  anime.title
-  && anime.type !== "UNKNOWN"
-  && anime.status !== "UNKNOWN"
-  && anime.animeSeason?.year
-  && anime.score?.arithmeticGeometricMean,
-);
-
-const topOverall = [...usable]
-  .filter((anime) => anime.episodes > 0 && anime.sources.length >= 4)
-  .sort((a, b) => {
-    const byCoverage = b.sources.length - a.sources.length;
-    return byCoverage || b.score.arithmeticGeometricMean - a.score.arithmeticGeometricMean;
-  })
-  .slice(0, 450);
-
-const recent = [...usable]
-  .filter((anime) => anime.animeSeason.year >= 2022 && anime.sources.length >= 3)
-  .sort((a, b) => {
-    const byYear = b.animeSeason.year - a.animeSeason.year;
-    const byCoverage = b.sources.length - a.sources.length;
-    return byYear || byCoverage || b.score.arithmeticGeometricMean - a.score.arithmeticGeometricMean;
-  })
-  .slice(0, 650);
-
-const usableById = new Map(usable.map((anime) => [stableId(anime), anime]));
-const lineageIndex = usable.map((anime) => ({ anime, descriptor: seasonDescriptor(anime) }));
-
-function findPreviousSeasons(anime) {
-  const current = seasonDescriptor(anime);
-  if (current.seasonNumber === null || current.seasonNumber <= 1) return [];
-
-  const parents = [];
-  for (let seasonNumber = current.seasonNumber - 1; seasonNumber >= 1; seasonNumber -= 1) {
-    const candidates = lineageIndex
-      .filter(({ anime: candidate, descriptor }) => candidate.type === anime.type
-        && sharesLineage(current, descriptor)
-        && (descriptor.seasonNumber ?? 1) === seasonNumber)
-      .sort((left, right) => right.anime.sources.length - left.anime.sources.length
-        || (right.anime.score?.arithmeticGeometricMean ?? 0) - (left.anime.score?.arithmeticGeometricMean ?? 0));
-    if (candidates[0]) parents.push(candidates[0].anime);
+async function fetchListing(parameters, requestedCount, label) {
+  const data = [];
+  const included = [];
+  const pages = Math.ceil(requestedCount / 20);
+  for (let page = 0; page < pages; page += 1) {
+    const response = await kitsuRequest("anime", {
+      ...parameters,
+      "page[limit]": 20,
+      "page[offset]": page * 20,
+      include: API_INCLUDE,
+    });
+    data.push(...response.data);
+    included.push(...(response.included ?? []));
+    process.stdout.write(`\r${label}: ${data.length}/${Math.min(requestedCount, response.meta?.count ?? requestedCount)}`);
+    if (response.data.length < 20 || data.length >= (response.meta?.count ?? requestedCount)) break;
   }
-  return parents;
+  process.stdout.write("\n");
+  return { data, included };
 }
 
-const deduped = new Map();
-for (const anime of [...recent, ...topOverall]) {
-  const item = compact(anime);
-  deduped.set(item.id, item);
+function mergePayloads(payloads) {
+  const data = new Map();
+  const included = new Map();
+  for (const payload of payloads) {
+    for (const resource of payload.data) data.set(`${resource.type}:${resource.id}`, resource);
+    for (const resource of payload.included ?? []) included.set(`${resource.type}:${resource.id}`, resource);
+  }
+  return { data: [...data.values()], included: [...included.values()] };
 }
 
-const ranked = [...deduped.values()]
-  .sort((a, b) => (b.season.year - a.season.year) || ((b.score ?? 0) - (a.score ?? 0)))
-  .slice(0, MAX_ITEMS);
-const landmarkCandidates = new Map();
-for (const anime of usable.filter((candidate) => LANDMARK_TITLES.has(candidate.title))) {
-  const existing = landmarkCandidates.get(anime.title);
-  const isStronger = !existing
-    || anime.sources.length > existing.sources.length
-    || (anime.sources.length === existing.sources.length
-      && (anime.score?.arithmeticGeometricMean ?? 0) > (existing.score?.arithmeticGeometricMean ?? 0));
-  if (isStronger) landmarkCandidates.set(anime.title, anime);
+function existingIdentityIndexes(catalogue) {
+  const byKitsu = new Map();
+  const byIdentity = new Map();
+  for (const anime of catalogue.items) {
+    const kitsuId = anime.kitsuId ?? legacyKitsuId(anime);
+    if (kitsuId) byKitsu.set(String(kitsuId), { rotaId: anime.id, slug: anime.slug });
+    const type = String(anime.type).toLocaleLowerCase("en-US");
+    for (const title of [anime.title, ...(anime.synonyms ?? [])]) {
+      const key = `${normalizeTitle(title)}|${anime.season?.year}|${type}`;
+      const group = byIdentity.get(key) ?? [];
+      group.push({ rotaId: anime.id, slug: anime.slug });
+      byIdentity.set(key, group);
+    }
+  }
+  return { byKitsu, byIdentity };
 }
-const landmarks = [...LANDMARK_TITLES]
-  .map((title) => landmarkCandidates.get(title))
+
+function identityForResource(resource, indexes, usedRotaIds) {
+  const direct = indexes.byKitsu.get(resource.id);
+  if (direct && !usedRotaIds.has(direct.rotaId)) return direct;
+
+  const attributes = resource.attributes ?? {};
+  const type = typeMap.get(String(attributes.subtype ?? "").toLocaleLowerCase("en-US"));
+  const season = seasonFromDate(attributes.startDate);
+  if (!type || !season) return null;
+  for (const title of kitsuTitles(resource)) {
+    const key = `${normalizeTitle(title)}|${season.year}|${type.toLocaleLowerCase("en-US")}`;
+    const matches = indexes.byIdentity.get(key) ?? [];
+    const available = matches.filter((match) => !usedRotaIds.has(match.rotaId));
+    if (available.length === 1) return available[0];
+  }
+  return null;
+}
+
+async function bootstrapSeed(existingCatalogue) {
+  const existingKitsuIds = existingCatalogue.items
+    .map((anime) => anime.kitsuId ?? legacyKitsuId(anime))
+    .filter(Boolean);
+  console.log(`Fetching ${existingKitsuIds.length} directly mapped existing anime...`);
+  const existingPayload = await fetchAnimeByIds(existingKitsuIds, { include: API_INCLUDE });
+  const popularPayload = await fetchListing({ sort: "-userCount" }, 2_000, "Popular anime");
+  const ratedPayload = await fetchListing({ sort: "-averageRating" }, 600, "Top-rated anime");
+  const recentPayloads = [];
+  for (let year = CURRENT_YEAR - 2; year <= CURRENT_YEAR + 1; year += 1) {
+    recentPayloads.push(await fetchListing({ "filter[seasonYear]": year, sort: "-userCount" }, 400, `${year} anime`));
+  }
+
+  const merged = mergePayloads([existingPayload, popularPayload, ratedPayload, ...recentPayloads]);
+  const includedIndex = indexIncluded(merged.included);
+  const indexes = existingIdentityIndexes(existingCatalogue);
+  const usedRotaIds = new Set();
+  const normalizedByKitsu = new Map();
+  for (const resource of merged.data) {
+    const identity = identityForResource(resource, indexes, usedRotaIds);
+    const normalized = normalizeResource(resource, includedIndex, identity);
+    if (!normalized) continue;
+    if (identity) usedRotaIds.add(identity.rotaId);
+    normalizedByKitsu.set(resource.id, normalized);
+  }
+
+  const editorial = await readJson(resolve("src/data/editorial.json"));
+  const editorialIds = new Set(editorial.entries.map((entry) => entry.animeId));
+  const selected = new Map();
+  const add = (items, maximum = TARGET_ITEMS) => {
+    for (const anime of items) {
+      if (selected.size >= maximum) break;
+      selected.set(anime.kitsuId, anime);
+    }
+  };
+
+  const normalized = [...normalizedByKitsu.values()];
+  const editorialAnime = normalized.filter((anime) => editorialIds.has(anime.id));
+  if (editorialAnime.length !== editorialIds.size) {
+    const missing = [...editorialIds].filter((id) => !editorialAnime.some((anime) => anime.id === id));
+    throw new Error(`Kitsu bootstrap cannot preserve editorial anime IDs: ${missing.join(", ")}`);
+  }
+  add(editorialAnime);
+
+  const existingOrder = new Map(existingCatalogue.items.map((anime, index) => [anime.id, index]));
+  const preserved = normalized
+    .filter((anime) => existingOrder.has(anime.id))
+    .sort((left, right) => existingOrder.get(left.id) - existingOrder.get(right.id));
+  add(preserved);
+
+  const popular = [...normalized].sort((left, right) => right.userCount - left.userCount);
+  add(popular, 2_000);
+
+  const recent = normalized
+    .filter((anime) => anime.season.year >= CURRENT_YEAR - 2)
+    .sort((left, right) => right.season.year - left.season.year || right.userCount - left.userCount);
+  add(recent, 2_400);
+
+  const rated = [...normalized]
+    .sort((left, right) => (right.score ?? 0) - (left.score ?? 0) || right.userCount - left.userCount);
+  add(rated);
+  add(popular);
+
+  if (selected.size !== TARGET_ITEMS) {
+    throw new Error(`Kitsu bootstrap produced ${selected.size}/${TARGET_ITEMS} poster-complete anime.`);
+  }
+
+  const items = [...selected.values()];
+  const seed = {
+    meta: {
+      source: "Kitsu API",
+      generatedAt: new Date().toISOString(),
+      targetCount: TARGET_ITEMS,
+      preservedRotaIds: items.filter((anime) => existingOrder.has(anime.id)).length,
+      selection: "Poster-complete existing Rota matches, popular Kitsu titles, recent/upcoming seasons, then high-rated titles.",
+    },
+    entries: items.map((anime) => ({ rotaId: anime.id, kitsuId: anime.kitsuId, slug: anime.slug })),
+  };
+  await writeFile(SEED_OUTPUT, `${JSON.stringify(seed, null, 2)}\n`, "utf8");
+  console.log(`Wrote ${seed.entries.length} stable Kitsu identities to ${SEED_OUTPUT}.`);
+  return { seed, payload: merged };
+}
+
+async function refreshFromSeed(seed) {
+  const kitsuIds = seed.entries.map((entry) => entry.kitsuId);
+  console.log(`Refreshing ${kitsuIds.length} seeded Kitsu anime...`);
+  const payload = await fetchAnimeByIds(kitsuIds, { include: API_INCLUDE });
+  return { seed, payload };
+}
+
+const existingCatalogue = await readJson(OUTPUT);
+const existingSeed = RESEED ? null : await readOptionalJson(SEED_OUTPUT);
+const { seed, payload } = existingSeed
+  ? await refreshFromSeed(existingSeed)
+  : await bootstrapSeed(existingCatalogue);
+const includedIndex = indexIncluded(payload.included);
+const resourcesById = new Map(payload.data.map((resource) => [resource.id, resource]));
+const items = [];
+const failures = [];
+for (const identity of seed.entries) {
+  const resource = resourcesById.get(String(identity.kitsuId));
+  if (!resource) {
+    failures.push(`${identity.rotaId}: missing Kitsu ${identity.kitsuId}`);
+    continue;
+  }
+  const normalized = normalizeResource(resource, includedIndex, identity);
+  if (!normalized) {
+    failures.push(`${identity.rotaId}: incomplete or missing poster (${identity.kitsuId})`);
+    continue;
+  }
+  items.push(normalized);
+}
+
+if (failures.length || items.length !== TARGET_ITEMS) {
+  throw new Error(`Kitsu refresh rejected; last-known-good catalogue was not replaced.\n${failures.slice(0, 30).join("\n")}`);
+}
+
+const updatedDates = payload.data
+  .map((resource) => resource.attributes?.updatedAt)
   .filter(Boolean)
-  .map(compact);
-const landmarkIds = new Set(landmarks.map((anime) => anime.id));
-const initial = [...landmarks, ...ranked.filter((anime) => !landmarkIds.has(anime.id))].slice(0, MAX_ITEMS);
-const finalById = new Map(initial.map((anime) => [anime.id, anime]));
-const protectedIds = new Set(landmarkIds);
-
-for (const item of initial) {
-  const sourceAnime = usableById.get(item.id);
-  if (!sourceAnime) continue;
-  const descriptor = seasonDescriptor(sourceAnime);
-  if (descriptor.seasonNumber === null || descriptor.seasonNumber <= 1) continue;
-
-  protectedIds.add(item.id);
-  for (const previousSeason of findPreviousSeasons(sourceAnime)) {
-    const previousItem = compact(previousSeason);
-    finalById.set(previousItem.id, previousItem);
-    protectedIds.add(previousItem.id);
-  }
-}
-
-if (protectedIds.size > MAX_ITEMS) {
-  throw new Error(`Franchise closure protected ${protectedIds.size} entries, exceeding the ${MAX_ITEMS} item catalogue limit.`);
-}
-
-const initialRank = new Map(initial.map((anime, index) => [anime.id, index]));
-const removable = [...finalById.values()]
-  .filter((anime) => !protectedIds.has(anime.id))
-  .sort((left, right) => (initialRank.get(right.id) ?? Number.POSITIVE_INFINITY)
-    - (initialRank.get(left.id) ?? Number.POSITIVE_INFINITY));
-while (finalById.size > MAX_ITEMS && removable.length) {
-  finalById.delete(removable.shift().id);
-}
-
-const landmarkOrder = new Map(landmarks.map((anime, index) => [anime.id, index]));
-const items = [...finalById.values()].sort((left, right) => {
-  const leftLandmark = landmarkOrder.get(left.id);
-  const rightLandmark = landmarkOrder.get(right.id);
-  if (leftLandmark !== undefined || rightLandmark !== undefined) {
-    if (leftLandmark === undefined) return 1;
-    if (rightLandmark === undefined) return -1;
-    return leftLandmark - rightLandmark;
-  }
-  return (right.season.year - left.season.year) || ((right.score ?? 0) - (left.score ?? 0));
-});
-
+  .sort();
+const upstreamSummary = await kitsuRequest("anime", { "page[limit]": 1 });
 const output = {
   meta: {
-    source: dataset.repository,
-    release: release.tag_name,
-    lastUpdate: dataset.lastUpdate,
+    source: "https://kitsu.io/api/edge/anime",
+    provider: "Kitsu",
+    release: "REST API",
+    lastUpdate: updatedDates.at(-1)?.slice(0, 10) ?? new Date().toISOString().slice(0, 10),
     generatedAt: new Date().toISOString(),
-    license: dataset.license,
-    originalEntryCount: dataset.data.length,
+    terms: {
+      name: "Kitsu Terms of Service",
+      url: "https://kitsu.app/terms",
+    },
+    originalEntryCount: upstreamSummary.meta?.count ?? null,
     entryCount: items.length,
-    semanticDuplicatesCollapsed: semantic.collapsedCount,
-    franchiseClosureCount: [...protectedIds].filter((id) => !initialRank.has(id)).length,
-    selection: "Recent scored titles (2022+), historically well-covered titles, and one strongest canonical record per documented landmark title; exact title/year/type duplicates are consolidated, then explicit sequel seasons retain available predecessors before the catalogue is trimmed to its limit.",
+    posterCoverage: items.filter((anime) => anime.poster?.large).length,
+    selection: seed.meta.selection,
   },
   items,
 };
 
 await writeFile(OUTPUT, `${JSON.stringify(output)}\n`, "utf8");
-console.log(`Wrote ${items.length} entries to ${OUTPUT}.`);
+console.log(`Wrote ${items.length} Kitsu anime with ${output.meta.posterCoverage}/${items.length} poster coverage to ${OUTPUT}.`);

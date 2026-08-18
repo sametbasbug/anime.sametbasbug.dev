@@ -16,7 +16,8 @@ function relevance(anime: CatalogueAnime, query: string) {
     const releasedBonus = anime.status === "FINISHED" ? 12 : anime.status === "ONGOING" ? 10 : -6;
     const currentBonus = anime.season.year >= 2024 && anime.season.year <= 2026 ? 2 : 0;
     const score = anime.status === "UPCOMING" ? 0 : (anime.score ?? 0);
-    return anime.sources.length * 2 + score + releasedBonus + currentBonus;
+    const popularity = anime.popularityRank ? Math.max(0, 12 - Math.log10(anime.popularityRank + 1) * 3) : 0;
+    return score + releasedBonus + currentBonus + popularity;
   }
   const title = fold(anime.title);
   if (title === query) return 100;
@@ -26,7 +27,8 @@ function relevance(anime: CatalogueAnime, query: string) {
   if (anime.synonyms.some((item) => fold(item).includes(query))) return 45;
   const statusBonus = anime.status === "FINISHED" ? 10 : anime.status === "ONGOING" ? 8 : -8;
   const score = anime.status === "UPCOMING" ? 0 : (anime.score ?? 0);
-  return 10 + anime.sources.length * 1.5 + score + statusBonus;
+  const popularity = anime.popularityRank ? Math.max(0, 8 - Math.log10(anime.popularityRank + 1) * 2) : 0;
+  return 10 + score + statusBonus + popularity;
 }
 
 export default function SearchExperience({ dataVersion }: Props) {
@@ -97,6 +99,7 @@ export default function SearchExperience({ dataVersion }: Props) {
       <div className="catalogue-search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
         <input
+          name="catalogue-query"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Anime adı, stüdyo veya tür ara…"
@@ -109,25 +112,25 @@ export default function SearchExperience({ dataVersion }: Props) {
         <p><strong>{results.length}</strong> yapım bulundu</p>
         <div className="catalogue-selects">
           <label>Tür
-            <select value={genre} onChange={(event) => setGenre(event.target.value)}>
+            <select name="catalogue-genre" value={genre} onChange={(event) => setGenre(event.target.value)}>
               <option value="ALL">Tümü</option>
               {genreOptions.map((label) => <option value={label} key={label}>{label}</option>)}
             </select>
           </label>
           <label>Format
-            <select value={type} onChange={(event) => setType(event.target.value)}>
+            <select name="catalogue-type" value={type} onChange={(event) => setType(event.target.value)}>
               <option value="ALL">Tümü</option>
               {Object.entries(typeLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
             </select>
           </label>
           <label>Durum
-            <select value={status} onChange={(event) => setStatus(event.target.value)}>
+            <select name="catalogue-status" value={status} onChange={(event) => setStatus(event.target.value)}>
               <option value="ALL">Tümü</option>
               {Object.entries(statusLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
             </select>
           </label>
           <label>Sırala
-            <select value={sort} onChange={(event) => setSort(event.target.value)}>
+            <select name="catalogue-sort" value={sort} onChange={(event) => setSort(event.target.value)}>
               <option value="RELEVANCE">Önerilen</option>
               <option value="SCORE">Puana göre</option>
               <option value="NEWEST">En yeni</option>
@@ -147,7 +150,7 @@ export default function SearchExperience({ dataVersion }: Props) {
             const visual = visualFor(anime.id);
             return (
               <a className="catalogue-card" href={`/anime/${anime.slug}`} key={anime.slug}>
-                <AnimeArtwork art={visual.art} palette={visual.palette} posterPath={anime.poster?.path} title={anime.title} />
+                <AnimeArtwork art={visual.art} palette={visual.palette} poster={anime.poster} title={anime.title} />
                 <div className="catalogue-card__body">
                   <div className="catalogue-card__kicker">
                     <span>{seasonLabels[anime.season.season]} {anime.season.year}</span>

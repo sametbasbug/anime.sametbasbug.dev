@@ -30,7 +30,7 @@ CI her push ve pull request'te tam kontrol ile static build çalıştırır. Dep
 
 - Video barındırma veya korsan yayın yönlendirmesi eklenmez.
 - MAL ya da başka siteler scrape edilmez; harici API kullanımı izin ve koşul doğrulaması ister.
-- Anime katalog verisinin ODbL/DbCL atfı korunur.
+- Kitsu kaynaklı anime metadata ve görsellerinin sağlayıcı atfı ile kullanım koşulları korunur.
 - Özgün editoryal metinler, Rota/Equinox markası ve görsel kimlik AGPL kapsamına girmez.
 - Kullanıcı UUID'si, e-posta, senkronizasyon metadatası veya gizli anahtar kamusal yüzeye taşınmaz.
 

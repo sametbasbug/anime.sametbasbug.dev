@@ -3,10 +3,10 @@ import { catalogueMeta } from "../lib/catalogue";
 ---
 
 <aside class="data-attribution">
-  <span>AÇIK VERİ</span>
+  <span>VERİ KAYNAĞI</span>
   <p>
-    Katalog, <a href={catalogueMeta.source} target="_blank" rel="noreferrer">anime-offline-database</a>
-    {" "}sürüm {catalogueMeta.release} verisinden türetilmiştir. {catalogueMeta.license.name}.
+    Anime bilgileri ile poster ve kapaklar <a href="https://kitsu.app/" target="_blank" rel="noreferrer">Kitsu</a>
+    {" "}API ve media CDN üzerinden sağlanır.
   </p>
-  <small>Veri tarihi: {catalogueMeta.lastUpdate} · Rota indeksi: {catalogueMeta.entryCount} kayıt</small>
+  <small>Veri tarihi: {catalogueMeta.lastUpdate} · Rota indeksi: {catalogueMeta.entryCount} kayıt · Poster: {Math.round((catalogueMeta.posterCoverage / catalogueMeta.entryCount) * 100)}%</small>
 </aside>

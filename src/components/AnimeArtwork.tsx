@@ -1,15 +1,15 @@
+import type { CatalogueImage } from "../lib/catalogue-ui";
+
 type Props = {
   art: "moon" | "blade" | "city" | "signal" | "garden" | "ember";
   palette: string;
   compact?: boolean;
-  posterPath?: string;
+  poster?: CatalogueImage;
   title?: string;
   priority?: boolean;
 };
 
-const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
-
-export default function AnimeArtwork({ art, palette, compact = false, posterPath, title, priority = false }: Props) {
+export default function AnimeArtwork({ art, palette, compact = false, poster, title, priority = false }: Props) {
   const captions = {
     moon: "夢 · dream",
     blade: "勇 · brave",
@@ -21,18 +21,28 @@ export default function AnimeArtwork({ art, palette, compact = false, posterPath
 
   return (
     <div
-      className={`art art--${palette} ${compact ? "art--compact" : ""} ${posterPath ? "art--poster" : ""}`}
-      aria-hidden={posterPath ? undefined : "true"}
+      className={`art art--${palette} ${compact ? "art--compact" : ""} ${poster ? "art--poster" : ""}`}
+      aria-hidden={poster ? undefined : "true"}
     >
-      {posterPath && (
+      {poster && (
         <img
           className="art__poster"
-          src={`${TMDB_IMAGE_BASE}${posterPath}`}
+          src={poster.medium ?? poster.large}
+          srcSet={[
+            poster.small && `${poster.small} 284w`,
+            poster.medium && `${poster.medium} 390w`,
+            `${poster.large} 550w`,
+          ].filter(Boolean).join(", ")}
+          sizes={compact ? "160px" : "(max-width: 760px) 50vw, 390px"}
           alt={`${title ?? "Anime"} poster görseli`}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}
           referrerPolicy="no-referrer"
+          onError={(event) => {
+            event.currentTarget.parentElement?.classList.remove("art--poster");
+            event.currentTarget.hidden = true;
+          }}
         />
       )}
       <span className="art__grain" />

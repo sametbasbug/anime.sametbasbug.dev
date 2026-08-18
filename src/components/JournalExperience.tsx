@@ -144,7 +144,7 @@ export default function JournalExperience({ dataVersion }: Props) {
                 const visual = visualFor(record.anime.id);
                 const isEditing = editingId === record.entry.id && draft;
                 return <article className="journal-entry" key={record.entry.id}>
-                  <a className="journal-entry__art" href={`/anime/${record.anime.slug}`}><AnimeArtwork art={visual.art} palette={visual.palette} posterPath={record.anime.poster?.path} title={record.anime.title} compact /></a>
+                  <a className="journal-entry__art" href={`/anime/${record.anime.slug}`}><AnimeArtwork art={visual.art} palette={visual.palette} poster={record.anime.poster} title={record.anime.title} compact /></a>
                   <div className="journal-entry__body">
                     <p>{journalEpisodeLabel(record.entry)}</p>
                     <h3><a href={`/anime/${record.anime.slug}`}>{record.anime.title}</a></h3>

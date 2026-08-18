@@ -1,5 +1,14 @@
+export type CatalogueImage = {
+  tiny: string | null;
+  small: string | null;
+  medium: string | null;
+  large: string;
+  original: string;
+};
+
 export type CatalogueAnime = {
   id: string;
+  kitsuId?: string;
   slug: string;
   title: string;
   type: string;
@@ -8,16 +17,15 @@ export type CatalogueAnime = {
   season: { season: string; year: number };
   durationSeconds: number | null;
   score: number | null;
+  popularityRank?: number | null;
+  ratingRank?: number | null;
+  userCount?: number;
   synonyms: string[];
   studios: string[];
   tags: string[];
   sources: string[];
-  poster?: {
-    provider: "tmdb";
-    path: string;
-    tmdbId: number;
-    mediaType: "movie" | "tv";
-  };
+  poster?: CatalogueImage & { provider: "kitsu" };
+  cover?: CatalogueImage | null;
 };
 
 export const statusLabels: Record<string, string> = {
