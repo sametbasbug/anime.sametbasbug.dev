@@ -89,11 +89,11 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-18. aşama yerel kabulüyle tamamlandı; production yayını henüz yapılmadı. Tanımlı yeni bir aktif ürün aşaması yoktur. Sonraki ürün yönü ayrıca kararlaştırılmalıdır.
+18. aşama production kabulüyle tamamlandı. Tanımlı yeni bir aktif ürün aşaması yoktur. Sonraki ürün yönü ayrıca kararlaştırılmalıdır.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
 
-## 18 Ağustos 2026 — 18. aşama yerel teslimi
+## 18 Ağustos 2026 — 18. aşama production teslimi
 
 - Yeni `/yillik` sayfası günlükteki gerçek kayıtlardan seçili ay veya yıl için bölüm, anime, yaklaşık süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. Yeni bir localStorage alanı, Supabase tablosu, migration veya yedek sürümü eklenmedi.
 - “Finali doğrulanan” sayısı yalnız seçili dönemde yapımın bilinen son bölümüne ulaşan bir günlük kaydı varsa ve mevcut kişisel liste durumu `Tamamladım` ise artar. Geçmiş durum değişiklikleri tahmin edilmez; katalogla eşleşmeyen kayıtlar kesin sayaçlarda korunup zenginleştirilmiş sıralamaların dışında tutulur.
@@ -101,7 +101,8 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 - Paylaşım kartı varsayılan kapalıdır ve yalnız açık kullanıcı eylemiyle cihazda SVG'den PNG'ye dönüşür. Anime adları ikinci, varsayılanı kapalı izinle eklenir. Kişisel not, hesap kimliği, tombstone ve senkronizasyon metadatası kart üreticisine verilmez.
 - `yearbook:check` dönem sınırlarını, zaman dilimi davranışını, hesapları, final kanıtını, sıralamaları, boş/erken durumları ve SVG gizliliğini korur. Tam `npm run check` sıfır hata/uyarı/ipucuyla, `npm run build` 1.144 statik sayfayla ve `npm audit` sıfır açıkla geçti.
 - 1.920×950 masaüstü ve 390×844 mobil görünümde gerçek tarayıcı kabulü tamamlandı: aylık/yıllık geçiş, 390 px'te sıfır yatay taşma, sıfır kırık görsel, mobil tam menüde Yıllık bağlantısı ve gerçek PNG indirme doğrulandı. Kartın hem adsız hem adlı varyantında özel QA notunun bulunmadığı denetlendi.
-- Değişiklikler yalnız yereldedir; commit, push, GitHub Actions ve canlı production kabulü bu kayda dâhil değildir.
+- `237f460` main dalına push edildi. GitHub Pages `32174487842`, CI `32174487772` ve CodeQL `32174487667` başarıyla tamamlandı; `https://anime.sametbasbug.dev/yillik/` HTTP 200 verdi.
+- Canlı sayfa 1.920×950 ve 390×844 görünümde yeniden kabul edildi: yıllık özet ile Ağustos aylık görünümü gerçek günlük kaydıyla doğru açıldı; kart varsayılan kapalı, yatay taşma ve kırık görsel sıfır, taze sayfa yükünde uygulama konsolu temizdi. Mevcut kişisel arşiv değiştirilmedi.
 
 ## 17 Ağustos 2026 — 17. aşama tamamlandı
 

@@ -166,7 +166,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 15. ~~Editoryal derinlik~~ — 50 özgün profil, on adet beşli seçki, 7 rehber/yazı ve production kabulüyle tamamlandı
 16. ~~Kişisel koleksiyonlar~~ — local-first yönetim, yedek v3, sahip-kullanıcı senkronu ve izinli paylaşım kabulüyle tamamlandı
 17. ~~Sezon panosu~~ — izinli katalog verisi, kişisel plan eşleşmesi ve production kabulüyle tamamlandı
-18. ~~Rota yıllığı~~ — aylık/yıllık özet, açıklanabilir dönüm noktaları ve cihaz içi gizlilik kontrollü paylaşım kartıyla yerelde tamamlandı; production yayını bekliyor
+18. ~~Rota yıllığı~~ — aylık/yıllık özet, açıklanabilir dönüm noktaları, cihaz içi gizlilik kontrollü paylaşım kartı ve production kabulüyle tamamlandı
 
 ## Sahiplik
 
