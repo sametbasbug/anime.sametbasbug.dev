@@ -64,7 +64,7 @@ Masaüstü üst gezinmesi ürünün tüm ana bölümlerini doğrudan gösterir. 
 - **Listem:** izleme durumu, bölüm ilerlemesi ve kişisel notlar
 - **Günlük:** izlenen bölüm kayıtları ve aylık hafıza
 
-Alt gezinmedeki beşinci **Menü** kontrolü; Sezonlar, Bana seç, Rehberler ve Koleksiyonlar dâhil masaüstündeki tüm ürün duraklarını erişilebilir bir panelde açar. Yeni kalıcı bölüm yalnız masaüstü menüsüne eklenmez; aynı ortak bağlantı kaynağı mobil tam menüyü de besler. Hesap kontrolü masaüstünde olduğu gibi mobil header'da ayrı durur.
+Alt gezinmedeki beşinci **Menü** kontrolü; Sezonlar, Bana seç, Rehberler, Koleksiyonlar ve Yıllık dâhil masaüstündeki tüm ürün duraklarını erişilebilir bir panelde açar. Yeni kalıcı bölüm yalnız masaüstü menüsüne eklenmez; aynı ortak bağlantı kaynağı mobil tam menüyü de besler. Hesap kontrolü masaüstünde olduğu gibi mobil header'da ayrı durur.
 
 ## Ekran ilkeleri
 
@@ -131,6 +131,14 @@ Alt gezinmedeki beşinci **Menü** kontrolü; Sezonlar, Bana seç, Rehberler ve 
 - Aylık özet ve takvim yoğunluk gösterir ancak rekabetçi seri, rozet veya suçluluk üreten devam serileri kullanmaz.
 - Anime detayındaki hızlı kayıt ilerlemeyi yalnız ileri taşır; geçmiş bir günlüğü düzenlemek mevcut liste ilerlemesini geriye çekmez.
 - Günlük notları özel kalır ve paylaşılabilir profil yüzeyine kendiliğinden taşınmaz.
+
+## Rota yıllığı
+
+- Yıllık, günlüğün üstüne ayrı bir yarışma katmanı kurmaz; seçilen ay veya yıldaki gerçek kayıtları sakin bir editoryal özet olarak yeniden okur.
+- Bölüm, anime ve aktif gün sayıları doğrudan günlükten gelir. Süre yalnız katalogda bölüm süresi bilinen kayıtlar için yaklaşık hesaplanır; geçmişteki liste durumu geçişleri tahmin edilmez.
+- Veri azlığında sıralama veya eğilim uydurulmaz. Kesin sayaçlar korunur; boş ve erken dönem hâlleri Rota'nın bildiği sınırı açıkça söyler.
+- Paylaşım kartı ayrı bir oturum kontrolüdür ve varsayılanı kapalıdır. Kart yalnız kullanıcının açık eylemiyle cihazda üretilir; anime adları ikinci ve varsayılanı kapalı bir izinle eklenir.
+- Kişisel notlar, hesap kimliği, tombstone ve senkronizasyon metadatası yıllık kartının veri girişine hiçbir zaman verilmez. Kartın kapatılması özet verisini veya kişisel arşivi değiştirmez.
 
 ## Paylaşım kimliği
 

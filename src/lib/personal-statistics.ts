@@ -32,6 +32,10 @@ const genreTags = new Set([
   "supernatural", "thriller",
 ]);
 
+export function isStatisticsGenreTag(value: string): boolean {
+  return genreTags.has(value.toLocaleLowerCase("en-US"));
+}
+
 function increment(counts: Map<string, number>, label: string) {
   const normalized = label.trim();
   if (normalized) counts.set(normalized, (counts.get(normalized) ?? 0) + 1);

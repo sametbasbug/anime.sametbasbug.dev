@@ -1,6 +1,6 @@
 # Equinox Rota proje durumu
 
-Son güncelleme: 17 Ağustos 2026
+Son güncelleme: 18 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -82,17 +82,26 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. 18. aşama Rota yıllığını günlük ve kişisel arşivden türetilen gizlilik kontrollü özetlerle uygula.
-2. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
-3. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
-4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
-5. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
+1. AniList API başvurusunun e-posta yanıtını bekle; yazılı izin ve koşullar netleşmeden 5. aşama entegrasyonunu başlatma.
+2. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
+3. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
+4. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.
 
 ## Sıradaki ürün işleri
 
-17. aşama production kabulüyle tamamlandı. Sıradaki aktif ürün işi 18. aşama **Rota yıllığı**; kapsam, gizlilik sınırı ve tamamlanma ölçütleri `ROADMAP.md` içinde kayıtlıdır.
+18. aşama yerel kabulüyle tamamlandı; production yayını henüz yapılmadı. Tanımlı yeni bir aktif ürün aşaması yoktur. Sonraki ürün yönü ayrıca kararlaştırılmalıdır.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşama AniList'in yazılı yanıtı gelene kadar beklemede kalır.
+
+## 18 Ağustos 2026 — 18. aşama yerel teslimi
+
+- Yeni `/yillik` sayfası günlükteki gerçek kayıtlardan seçili ay veya yıl için bölüm, anime, yaklaşık süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. Yeni bir localStorage alanı, Supabase tablosu, migration veya yedek sürümü eklenmedi.
+- “Finali doğrulanan” sayısı yalnız seçili dönemde yapımın bilinen son bölümüne ulaşan bir günlük kaydı varsa ve mevcut kişisel liste durumu `Tamamladım` ise artar. Geçmiş durum değişiklikleri tahmin edilmez; katalogla eşleşmeyen kayıtlar kesin sayaçlarda korunup zenginleştirilmiş sıralamaların dışında tutulur.
+- Boş ve erken dönem durumları uydurma eğilim üretmez. Yıllık görünüm 12 aylık, aylık görünüm beş haftalık izleme ritmi kullanır; yoğun gün, en uzun ardışık kayıt dizisi ve dönem aralığı yalnız günlük tarihlerinden türetilir.
+- Paylaşım kartı varsayılan kapalıdır ve yalnız açık kullanıcı eylemiyle cihazda SVG'den PNG'ye dönüşür. Anime adları ikinci, varsayılanı kapalı izinle eklenir. Kişisel not, hesap kimliği, tombstone ve senkronizasyon metadatası kart üreticisine verilmez.
+- `yearbook:check` dönem sınırlarını, zaman dilimi davranışını, hesapları, final kanıtını, sıralamaları, boş/erken durumları ve SVG gizliliğini korur. Tam `npm run check` sıfır hata/uyarı/ipucuyla, `npm run build` 1.144 statik sayfayla ve `npm audit` sıfır açıkla geçti.
+- 1.920×950 masaüstü ve 390×844 mobil görünümde gerçek tarayıcı kabulü tamamlandı: aylık/yıllık geçiş, 390 px'te sıfır yatay taşma, sıfır kırık görsel, mobil tam menüde Yıllık bağlantısı ve gerçek PNG indirme doğrulandı. Kartın hem adsız hem adlı varyantında özel QA notunun bulunmadığı denetlendi.
+- Değişiklikler yalnız yereldedir; commit, push, GitHub Actions ve canlı production kabulü bu kayda dâhil değildir.
 
 ## 17 Ağustos 2026 — 17. aşama tamamlandı
 

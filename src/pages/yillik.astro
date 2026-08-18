@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import YearbookExperience from "../components/YearbookExperience";
+import RotaCompanion from "../components/RotaCompanion";
+import DataAttribution from "../components/DataAttribution.astro";
+import { catalogueMeta } from "../lib/catalogue";
+
+const today = new Date();
+---
+
+<BaseLayout title="Rota yıllığı — Equinox Rota" description="Anime günlüğünden aylık ve yıllık izleme özetleri, açıklanabilir eğilimler ve gizlilik kontrollü paylaşım kartları üret.">
+  <SiteHeader active="yearbook" />
+  <main class="yearbook-page">
+    <section class="yearbook-hero">
+      <div><p class="eyebrow">AYLAR · YILLAR · KİŞİSEL DÖNÜM NOKTALARI</p><h1>Rotana<br /><em>geri bak.</em></h1></div>
+      <p>Günlüğündeki gerçek izlerden dönemin ritmini gör. Rota yalnız bildiğini anlatır; sessiz ayları masalla doldurmaz.</p>
+      <RotaCompanion scene="yearbook" mood="curious" className="rota-companion--yearbook-hero" client:load />
+    </section>
+    <section class="yearbook-experience">
+      <YearbookExperience dataVersion={catalogueMeta.generatedAt} currentYear={today.getFullYear()} currentMonth={today.getMonth() + 1} client:load />
+    </section>
+    <DataAttribution />
+  </main>
+</BaseLayout>

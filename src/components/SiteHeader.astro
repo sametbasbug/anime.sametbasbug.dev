@@ -3,7 +3,7 @@ import AccountStatus from "./AccountStatus";
 import RotaMark from "./RotaMark.astro";
 
 interface Props {
-  active?: "discover" | "search" | "season" | "picker" | "guides" | "lists" | "collections" | "journal" | "account" | "none";
+  active?: "discover" | "search" | "season" | "picker" | "guides" | "lists" | "collections" | "journal" | "yearbook" | "account" | "none";
 }
 
 const { active = "discover" } = Astro.props;
@@ -17,9 +17,10 @@ const sectionLinks = [
   { key: "lists", href: "/listem", label: "Listem", description: "İzleme durumun ve ilerlemen" },
   { key: "collections", href: "/koleksiyonlar", label: "Koleksiyonlar", description: "Kendi tematik anime rafların" },
   { key: "journal", href: "/gunluk", label: "Günlük", description: "Bölüm kayıtların ve aylık özet" },
+  { key: "yearbook", href: "/yillik", label: "Yıllık", description: "Aylık ve yıllık anime yolculuğun" },
 ] as const;
 
-const mobileMoreActive = ["season", "picker", "guides", "collections"].includes(active);
+const mobileMoreActive = ["season", "picker", "guides", "collections", "yearbook"].includes(active);
 ---
 
 <header class="site-header">
@@ -56,7 +57,7 @@ const mobileMoreActive = ["season", "picker", "guides", "collections"].includes(
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-3.7L6 21Z" /></svg>
     <span>Listem</span>
   </a>
-  <a class:list={{ "is-active": active === "journal" }} href="/gunluk">
+  <a class:list={{ "is-active": active === "journal" || active === "yearbook" }} href="/gunluk">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h10.5A1.5 1.5 0 0 1 18 5v15.5H7.5A1.5 1.5 0 0 1 6 19Z" /><path d="M6 18.5A1.5 1.5 0 0 1 7.5 17H18M9 8h6M9 11.5h5" /></svg>
     <span>Günlük</span>
   </a>

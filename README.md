@@ -33,6 +33,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Dört durumlu, tarayıcıda yerel olarak saklanan kişisel anime listesi
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
 - Bölüm aralığı, izleme tarihi ve kısa notlarla local-first izleme günlüğü; aylık özet ve takvim
+- Günlük ile kişisel arşivden türetilen `/yillik` aylık/yıllık özeti; izleme ritmi, öne çıkanlar, dönüm noktaları ve cihazda üretilen gizlilik kontrollü PNG kartı
 - Durumlara ayrılan koleksiyon rafları, sayaçlar, filtreler ve hızlı ilerleme kontrolleri içeren `/listem` ekranı
 - Ad, açıklama ve renk kimliğiyle oluşturulan; izleme durumundan bağımsız, tarayıcıda yerel özel koleksiyonlar ve anime detayından çoklu koleksiyon üyeliği
 - Manga açılımı ritmine sahip anime detayları ve otaku köşesi olarak tasarlanan hesap ekranı
@@ -95,6 +96,8 @@ Posterler TMDB'nin resmî API/CDN hizmetinden gösterilir. Bilinen TMDB/anime mo
 Kişisel liste local-first çalışır: her değişiklik önce sürümlü `rota.personal-list.v1` kaydıyla mevcut tarayıcıya yazılır. Depolama biçimi geriye uyumlu v2'ye yükseltilmiştir; silmeler çevrimdışı cihazlarda geri gelmesin diye tombstone olarak korunur.
 
 İzleme günlüğü ayrı `rota.watch-journal.v1` alanında aynı local-first ilkeyle çalışır. Bölüm/tarih/not kayıtları kişisel listeden bağımsız kimlik taşır; silmeler günlük tombstone'larıyla korunur. Anime detayından günlük eklemek ilerlemeyi yalnız ileri taşır. Hesap eşitlemesi migration uygulandıktan sonra raf ile günlüğü birlikte taşır.
+
+Rota yıllığı yeni bir kişisel veri alanı veya veritabanı tablosu oluşturmaz. `/yillik`, seçilen ay ya da yıl için mevcut günlük kayıtlarını cihazdaki katalog ve kişisel arşivle eşleştirerek anlık özet üretir. Paylaşım kartı varsayılan olarak kapalıdır ve yalnız açık kullanıcı eylemiyle cihazda PNG'ye dönüşür; anime adları ayrıca izin verilmedikçe gizlenir, kişisel notlar, hesap kimliği, tombstone ve senkronizasyon metadatası hiçbir zaman karta girmez.
 
 İsteğe bağlı hesap açıldığında profil, kişisel liste, izleme günlüğü ve özel koleksiyon verisi Supabase'e eşitlenir. Görünen ad Rota içinde düzenlenmez; Orbit OIDC kimliğinden gelir ve girişte yerel profil görünümüne yansıtılır. Katalog ile editoryal içerik statik ve sürüm kontrollü kalır. Temel tablolar RLS ile yalnız sahip kullanıcıya açıktır. `PUBLIC`/`UNLISTED` paylaşımı temel tablo erişimi açmaz; yüksek entropili bağlantı koduyla çalışan dar RPC yalnız sahibin açtığı alanları verir. Koleksiyon paylaşımı puan, not ve istatistiklerden ayrı ve varsayılanı kapalı bir izindir; e-posta, kullanıcı UUID'si, tombstone ve senkronizasyon zamanları paylaşılmaz. Bağlantı kapatılabilir veya kodu yenilenerek eskisi geçersiz kılınabilir.
 
@@ -163,7 +166,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 15. ~~Editoryal derinlik~~ — 50 özgün profil, on adet beşli seçki, 7 rehber/yazı ve production kabulüyle tamamlandı
 16. ~~Kişisel koleksiyonlar~~ — local-first yönetim, yedek v3, sahip-kullanıcı senkronu ve izinli paylaşım kabulüyle tamamlandı
 17. ~~Sezon panosu~~ — izinli katalog verisi, kişisel plan eşleşmesi ve production kabulüyle tamamlandı
-18. Rota yıllığı — günlük ve kişisel arşivden gizlilik kontrollü özetler üretmek üzere planlandı
+18. ~~Rota yıllığı~~ — aylık/yıllık özet, açıklanabilir dönüm noktaları ve cihaz içi gizlilik kontrollü paylaşım kartıyla yerelde tamamlandı; production yayını bekliyor
 
 ## Sahiplik
 

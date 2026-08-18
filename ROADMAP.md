@@ -209,16 +209,16 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Kullanıcı güncel ve yaklaşan sezonları tek ekranda gezebilir, kişisel planındakileri ayırt edebilir ve seçtiği yapıma liste ya da detay akışından devam edebilir.
 
-### 18. Rota yıllığı — planlandı
+### 18. Rota yıllığı — tamamlandı
 
-- [ ] Günlük ve kişisel arşivden aylık/yıllık izleme özeti üret.
-- [ ] İzlenen anime, bölüm, yaklaşık süre, tamamlanan yapım ve aktif gün sayılarını dönem bazında göster.
-- [ ] En çok izlenen türleri, stüdyoları, en yüksek puan verilen yapımları ve kişisel dönüm noktalarını öne çıkar.
-- [ ] Veri azlığında uydurma içgörü üretmeyen, sakin ve açıklanabilir boş/erken dönem durumları hazırla.
-- [ ] Özetin cihazda çalışmasını sağla; hesaplı kullanımda mevcut local-first senkronize arşivden türet.
-- [ ] Paylaşılabilir yıllık kartı ayrı, varsayılanı kapalı gizlilik kontrolüyle sun; kişisel notları ve özel kimlik alanlarını hiçbir zaman karta taşıma.
-- [ ] Dönem sınırları, zaman dilimi, istatistik tutarlılığı, gizlilik ve kart içeriğini otomatik kontrollerle koru.
-- [ ] Masaüstü/mobil görünüm ile paylaşım kartını görsel kabul turundan geçir.
+- [x] Günlük ve kişisel arşivden aylık/yıllık izleme özeti üret.
+- [x] İzlenen anime, bölüm, yaklaşık süre, tamamlanan yapım ve aktif gün sayılarını dönem bazında göster.
+- [x] En çok izlenen türleri, stüdyoları, en yüksek puan verilen yapımları ve kişisel dönüm noktalarını öne çıkar.
+- [x] Veri azlığında uydurma içgörü üretmeyen, sakin ve açıklanabilir boş/erken dönem durumları hazırla.
+- [x] Özetin cihazda çalışmasını sağla; hesaplı kullanımda mevcut local-first senkronize arşivden türet.
+- [x] Paylaşılabilir yıllık kartı ayrı, varsayılanı kapalı gizlilik kontrolüyle sun; kişisel notları ve özel kimlik alanlarını hiçbir zaman karta taşıma.
+- [x] Dönem sınırları, zaman dilimi, istatistik tutarlılığı, gizlilik ve kart içeriğini otomatik kontrollerle koru.
+- [x] Masaüstü/mobil görünüm ile paylaşım kartını görsel kabul turundan geçir.
 
 **Gizlilik sınırı:** Yıllık özet varsayılan olarak özeldir. Paylaşım yalnız kullanıcının açık eylemiyle üretilir; kişisel notlar, hesap kimlikleri, tombstone ve senkronizasyon metadatası paylaşılmaz.
 
@@ -231,11 +231,13 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [ ] Katalog/poster tazeliğini, kırık bağlantıları, erişilebilirliği ve temel performansı periyodik olarak denetle.
 - [ ] AniList'in yazılı yanıtını takip et; izin ve koşullar netleşmeden 5. aşama entegrasyonuna dokunma.
 
-Bakım hattı bağımsız bir özellik aşaması değildir; 18. aşama ve sonraki ürün işleriyle birlikte düşük riskli, dar turlar hâlinde yürütülür.
+Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün aşamalarının ardından düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–17. aşamalar tamamlandı. Sıradaki aktif ürün işi 18. aşama **Rota yıllığı**. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sürekli bakım hattı ürün aşamalarına paralel, dar ve doğrulanabilir turlarla yürütülecek.
+İlk dört aşama ile 6–18. aşamalar tamamlandı. Tanımlı yeni bir aktif ürün aşaması yok. 5. aşama için AniList'e yazılı API başvurusu yapıldı; yanıt gelene kadar entegrasyon beklemede. Sürekli bakım hattı dar ve doğrulanabilir turlarla yürütülecek.
+
+18. aşama yerelde tamamlandı: `/yillik`, günlükteki gerçek kayıtlardan ay veya yıl bazında bölüm, anime, bilinen süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. “Final” yalnız seçili dönemde son bölümü görülen ve bugün de `Tamamladım` durumundaki yapımlarda sayılır; geçmiş durum değişiklikleri tahmin edilmez. Veri azlığında sakin erken dönem veya boş durum gösterilir. Paylaşım kartı varsayılan kapalıdır, cihazda PNG üretilir ve anime adları için ikinci bir açık izin ister; kişisel not, hesap kimliği, tombstone veya senkronizasyon alanı karta girmez. `yearbook:check`, tam kontrol, 1.144 sayfalık build, bağımlılık denetimi ve 1.920×950 ile 390×844 yerel tarayıcı kabulü geçti; production yayını ayrıca onay bekliyor.
 
 17. aşama tamamlandı: `/sezonlar` yeni başlayan, devam eden ve yaklaşan yapımları seçili sezon/yıl çevresinde toplar; durum, format ve tür filtreleri ile `Planlıyorum`/`İzliyorum` eşleşmesini cihazda birleştirir. Katalog sürümü ile veri tarihi görünürdür; kesin yayın saati, bildirim, scraping veya yeni harici API bağımlılığı yoktur. `season:check`, tam kontrol/build ve 1.920×950 ile 390×844 yerel/canlı tarayıcı kabulü geçti. `d46eb7f` production'a yayımlandı; Pages `31985521359`, CI `31985521405` ve CodeQL `31985521466` başarıyla tamamlandı.
 
