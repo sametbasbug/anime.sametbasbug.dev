@@ -1,6 +1,6 @@
 # Kitsu katalog geçiş planı
 
-Durum: **yerelde uygulandı, tarayıcı/production kabulü sürüyor**  
+Durum: **production kabulüyle tamamlandı**
 Karar tarihi: **18 Ağustos 2026**  
 İlgili yol haritası: **19. aşama — Kitsu katalog geçişi**
 
@@ -177,4 +177,4 @@ Bu temizlik production kabulünden önce yapılmaz.
 
 ## 8. Geri dönüş ölçütü
 
-Kesimden sonra ciddi yanlış eşleşme, korunan kullanıcı bağının kopması, poster kapsamasının %100'ün altına düşmesi veya Kitsu şema değişikliğinin üretimi bozması hâlinde son sağlam production commit'ine dönülür. Eski Manami/TMDB runtime hattı yerel adaydan kaldırılmıştır; production henüz değişmediği ve hiçbir commit/push yapılmadığı için geri dönüş mevcut production commit'idir.
+Kesimden sonra ciddi yanlış eşleşme, korunan kullanıcı bağının kopması, poster kapsamasının %100'ün altına düşmesi veya Kitsu şema değişikliğinin üretimi bozması hâlinde son sağlam production commit'ine dönülür. Eski Manami/TMDB runtime hattı kaldırılmıştır; geri dönüş git geçmişindeki son sağlam production commit'i üzerinden yapılır.

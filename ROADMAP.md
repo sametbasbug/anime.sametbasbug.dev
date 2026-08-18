@@ -224,7 +224,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Kullanıcı seçtiği ay veya yıl için anime yolculuğunu tutarlı sayılar ve açıklanabilir öne çıkanlarla görebilir; isterse güvenli bir özet kartını ayrıca paylaşabilir.
 
-### 19. Kitsu katalog geçişi — yerel kabulte
+### 19. ~~Kitsu katalog geçişi~~ — production kabulüyle tamamlandı
 
 - [x] Güncel Kitsu GraphQL/REST alan sözleşmesini, sayfalamayı, oran limitini, hata davranışını ve media CDN kullanımını doğrula.
 - [x] Kitsu API yanıtını ortak Rota katalog şemasına dönüştüren tek adapter ve otomatik sözleşme kontrollerini hazırla.
@@ -232,7 +232,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Manami metadata ve TMDB poster hattının yerine Kitsu metadata ile Kitsu poster/cover URL'lerini kullanan 2.500 yapımlık katalog üret.
 - [x] Public katalog için %100 geçerli poster ve sıfır kırık görsel kapısını zorunlu kıl.
 - [x] Arama, tür/stüdyo keşfi, benzer yapımlar, sezon panosu, öneriler, istatistikler, yıllık ve 50 editoryal bağı yeni şemayla doğrula.
-- [ ] Masaüstü/mobil production kabulünden sonra kaynak seçimini Kitsu'ya geçir; eski Manami/TMDB hattını ancak kabul tamamlanınca kaldır.
+- [x] Masaüstü/mobil production kabulünden sonra kaynak seçimini Kitsu'ya geçir; eski Manami/TMDB hattını ancak kabul tamamlanınca kaldır.
 
 **Mimari sınır:** Kitsu tek harici anime kaynağıdır. Ham API yanıtları ve görsel dosyaları aynalanmaz; statik GitHub Pages yapısı için yalnız Rota'nın kullandığı normalize katalog snapshot'ı tutulur ve görseller Kitsu CDN URL'lerinden gösterilir. Kullanıcıya ait liste, günlük, koleksiyon, paylaşım ve inceleme kayıtlarının Rota kimlikleri kaynak değişiminde değiştirilmez.
 
@@ -251,7 +251,7 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 ## Şu anki çalışma
 
-İlk dört aşama ile 6–18. aşamalar tamamlandı. 19. aşama **Kitsu katalog geçişi** yerelde uygulanmıştır: 2.500/2.500 posterli katalog, 797 korunmuş eski kimlik ve 50/50 editoryal bağ otomatik kontrollerden geçmiştir. Tarayıcı kabulü ve yayın onayı tamamlanmadan push/deploy yapılmaz. 5. aşamadaki MAL/AniList kullanıcı listesi içe aktarma işi bu katalog geçişinden ayrıdır ve beklemede kalır.
+İlk dört aşama ile 6–19. aşamalar tamamlandı. 19. aşama **Kitsu katalog geçişi** `84af919` ile production'a yayımlandı: 2.500/2.500 posterli katalog, 797 korunmuş eski kimlik ve 50/50 editoryal bağ otomatik ve canlı kabulden geçti. Pages `32188334916`, CI `32188334970` ve CodeQL `32188334869` yeşil tamamlandı. 5. aşamadaki MAL/AniList kullanıcı listesi içe aktarma işi bu katalog geçişinden ayrıdır ve beklemede kalır.
 
 18. aşama tamamlandı: `/yillik`, günlükteki gerçek kayıtlardan ay veya yıl bazında bölüm, anime, bilinen süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. “Final” yalnız seçili dönemde son bölümü görülen ve bugün de `Tamamladım` durumundaki yapımlarda sayılır; geçmiş durum değişiklikleri tahmin edilmez. Veri azlığında sakin erken dönem veya boş durum gösterilir. Paylaşım kartı varsayılan kapalıdır, cihazda PNG üretilir ve anime adları için ikinci bir açık izin ister; kişisel not, hesap kimliği, tombstone veya senkronizasyon alanı karta girmez. `yearbook:check`, tam kontrol, 1.144 sayfalık build, bağımlılık denetimi ve 1.920×950 ile 390×844 yerel tarayıcı kabulü geçti. `237f460` production'a yayımlandı; Pages `32174487842`, CI `32174487772` ve CodeQL `32174487667` başarıyla tamamlandı. Canlı `/yillik` masaüstü/mobil görünüm, aylık geçiş, varsayılan kapalı kart, yatay taşma, kırık görsel ve temiz uygulama konsolu kontrollerini geçti.
 

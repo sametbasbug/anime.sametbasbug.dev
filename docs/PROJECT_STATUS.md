@@ -19,7 +19,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
-- Yeni aktif ürün işi: **19. aşama Kitsu katalog geçişi** yerelde uygulanıyor. 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ hazırdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir; push/production kesimi henüz yapılmadı.
+- **19. aşama Kitsu katalog geçişi production'da tamamlandı.** 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ canlıdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir.
 
 ## Tamamlananlar
 
@@ -83,7 +83,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Açık işler
 
-1. 19. aşama Kitsu yayın adayını Samet'in incelemesine sun; açık onay olmadan commit/push/deploy yapma.
+1. Tamamlanan Kitsu kataloğunun tazeliğini ve media CDN erişimini sürekli bakım hattında izle; yeni ürün aşamasını ayrıca seç.
 2. AniList API başvurusunun e-posta yanıtını yalnız 5. aşamadaki kullanıcı listesi içe aktarma fizibilitesi için takip et; Kitsu katalog geçişini buna bağlama.
 3. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
 4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
@@ -91,7 +91,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-18. aşama production kabulüyle tamamlandı. Aktif ürün işi 19. aşama **Kitsu katalog geçişi**dir. API/adapter, 2.500 yapımlık katalog, tam regresyon ve masaüstü/mobil tarayıcı kabulü yerelde tamamlandı; yalnız inceleme ile commit/push/deploy onayı bekleniyor.
+19. aşama **Kitsu katalog geçişi** production kabulüyle tamamlandı. Sıradaki ürün aşaması henüz seçilmedi; sürekli bakım hattı ve ayrı 5. aşama MAL/AniList içe aktarma fizibilitesi beklemede.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşamadaki MAL/AniList içe aktarma fizibilitesi, 19. aşamadaki katalog kaynağı değişiminden ayrı kalır.
 
@@ -101,7 +101,8 @@ Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yön�
 - Katalog 900'den 2.500 yapımla genişledi. 2.500/2.500 kayıt kararlı `media.kitsu.app` posterine sahip; 1.778 cover, 566 doğrulanmış stüdyo ve 2.487 etiketli kayıt var.
 - 797 eski Rota kimliği ve 50/50 editoryal bağ korundu. Güvenli Kitsu eşleşmesi veya poster kapısından geçmeyen 103 eski kayıt, ürün sahibinin onayıyla daha geniş seçkide değiştirildi; eski kullanıcı kayıtları migration ile silinmedi.
 - Tam CDN HEAD taramasında 2.499 istek ilk turda geçti; timeout veren tek URL kontrollü tekrarında HTTP 200 verdi. `npm run check` 93 dosyada sıfır hata/uyarı/ipucu, `npm audit` sıfır açık ve `npm run build` 2.627 statik sayfayla geçti.
-- 1.920×950 ana sayfa ile 390×844 Naruto arama/detay kabulünde yatay taşma sıfır; görünür ve kaydırılarak yüklenen Kitsu görselleri başarılı, konsol hata/uyarı/issue sayısı sıfır. Push/deploy yapılmadı.
+- 1.920×950 ana sayfa ile 390×844 Naruto arama/detay kabulünde yatay taşma sıfır; görünür ve kaydırılarak yüklenen Kitsu görselleri başarılı, konsol hata/uyarı/issue sayısı sıfır.
+- `84af919` main dalına push edildi. Pages `32188334916`, CI `32188334970` ve CodeQL `32188334869` başarıyla tamamlandı. Canlı ana sayfa ve `/anime/naruto-20/` HTTP 200; canlı `/data/catalogue.json` 2.500 kayıt ve 2.500 poster döndürdü.
 
 ## 18 Ağustos 2026 — 18. aşama production teslimi
 
