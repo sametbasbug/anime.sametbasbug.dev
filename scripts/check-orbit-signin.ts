@@ -18,10 +18,6 @@ const supabaseClient = readFileSync(
   new URL("../src/lib/supabase.ts", import.meta.url),
   "utf8",
 );
-const ajanOturumu = readFileSync(
-  new URL("../src/components/AjanOturumu.tsx", import.meta.url),
-  "utf8",
-);
 const orbitManagedNamesMigration = readFileSync(
   new URL("../supabase/migrations/202608130001_orbit_managed_display_names.sql", import.meta.url),
   "utf8",
@@ -47,24 +43,12 @@ assert.match(
 
 /* 3. Akış biçimi. `pkce` dönüşü `?code=` ile alıyor ve `detectSessionInUrl`
    onu oturuma çeviriyor. İkisinden biri kapanırsa giriş, hata vermeden
-   yarım kalır: kullanıcı siteye döner ama oturum açılmamış olur.
-
-   Kod yakalama artık düz `true` değil, tek bir istisnası var: ajan oturumu
-   akışı aynı dönüş adresini kullanıyor ve o dönüşte kodu ajan istemcisi
-   takas ediyor. Ana istemci o an da kodu kapsaydı insanın oturumunun üstüne
-   yazardı. Test bu yüzden iki şeyi birden arıyor — istisnanın VAR olduğunu
-   ve istisnanın SADECE ajan akışına bağlı olduğunu. Düz `false` yazmak ya da
-   koşulu başka bir şeye bağlamak buradan geçmez. */
+   yarım kalır: kullanıcı siteye döner ama oturum açılmamış olur. */
 assert.match(supabaseClient, /flowType:\s*"pkce"/u, "Akış `pkce` olmalı.");
 assert.match(
   supabaseClient,
-  /detectSessionInUrl:\s*!ajanAkisiDonusuMu\(\)/u,
-  "Kod yakalama yalnız ajan akışı dönüşünde kapanmalı; başka koşula bağlanamaz.",
-);
-assert.match(
-  supabaseClient,
-  /sessionStorage\.getItem\(AJAN_AKISI_ISARETI\)\s*===\s*"1"/u,
-  "Ajan akışı işareti `sessionStorage`'dan okunmalı; kalıcı depoya taşınırsa işaret sekme kapansa da yaşar ve girişi bozar.",
+  /detectSessionInUrl:\s*true/u,
+  "`detectSessionInUrl` açık olmalı; dönüşteki kodu oturuma çeviren bu.",
 );
 
 /* 4. Google girişi geri sızmasın. Kaldırılması bir karardı: iki kapı açık
@@ -124,24 +108,3 @@ assert.equal(
 );
 
 console.log("Orbit girişinin dış yapılandırmayla eşleşen kısımları doğrulandı.");
-
-/* 6. Ajan oturumunu kapatma kapsamı.
-   Ajan erişiminin tek gerekçesi geri alınabilir olması. `signOut` kapsamı
-   `others` OLMAK ZORUNDA: `global` insanın kendi oturumunu da düşürür — yani
-   "ajanı at" düğmesi kullanıcıyı da dışarı atar ve özellik anlamsızlaşır;
-   `local` ise ajanın oturumuna hiç dokunmaz, düğme yalan söyler. İkisi de
-   sessiz kalır, hata vermez. Bu satır o sessizliği bozuyor.
-
-   Ayrıca ajan akışının dönüş adresi `/hesap` olmalı: Supabase'in izinli dönüş
-   listesinde kayıtlı tek yol bu ve başka bir yol yazmak, kullanıcı düğmeye
-   basana kadar görünmeyen bir kırılma yaratır. */
-assert.match(
-  ajanOturumu,
-  /signOut\(\{\s*scope:\s*"others"\s*\}\)/u,
-  "Ajan oturumları `scope: \"others\"` ile kapatılmalı; `global` insanın oturumunu da düşürür.",
-);
-assert.match(
-  ajanOturumu,
-  /new URL\("\/hesap", window\.location\.origin\)/u,
-  "Ajan akışının dönüş adresi `/hesap` olmalı; Supabase izinli dönüş listesi bu yolu taşıyor.",
-);

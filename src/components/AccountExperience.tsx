@@ -9,7 +9,6 @@ import { getSupabaseClient } from "../lib/supabase";
 import ArchivePortabilityPanel from "./ArchivePortabilityPanel";
 import PersonalStatisticsPanel from "./PersonalStatisticsPanel";
 import RotaCompanion from "./RotaCompanion";
-import AjanOturumu from "./AjanOturumu";
 
 type Props = { dataVersion: string };
 type Visibility = "PRIVATE" | "UNLISTED" | "PUBLIC";
@@ -394,7 +393,6 @@ export default function AccountExperience({ dataVersion }: Props) {
           </div>
         </section>
         {canModerate && <a className="account-moderation-link" href="/moderasyon">Moderasyon kuyruğunu aç <span>→</span></a>}
-        <AjanOturumu client={client} />
         <button className="account-signout" onClick={() => client.auth.signOut()}>Oturumu kapat</button>
       </section>
       <PersonalStatisticsPanel statistics={statistics} loading={catalogueLoading} />

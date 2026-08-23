@@ -751,11 +751,6 @@ body.design-otaku .sharing-toggle input { accent-color: var(--lavender-deep); }
 body.design-otaku .account-sharing { border: 2px dashed var(--lavender); border-radius: 14px; background: #f8f2ff; }
 body.design-otaku .account-sharing__actions button { border: 2px solid var(--ink); border-radius: 9px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
 body.design-otaku .account-sharing__actions button:first-child:not(:disabled) { color: #fff; background: var(--lavender-deep); }
-body.design-otaku .ajan-oturumu { border: 2px dashed var(--sakura); border-radius: 14px; background: #fff6fa; }
-body.design-otaku .ajan-oturumu__anahtar { border: 2px dashed var(--ink); border-radius: 11px; background: #fff; }
-body.design-otaku .ajan-oturumu__anahtar button,
-body.design-otaku .ajan-oturumu__actions button { border: 2px solid var(--ink); border-radius: 9px; background: #fff; box-shadow: 2px 2px 0 var(--ink); }
-body.design-otaku .ajan-oturumu__actions button:first-child:not(:disabled) { color: #fff; background: var(--sakura); }
 body.design-otaku .personal-statistics { overflow: hidden; border: 2px solid var(--ink); border-radius: 22px; background: linear-gradient(135deg, #fff 0 74%, #eaf8ff 74%); box-shadow: 5px 5px 0 rgba(52,43,74,.14); }
 body.design-otaku .personal-statistics > header > span { color: var(--sun); text-shadow: 1px 1px 0 var(--ink); transform: rotate(9deg); }
 body.design-otaku .personal-statistics__metrics { overflow: hidden; border: 2px solid var(--ink); border-radius: 15px; background: rgba(255,255,255,.85); }
