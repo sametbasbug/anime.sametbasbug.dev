@@ -836,11 +836,11 @@ main { overflow: hidden; }
   .section-heading__side { justify-items: start; }
   .section-intro { width: auto; }
   .season-board-page { width: calc(100% - 32px); }
-  .season-board-hero { min-height: 0; padding: 52px 0 120px; grid-template-columns: 1fr; gap: 20px; }
+  .season-board-hero { min-height: 0; padding: 52px 0 125px; grid-template-columns: 1fr; gap: 20px; }
   .season-board-hero h1 { font-size: 55px; }
   .season-board-hero > div > p:last-child { padding-right: 54px; font-size: 12px; }
-  .rota-companion--season-board { position: absolute; top: auto; right: -6px; bottom: 4px; transform: scale(.64) rotate(3deg); transform-origin: right bottom; }
-  .rota-companion--season-board .rota-companion__bubble { display: none; }
+  .rota-companion--season-board { position: absolute; top: auto; right: -5px; bottom: 8px; transform: scale(.7) rotate(3deg); transform-origin: right bottom; }
+  .rota-companion--season-board .rota-companion__bubble { max-width: 158px; }
   .season-board__summary { grid-template-columns: 1fr; }
   .season-board__summary > div { min-height: 105px; padding: 18px; border-right: 0; border-bottom: 1px solid var(--line); }
   .season-board__summary > div:last-child { border-bottom: 0; }
@@ -1244,10 +1244,11 @@ main { overflow: hidden; }
 
 @media (max-width: 760px) {
   .personal-discovery-page { width: calc(100% - 32px); }
-  .personal-discovery-hero { min-height: 0; padding: 48px 0 44px; grid-template-columns: 1fr; gap: 22px; }
+  .personal-discovery-hero { min-height: 0; padding: 48px 0 100px; grid-template-columns: 1fr; gap: 22px; }
   .personal-discovery-hero h1 { font-size: 54px; }
   .personal-discovery-hero > p { padding-right: 64px; font-size: 12px; }
-  .rota-companion--personal-discovery { right: -6px; top: auto; bottom: -10px; transform: scale(.4) rotate(3deg); transform-origin: right bottom; }
+  .rota-companion--personal-discovery { right: -5px; top: auto; bottom: 4px; transform: scale(.62) rotate(3deg); transform-origin: right bottom; }
+  .rota-companion--personal-discovery .rota-companion__bubble { max-width: 154px; }
   .personal-discovery-experience { padding: 28px 0 78px; }
   .personal-discovery__signals { padding: 20px 17px; grid-template-columns: 1fr; gap: 20px; }
   .personal-discovery__signals ul { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; }
