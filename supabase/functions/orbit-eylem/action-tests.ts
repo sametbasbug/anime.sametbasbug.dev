@@ -5,6 +5,8 @@ import { findCatalogueAnime, parseCatalogue, searchCatalogue } from './catalogue
 const rawCatalogue = JSON.parse(await readFile('src/data/catalogue.json', 'utf8'));
 const catalogue = parseCatalogue(rawCatalogue);
 assert.ok(catalogue, 'production catalogue must satisfy the agent catalogue contract');
+assert.equal(parseCatalogue(rawCatalogue.items)?.items.length, rawCatalogue.items.length,
+  'the public /data/catalogue.json array shape must satisfy the agent catalogue contract');
 
 assert.equal(findCatalogueAnime(catalogue, 'this-anime-does-not-exist'), null,
   'invented IDs must never resolve');

@@ -26,7 +26,7 @@ function normalize(value: string): string {
 }
 
 export function parseCatalogue(value: unknown): AgentCatalogue | null {
-  const items = (value as { items?: unknown })?.items;
+  const items = Array.isArray(value) ? value : (value as { items?: unknown })?.items;
   if (!Array.isArray(items)) return null;
 
   const valid = items.filter((item): item is AgentCatalogueAnime => {
