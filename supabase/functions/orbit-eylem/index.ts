@@ -9,13 +9,23 @@
  * insanın adına yazıyor ve insan aynı kaydı tarayıcıdan da düzenleyebiliyor.
  */
 import { verifyOrbitActionToken } from './jwt.ts';
+import {
+  findCatalogueAnime,
+  parseCatalogue,
+  searchCatalogue,
+  type AgentCatalogue,
+} from './catalogue.ts';
 
 const ORBIT_ISSUER = Deno.env.get('ORBIT_ISSUER') ?? 'https://orbit.sametbasbug.dev';
 const ORBIT_AUDIENCE = Deno.env.get('ORBIT_AUDIENCE') ?? 'orbit-equinox-rota';
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+const CATALOGUE_URL = Deno.env.get('ROTA_CATALOGUE_URL')
+  ?? 'https://anime.sametbasbug.dev/data/catalogue.json';
 
 const DURUMLAR = new Set(['WATCHING', 'COMPLETED', 'PLANNED', 'DROPPED']);
+const CATALOGUE_CACHE_MS = 5 * 60 * 1_000;
+let catalogueCache: { value: AgentCatalogue; expiresAt: number } | null = null;
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -66,7 +76,31 @@ async function orbitKullanicisi(subject: string): Promise<string | null> {
   return typeof value === 'string' && value.length > 0 ? value : null;
 }
 
-async function listeyeEkle(userId: string, input: Record<string, unknown>) {
+async function kataloguAl(): Promise<AgentCatalogue | null> {
+  if (catalogueCache && catalogueCache.expiresAt > Date.now()) return catalogueCache.value;
+  try {
+    const response = await fetch(CATALOGUE_URL, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!response.ok) {
+      console.error(`katalog alınamadı: ${response.status}`);
+      return null;
+    }
+    const catalogue = parseCatalogue(await response.json());
+    if (!catalogue) {
+      console.error('katalog alınamadı: geçersiz veri sözleşmesi');
+      return null;
+    }
+    catalogueCache = { value: catalogue, expiresAt: Date.now() + CATALOGUE_CACHE_MS };
+    return catalogue;
+  } catch (error) {
+    console.error(`katalog alınamadı: ${error instanceof Error ? error.message : String(error)}`);
+    return null;
+  }
+}
+
+async function listeyeEkle(userId: string, input: Record<string, unknown>, catalogue: AgentCatalogue) {
   const animeId = String(input.animeId ?? '');
   const durum = String(input.durum ?? '');
   /* Orbit girdiyi şemaya göre zaten doğruladı. Burada TEKRAR doğruluyoruz:
@@ -75,6 +109,8 @@ async function listeyeEkle(userId: string, input: Record<string, unknown>) {
    * dikkatli olması değil. */
   if (animeId.length === 0 || animeId.length > 300) return { hata: 'animeId geçersiz' };
   if (!DURUMLAR.has(durum)) return { hata: 'durum geçersiz' };
+  const anime = findCatalogueAnime(catalogue, animeId);
+  if (!anime) return { hata: 'animeId Rota kataloğunda bulunamadı' };
 
   const mevcut = await db(
     `personal_list_entries?user_id=eq.${userId}&anime_id=eq.${encodeURIComponent(animeId)}&select=anime_id`,
@@ -106,10 +142,10 @@ async function listeyeEkle(userId: string, input: Record<string, unknown>) {
     return { hata: `liste yazılamadı (${response.status})` };
   }
 
-  return { sonuc: { animeId, durum, yeniKayit } };
+  return { sonuc: { animeId, baslik: anime.title, durum, yeniKayit } };
 }
 
-async function listeyiOku(userId: string, input: Record<string, unknown>) {
+async function listeyiOku(userId: string, input: Record<string, unknown>, catalogue: AgentCatalogue) {
   const limit = typeof input.limit === 'number' ? Math.min(Math.max(input.limit, 1), 200) : 50;
   const durumFiltre = typeof input.durum === 'string' && DURUMLAR.has(input.durum)
     ? `&status=eq.${input.durum}`
@@ -125,17 +161,70 @@ async function listeyiOku(userId: string, input: Record<string, unknown>) {
     return { hata: `liste okunamadı (${response.status})` };
   }
   const kayitlar = await response.json() as Array<Record<string, unknown>>;
+  const gecerliKayitlar = kayitlar.filter((row) => findCatalogueAnime(catalogue, String(row.anime_id)));
+  const gecersizKayitlar = kayitlar
+    .filter((row) => !findCatalogueAnime(catalogue, String(row.anime_id)))
+    .map((row) => ({ animeId: row.anime_id }));
   return {
     sonuc: {
-      kayitlar: kayitlar.map((row) => ({
+      kayitlar: gecerliKayitlar.map((row) => ({
         animeId: row.anime_id,
+        baslik: findCatalogueAnime(catalogue, String(row.anime_id))?.title,
         durum: row.status,
         ilerleme: row.progress,
         puan: row.score,
       })),
-      toplam: kayitlar.length,
+      toplam: gecerliKayitlar.length,
+      gecersizKayitlar,
     },
   };
+}
+
+async function katalogdaAra(input: Record<string, unknown>, catalogue: AgentCatalogue) {
+  const arama = typeof input.arama === 'string' ? input.arama.trim() : '';
+  const limit = typeof input.limit === 'number' ? Math.min(Math.max(input.limit, 1), 20) : 10;
+  if (arama.length < 2 || arama.length > 120) return { hata: 'arama 2-120 karakter olmalı' };
+
+  const sonuclar = searchCatalogue(catalogue, arama, limit).map((anime) => ({
+    animeId: anime.id,
+    kitsuId: anime.kitsuId,
+    malId: anime.malId ?? null,
+    baslik: anime.title,
+    tur: anime.type,
+    bolum: anime.episodes,
+    durum: anime.status,
+  }));
+  return { sonuc: { sonuclar, toplam: sonuclar.length } };
+}
+
+async function listedenSil(userId: string, input: Record<string, unknown>) {
+  const animeId = String(input.animeId ?? '');
+  if (animeId.length === 0 || animeId.length > 300) return { hata: 'animeId geçersiz' };
+
+  const mevcut = await db(
+    `personal_list_entries?user_id=eq.${userId}&anime_id=eq.${encodeURIComponent(animeId)}`
+    + '&deleted_at=is.null&select=anime_id',
+  );
+  if (!mevcut.ok) {
+    console.error(`liste kaydı okunamadı: ${mevcut.status} ${(await mevcut.text()).slice(0, 300)}`);
+    return { hata: `liste kaydı okunamadı (${mevcut.status})` };
+  }
+  if (((await mevcut.json()) as unknown[]).length === 0) return { hata: 'aktif liste kaydı bulunamadı' };
+
+  const now = new Date().toISOString();
+  const response = await db(
+    `personal_list_entries?user_id=eq.${userId}&anime_id=eq.${encodeURIComponent(animeId)}`,
+    {
+      method: 'PATCH',
+      headers: { prefer: 'return=representation' },
+      body: JSON.stringify({ client_updated_at: now, deleted_at: now }),
+    },
+  );
+  if (!response.ok) {
+    console.error(`liste kaydı silinemedi: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    return { hata: `liste kaydı silinemedi (${response.status})` };
+  }
+  return { sonuc: { animeId, silindi: true } };
 }
 
 Deno.serve(async (request: Request): Promise<Response> => {
@@ -202,12 +291,22 @@ Deno.serve(async (request: Request): Promise<Response> => {
     }
   }
 
+  const catalogueOperation = operationId === 'rota.listeyeEkle'
+    || operationId === 'rota.listeyiOku'
+    || operationId === 'rota.katalogdaAra';
+  const catalogue = catalogueOperation ? await kataloguAl() : null;
+  if (catalogueOperation && !catalogue) return hata(503, 'Rota kataloğu şu anda doğrulanamıyor');
+
   type IslemSonucu = { hata: string } | { sonuc: Record<string, unknown> };
   const sonuc: IslemSonucu = operationId === 'rota.listeyeEkle'
-    ? await listeyeEkle(userId, input)
+    ? await listeyeEkle(userId, input, catalogue!)
     : operationId === 'rota.listeyiOku'
-      ? await listeyiOku(userId, input)
-      : { hata: `bilinmeyen işlem: ${operationId}` };
+      ? await listeyiOku(userId, input, catalogue!)
+      : operationId === 'rota.katalogdaAra'
+        ? await katalogdaAra(input, catalogue!)
+        : operationId === 'rota.listedenSil'
+          ? await listedenSil(userId, input)
+          : { hata: `bilinmeyen işlem: ${operationId}` };
 
   if ('hata' in sonuc) return hata(operationId.startsWith('rota.') ? 400 : 404, sonuc.hata);
 

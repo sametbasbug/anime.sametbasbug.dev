@@ -9,6 +9,7 @@ export type CatalogueImage = {
 export type CatalogueAnime = {
   id: string;
   kitsuId?: string;
+  malId?: string | null;
   slug: string;
   title: string;
   type: string;

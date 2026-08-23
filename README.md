@@ -87,6 +87,8 @@ npm run data:refresh
 
 Komut kararlı `src/data/kitsu-catalogue-seed.json` seçkisini Kitsu API'den yeniden çeker, şemaya normalize eder ve ancak 2.500 kaydın tamamı geçerli bir Kitsu posteriyle geldiyse `src/data/catalogue.json` dosyasını yeniler. Timeout, sınırlı retry ve `Retry-After` desteği vardır; eksik veya postersiz yenileme mevcut sağlam katalogu ezmez. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur, detay sayfaları derleme sırasında statik oluşturulur. `npm run catalogue:check` veri sözleşmesini, `npm run kitsu:media-check` CDN erişimini denetler.
 
+Katalogdaki `id` Rota'nın kalıcı iç kimliğidir ve kullanıcı verisi bağlarını korumak için kaynak geçişlerinde yeniden numaralandırılmaz. `kitsuId` her kayıtta bulunur; Kitsu'nun açık mapping ilişkisinde varsa `malId` ayrıca yayımlanır. Bu alanlar birbirinin yerine kullanılmaz. Yalnız dış kimlik eşlemelerini poster/metadata snapshot'ına dokunmadan yenilemek için `npm run data:identities` kullanılabilir.
+
 AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan veri kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. MAL veya başka siteler de scrape edilmez.
 
 Poster ve cover URL'leri doğrudan kararlı `media.kitsu.app` adresleridir; kısa ömürlü imzalı URL'ler katalog üretiminde elenir. Responsive görsel varyantları kullanılır ve beklenmedik CDN hatasında yerleşimi koruyan Rota fallback'i görünür. Türkçe editoryal açıklamalar Kitsu synopsis metninden otomatik üretilmez; sürüm kontrollü özgün içerik olarak kalır. İlk geçiş 900 eski Rota kimliğinin 797'sini ve 50 editoryal bağın tamamını korudu; güvenli eşleşmeyen veya görsel kapısını geçmeyen 103 eski kayıt, daha geniş 2.500 yapımlık seçkide yer almadı. Geçişin kararları ve kabul kanıtı [`docs/KITSU_MIGRATION_PLAN.md`](./docs/KITSU_MIGRATION_PLAN.md) içindedir.
@@ -133,7 +135,10 @@ saklı bir anahtar bulunmaz, her istek Orbit'in o an geçerli olan iznine bakar.
 Orbit bağlantısı kesildiğinde ajan erişimi de birlikte düşer.
 
 Rota'nın ajanlara sunduğu işlemler `public/orbit-actions.json` içinde
-yayımlanır; bugün listeye ekleme ve listeyi okuma vardır. İstek Orbit'in
+yayımlanır; bugün katalogda arama, doğrulanmış listeye ekleme, listeyi okuma
+ve tombstone ile listeden silme vardır. Ajan ham kimlik tahmin etmez; arama
+sonucundaki Rota `animeId` değerini kullanır ve ekleme ucu bu kimliği canlı
+katalogdan tekrar doğrular. İstek Orbit'in
 imzaladığı, altmış saniye geçerli bir belgeyle gelir ve
 `supabase/functions/orbit-eylem` tarafından doğrulanır — Rota ile Orbit
 arasında paylaşılan kalıcı bir sır yoktur.

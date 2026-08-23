@@ -3,7 +3,7 @@
   "operations": [
     {
       "operationId": "rota.listeyeEkle",
-      "summary": "İnsanın Rota listesine anime ekler; kayıt varsa durumunu, ilerlemesini ve puanını günceller.",
+      "summary": "Rota kataloğundaki bir animeyi insanın listesine ekler; kayıt varsa durumunu, ilerlemesini ve puanını günceller. animeId uydurulmaz, önce katalogda aranır.",
       "idempotent": true,
       "input": {
         "type": "object",
@@ -13,7 +13,7 @@
           "animeId": {
             "type": "string",
             "maxLength": 300,
-            "description": "Katalog kimliği. /data/catalogue.json içindeki id."
+            "description": "Rota katalog kimliği. rota.katalogdaAra sonucundaki animeId değeri; MAL veya Kitsu kimliği tahmin edilmez."
           },
           "durum": {
             "enum": ["WATCHING", "COMPLETED", "PLANNED", "DROPPED"],
@@ -42,6 +42,7 @@
         "type": "object",
         "properties": {
           "animeId": { "type": "string" },
+          "baslik": { "type": "string" },
           "durum": { "type": "string" },
           "yeniKayit": { "type": "boolean" }
         }
@@ -71,7 +72,62 @@
         "type": "object",
         "properties": {
           "kayitlar": { "type": "array" },
+          "toplam": { "type": "integer" },
+          "gecersizKayitlar": { "type": "array" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.katalogdaAra",
+      "summary": "Rota kataloğunda başlık veya açıkça öneklenmiş dış kimlikle anime arar; liste işlemlerinde kullanılacak gerçek animeId değerini döndürür.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["arama"],
+        "additionalProperties": false,
+        "properties": {
+          "arama": {
+            "type": "string",
+            "maxLength": 120,
+            "description": "Anime başlığı, Rota animeId değeri veya açık dış kimlik: kitsu:11469 / mal:31964."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "En fazla kaç sonuç. Varsayılan 10."
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "sonuclar": { "type": "array" },
           "toplam": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.listedenSil",
+      "summary": "İnsanın Rota listesindeki aktif kaydı siler. Silme cihaz eşitlemesi için tombstone olarak korunur.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["animeId"],
+        "additionalProperties": false,
+        "properties": {
+          "animeId": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Silinecek Rota animeId değeri. Geçmişte oluşmuş geçersiz kayıtlar da bu değerle temizlenebilir."
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "animeId": { "type": "string" },
+          "silindi": { "type": "boolean" }
         }
       }
     }

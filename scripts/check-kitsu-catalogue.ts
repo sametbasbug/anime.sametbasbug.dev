@@ -8,6 +8,7 @@ const expectedCount = 2_500;
 const ids = new Set(items.map((anime) => anime.id));
 const slugs = new Set(items.map((anime) => anime.slug));
 const kitsuIds = new Set(items.map((anime) => anime.kitsuId));
+const malMapped = items.filter((anime) => anime.malId !== null);
 
 assert.equal(rawCatalogue.meta.provider, "Kitsu");
 assert.equal(rawCatalogue.meta.entryCount, expectedCount);
@@ -16,9 +17,11 @@ assert.equal(items.length, expectedCount);
 assert.equal(ids.size, expectedCount, "Rota anime IDs must be unique");
 assert.equal(slugs.size, expectedCount, "Anime slugs must be unique");
 assert.equal(kitsuIds.size, expectedCount, "Kitsu IDs must be unique");
+assert.equal(rawCatalogue.meta.malIdCoverage, malMapped.length);
 
 for (const anime of items) {
   assert.ok(anime.id && anime.kitsuId && anime.slug && anime.title);
+  assert.ok(anime.malId === null || /^\d+$/.test(anime.malId));
   assert.ok(["TV", "MOVIE", "OVA", "ONA", "SPECIAL"].includes(anime.type));
   assert.ok(["FINISHED", "ONGOING", "UPCOMING"].includes(anime.status));
   assert.ok(Number.isInteger(anime.season.year));
@@ -61,4 +64,4 @@ for (const kitsuId of essentialKitsuIds) {
   assert.ok(kitsuIds.has(kitsuId), `Essential anime is missing from the catalogue: Kitsu ${kitsuId}`);
 }
 
-console.log(`Kitsu kataloğu doğrulandı: ${items.length} anime, ${items.length}/${items.length} poster, ${rawEditorial.entries.length} editoryal bağ.`);
+console.log(`Kitsu kataloğu doğrulandı: ${items.length} anime, ${items.length}/${items.length} poster, ${malMapped.length} MAL eşlemesi, ${rawEditorial.entries.length} editoryal bağ.`);

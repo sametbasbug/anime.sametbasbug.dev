@@ -43,6 +43,7 @@ Bu snapshot Kitsu veritabanının bir kopyası değil, Rota'nın statik sayfalar
 - Mevcut Rota `anime.id` değerleri ilk geçişte değiştirilmez.
 - Her kayda ayrı `kitsuId` alanı eklenir.
 - Güvenli eşleşen 797 eski yapımın Rota kimliği ve slug'ı korunur. Güvenli eşleşmeyen veya Kitsu görsel kapısını geçmeyen 103 eski kayıt, ürün sahibinin onayıyla seçkiden çıkarılır.
+- Rota `id` alanı dış sağlayıcı kimliği değildir: eski kayıt bağlarını koruyan kalıcı ve opak ürün kimliğidir. Her kaydın `kitsuId` alanı ayrı tutulur; Kitsu mapping ilişkisinde mevcutsa `malId` ayrıca yayımlanır. Ajanlar bu alanlardan kimlik tahmin etmek yerine katalog arama işleminin döndürdüğü Rota `animeId` değerini kullanır.
 - Yeni kayıtlar çakışmasız `kitsu-<id>` biçiminde Rota kimliği alır.
 - Kişisel liste, günlük, koleksiyon, paylaşım, inceleme ve editoryal içerik bağları Rota kimliğiyle çalışmaya devam eder.
 

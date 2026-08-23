@@ -11,7 +11,7 @@ import {
 const OUTPUT = resolve("src/data/catalogue.json");
 const SEED_OUTPUT = resolve("src/data/kitsu-catalogue-seed.json");
 const TARGET_ITEMS = 2_500;
-const API_INCLUDE = "genres,categories,productions.company";
+const API_INCLUDE = "genres,categories,productions.company,mappings";
 const CURRENT_YEAR = new Date().getUTCFullYear();
 const RESEED = process.argv.includes("--reseed");
 
@@ -101,6 +101,15 @@ function tagsFor(resource, includedIndex) {
     .slice(0, 36);
 }
 
+function malIdFor(resource, includedIndex) {
+  for (const mapping of relationshipResources(resource, "mappings", includedIndex)) {
+    if (mapping.attributes?.externalSite !== "myanimelist/anime") continue;
+    const malId = String(mapping.attributes?.externalId ?? "");
+    if (/^\d+$/.test(malId)) return malId;
+  }
+  return null;
+}
+
 function stableKitsuMediaUrl(value) {
   if (!value) return null;
   try {
@@ -141,6 +150,7 @@ function normalizeResource(resource, includedIndex, identity) {
   return {
     id: rotaId,
     kitsuId: resource.id,
+    malId: malIdFor(resource, includedIndex),
     slug,
     title: attributes.canonicalTitle,
     type,
@@ -363,6 +373,7 @@ const output = {
     originalEntryCount: upstreamSummary.meta?.count ?? null,
     entryCount: items.length,
     posterCoverage: items.filter((anime) => anime.poster?.large).length,
+    malIdCoverage: items.filter((anime) => anime.malId).length,
     selection: seed.meta.selection,
   },
   items,

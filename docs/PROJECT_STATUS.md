@@ -29,7 +29,11 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
   `AGENTS.md` → "Ajan erişimi" bölümünde. Kontratın tamamı
   `orbit-project/docs/baglisite-ajan-eylemleri.md`.
 
-  Bugünkü işlemler: `rota.listeyeEkle`, `rota.listeyiOku`. Erişim varsayılan
+  Bugünkü işlemler: `rota.katalogdaAra`, `rota.listeyeEkle`,
+  `rota.listeyiOku`, `rota.listedenSil`. Ekleme canlı katalog kimliğiyle
+  yeniden doğrulanır; uydurma kimlikler veritabanına ulaşmadan reddedilir.
+  Liste okuma başlıkları döndürür ve geçmişte oluşmuş geçersiz kimlikleri ayrı
+  bildirir. Silme, cihaz eşitlemesini koruyan tombstone güncellemesidir. Erişim varsayılan
   kapalı, kapatmak anında etkili; ajanda saklı anahtar yok.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
@@ -99,6 +103,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 1. Tamamlanan Kitsu kataloğunun tazeliğini ve media CDN erişimini sürekli bakım hattında izle; yeni ürün aşamasını ayrıca seç.
 2. AniList API başvurusunun e-posta yanıtını yalnız 5. aşamadaki kullanıcı listesi içe aktarma fizibilitesi için takip et; Kitsu katalog geçişini buna bağlama.
+3. Kitsu `48322` (The One Piece) güncel API yanıtında poster alanını geçici olarak kaybettiği için tam katalog yenilemesi güvenlik kapısında reddedildi; mevcut CDN posteri HTTP 200 ve son sağlam snapshot korunuyor. Sonraki katalog bakımında upstream alanını yeniden kontrol et.
 3. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
 4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
 5. Orbit izni geri alındığında Rota oturumunun kapanmaması bilinçli bir sınır (bkz. `docs/ACCOUNT_ARCHITECTURE.md`). Zorunlu çıkış istenirse Supabase tarafında ayrı iş olarak ele alınmalı.

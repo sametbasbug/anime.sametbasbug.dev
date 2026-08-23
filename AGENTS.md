@@ -59,7 +59,11 @@ edilmez** — Orbit bu şemayı kendi girdi doğrulamasında çalıştırıyor.
 
 Kontratın tamamı: `orbit-project/docs/baglisite-ajan-eylemleri.md`.
 
-Bugünkü işlemler: `rota.listeyeEkle`, `rota.listeyiOku`.
+Bugünkü işlemler: `rota.katalogdaAra`, `rota.listeyeEkle`,
+`rota.listeyiOku`, `rota.listedenSil`. Ajan anime kimliği tahmin etmez;
+`rota.katalogdaAra` sonucundaki Rota `animeId` değerini kullanır. Ekleme ucu
+kimliğin canlı katalogda bulunduğunu yeniden doğrular; silme fiziksel DELETE
+değil, çevrimdışı cihazlarda kaydı diriltmeyen tombstone güncellemesidir.
 
 ## Değişiklik ve yayın
 
