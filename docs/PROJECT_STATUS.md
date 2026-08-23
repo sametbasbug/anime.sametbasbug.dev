@@ -38,7 +38,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
 - **19. aşama Kitsu katalog geçişi production'da tamamlandı.** 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ canlıdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir.
-- **20. aşama katalog genişletmesi yerel yayın adayıdır.** Seçki 7.500 yapıma çıkarıldı; mevcut 2.500 Rota/Kitsu kimliği değişmeden korundu, tüm kayıtlarda poster ve 6.962 kayıtta MAL mapping vardır. Production yayını ve canlı kabul henüz yapılmadı.
+- **20. aşama katalog genişletmesi production'da tamamlandı.** Seçki 7.500 yapıma çıkarıldı; mevcut 2.500 Rota/Kitsu kimliği değişmeden korundu, tüm kayıtlarda poster ve 6.962 kayıtta MAL mapping vardır. Build ve istemci araması indekslendi; otomatik ve canlı kabul tamamlandı.
 
 ## Tamamlananlar
 
@@ -47,12 +47,12 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 > tarihli satırlar onları geçersiz kılar. Güncel giriş yöntemi için yukarıdaki
 > **Kilitli kararlar** bölümüne bak.
 
-### 23 Ağustos 2026 — 7.500 yapımlık katalog yerel yayın adayı
+### 23 Ağustos 2026 — 7.500 yapımlık katalog production teslimi
 
 - Yenileme seçkisi, mevcut kimliklerin tamamını öne alıp popüler Kitsu yapımları, yakın sezonlar ve yüksek puanlı poster-tam kayıtlarla 7.500'e çıkarıldı. Eski 2.500 Rota `id` ↔ `kitsuId` bağı birebir korundu; yeni katalogda 7.500 benzersiz Rota ID, Kitsu ID ve slug bulunuyor.
 - Poster kapsaması ve tam CDN HEAD kabulü 7.500/7.500, MAL mapping kapsaması 6.962/7.500 ve editoryal bağ 50/50'dir. Kitsu `48322` geçici olarak poster alanı vermediği için son sağlam Rota snapshot'ındaki erişilebilir CDN posteri yalnız reseed genişletmesinde korundu. Bütün poster varyantları 404 dönen Kitsu `12725` seçkiden çıkarılıp üç yeni adayın CDN erişimi ayrıca doğrulandı.
 - Katalog snapshot'ı 8,95 MB ham / 1,76 MB gzip; üretim çıktısı yaklaşık 222 MB'tır. İlk 7.709 sayfalık tam build 2 dakika 45 saniye sürüyordu; her detay sayfasında bütün kataloğu yeniden tarayan benzer-anime hesabı tür ters indeksiyle daraltılınca aynı tam build 34,81 saniyeye, Astro üretimi 24,31 saniyeye indi. 250 eşit aralıklı yapımda eski/yeni öneri sırası birebir aynıdır. İstemci araması da normalize metni her tuşta tekrar hesaplamamak için yükleme anında tek seferlik indeks kullanır. 390×844 mobil Naruto araması yaklaşık 27 ms, 1.920×950 masaüstü Frieren araması yaklaşık 22 ms sürdü; iki görünümde de yatay taşma yoktur.
-- Production yayını ve canlı kabul yapılmadı.
+- `2215368` main dalına push edildi. Pages `32621400325`, CI `32621400297` ve CodeQL `32621400320` başarıyla tamamlandı; GitHub Pages build işi 1 dakika 38 saniye, deploy işi 10 saniye sürdü. Canlı katalog 7.500 kayıt, 7.500 poster ve 6.962 MAL mapping döndürdü. 390×844 mobil Naruto araması 28 sonuç verdi; Naruto detayı ve altı benzer rota açıldı, yatay taşma, kırık görünür görsel veya konsol hatası yoktu.
 
 ### 23 Ağustos 2026 — ajan liste bütünlüğü ve katalog kimlikleri production teslimi
 
@@ -126,7 +126,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-20. aşama **katalog genişletmesi** yerel yayın adayıdır; production yayını ve canlı kabulü bekliyor. Sürekli bakım hattı ve ayrı 5. aşama MAL/AniList içe aktarma fizibilitesi beklemede.
+20. aşama **katalog genişletmesi** production kabulüyle tamamlandı. Sıradaki ürün aşaması henüz seçilmedi; sürekli bakım hattı ve ayrı 5. aşama MAL/AniList içe aktarma fizibilitesi beklemede.
 
 Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşamadaki MAL/AniList içe aktarma fizibilitesi, 19. aşamadaki katalog kaynağı değişiminden ayrı kalır.
 

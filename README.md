@@ -191,7 +191,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 17. ~~Sezon panosu~~ — izinli katalog verisi, kişisel plan eşleşmesi ve production kabulüyle tamamlandı
 18. ~~Rota yıllığı~~ — aylık/yıllık özet, açıklanabilir dönüm noktaları, cihaz içi gizlilik kontrollü paylaşım kartı ve production kabulüyle tamamlandı
 19. ~~Kitsu katalog geçişi~~ — tek sağlayıcı, 2.500 yapım ve %100 posterle production kabulüyle tamamlandı
-20. **Katalog genişletmesi** — 7.500 yapımlık yerel yayın adayı; production kabulü bekleniyor
+20. ~~Katalog genişletmesi~~ — 7.500 yapım, indeksli arama/benzer rotalar ve production kabulüyle tamamlandı
 
 ## Sahiplik
 

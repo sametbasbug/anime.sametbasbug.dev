@@ -240,7 +240,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Production'ın tek harici anime metadata/görsel kaynağı Kitsu olur; 2.500 yapımlık public katalog %100 poster kapsamasıyla çalışır, korunabilen 797 eski kimlik ve bütün editoryal bağlar aynı kalır, eski Manami/TMDB çalışma zamanı bağımlılığı kalmaz.
 
-### 20. Katalog genişletmesi — yerel yayın adayı hazır
+### 20. ~~Katalog genişletmesi~~ — production kabulüyle tamamlandı
 
 - [x] Mevcut 2.500 Rota kimliğini ve Kitsu eşleşmesini değiştirmeden seçkiyi 7.500 yapıma çıkar.
 - [x] Yenileme hattını Kitsu oran sınırı, kontrollü eşzamanlılık, retry/`Retry-After` ve başarısız snapshot korumasıyla büyüt.
@@ -248,7 +248,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] İstemci aramasının normalize metin indeksini katalog yüklenirken bir kez üret; her tuşta 7.500 kaydı yeniden normalize etme.
 - [x] Statik detay sayfalarındaki benzer-anime hesabını tür ters indeksiyle daralt; 7.709 sayfalık tam build'i 2 dakika 45 saniyeden 34,81 saniyeye indirirken öneri sırasını koru.
 - [x] 1.920×950 masaüstü ve 390×844 mobil yerel tarayıcı kabulünü tamamla; arama gecikmesini ve yatay taşmayı ölç.
-- [ ] Production yayın sonrası canlı kabulü tamamla.
+- [x] Production yayın sonrası canlı kabulü tamamla.
 
 **Kapasite sınırı:** Mevcut tek JSON + statik detay sayfası mimarisi 7.500 kayıt için korunur. Sonraki büyük sıçrama ölçümsüz yapılmaz; arama payload'ı parçalama veya sunucu tarafı indeksleme ihtiyacı yeniden değerlendirilir.
 
@@ -265,11 +265,11 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 ## Şu anki çalışma
 
-20. aşamanın yerel yayın adayı hazırlandı: katalog 7.500 yapıma çıktı; eski 2.500 Rota/Kitsu bağı eksiksiz korundu, 7.500 poster ve 6.962 MAL eşleşmesi üretildi. Arama metni katalog yüklenirken bir kez normalize edilen istemci indeksiyle çalışıyor. Production yayını ve canlı kabul henüz yapılmadı.
+20. aşama production'da tamamlandı: katalog 7.500 yapıma çıktı; eski 2.500 Rota/Kitsu bağı eksiksiz korundu, 7.500 poster ve 6.962 MAL eşleşmesi üretildi. Arama metni katalog yüklenirken bir kez normalize edilen istemci indeksiyle çalışıyor; benzer rotalar tür ters indeksiyle aynı sonuçları daha düşük build maliyetiyle üretiyor. `2215368` production'a yayımlandı; Pages `32621400325`, CI `32621400297` ve CodeQL `32621400320` yeşil tamamlandı. Canlı mobil kabulte Naruto araması 28 sonuç verdi; detay/benzer rotalar, yatay taşma, kırık görünür görsel ve konsol kontrolleri temizdi.
 
 23 Ağustos ajan liste bütünlüğü turu production'da tamamlandı: ajanlar anime adını `rota.katalogdaAra` ile gerçek Rota kimliğine çözüyor, ekleme canlı katalog doğrulamasından geçiyor, liste okuma başlıklarla birlikte katalog dışı kayıtları ayırıyor ve silme tombstone ile cihazlar arasında yakınsıyor. O turdaki production kataloğu 2.500 Kitsu kimliğinin yanında Kitsu'nun sunduğu 2.195 MAL eşlemesini ayrı alan olarak yayımlıyordu; kalıcı Rota kimlikleri ve kullanıcı bağları yeniden numaralandırılmadı. `3876ed0` ile `d6f8885` production'a yayımlandı; son Pages `32618901629`, CI `32618901742` ve CodeQL `32618901585` yeşil tamamlandı. Canlı kabulde adla Naruto araması geçti, uydurma kimlik reddedildi ve üç eski hayalet kayıt tombstone'a alınarak geçersiz kayıt sayısı sıfırlandı.
 
-İlk dört aşama ile 6–19. aşamalar tamamlandı; 20. aşama production kabulünü bekliyor. 19. aşama **Kitsu katalog geçişi** `84af919` ile production'a yayımlandı: 2.500/2.500 posterli katalog, 797 korunmuş eski kimlik ve 50/50 editoryal bağ otomatik ve canlı kabulden geçti. Pages `32188334916`, CI `32188334970` ve CodeQL `32188334869` yeşil tamamlandı. 5. aşamadaki MAL/AniList kullanıcı listesi içe aktarma işi bu katalog geçişinden ayrıdır ve beklemede kalır.
+İlk dört aşama ile 6–20. aşamalar tamamlandı. 20. aşama **katalog genişletmesi** `2215368` ile production'a yayımlandı: 7.500/7.500 posterli katalog, korunan 2.500 mevcut kimlik, 6.962 MAL eşleşmesi ve indeksli build/arama yolları otomatik ve canlı kabulden geçti. 5. aşamadaki MAL/AniList kullanıcı listesi içe aktarma işi bu katalog genişletmesinden ayrıdır ve beklemede kalır.
 
 18. aşama tamamlandı: `/yillik`, günlükteki gerçek kayıtlardan ay veya yıl bazında bölüm, anime, bilinen süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. “Final” yalnız seçili dönemde son bölümü görülen ve bugün de `Tamamladım` durumundaki yapımlarda sayılır; geçmiş durum değişiklikleri tahmin edilmez. Veri azlığında sakin erken dönem veya boş durum gösterilir. Paylaşım kartı varsayılan kapalıdır, cihazda PNG üretilir ve anime adları için ikinci bir açık izin ister; kişisel not, hesap kimliği, tombstone veya senkronizasyon alanı karta girmez. `yearbook:check`, tam kontrol, 1.144 sayfalık build, bağımlılık denetimi ve 1.920×950 ile 390×844 yerel tarayıcı kabulü geçti. `237f460` production'a yayımlandı; Pages `32174487842`, CI `32174487772` ve CodeQL `32174487667` başarıyla tamamlandı. Canlı `/yillik` masaüstü/mobil görünüm, aylık geçiş, varsayılan kapalı kart, yatay taşma, kırık görsel ve temiz uygulama konsolu kontrollerini geçti.
 
