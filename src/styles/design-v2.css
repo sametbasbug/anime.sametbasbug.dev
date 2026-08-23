@@ -241,6 +241,7 @@ main { overflow: visible; }
 .catalogue-selects select { min-width: 106px; height: 40px; padding: 0 30px 0 8px; border: 0; background-color: transparent; color: var(--ink); }
 .catalogue-grid, .discovery-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; row-gap: 36px; }
 .catalogue-card > .art { height: 315px; }
+.catalogue-experience .catalogue-card h2 { min-height: 2.5em; display: -webkit-box; overflow: hidden; white-space: normal; text-overflow: clip; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .catalogue-card__body > div:last-child { display: flex; flex-wrap: wrap; gap: 5px; }
 .catalogue-card__body > div:last-child span { padding: 4px 7px; font-size: 7px; }
 .load-more { border: 1px solid var(--line); border-radius: 12px; background: var(--surface-raised); color: var(--ink); }
