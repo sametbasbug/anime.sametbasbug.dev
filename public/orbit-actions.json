@@ -31,6 +31,10 @@
             "maximum": 10,
             "description": "1-10 arası puan."
           },
+          "puaniTemizle": {
+            "type": "boolean",
+            "description": "True ise mevcut kişisel puanı kaldırır. puan ile birlikte kullanılmaz."
+          },
           "not": {
             "type": "string",
             "maxLength": 600,
@@ -50,7 +54,7 @@
     },
     {
       "operationId": "rota.listeyiOku",
-      "summary": "İnsanın Rota listesini döndürür.",
+      "summary": "İnsanın Rota listesini notlarıyla birlikte sayfalı döndürür; toplam bütün geçerli aktif kayıtların sayısıdır.",
       "idempotent": true,
       "input": {
         "type": "object",
@@ -65,15 +69,25 @@
             "minimum": 1,
             "maximum": 200,
             "description": "En fazla kaç kayıt. Varsayılan 50."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "Sayfalama başlangıcı. Varsayılan 0; devam için sonrakiOffset kullanılır."
           }
         }
       },
       "output": {
         "type": "object",
         "properties": {
-          "kayitlar": { "type": "array" },
-          "toplam": { "type": "integer" },
-          "gecersizKayitlar": { "type": "array" }
+          "kayitlar": { "type": "array", "description": "animeId, baslik, durum, ilerleme, puan ve özel not alanlarını taşıyan bu sayfadaki kayıtlar." },
+          "toplam": { "type": "integer", "description": "Durum filtresine uyan bütün geçerli aktif kayıtların sayısı; yalnız dönen sayfanın boyutu değildir." },
+          "donen": { "type": "integer" },
+          "offset": { "type": "integer" },
+          "dahaVar": { "type": "boolean" },
+          "sonrakiOffset": { "type": "integer" },
+          "gecersizKayitlar": { "type": "array", "description": "Katalogda artık karşılığı bulunmayan aktif kayıt kimlikleri." }
         }
       }
     },
@@ -128,6 +142,296 @@
         "properties": {
           "animeId": { "type": "string" },
           "silindi": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.gunlugeEkle",
+      "summary": "İnsanın izleme günlüğüne bir bölüm aralığı ekler ve aynı animenin liste ilerlemesini atomik olarak yalnız ileri taşır.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["animeId", "ilkBolum", "sonBolum", "tarih"],
+        "additionalProperties": false,
+        "properties": {
+          "animeId": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Rota katalog kimliği; gerekirse önce rota.katalogdaAra kullanılır."
+          },
+          "ilkBolum": { "type": "integer", "minimum": 1, "maximum": 100000 },
+          "sonBolum": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000,
+            "description": "İlk bölümden küçük ve katalogdaki bölüm sayısından büyük olamaz."
+          },
+          "tarih": { "type": "string", "maxLength": 10, "description": "YYYY-AA-GG biçiminde izleme tarihi." },
+          "not": { "type": "string", "maxLength": 280, "description": "Bu izleme oturumuna ait özel not." }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "kayitId": { "type": "string" },
+          "animeId": { "type": "string" },
+          "baslik": { "type": "string" },
+          "ilkBolum": { "type": "integer" },
+          "sonBolum": { "type": "integer" },
+          "tarih": { "type": "string" },
+          "listeIlerlemesi": { "type": "integer" },
+          "listeDurumu": { "type": "string" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.gunluguOku",
+      "summary": "İnsanın aktif izleme günlüğünü anime veya tarih aralığıyla süzüp sayfalı döndürür.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "animeId": { "type": "string", "maxLength": 300 },
+          "baslangicTarihi": { "type": "string", "maxLength": 10, "description": "Dahil YYYY-AA-GG alt sınırı." },
+          "bitisTarihi": { "type": "string", "maxLength": 10, "description": "Dahil YYYY-AA-GG üst sınırı." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 200, "description": "Varsayılan 50." },
+          "offset": { "type": "integer", "minimum": 0, "maximum": 100000, "description": "Devam için sonrakiOffset kullanılır." }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "kayitlar": { "type": "array", "description": "Günlük kayıtlarının bu sayfası." },
+          "toplam": { "type": "integer" },
+          "donen": { "type": "integer" },
+          "offset": { "type": "integer" },
+          "dahaVar": { "type": "boolean" },
+          "sonrakiOffset": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.gunlukKaydiniDuzenle",
+      "summary": "İnsanın aktif bir izleme günlüğü kaydının bölüm aralığını, tarihini veya notunu düzenler. Liste ilerlemesini geriye taşımaz.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["kayitId"],
+        "additionalProperties": false,
+        "properties": {
+          "kayitId": { "type": "string", "maxLength": 100 },
+          "ilkBolum": { "type": "integer", "minimum": 1, "maximum": 100000 },
+          "sonBolum": { "type": "integer", "minimum": 1, "maximum": 100000 },
+          "tarih": { "type": "string", "maxLength": 10, "description": "YYYY-AA-GG biçiminde izleme tarihi." },
+          "not": { "type": "string", "maxLength": 280 }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "kayitId": { "type": "string" },
+          "animeId": { "type": "string" },
+          "baslik": { "type": "string" },
+          "ilkBolum": { "type": "integer" },
+          "sonBolum": { "type": "integer" },
+          "tarih": { "type": "string" },
+          "not": { "type": "string" },
+          "guncellendi": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.gunlukKaydiniSil",
+      "summary": "İnsanın aktif izleme günlüğü kaydını cihaz eşitlemesine uygun bir tombstone ile siler.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["kayitId"],
+        "additionalProperties": false,
+        "properties": {
+          "kayitId": { "type": "string", "maxLength": 100 }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "kayitId": { "type": "string" },
+          "silindi": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.koleksiyonOlustur",
+      "summary": "İnsan için boş bir özel anime koleksiyonu oluşturur.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["ad"],
+        "additionalProperties": false,
+        "properties": {
+          "ad": { "type": "string", "maxLength": 60 },
+          "aciklama": { "type": "string", "maxLength": 240 },
+          "renk": {
+            "enum": ["lavender", "coral", "mint", "sun", "sky"],
+            "description": "Varsayılan lavender."
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "koleksiyonId": { "type": "string" },
+          "ad": { "type": "string" },
+          "aciklama": { "type": "string" },
+          "renk": { "type": "string" },
+          "animeSayisi": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.koleksiyonlariOku",
+      "summary": "İnsanın aktif özel koleksiyonlarını, sıralı anime kimlikleri ve başlıklarıyla sayfalı döndürür.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "limit": { "type": "integer", "minimum": 1, "maximum": 40, "description": "Varsayılan 40." },
+          "offset": { "type": "integer", "minimum": 0, "maximum": 40 }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "koleksiyonlar": { "type": "array" },
+          "toplam": { "type": "integer" },
+          "donen": { "type": "integer" },
+          "offset": { "type": "integer" },
+          "dahaVar": { "type": "boolean" },
+          "sonrakiOffset": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.koleksiyonuDuzenle",
+      "summary": "Aktif bir özel koleksiyonun adını, açıklamasını veya rengini düzenler.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["koleksiyonId"],
+        "additionalProperties": false,
+        "properties": {
+          "koleksiyonId": { "type": "string", "maxLength": 100 },
+          "ad": { "type": "string", "maxLength": 60 },
+          "aciklama": { "type": "string", "maxLength": 240 },
+          "renk": { "enum": ["lavender", "coral", "mint", "sun", "sky"] }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "koleksiyonId": { "type": "string" },
+          "ad": { "type": "string" },
+          "aciklama": { "type": "string" },
+          "renk": { "type": "string" },
+          "guncellendi": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.koleksiyonuSil",
+      "summary": "Aktif bir özel koleksiyonu cihaz eşitlemesine uygun bir tombstone ile siler.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["koleksiyonId"],
+        "additionalProperties": false,
+        "properties": {
+          "koleksiyonId": { "type": "string", "maxLength": 100 }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "koleksiyonId": { "type": "string" },
+          "silindi": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.koleksiyonUyeliginiDegistir",
+      "summary": "Katalogdaki bir animeyi aktif koleksiyona ekler veya koleksiyondan çıkarır. Ekleme mevcut sıranın sonuna yapılır.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["koleksiyonId", "animeId", "ekle"],
+        "additionalProperties": false,
+        "properties": {
+          "koleksiyonId": { "type": "string", "maxLength": 100 },
+          "animeId": { "type": "string", "maxLength": 300, "description": "Rota katalog kimliği." },
+          "ekle": { "type": "boolean" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "koleksiyonId": { "type": "string" },
+          "animeId": { "type": "string" },
+          "eklendi": { "type": "boolean" },
+          "animeSayisi": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.koleksiyonuSirala",
+      "summary": "Aktif koleksiyondaki animeleri verilen sıraya dizer; mevcut üyelerin tamamı tam bir kez verilmelidir.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["koleksiyonId", "animeIdleri"],
+        "additionalProperties": false,
+        "properties": {
+          "koleksiyonId": { "type": "string", "maxLength": 100 },
+          "animeIdleri": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 300 },
+            "description": "Mevcut üyelerin tümünü içeren yeni tam sıra; en fazla 200 kimlik."
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "koleksiyonId": { "type": "string" },
+          "animeIdleri": { "type": "array" },
+          "siralandi": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.kisiselOneriler",
+      "summary": "İnsanın yalnız Rota ile senkronize edilmiş liste ve izleme günlüğünden açıklanabilir kişisel anime önerileri ve nazik hatırlatmalar üretir.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "yol": {
+            "enum": ["FOR_YOU", "SHORT", "MOVIE", "ONE_SEASON", "CALM", "ENERGY", "EMOTIONAL", "MYSTERY"],
+            "description": "Öneri yolu. Varsayılan FOR_YOU."
+          },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 30, "description": "Varsayılan 18." }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "yol": { "type": "string" },
+          "oneriler": { "type": "array", "description": "Başlık, tür, bölüm, katalog puanı, kaynak ve en fazla üç açıklanabilir gerekçe." },
+          "toplam": { "type": "integer" },
+          "nazikHatirlatmalar": { "type": "array", "description": "Uzun süredir bekleyen İzliyorum/Planlıyorum kayıtları için baskıcı olmayan mevcut Rota hatırlatmaları." },
+          "veriKaynagi": { "type": "string" }
         }
       }
     }

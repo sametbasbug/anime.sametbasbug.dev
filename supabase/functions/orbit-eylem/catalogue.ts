@@ -7,7 +7,13 @@ export type AgentCatalogueAnime = {
   type: string;
   episodes: number;
   status: string;
+  season: { season: string; year: number };
+  durationSeconds: number | null;
+  score: number | null;
   synonyms: string[];
+  studios: string[];
+  tags: string[];
+  sources: string[];
 };
 
 export type AgentCatalogue = {
@@ -39,7 +45,16 @@ export function parseCatalogue(value: unknown): AgentCatalogue | null {
       && typeof anime.type === 'string'
       && typeof anime.episodes === 'number'
       && typeof anime.status === 'string'
-      && Array.isArray(anime.synonyms);
+      && typeof anime.season === 'object'
+      && anime.season !== null
+      && typeof anime.season.season === 'string'
+      && typeof anime.season.year === 'number'
+      && (typeof anime.durationSeconds === 'number' || anime.durationSeconds === null)
+      && (typeof anime.score === 'number' || anime.score === null)
+      && Array.isArray(anime.synonyms)
+      && Array.isArray(anime.studios)
+      && Array.isArray(anime.tags)
+      && Array.isArray(anime.sources);
   });
   if (valid.length !== items.length || valid.length === 0) return null;
 

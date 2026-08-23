@@ -254,6 +254,20 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** 7.500 yapımlık katalog %100 erişilebilir posterle production'da çalışır; eski 2.500 Rota/Kitsu bağı değişmez, arama mobilde akıcı kalır ve otomatik/canlı kabul kapıları geçer.
 
+### 21. Ajan yetenek eşitliği — yerel yayın adayı hazır
+
+- [x] Mevcut liste işlemlerini insan arayüzüyle eşitle: notu liste okumasında döndür, gerçek toplam ve sayfalama ekle, puanı temizlemeyi destekle ve ilerlemeyi katalogdaki bölüm sayısına göre doğrula.
+- [x] İzleme günlüğünü ajanlara aç: kayıt ekleme, okuma, düzenleme ve tombstone silme; yeni günlük kaydının liste ilerlemesini yalnız ileri taşıyan mevcut davranışını koru.
+- [x] Özel koleksiyonları ajanlara aç: oluşturma, okuma, ad/açıklama/renk düzenleme, anime ekleme/çıkarma/sıralama ve tombstone silme.
+- [x] Kişisel önerileri ajanlara aç: mevcut açıklanabilir `Sana göre / Kısa / Film / Tek sezon / Sakin / Enerjik / Duygusal / Gizemli` yollarını ve nazik hatırlatmaları senkronize bulut kayıtlarından üret.
+- [ ] Her dilimde public işlem kataloğu, uç doğrulaması, `service_role` tablo yetkisi, idempotency, yerel otomasyon ve gerçek Orbit çağrısı kabulünü birlikte tamamla.
+
+**Yetki sınırı:** Bu aşama insanın özel Rota verisinde yapabildiği işleri kendi bağlı ajanına taşır. Topluluk incelemesi yayımlama/raporlama, profil paylaşımını açma, paylaşım bağlantısını yenileme, yedek içe aktarma ve moderasyon kararları bu sıraya dahil değildir; dışa açık veya geniş etkili eylemler ayrı onay ve güvenlik tasarımı ister. Ajan yalnız buluta eşitlenmiş kayıtları görebilir, tarayıcıda kalmış yerel veriyi okuyamaz.
+
+**Uygulama sırası:** Liste API eşitliği → izleme günlüğü → özel koleksiyonlar → kişisel öneriler.
+
+**Tamamlanma ölçütü:** Bağlı ajan, insanın Rota'daki özel liste, günlük ve koleksiyon işlerini aynı veri bütünlüğü kurallarıyla yapabilir; senkronize geçmişten Rota'nın mevcut algoritmasıyla açıklanabilir kişisel öneri alabilir ve hiçbir işlem hayalet kimlik, eski-sürüm ezmesi veya sessiz veri kaybı üretemez.
+
 ## Sürekli bakım hattı
 
 - [ ] Supabase Free planının duraklama, yedekleme ve kurtarma sınırlarını düzenli olarak yeniden değerlendir.
@@ -264,6 +278,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün aşamalarının ardından düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
+
+21. aşama **ajan yetenek eşitliği** için yerel yayın adayı hazır. Kilitli sıradaki liste API eşitliği, izleme günlüğü, özel koleksiyonlar ve kişisel öneriler uygulandı; public işlem kataloğu ile yerel sözleşme kontrollerine bağlandı. Kalan kapanış işi production migration/edge yayını ve gerçek Orbit çağrılarıyla kabul turudur.
 
 20. aşama production'da tamamlandı: katalog 7.500 yapıma çıktı; eski 2.500 Rota/Kitsu bağı eksiksiz korundu, 7.500 poster ve 6.962 MAL eşleşmesi üretildi. Arama metni katalog yüklenirken bir kez normalize edilen istemci indeksiyle çalışıyor; benzer rotalar tür ters indeksiyle aynı sonuçları daha düşük build maliyetiyle üretiyor. `2215368` production'a yayımlandı; Pages `32621400325`, CI `32621400297` ve CodeQL `32621400320` yeşil tamamlandı. Canlı mobil kabulte Naruto araması 28 sonuç verdi; detay/benzer rotalar, yatay taşma, kırık görünür görsel ve konsol kontrolleri temizdi.
 
