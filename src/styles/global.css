@@ -663,6 +663,22 @@ main { overflow: hidden; }
 .account-sharing__actions button { flex: 1; min-height: 39px; padding: 9px 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 8px; font-weight: 800; cursor: pointer; }
 .account-sharing__actions button:disabled { cursor: not-allowed; opacity: .48; }
 
+/* Ajan erişimi. Paylaşım kutusuyla aynı iskelet — ikisi de "hesabından bir
+   şey dışarı veriyorsun" kutusu ve aynı görünmeleri bilinçli. Ayrılan tek
+   yer anahtar alanı: gösterilen şey bir kez görülüp kopyalanacak bir sır. */
+.ajan-oturumu { margin: 0 0 14px; padding: 16px; display: grid; gap: 15px; border: 1px solid var(--line); background: var(--paper-deep); }
+.ajan-oturumu p { margin: 0 0 4px; color: var(--coral); font-size: 7px; font-weight: 900; letter-spacing: .1em; }
+.ajan-oturumu strong { display: block; font-size: 13px; }
+.ajan-oturumu small { display: block; margin-top: 5px; color: var(--muted); font-size: 8px; line-height: 1.45; }
+.ajan-oturumu__anahtar { display: grid; gap: 7px; padding: 12px; border: 1px dashed var(--coral); background: var(--paper); }
+.ajan-oturumu__anahtar label { color: var(--muted); font-size: 7px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.ajan-oturumu__anahtar textarea { width: 100%; padding: 8px; border: 1px solid var(--line); background: var(--paper-deep); color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; line-height: 1.5; resize: vertical; word-break: break-all; }
+.ajan-oturumu__anahtar button { min-height: 34px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 8px; font-weight: 800; cursor: pointer; }
+.ajan-oturumu__mesaj { margin: 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
+.ajan-oturumu__actions { display: flex; gap: 8px; }
+.ajan-oturumu__actions button { flex: 1; min-height: 39px; padding: 9px 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-size: 8px; font-weight: 800; cursor: pointer; }
+.ajan-oturumu__actions button:disabled { cursor: not-allowed; opacity: .48; }
+
 .personal-statistics { grid-column: 1 / -1; min-width: 0; padding: 30px; border: 1px solid var(--line); background: var(--paper-deep); }
 .personal-statistics--shared { margin-top: 34px; }
 .personal-statistics > header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
