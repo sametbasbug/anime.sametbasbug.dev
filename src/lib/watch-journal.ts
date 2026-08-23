@@ -1,4 +1,4 @@
-import { MAX_PROGRESS } from "./personal-list";
+import { MAX_PROGRESS } from "./personal-list.ts";
 
 export const WATCH_JOURNAL_STORAGE_KEY = "rota.watch-journal.v1";
 export const WATCH_JOURNAL_EVENT = "rota:watch-journal-change";

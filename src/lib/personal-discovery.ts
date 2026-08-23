@@ -1,8 +1,8 @@
-import type { CatalogueAnime } from "./catalogue-ui";
-import { localizedTag, typeLabels } from "./catalogue-ui";
-import type { PersonalListEntry } from "./personal-list";
-import { studioLabel } from "./personal-statistics";
-import type { WatchJournalEntry } from "./watch-journal";
+import type { CatalogueAnime } from "./catalogue-ui.ts";
+import { localizedTag, typeLabels } from "./catalogue-ui.ts";
+import type { PersonalListEntry } from "./personal-list.ts";
+import { studioLabel } from "./personal-statistics.ts";
+import type { WatchJournalEntry } from "./watch-journal.ts";
 
 export const discoveryPaths = {
   FOR_YOU: { label: "Sana göre", note: "Rafındaki ortak izlerden" },

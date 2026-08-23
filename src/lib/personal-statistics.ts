@@ -1,6 +1,6 @@
-import type { CatalogueAnime } from "./catalogue-ui";
-import { localizedTag } from "./catalogue-ui";
-import type { PersonalStatus } from "./personal-list";
+import type { CatalogueAnime } from "./catalogue-ui.ts";
+import { localizedTag } from "./catalogue-ui.ts";
+import type { PersonalStatus } from "./personal-list.ts";
 
 export type StatisticsEntry = {
   animeId: string;
