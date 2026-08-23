@@ -59,13 +59,16 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
 
-### 5. MAL/AniList içe aktarma fizibilitesi — AniList yanıtı bekleniyor
+### 5. MAL/AniList liste içe aktarma — başladı
 
-- Resmî dışa aktarma dosyalarını ve izin verilen aktarım yöntemlerini araştır.
-- Mümkünse XML/JSON dosyasıyla tek seferlik içe aktarmayı öncele.
-- API tabanlı yöntemleri ancak güncel koşullar ve izinler elveriyorsa uygula.
+- [x] MAL'in resmî XML/XML.GZ ve AniList'in kullanıcı veri dışa aktarma biçimlerini güncel örneklerle doğrula.
+- [x] Dış kimlikleri kalıcı Rota kimliklerine eşle; belirsiz veya katalog dışı kayıtları sessizce uydurmak yerine önizlemede ayır.
+- [x] Dosyayı tarayıcıda, Rota sunucusuna veya üçüncü tarafa yüklemeden ayrıştır; biçim, boyut, kayıt ve alan sınırlarını uygula.
+- [x] Durum, ilerleme, puan ve notu mevcut taşınabilirlik katmanına dönüştür; kullanıcı onayından önce hiçbir kaydı değiştirme.
+- [x] Daha yeni yerel kayıt/tombstone üstünlüğünü koruyan birleşimi, tekrar içe aktarmayı ve kısmi eşleşmeyi otomatik test et.
+- [ ] Masaüstü/mobil önizleme ve production kabulünü tamamla.
 
-**Durum:** Samet AniList API kullanımı için e-posta yoluyla yazılı başvuru yaptı. 12 Ağustos 2026 kararıyla yanıt gelene kadar bu aşama beklemede kalacak; API entegrasyonu yanıttan önce başlatılmayacak. Resmî dışa aktarma dosyası araştırması da aynı aşamayla birlikte ertelendi.
+**Kaynak sınırı:** AniList'e gönderilen yazılı API başvurusu kullanıcı listesi içe aktarma için değil, AniList'i Rota'nın anime katalog kaynağı yapmak içindi. Katalog artık Kitsu API/CDN ile çalıştığından cevapsız kalan bu başvuru 5. aşamayı bloke etmez. İçe aktarma kullanıcının kendi resmî dışa aktarma dosyası üzerinden yapılır; AniList API'si katalog kaynağı olarak eklenmez ve MAL scrape edilmez.
 
 ### 6. Topluluk ve moderasyon — tamamlandı
 
@@ -278,6 +281,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün aşamalarının ardından düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
+
+5. aşama **MAL/AniList liste içe aktarma** başladı. Eski AniList e-posta bekleyişinin katalog kaynağı iznine ait olduğu netleştirildi; kullanıcıya ait resmî dışa aktarma dosyalarıyla cihaz içi içe aktarma bundan bağımsızdır. İlk dilim resmî MAL XML/XML.GZ ve AniList kullanıcı veri biçimini doğrulayacak, ardından kalıcı Rota kimliği eşleme ve değişikliksiz önizleme katmanını kuracaktır.
 
 21. aşama **ajan yetenek eşitliği** production'da tamamlandı. Liste API eşitliği, izleme günlüğü CRUD'si, özel koleksiyon CRUD/üyelik/sıralaması ile sekiz açıklanabilir kişisel öneri yolu ve nazik hatırlatmalar 15 işlemlik canlı kataloğa alındı. Migration'lar ve `orbit-eylem` sürüm 6 dağıtıldı; gerçek Orbit çağrılarında sayfalama/not/puan temizleme/bölüm sınırı, günlük ve koleksiyon zincirleri ile test verisini tombstone'a alıp özgün liste durumunu geri yükleme kabulü geçti. Özellik `3f85bdc`, edge paketleme düzeltmesi `19b25a2`; Pages `32659453057`, CI `32659453063` ve CodeQL `32659453054` yeşildir.
 

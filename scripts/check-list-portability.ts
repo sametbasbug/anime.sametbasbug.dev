@@ -14,6 +14,7 @@ import {
 import type { PersonalListStore } from "../src/lib/personal-list";
 import type { WatchJournalStore } from "../src/lib/watch-journal";
 import { mergePersonalCollectionStores, type PersonalCollectionsStore } from "../src/lib/personal-collections";
+import { ExternalListImportError, createExternalListPreview } from "../src/lib/external-list-import";
 
 const current: PersonalListStore = {
   version: 2,
@@ -139,4 +140,54 @@ assert.ok(csv.includes("\"'=Kötü, Başlık\""), "Formül enjeksiyonu etkisizle
 assert.ok(csv.includes("\"Satır 1\nSatır \"\"2\"\"\""), "Virgül, satır sonu ve tırnaklar RFC 4180 biçiminde kaçırılmalı.");
 assert.equal(csv.includes("stays_deleted"), false, "Okunabilir CSV iç tombstone kayıtlarını göstermemeli.");
 
-console.log("Rota JSON/CSV taşınabilirliği ve yenisi-kazanır birleşimi doğrulandı.");
+const externalCatalogue: CatalogueAnime[] = [
+  { ...catalogue[0], id: "cowboy", title: "Cowboy Bebop", malId: "1", anilistId: "1" },
+  { ...catalogue[0], id: "monster", title: "Monster", malId: "19", anilistId: "19" },
+  { ...catalogue[0], id: "ambiguous-a", title: "Belirsiz A", malId: "42", anilistId: "42" },
+  { ...catalogue[0], id: "ambiguous-b", title: "Belirsiz B", malId: "42", anilistId: "42" },
+];
+const externalCurrent: PersonalListStore = {
+  version: 2,
+  entries: {
+    cowboy: { animeId: "cowboy", status: "WATCHING", progress: 8, score: 9, note: "Yerel", updatedAt: "2026-08-20T12:00:00.000Z" },
+  },
+  tombstones: { monster: "2026-08-21T12:00:00.000Z" },
+};
+const malXml = `<?xml version="1.0" encoding="UTF-8"?>
+<myanimelist>
+  <anime><series_animedb_id>1</series_animedb_id><series_title>Cowboy Bebop</series_title><my_watched_episodes>26</my_watched_episodes><my_score>10</my_score><my_status>Completed</my_status><my_comments>Uzay kovboyları</my_comments><my_last_updated>1787133600</my_last_updated></anime>
+  <anime><series_animedb_id>19</series_animedb_id><series_title>Monster</series_title><my_watched_episodes>12</my_watched_episodes><my_score>0</my_score><my_status>On-Hold</my_status><my_comments></my_comments><my_last_updated>1787220000</my_last_updated></anime>
+  <anime><series_animedb_id>999999</series_animedb_id><series_title>Eşleşmeyen</series_title><my_watched_episodes>1</my_watched_episodes><my_score>7</my_score><my_status>Watching</my_status><my_last_updated>1787392800</my_last_updated></anime>
+  <anime><series_animedb_id>42</series_animedb_id><series_title>Belirsiz</series_title><my_watched_episodes>1</my_watched_episodes><my_score>7</my_score><my_status>Watching</my_status><my_last_updated>1787392800</my_last_updated></anime>
+</myanimelist>`;
+const malPreview = createExternalListPreview("MAL", malXml, externalCatalogue, externalCurrent);
+assert.equal(malPreview.sourceCount, 4);
+assert.equal(malPreview.matchedCount, 2);
+assert.deepEqual(malPreview.unmatched, [{ externalId: "999999", title: "Eşleşmeyen" }]);
+assert.deepEqual(malPreview.ambiguous, [{ externalId: "42", title: "Belirsiz" }], "Çakışan dış kimlik sessizce ilk animeye bağlanmamalı.");
+assert.deepEqual(malPreview.summary, { added: 0, updated: 0, deleted: 0, kept: 2 });
+assert.equal(malPreview.incoming.entries.cowboy.status, "COMPLETED");
+assert.equal(malPreview.incoming.entries.monster.status, "WATCHING");
+assert.equal(malPreview.merged.entries.cowboy.note, "Yerel", "Yeni yerel kayıt eski MAL verisiyle ezilmemeli.");
+assert.equal(malPreview.merged.entries.monster, undefined, "Yeni tombstone MAL kaydını diriltmemeli.");
+
+const anilistJson = JSON.stringify({
+  user: { display_name: "test" },
+  lists: [
+    { series_type: 0, series_id: 1, status: 2, score: 85, progress: 26, notes: "Tamam", updated_at: "2026-08-22T12:00:00.000Z" },
+    { series_type: 0, series_id: 19, status: 1, score: 0, progress: 0, notes: null, updated_at: "2026-08-22T12:00:00.000Z" },
+    { series_type: 1, series_id: 30013, status: 0, score: 90, progress: 5, notes: "Manga", updated_at: "2026-08-22T12:00:00.000Z" },
+  ],
+});
+const anilistPreview = createExternalListPreview("ANILIST", anilistJson, externalCatalogue, externalCurrent);
+assert.equal(anilistPreview.sourceCount, 2, "AniList manga kayıtları içe aktarılmamalı.");
+assert.deepEqual(anilistPreview.summary, { added: 0, updated: 2, deleted: 0, kept: 0 });
+assert.equal(anilistPreview.incoming.entries.cowboy.score, 9, "AniList 100'lük ham puanı Rota 10'luk puanına çevrilmeli.");
+assert.equal(anilistPreview.incoming.entries.monster.status, "PLANNED");
+const repeatedAnilist = createExternalListPreview("ANILIST", anilistJson, externalCatalogue, anilistPreview.merged);
+assert.deepEqual(repeatedAnilist.summary, { added: 0, updated: 0, deleted: 0, kept: 2 }, "Aynı AniList dosyasını yeniden aktarmak etkisiz olmalı.");
+
+assert.throws(() => createExternalListPreview("MAL", "<bozuk>", externalCatalogue, externalCurrent), ExternalListImportError);
+assert.throws(() => createExternalListPreview("ANILIST", JSON.stringify({ activity: [] }), externalCatalogue, externalCurrent), ExternalListImportError);
+
+console.log("Rota JSON/CSV taşınabilirliği, MAL/AniList önizlemesi ve yenisi-kazanır birleşimi doğrulandı.");

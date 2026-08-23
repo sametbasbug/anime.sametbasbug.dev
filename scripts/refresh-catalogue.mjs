@@ -103,11 +103,11 @@ function tagsFor(resource, includedIndex) {
     .slice(0, 36);
 }
 
-function malIdFor(resource, includedIndex) {
+function externalIdFor(resource, includedIndex, externalSite) {
   for (const mapping of relationshipResources(resource, "mappings", includedIndex)) {
-    if (mapping.attributes?.externalSite !== "myanimelist/anime") continue;
-    const malId = String(mapping.attributes?.externalId ?? "");
-    if (/^\d+$/.test(malId)) return malId;
+    if (mapping.attributes?.externalSite !== externalSite) continue;
+    const externalId = String(mapping.attributes?.externalId ?? "");
+    if (/^\d+$/.test(externalId)) return externalId;
   }
   return null;
 }
@@ -153,7 +153,8 @@ function normalizeResource(resource, includedIndex, identity) {
   return {
     id: rotaId,
     kitsuId: resource.id,
-    malId: malIdFor(resource, includedIndex),
+    malId: externalIdFor(resource, includedIndex, "myanimelist/anime"),
+    anilistId: externalIdFor(resource, includedIndex, "anilist/anime"),
     slug,
     title: attributes.canonicalTitle,
     type,
@@ -420,6 +421,7 @@ const output = {
     entryCount: items.length,
     posterCoverage: items.filter((anime) => anime.poster?.large).length,
     malIdCoverage: items.filter((anime) => anime.malId).length,
+    anilistIdCoverage: items.filter((anime) => anime.anilistId).length,
     reseedSnapshotFallbacks,
     selection: seed.meta.selection,
   },

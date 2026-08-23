@@ -12,6 +12,7 @@ import {
 import { readPersonalList, replacePersonalList } from "../lib/personal-list";
 import { mergePersonalCollectionStores, readPersonalCollections, replacePersonalCollections } from "../lib/personal-collections";
 import { readWatchJournal, replaceWatchJournal } from "../lib/watch-journal";
+import ExternalListImportPanel from "./ExternalListImportPanel";
 
 type Props = {
   catalogue: CatalogueAnime[];
@@ -107,6 +108,7 @@ export default function ArchivePortabilityPanel({ catalogue, catalogueLoading = 
       <input ref={inputRef} className="archive-portability__input" type="file" accept="application/json,.json" aria-hidden="true" tabIndex={-1} onChange={(event) => void importJson(event.target.files?.[0])} />
       <p className="archive-portability__note">Geri yükleme mevcut arşivi topluca silmez. Aynı anime için tarihçe karşılaştırılır ve daha yeni değişiklik korunur.</p>
       {feedback && <p className={`archive-portability__feedback${error ? " is-error" : ""}`} role="status">{feedback}</p>}
+      <ExternalListImportPanel catalogue={catalogue} catalogueLoading={catalogueLoading} onImported={onImported} />
     </section>
   );
 }

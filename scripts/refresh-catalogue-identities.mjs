@@ -11,29 +11,37 @@ if (payload.data.length !== catalogue.items.length) {
 }
 
 const included = new Map((payload.included ?? []).map((resource) => [resource.id, resource]));
-const malByKitsu = new Map();
+const identitiesByKitsu = new Map();
 for (const anime of payload.data) {
   const mappings = anime.relationships?.mappings?.data ?? [];
-  const mal = mappings
-    .map((reference) => included.get(reference.id))
-    .find((mapping) => mapping?.attributes?.externalSite === "myanimelist/anime");
-  const malId = String(mal?.attributes?.externalId ?? "");
-  malByKitsu.set(String(anime.id), /^\d+$/.test(malId) ? malId : null);
+  const externalId = (site) => {
+    const mapping = mappings
+      .map((reference) => included.get(reference.id))
+      .find((candidate) => candidate?.attributes?.externalSite === site);
+    const id = String(mapping?.attributes?.externalId ?? "");
+    return /^\d+$/.test(id) ? id : null;
+  };
+  identitiesByKitsu.set(String(anime.id), {
+    malId: externalId("myanimelist/anime"),
+    anilistId: externalId("anilist/anime"),
+  });
 }
 
 const items = catalogue.items.map((anime) => ({
   ...anime,
-  malId: malByKitsu.get(String(anime.kitsuId)) ?? null,
+  malId: identitiesByKitsu.get(String(anime.kitsuId))?.malId ?? null,
+  anilistId: identitiesByKitsu.get(String(anime.kitsuId))?.anilistId ?? null,
 }));
 const malIdCoverage = items.filter((anime) => anime.malId).length;
+const anilistIdCoverage = items.filter((anime) => anime.anilistId).length;
 if (malIdCoverage < Math.floor(items.length * 0.8)) {
   throw new Error(`Identity refresh rejected: only ${malIdCoverage}/${items.length} MAL mappings.`);
 }
 
 const output = {
   ...catalogue,
-  meta: { ...catalogue.meta, malIdCoverage },
+  meta: { ...catalogue.meta, malIdCoverage, anilistIdCoverage },
   items,
 };
 await writeFile(OUTPUT, `${JSON.stringify(output)}\n`, "utf8");
-console.log(`Catalogue identities refreshed: ${items.length} Kitsu IDs, ${malIdCoverage} MAL mappings.`);
+console.log(`Catalogue identities refreshed: ${items.length} Kitsu IDs, ${malIdCoverage} MAL and ${anilistIdCoverage} AniList mappings.`);

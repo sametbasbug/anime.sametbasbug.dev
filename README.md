@@ -49,6 +49,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - E-posta, kullanıcı UUID'si ve senkronizasyon metadatasını açmayan dar RPC üzerinden salt okunur Rota paylaşım bağlantıları
 - Toplam anime/bölüm, izleme süresi, tamamlama oranı, ortalama puan ve tür/stüdyo dağılımı üreten kişisel istatistikler
 - Liste, günlük ve koleksiyonları taşıyan JSON yedek v3; okunabilir CSV dışa aktarımı ve yenisi-kazanır kurallı güvenli geri yükleme
+- MAL XML/XML.GZ ve AniList GDPR JSON dosyalarını sunucuya yüklemeden cihazda eşleştiren, değişiklik önizlemeli liste içe aktarma
 - Dependabot, CodeQL ve her değişiklikte tam kontrol/build çalıştıran GitHub Actions bakım hattı
 - Astro static build
 
@@ -87,9 +88,9 @@ npm run data:refresh
 
 Komut kararlı `src/data/kitsu-catalogue-seed.json` seçkisini Kitsu API'den sınırlı eşzamanlılıkla yeniden çeker, şemaya normalize eder ve ancak 7.500 kaydın tamamı geçerli bir Kitsu posteriyle geldiyse `src/data/catalogue.json` dosyasını yeniler. Timeout, sınırlı retry ve `Retry-After` desteği vardır; eksik veya postersiz yenileme mevcut sağlam katalogu ezmez. `--reseed` genişletmesi sırasında upstream'in geçici olarak postersiz döndürdüğü mevcut bir kimlik, son sağlam snapshot'tan korunur; URL yayımladığı hâlde bütün CDN varyantları doğrulanmış biçimde 404 olan kayıtlar seçkiye alınmaz. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur, detay sayfaları derleme sırasında statik oluşturulur. `npm run catalogue:check` veri sözleşmesini, `npm run kitsu:media-check` CDN erişimini denetler.
 
-Katalogdaki `id` Rota'nın kalıcı iç kimliğidir ve kullanıcı verisi bağlarını korumak için kaynak geçişlerinde yeniden numaralandırılmaz. `kitsuId` her kayıtta bulunur; Kitsu'nun açık mapping ilişkisinde varsa `malId` ayrıca yayımlanır. Bu alanlar birbirinin yerine kullanılmaz. Yalnız dış kimlik eşlemelerini poster/metadata snapshot'ına dokunmadan yenilemek için `npm run data:identities` kullanılabilir.
+Katalogdaki `id` Rota'nın kalıcı iç kimliğidir ve kullanıcı verisi bağlarını korumak için kaynak geçişlerinde yeniden numaralandırılmaz. `kitsuId` her kayıtta bulunur; Kitsu'nun açık mapping ilişkisinde varsa `malId` ve `anilistId` ayrıca yayımlanır. Bu alanlar birbirinin yerine kullanılmaz. Yalnız dış kimlik eşlemelerini poster/metadata snapshot'ına dokunmadan yenilemek için `npm run data:identities` kullanılabilir.
 
-AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan veri kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. MAL veya başka siteler de scrape edilmez.
+AniList'in güncel kullanım koşulları, açık yetkilendirme ve sürdürülen eşzamanlama olmadan AniList ile rekabet eden liste/takip hizmetlerini API kullanımından men ediyor. Bu nedenle AniList doğrudan katalog kaynağı değildir ve yazılı izin alınmadan eklenmemelidir. Kullanıcının hesap ayarlarından aldığı resmî GDPR JSON dosyasını cihazında tek seferlik içe aktarması bu katalog sınırından ayrıdır; AniList API'sine istek atılmaz. MAL veya başka siteler de scrape edilmez.
 
 Poster ve cover URL'leri doğrudan kararlı `media.kitsu.app` adresleridir; kısa ömürlü imzalı URL'ler katalog üretiminde elenir. Responsive görsel varyantları kullanılır ve beklenmedik CDN hatasında yerleşimi koruyan Rota fallback'i görünür. Türkçe editoryal açıklamalar Kitsu synopsis metninden otomatik üretilmez; sürüm kontrollü özgün içerik olarak kalır. İlk geçiş 900 eski Rota kimliğinin 797'sini ve 50 editoryal bağın tamamını korudu; güvenli eşleşmeyen veya görsel kapısını geçmeyen 103 eski kayıt, daha geniş 2.500 yapımlık seçkide yer almadı. Geçişin kararları ve kabul kanıtı [`docs/KITSU_MIGRATION_PLAN.md`](./docs/KITSU_MIGRATION_PLAN.md) içindedir.
 
@@ -178,7 +179,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı
 3. ~~Türkçe editoryal içerik~~ — tamamlandı
 4. ~~Hesap ve kalıcı veri~~ — Orbit girişi, Supabase senkronizasyonu ve iki cihazlı kabul doğrulamasıyla tamamlandı
-5. MAL/AniList içe aktarma fizibilitesi ve izinleri — yazılı API başvurusunun yanıtı bekleniyor
+5. MAL/AniList liste içe aktarma — resmî kullanıcı dosyalarıyla cihaz içi aktarım production kabulünde
 6. ~~Topluluk ve moderasyon~~ — production kabulüyle tamamlandı
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
 8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı

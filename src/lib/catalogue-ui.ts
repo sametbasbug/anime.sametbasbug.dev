@@ -10,6 +10,7 @@ export type CatalogueAnime = {
   id: string;
   kitsuId?: string;
   malId?: string | null;
+  anilistId?: string | null;
   slug: string;
   title: string;
   type: string;
