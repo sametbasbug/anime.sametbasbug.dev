@@ -300,7 +300,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Katalog hero metni hiçbir hedef genişlikte Rota ile çakışmaz; Listem kontrolleri 390 px ekranda kesilmez; mobil detay ilk ekranında anime görseli görünür; sabit alt çubuk sayfa sonu içeriğini örtmez ve bütün rötuşlar yatay taşma veya erişilebilirlik gerilemesi üretmeden otomatik/gerçek tarayıcı kabulünü geçer.
 
-### 24. İngilizce-varsayılan anime başlıkları — production kabulü bekleniyor
+### 24. ~~İngilizce-varsayılan anime başlıkları~~ — production kabulüyle tamamlandı
 
 - [x] Kitsu'nun dil etiketli İngilizce, romanize ve özgün başlıklarını normalize katalog şemasında ayrı alanlar olarak koru.
 - [x] Görünen ana başlığı İngilizce mevcutsa İngilizce, yoksa Kitsu canonical/romanize başlık olacak biçimde tek ve deterministik kuralla üret.
@@ -308,7 +308,7 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [x] Arama ve ajan katalog aramasında İngilizce, romanize, özgün ve kısaltılmış başlıkların birlikte bulunabilirliğini koru.
 - [x] Kart, detay, liste, günlük, koleksiyon, öneri, sezon, yıllık, paylaşım ve SEO yüzeylerinin ortak İngilizce-varsayılan başlığı kullandığını doğrula.
 - [x] Katalog sözleşmesi, otomatik kontroller, tam build ve 1.920×950 / 390×844 gerçek tarayıcı kabulünü tamamla.
-- [ ] Production yayınını ve yayın sonrası canlı kabulü tamamla.
+- [x] Production yayınını ve yayın sonrası canlı kabulü tamamla.
 
 **Veri sınırı:** Kitsu tek harici anime metadata kaynağı olarak kalır. İngilizce başlık `titles.en`/`titles.en_us` alanlarından alınır; bulunmadığında ad tahmini yapılmaz ve mevcut canonical/romanize değer güvenli fallback olur. Başlık tercihi Rota kimliklerini, kullanıcı kayıt bağlarını veya var olan URL'leri yeniden üretmez.
 
@@ -325,6 +325,8 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 ## Şu anki çalışma
 
+24. aşama **İngilizce-varsayılan anime başlıkları** production'da tamamlandı. Kitsu'nun İngilizce, romanize ve özgün dil alanları katalogda ayrı korunuyor; İngilizce karşılığı bulunan 5.321 yapım bunu ana başlık olarak kullanıyor, kalan 2.179 yapım tahmin yapılmadan Kitsu canonical başlığına düşüyor. Toplam 3.950 görünen başlık değişirken 7.500 Rota kimliği, Kitsu eşleşmesi ve kalıcı slug birebir korundu; İngilizce ve romanize sorgular aynı kaydı bulmaya devam ediyor. Tam otomatik kontrol 0 hata/uyarıyla, 7.709 sayfalık build 24,65 saniyede geçti. `64f503b` production'a yayımlandı; Pages `32670392376`, CI `32670392355` ve CodeQL `32670392364` yeşildir. Canlı 1.920×950 detay ile 390×844 İngilizce/romanize arama kabulünde yatay taşma, kırık görsel veya uygulama konsolu hatası yoktur.
+
 23. aşama **görsel hiyerarşi ve responsive rötuşlar** production'da tamamlandı. Katalog masaüstü hero alanında Rota ayrı grid sütununa taşındı ve ölçülen metin/karakter çakışması kaldırıldı. Listem mobil istatistikleri 2×2, filtreleri kesilmesiz iki sütunlu düzene geçti; alt gezinme yüksekliği ile cihaz güvenli alanı birlikte hesaba katıldı. Mobil detay 176 px görsel bantla açılıyor; ana ve katalog hero alanları sıkılaştırıldı, ikincil metinler bir kademe büyütüldü. Tam otomatik kontrol 0 hata/uyarıyla, 7.709 sayfalık build 24,26 saniyede geçti. `112070c` production'a yayımlandı; Pages `32668508199`, CI `32668508114` ve CodeQL `32668508121` yeşildir. Canlı 1.920×950 katalog ile 390×844 ana/katalog/detay/Listem kabulünde yatay taşma yok (`scrollWidth = clientWidth`), tüm Listem kontrolleri ekran içinde, detay görseli ilk ekranda ve uygulama konsolu temizdir.
 
 22. aşama **gezinme sadeleştirmesi** production'da tamamlandı. Mevcut sayfalar ve URL'ler korunarak masaüstü üst menü dört ana durağa indirildi; keşif, kişisel liste ve günlük alt yolları erişilebilir açılır gruplarda toplandı. Mobil alt çubuğun beşli omurgası korunurken Menü yüzeyi yalnız beş ikincil durağı gösteriyor ve `/ara` bağlantısını tekrarlayan ayrı üst-bar düğmesi kaldırıldı. Açıklama metinleri masaüstünde 10 px, mobilde 9 px olarak son hâlini aldı. Tam kontrol ile 7.709 sayfalık build geçti; 1.920×950, 768×900 ve 390×844 yerel kabulü ile production masaüstü/mobil kabulünde menü değiştirme, dış tıklama, Escape/focus dönüşü, klavye açma, aktif durum, yatay taşma ve konsol kontrolleri temizdi. `5d6803a` production'a yayımlandı; Pages `32666401056`, CI `32666401141` ve CodeQL `32666401078` yeşildir.
@@ -337,7 +339,7 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 23 Ağustos ajan liste bütünlüğü turu production'da tamamlandı: ajanlar anime adını `rota.katalogdaAra` ile gerçek Rota kimliğine çözüyor, ekleme canlı katalog doğrulamasından geçiyor, liste okuma başlıklarla birlikte katalog dışı kayıtları ayırıyor ve silme tombstone ile cihazlar arasında yakınsıyor. O turdaki production kataloğu 2.500 Kitsu kimliğinin yanında Kitsu'nun sunduğu 2.195 MAL eşlemesini ayrı alan olarak yayımlıyordu; kalıcı Rota kimlikleri ve kullanıcı bağları yeniden numaralandırılmadı. `3876ed0` ile `d6f8885` production'a yayımlandı; son Pages `32618901629`, CI `32618901742` ve CodeQL `32618901585` yeşil tamamlandı. Canlı kabulde adla Naruto araması geçti, uydurma kimlik reddedildi ve üç eski hayalet kayıt tombstone'a alınarak geçersiz kayıt sayısı sıfırlandı.
 
-1–23. aşamaların tamamı production kabulüyle kapandı. 5. aşamadaki kullanıcı dosyası içe aktarımı AniList API katalog izninden bağımsızdır; katalog kaynağı Kitsu olarak kalır. Yeni ürün aşaması henüz seçilmedi, sürekli bakım hattı sürer.
+1–24. aşamaların tamamı production kabulüyle kapandı. 5. aşamadaki kullanıcı dosyası içe aktarımı AniList API katalog izninden bağımsızdır; katalog kaynağı Kitsu olarak kalır. Yeni ürün aşaması henüz seçilmedi, sürekli bakım hattı sürer.
 
 18. aşama tamamlandı: `/yillik`, günlükteki gerçek kayıtlardan ay veya yıl bazında bölüm, anime, bilinen süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. “Final” yalnız seçili dönemde son bölümü görülen ve bugün de `Tamamladım` durumundaki yapımlarda sayılır; geçmiş durum değişiklikleri tahmin edilmez. Veri azlığında sakin erken dönem veya boş durum gösterilir. Paylaşım kartı varsayılan kapalıdır, cihazda PNG üretilir ve anime adları için ikinci bir açık izin ister; kişisel not, hesap kimliği, tombstone veya senkronizasyon alanı karta girmez. `yearbook:check`, tam kontrol, 1.144 sayfalık build, bağımlılık denetimi ve 1.920×950 ile 390×844 yerel tarayıcı kabulü geçti. `237f460` production'a yayımlandı; Pages `32174487842`, CI `32174487772` ve CodeQL `32174487667` başarıyla tamamlandı. Canlı `/yillik` masaüstü/mobil görünüm, aylık geçiş, varsayılan kapalı kart, yatay taşma, kırık görsel ve temiz uygulama konsolu kontrollerini geçti.
 
