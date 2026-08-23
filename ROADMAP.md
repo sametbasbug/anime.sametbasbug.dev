@@ -271,6 +271,19 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Bağlı ajan, insanın Rota'daki özel liste, günlük ve koleksiyon işlerini aynı veri bütünlüğü kurallarıyla yapabilir; senkronize geçmişten Rota'nın mevcut algoritmasıyla açıklanabilir kişisel öneri alabilir ve hiçbir işlem hayalet kimlik, eski-sürüm ezmesi veya sessiz veri kaybı üretemez.
 
+### 22. Gezinme sadeleştirmesi — yerel aday hazır
+
+- [x] Masaüstü üst menüyü `Ana`, `Keşfet`, `Listem` ve `Günlük` olmak üzere dört ana durakta topla; hesap eylemini ayrı tut.
+- [x] `Keşfet` altında Anime ara, Sezonlar, Bana seç ve Rehberler; `Listem` altında Listem ve Koleksiyonlar; `Günlük` altında Günlük ve Yıllık yollarını grupla.
+- [x] Aynı `/ara` yoluna giden ayrı “Anime ara” üst-bar düğmesini kaldır; mevcut sayfaları ve URL'leri değiştirme.
+- [x] Mobil alt gezinmedeki Ana / Keşfet / Listem / Günlük / Menü omurgasını koru; Menü içinde yalnız ikincil durakları gruplu göster ve birincil bağlantıları tekrar etme.
+- [x] Klavye, focus, Escape/dışarı tıklama, aktif grup durumu ve masaüstü/mobil yerel gerçek tarayıcı kabulünü tamamla.
+- [ ] Production yayınını ve yayın sonrası canlı kabulü tamamla.
+
+**Bilgi mimarisi sınırı:** Bu aşama sayfa veya özellik kaldırmaz ve mevcut URL sözleşmesini değiştirmez. Yalnız gezinme hiyerarşisini sadeleştirir; hesap erişimi içerik gruplarından ayrı kalır.
+
+**Tamamlanma ölçütü:** Masaüstünde dokuz eş düzey bağlantı yerine dört anlaşılır ana durak görünür; mobil Menü yalnız ikincil yolları tekrar etmeden sunar; bütün rotalar klavye, dokunma ve fare ile erişilebilir kalır ve otomatik/gerçek tarayıcı kabulü geçer.
+
 ## Sürekli bakım hattı
 
 - [ ] Supabase Free planının duraklama, yedekleme ve kurtarma sınırlarını düzenli olarak yeniden değerlendir.
@@ -281,6 +294,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün aşamalarının ardından düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
+
+22. aşama **gezinme sadeleştirmesi** için yerel aday hazır. Mevcut sayfalar ve URL'ler korunarak masaüstü üst menü dört ana durağa indirildi; keşif, kişisel liste ve günlük alt yolları erişilebilir açılır gruplarda toplandı. Mobil alt çubuğun beşli omurgası korunurken Menü yüzeyi yalnız beş ikincil durağı gösteriyor ve `/ara` bağlantısını tekrarlayan ayrı üst-bar düğmesi kaldırıldı. Tam kontrol ile 7.709 sayfalık build geçti; 1.920×950, 768×900 ve 390×844 gerçek tarayıcı kabulünde menü değiştirme, dış tıklama, Escape/focus dönüşü, klavye açma, aktif durum, yatay taşma ve konsol kontrolleri temizdi. Production yayını henüz yapılmadı.
 
 5. aşama **MAL/AniList liste içe aktarma** production'da tamamlandı. MAL XML/XML.GZ ile AniList GDPR JSON dosyaları yalnız cihazda ayrıştırılıyor; Kitsu'nun MAL/AniList mapping'leri kalıcı Rota kimliklerine bağlanıyor. Katalog dışı ve belirsiz kayıtlar önizlemede ayrılıyor, daha yeni yerel kayıt/tombstone korunuyor ve açık onaydan önce liste değişmiyor. `729b527` production'a yayımlandı; Pages `32663270476`, CI `32663270423` ve CodeQL `32663270445` yeşildir. Canlı MAL ve AniList önizlemelerinde bir eşleşen ile bir katalog dışı kayıt doğru ayrıldı; iki kabul de iptal edilerek mevcut liste değişmeden bırakıldı. 1.920 px ve 390×844 görünüm taşmasız, konsol temizdi.
 

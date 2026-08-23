@@ -20,7 +20,37 @@ const sectionLinks = [
   { key: "yearbook", href: "/yillik", label: "Yıllık", description: "Aylık ve yıllık anime yolculuğun" },
 ] as const;
 
-const mobileMoreActive = ["season", "picker", "guides", "collections", "yearbook"].includes(active);
+const desktopGroups = [
+  {
+    label: "Keşfet",
+    active: ["search", "season", "picker", "guides"].includes(active),
+    links: [
+      { key: "search", href: "/ara", label: "Anime ara", description: "Katalog, tür ve stüdyo yolları" },
+      ...sectionLinks.filter((item) => ["season", "picker", "guides"].includes(item.key)),
+    ],
+  },
+  {
+    label: "Listem",
+    active: ["lists", "collections"].includes(active),
+    links: sectionLinks.filter((item) => ["lists", "collections"].includes(item.key)),
+  },
+  {
+    label: "Günlük",
+    active: ["journal", "yearbook"].includes(active),
+    links: sectionLinks.filter((item) => ["journal", "yearbook"].includes(item.key)),
+  },
+];
+
+const mobileSections = [
+  {
+    label: "Keşif yolları",
+    links: sectionLinks.filter((item) => ["season", "picker", "guides"].includes(item.key)),
+  },
+  {
+    label: "Kişisel arşiv",
+    links: sectionLinks.filter((item) => ["collections", "yearbook"].includes(item.key)),
+  },
+];
 ---
 
 <header class="site-header">
@@ -30,16 +60,26 @@ const mobileMoreActive = ["season", "picker", "guides", "collections", "yearbook
   </a>
 
   <nav class="desktop-nav" aria-label="Ana menü">
-    {sectionLinks.map((item) => (
-      <a class:list={{ "is-active": active === item.key }} href={item.href}>{item.label}</a>
+    <a class:list={{ "is-active": active === "discover" }} href="/">Ana</a>
+    {desktopGroups.map((group) => (
+      <details class:list={["desktop-nav__group", "nav-disclosure", { "is-active": group.active }]}>
+        <summary class="desktop-nav__summary">
+          <span>{group.label}</span>
+          <svg viewBox="0 0 12 8" aria-hidden="true"><path d="m1 1.5 5 5 5-5" /></svg>
+        </summary>
+        <div class="desktop-nav__menu" aria-label={`${group.label} yolları`}>
+          {group.links.map((item) => (
+            <a class:list={{ "is-active": active === item.key }} href={item.href}>
+              <strong>{item.label}</strong>
+              <small>{item.description}</small>
+            </a>
+          ))}
+        </div>
+      </details>
     ))}
   </nav>
 
   <div class="header-actions">
-    <a class="header-search" href="/ara" aria-label="Anime ara">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.4 4.4" /></svg>
-      <span>Anime ara</span>
-    </a>
     <AccountStatus client:load />
   </div>
 </header>
@@ -61,22 +101,29 @@ const mobileMoreActive = ["season", "picker", "guides", "collections", "yearbook
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h10.5A1.5 1.5 0 0 1 18 5v15.5H7.5A1.5 1.5 0 0 1 6 19Z" /><path d="M6 18.5A1.5 1.5 0 0 1 7.5 17H18M9 8h6M9 11.5h5" /></svg>
     <span>Günlük</span>
   </a>
-  <details class:list={["mobile-more", { "is-active": mobileMoreActive }]}>
-    <summary aria-label="Tüm Rota bölümlerini aç">
+  <details class="mobile-more nav-disclosure">
+    <summary aria-label="İkincil Rota bölümlerini aç">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
       <span>Menü</span>
     </summary>
-    <section class="mobile-more__sheet" aria-label="Tüm Rota bölümleri">
+    <section class="mobile-more__sheet" aria-label="İkincil Rota bölümleri">
       <header>
-        <div><small>ROTA MENÜSÜ</small><strong>Tüm duraklar</strong></div>
-        <span>Bir bölüme dokun ve yoluna devam et.</span>
+        <div><small>ROTA MENÜSÜ</small><strong>Kısa yollar</strong></div>
+        <span>Ana durakların yanındaki özel yollar.</span>
       </header>
-      <div class="mobile-more__grid">
-        {sectionLinks.map((item) => (
-          <a class:list={{ "is-active": active === item.key }} href={item.href}>
-            <strong>{item.label}</strong>
-            <small>{item.description}</small>
-          </a>
+      <div class="mobile-more__groups">
+        {mobileSections.map((section) => (
+          <section class="mobile-more__group" aria-label={section.label}>
+            <h2>{section.label}</h2>
+            <div class="mobile-more__grid">
+              {section.links.map((item) => (
+                <a class:list={{ "is-active": active === item.key }} href={item.href}>
+                  <strong>{item.label}</strong>
+                  <small>{item.description}</small>
+                </a>
+              ))}
+            </div>
+          </section>
         ))}
       </div>
     </section>
@@ -84,14 +131,15 @@ const mobileMoreActive = ["season", "picker", "guides", "collections", "yearbook
 </nav>
 
 <script>
-  const closeMobileMenus = (except?: Node | null) => {
-    document.querySelectorAll<HTMLDetailsElement>(".mobile-more[open]").forEach((menu) => {
+  const closeNavigationMenus = (except?: Node | null, restoreFocus = false) => {
+    document.querySelectorAll<HTMLDetailsElement>(".nav-disclosure[open]").forEach((menu) => {
       if (!except || !menu.contains(except)) menu.removeAttribute("open");
+      if (restoreFocus) menu.querySelector<HTMLElement>(":scope > summary")?.focus();
     });
   };
 
-  document.addEventListener("click", (event) => closeMobileMenus(event.target as Node));
+  document.addEventListener("click", (event) => closeNavigationMenus(event.target as Node));
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMobileMenus();
+    if (event.key === "Escape") closeNavigationMenus(undefined, true);
   });
 </script>
