@@ -1,5 +1,12 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "exclude": [
+    "dist",
+    // Supabase Edge Function'ları Deno'da koşuyor: `Deno` global'i ve `.ts`
+    // uzantılı import'lar burada geçerli, Astro'nun tür kontrolünde değil.
+    // Kendi kontrolleri ayrı: `npm run agent:check` imza doğrulamasını gerçek
+    // kriptoyla sınıyor ve `deno check` de yerelde koşuyor.
+    "supabase/functions"
+  ]
 }

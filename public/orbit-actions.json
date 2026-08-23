@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "operations": [
+    {
+      "operationId": "rota.listeyeEkle",
+      "summary": "İnsanın Rota listesine anime ekler; kayıt varsa durumunu, ilerlemesini ve puanını günceller.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "required": ["animeId", "durum"],
+        "additionalProperties": false,
+        "properties": {
+          "animeId": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Katalog kimliği. /data/catalogue.json içindeki id."
+          },
+          "durum": {
+            "enum": ["WATCHING", "COMPLETED", "PLANNED", "DROPPED"],
+            "description": "İzleme durumu."
+          },
+          "ilerleme": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000,
+            "description": "İzlenen bölüm sayısı."
+          },
+          "puan": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "1-10 arası puan."
+          },
+          "not": {
+            "type": "string",
+            "maxLength": 600,
+            "description": "Kişisel not."
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "animeId": { "type": "string" },
+          "durum": { "type": "string" },
+          "yeniKayit": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "operationId": "rota.listeyiOku",
+      "summary": "İnsanın Rota listesini döndürür.",
+      "idempotent": true,
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "durum": {
+            "enum": ["WATCHING", "COMPLETED", "PLANNED", "DROPPED"],
+            "description": "Verilirse yalnız bu durumdaki kayıtlar döner."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "description": "En fazla kaç kayıt. Varsayılan 50."
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "kayitlar": { "type": "array" },
+          "toplam": { "type": "integer" }
+        }
+      }
+    }
+  ]
+}
