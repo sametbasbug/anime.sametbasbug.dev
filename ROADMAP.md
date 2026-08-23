@@ -271,14 +271,14 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Bağlı ajan, insanın Rota'daki özel liste, günlük ve koleksiyon işlerini aynı veri bütünlüğü kurallarıyla yapabilir; senkronize geçmişten Rota'nın mevcut algoritmasıyla açıklanabilir kişisel öneri alabilir ve hiçbir işlem hayalet kimlik, eski-sürüm ezmesi veya sessiz veri kaybı üretemez.
 
-### 22. Gezinme sadeleştirmesi — yerel aday hazır
+### 22. ~~Gezinme sadeleştirmesi~~ — production kabulüyle tamamlandı
 
 - [x] Masaüstü üst menüyü `Ana`, `Keşfet`, `Listem` ve `Günlük` olmak üzere dört ana durakta topla; hesap eylemini ayrı tut.
 - [x] `Keşfet` altında Anime ara, Sezonlar, Bana seç ve Rehberler; `Listem` altında Listem ve Koleksiyonlar; `Günlük` altında Günlük ve Yıllık yollarını grupla.
 - [x] Aynı `/ara` yoluna giden ayrı “Anime ara” üst-bar düğmesini kaldır; mevcut sayfaları ve URL'leri değiştirme.
 - [x] Mobil alt gezinmedeki Ana / Keşfet / Listem / Günlük / Menü omurgasını koru; Menü içinde yalnız ikincil durakları gruplu göster ve birincil bağlantıları tekrar etme.
 - [x] Klavye, focus, Escape/dışarı tıklama, aktif grup durumu ve masaüstü/mobil yerel gerçek tarayıcı kabulünü tamamla.
-- [ ] Production yayınını ve yayın sonrası canlı kabulü tamamla.
+- [x] Production yayınını ve yayın sonrası canlı kabulü tamamla.
 
 **Bilgi mimarisi sınırı:** Bu aşama sayfa veya özellik kaldırmaz ve mevcut URL sözleşmesini değiştirmez. Yalnız gezinme hiyerarşisini sadeleştirir; hesap erişimi içerik gruplarından ayrı kalır.
 
@@ -295,7 +295,7 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 ## Şu anki çalışma
 
-22. aşama **gezinme sadeleştirmesi** için yerel aday hazır. Mevcut sayfalar ve URL'ler korunarak masaüstü üst menü dört ana durağa indirildi; keşif, kişisel liste ve günlük alt yolları erişilebilir açılır gruplarda toplandı. Mobil alt çubuğun beşli omurgası korunurken Menü yüzeyi yalnız beş ikincil durağı gösteriyor ve `/ara` bağlantısını tekrarlayan ayrı üst-bar düğmesi kaldırıldı. Tam kontrol ile 7.709 sayfalık build geçti; 1.920×950, 768×900 ve 390×844 gerçek tarayıcı kabulünde menü değiştirme, dış tıklama, Escape/focus dönüşü, klavye açma, aktif durum, yatay taşma ve konsol kontrolleri temizdi. Production yayını henüz yapılmadı.
+22. aşama **gezinme sadeleştirmesi** production'da tamamlandı. Mevcut sayfalar ve URL'ler korunarak masaüstü üst menü dört ana durağa indirildi; keşif, kişisel liste ve günlük alt yolları erişilebilir açılır gruplarda toplandı. Mobil alt çubuğun beşli omurgası korunurken Menü yüzeyi yalnız beş ikincil durağı gösteriyor ve `/ara` bağlantısını tekrarlayan ayrı üst-bar düğmesi kaldırıldı. Açıklama metinleri masaüstünde 10 px, mobilde 9 px olarak son hâlini aldı. Tam kontrol ile 7.709 sayfalık build geçti; 1.920×950, 768×900 ve 390×844 yerel kabulü ile production masaüstü/mobil kabulünde menü değiştirme, dış tıklama, Escape/focus dönüşü, klavye açma, aktif durum, yatay taşma ve konsol kontrolleri temizdi. `5d6803a` production'a yayımlandı; Pages `32666401056`, CI `32666401141` ve CodeQL `32666401078` yeşildir.
 
 5. aşama **MAL/AniList liste içe aktarma** production'da tamamlandı. MAL XML/XML.GZ ile AniList GDPR JSON dosyaları yalnız cihazda ayrıştırılıyor; Kitsu'nun MAL/AniList mapping'leri kalıcı Rota kimliklerine bağlanıyor. Katalog dışı ve belirsiz kayıtlar önizlemede ayrılıyor, daha yeni yerel kayıt/tombstone korunuyor ve açık onaydan önce liste değişmiyor. `729b527` production'a yayımlandı; Pages `32663270476`, CI `32663270423` ve CodeQL `32663270445` yeşildir. Canlı MAL ve AniList önizlemelerinde bir eşleşen ile bir katalog dışı kayıt doğru ayrıldı; iki kabul de iptal edilerek mevcut liste değişmeden bırakıldı. 1.920 px ve 390×844 görünüm taşmasız, konsol temizdi.
 
@@ -305,7 +305,7 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 23 Ağustos ajan liste bütünlüğü turu production'da tamamlandı: ajanlar anime adını `rota.katalogdaAra` ile gerçek Rota kimliğine çözüyor, ekleme canlı katalog doğrulamasından geçiyor, liste okuma başlıklarla birlikte katalog dışı kayıtları ayırıyor ve silme tombstone ile cihazlar arasında yakınsıyor. O turdaki production kataloğu 2.500 Kitsu kimliğinin yanında Kitsu'nun sunduğu 2.195 MAL eşlemesini ayrı alan olarak yayımlıyordu; kalıcı Rota kimlikleri ve kullanıcı bağları yeniden numaralandırılmadı. `3876ed0` ile `d6f8885` production'a yayımlandı; son Pages `32618901629`, CI `32618901742` ve CodeQL `32618901585` yeşil tamamlandı. Canlı kabulde adla Naruto araması geçti, uydurma kimlik reddedildi ve üç eski hayalet kayıt tombstone'a alınarak geçersiz kayıt sayısı sıfırlandı.
 
-1–21. aşamaların tamamı production kabulüyle kapandı. 5. aşamadaki kullanıcı dosyası içe aktarımı AniList API katalog izninden bağımsızdır; katalog kaynağı Kitsu olarak kalır. Yeni ürün aşaması henüz seçilmedi, sürekli bakım hattı sürer.
+1–22. aşamaların tamamı production kabulüyle kapandı. 5. aşamadaki kullanıcı dosyası içe aktarımı AniList API katalog izninden bağımsızdır; katalog kaynağı Kitsu olarak kalır. Yeni ürün aşaması henüz seçilmedi, sürekli bakım hattı sürer.
 
 18. aşama tamamlandı: `/yillik`, günlükteki gerçek kayıtlardan ay veya yıl bazında bölüm, anime, bilinen süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. “Final” yalnız seçili dönemde son bölümü görülen ve bugün de `Tamamladım` durumundaki yapımlarda sayılır; geçmiş durum değişiklikleri tahmin edilmez. Veri azlığında sakin erken dönem veya boş durum gösterilir. Paylaşım kartı varsayılan kapalıdır, cihazda PNG üretilir ve anime adları için ikinci bir açık izin ister; kişisel not, hesap kimliği, tombstone veya senkronizasyon alanı karta girmez. `yearbook:check`, tam kontrol, 1.144 sayfalık build, bağımlılık denetimi ve 1.920×950 ile 390×844 yerel tarayıcı kabulü geçti. `237f460` production'a yayımlandı; Pages `32174487842`, CI `32174487772` ve CodeQL `32174487667` başarıyla tamamlandı. Canlı `/yillik` masaüstü/mobil görünüm, aylık geçiş, varsayılan kapalı kart, yatay taşma, kırık görsel ve temiz uygulama konsolu kontrollerini geçti.
 
