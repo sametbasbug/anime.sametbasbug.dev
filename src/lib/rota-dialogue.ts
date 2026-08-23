@@ -15,7 +15,7 @@ export const rotaDialogue = {
     "Ne arıyoruz?",
     "İpucu ver, rafı ben bulayım.",
     "Tür mü, stüdyo mu, his mi?",
-    "Dokuz yüz dünya. Sakin ol.",
+    "Binlerce dünya. Sakin ol.",
     "Arama büyüsü hazır!",
     "Adını unuttuysan birlikte buluruz.",
     "Bir kelime söyle, izini süreyim.",

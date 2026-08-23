@@ -12,7 +12,7 @@ import {
 import AnimeArtwork from "./AnimeArtwork";
 import RotaCompanion from "./RotaCompanion";
 
-type Props = { dataVersion: string };
+type Props = { dataVersion: string; catalogueSize: number };
 type ListRecord = { anime: CatalogueAnime; entry: PersonalListEntry };
 
 const filters = [
@@ -29,7 +29,7 @@ const shelfMeta: Record<PersonalStatus, { icon: string; kicker: string; note: st
 
 const shelfOrder = Object.keys(personalStatusLabels) as PersonalStatus[];
 
-export default function MyListExperience({ dataVersion }: Props) {
+export default function MyListExperience({ dataVersion, catalogueSize }: Props) {
   const [catalogue, setCatalogue] = useState<CatalogueAnime[]>([]);
   const [entries, setEntries] = useState<PersonalListEntry[]>([]);
   const [filter, setFilter] = useState<"ALL" | PersonalStatus>("ALL");
@@ -122,7 +122,7 @@ export default function MyListExperience({ dataVersion }: Props) {
     return (
       <div className="my-list-empty">
         <RotaCompanion scene="listEmpty" mood="happy" className="rota-companion--empty" />
-        <span>0 / 900</span>
+        <span>0 / {catalogueSize.toLocaleString("tr-TR")}</span>
         <h2>İlk rotanı<br />kaydet.</h2>
         <p>Bir anime detayında “Listeme ekle” düğmesini kullan. Hesapsız yerel kalır; giriş yaptığında cihazlarınla eşitlenir.</p>
         <a href="/ara">Kataloğu keşfet <span>↗</span></a>

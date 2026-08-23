@@ -330,7 +330,7 @@ body.design-otaku .home-hero .feature-score { margin-right: 54px; }
 .rota-companion--error .rota-companion__eyes::after { display: none; }
 .rota-companion--error .rota-companion__mouth { width: 12px; height: 6px; border: 2px solid var(--ink); border-bottom: 0; border-radius: 9px 9px 0 0; transform: rotate(0); }
 .rota-companion__bandage { top: -8px; left: 24px; width: 28px; height: 12px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 3px; color: var(--coral); background: #fff7dc; font-size: 8px; transform: rotate(-9deg); }
-.rota-companion--hero { left: -89px; bottom: 23px; transform: rotate(-5deg); }
+.rota-companion--hero { left: -146px; bottom: 23px; transform: rotate(-5deg); }
 .rota-companion--catalogue { top: 7px; right: 90px; transform: rotate(5deg); }
 
 @keyframes rota-float { 50% { translate: 0 -7px; } }
@@ -605,7 +605,8 @@ body.design-otaku .account-hero { border-bottom: 0; }
 body.design-otaku .my-list-hero { position: relative; }
 body.design-otaku .my-list-hero::after { content: "MY SHELF ♡"; position: absolute; right: 0; top: 34px; color: rgba(168,139,234,.16); font-family: var(--display); font-size: clamp(42px,7vw,82px); font-weight: 950; transform: rotate(4deg); }
 body.design-otaku .my-list-hero > :not(.rota-companion) { position: relative; z-index: 1; }
-body.design-otaku .my-list-hero > p { padding-right: 152px; }
+body.design-otaku .my-list-hero > p,
+body.design-otaku .journal-hero > p { padding-right: 205px; }
 body.design-otaku .journal-hero::after { content: "WATCH LOG ✦"; position: absolute; right: 0; top: 34px; color: rgba(168,139,234,.15); font-family: var(--display); font-size: clamp(42px,7vw,82px); font-weight: 950; transform: rotate(4deg); }
 body.design-otaku .journal-hero > :not(.rota-companion) { position: relative; z-index: 1; }
 body.design-otaku .journal-month-bar { border: 2px solid var(--ink); border-radius: 18px; background: #fff; box-shadow: 6px 6px 0 var(--sakura); }
@@ -621,8 +622,8 @@ body.design-otaku .journal-entry__edit input,
 body.design-otaku .journal-entry__edit textarea { border-radius: 7px; background: var(--surface-soft); }
 body.design-otaku .journal-entry__edit button { border-radius: 7px; }
 body.design-otaku .journal-entry__edit button.is-primary { background: var(--lavender-deep); }
-.rota-companion--list-hero { right: -18px; bottom: 28px; transform: rotate(4deg); }
-.rota-companion--journal-hero { right: -18px; bottom: 28px; transform: rotate(4deg); }
+.rota-companion--list-hero { right: 0; bottom: 28px; transform: rotate(4deg); }
+.rota-companion--journal-hero { right: 0; bottom: 28px; transform: rotate(4deg); }
 body.design-otaku .my-list-hero h1 em,
 body.design-otaku .account-hero h1 em { color: var(--coral); font-family: inherit; font-style: normal; }
 body.design-otaku .list-overview button { border: 2px solid var(--ink) !important; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 rgba(52,43,74,.14); }
@@ -827,8 +828,9 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .home-hero .feature-card { box-shadow: 6px 7px 0 var(--sakura), 8px 9px 0 var(--ink); }
   .hero-sticker--top { right: -7px; }
   body.design-otaku .home-hero .feature-score { margin-right: 60px; }
-  .rota-companion--hero { left: auto; right: -8px; bottom: -35px; transform: rotate(5deg); }
-  .rota-companion--catalogue { top: 2px; right: -17px; transform: scale(.72) rotate(5deg); }
+  .rota-companion--hero { left: auto; right: -5px; top: 150px; bottom: auto; transform: scale(.7) rotate(5deg); transform-origin: right top; }
+  .rota-companion--hero .rota-companion__bubble { display: none; }
+  .rota-companion--catalogue { top: 12px; right: -8px; transform: scale(.52) rotate(5deg); transform-origin: right top; }
   .rota-companion--catalogue .rota-companion__bubble { display: none; }
   .hero-doodle--heart { right: -7px; }
   body.design-otaku .library-summary { box-shadow: 5px 5px 0 var(--lavender); }
@@ -865,14 +867,15 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .rota-companion--celebration { top: -78px; right: 53px; transform: scale(.58) rotate(-5deg); }
   .rota-companion--celebration .rota-companion__bubble { display: none; }
   body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
-  body.design-otaku .my-list-hero { padding-bottom: 116px; }
+  body.design-otaku .my-list-hero { padding-bottom: 96px; }
   body.design-otaku .my-list-hero > p { padding-right: 0; }
   body.design-otaku .journal-hero::after { top: 55px; right: 0; font-size: 38px; }
-  body.design-otaku .journal-hero { padding-bottom: 108px; }
-  .rota-companion--journal-hero { right: -8px; bottom: -4px; transform: scale(.72) rotate(4deg); transform-origin: right bottom; }
+  body.design-otaku .journal-hero { padding-bottom: 92px; }
+  body.design-otaku .journal-hero > p { padding-right: 0; }
+  .rota-companion--journal-hero { right: -4px; bottom: 2px; transform: scale(.62) rotate(4deg); transform-origin: right bottom; }
   .rota-companion--journal-hero .rota-companion__bubble { max-width: 158px; }
   body.design-otaku .journal-entry:nth-child(n) { transform: none; }
-  .rota-companion--list-hero { right: -11px; bottom: -3px; transform: scale(.72) rotate(4deg); transform-origin: right bottom; }
+  .rota-companion--list-hero { right: -4px; bottom: 2px; transform: scale(.62) rotate(4deg); transform-origin: right bottom; }
   .rota-companion--list-hero .rota-companion__bubble { max-width: 164px; }
   body.design-otaku .account-hero { grid-template-columns: 1fr; }
   body.design-otaku .account-hero::before { right: 10px; bottom: 4px; font-size: 60px; }
@@ -1132,7 +1135,7 @@ body.design-otaku .season-board__grid .season-board-card:nth-child(4n+3) .art { 
   .yearbook-hero { min-height: 390px; padding: 48px 0 112px; grid-template-columns: 1fr; gap: 22px; overflow: hidden; }
   .yearbook-hero h1 { font-size: clamp(55px, 17vw, 76px); }
   .yearbook-hero > p { font-size: 12px; }
-  .rota-companion--yearbook-hero { top: auto; right: -8px; bottom: -2px; transform: scale(.68) rotate(4deg); transform-origin: right bottom; }
+  .rota-companion--yearbook-hero { top: auto; right: -4px; bottom: 2px; transform: scale(.62) rotate(4deg); transform-origin: right bottom; }
   .yearbook-experience { padding-top: 28px; }
   .yearbook-controls { padding: 20px; box-shadow: 4px 4px 0 var(--sky); }
   .yearbook-controls > header,

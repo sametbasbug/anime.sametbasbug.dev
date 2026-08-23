@@ -20,7 +20,7 @@ import { catalogueMeta } from "../lib/catalogue";
       <RotaCompanion scene="list" mood="happy" className="rota-companion--list-hero" client:load />
     </section>
     <section class="my-list-experience">
-      <MyListExperience dataVersion={catalogueMeta.generatedAt} client:load />
+      <MyListExperience dataVersion={catalogueMeta.generatedAt} catalogueSize={catalogueMeta.entryCount} client:load />
     </section>
     <DataAttribution />
   </main>

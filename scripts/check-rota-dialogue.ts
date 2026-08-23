@@ -17,6 +17,10 @@ for (const [scene, lines] of entries) {
 
 const lineCount = entries.reduce((total, [, lines]) => total + lines.length, 0);
 assert.ok(lineCount >= 100, "Rota'nın toplam replik havuzu en az 100 satır olmalı.");
+assert.equal(
+  entries.flatMap(([, lines]) => lines).some((line) => /\b900\b|dokuz yüz/i.test(line)),
+  false,
+  "Rota repliklerinde eski 900 anime katalog iddiası kalmamalı.",
+);
 
 console.log(`Rota'nın ${entries.length} sahnedeki ${lineCount} repliği doğrulandı.`);
-
