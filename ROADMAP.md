@@ -284,6 +284,22 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Masaüstünde dokuz eş düzey bağlantı yerine dört anlaşılır ana durak görünür; mobil Menü yalnız ikincil yolları tekrar etmeden sunar; bütün rotalar klavye, dokunma ve fare ile erişilebilir kalır ve otomatik/gerçek tarayıcı kabulü geçer.
 
+### 23. Görsel hiyerarşi ve responsive rötuşlar — yerel kabul tamamlandı, production bekliyor
+
+- [x] Katalog masaüstü hero alanında Rota ile açıklama metninin çakışmasını kalıcı grid yerleşimiyle gider.
+- [x] Listem mobil görünümünde istatistik ve filtre kontrollerini kesilmeden, yatay kaydırma zorunluluğu olmadan sun.
+- [x] Mobil sabit alt gezinme için güvenli alanı ve içerik sonu boşluğunu görünür kartları örtmeyecek biçimde düzenle.
+- [x] Anime detayının mobil ilk ekranına başlığı bastırmayan kompakt bir görsel bant taşı; yapımın görsel kimliğini form akışından önce koru.
+- [x] Ana sayfa ile katalog mobil hero alanlarındaki gereksiz dikey boşluğu Rota karakterini kaldırmadan yaklaşık yüzde 15–20 azalt.
+- [x] Büyük sergileme başlıkları yanında küçük kalan açıklama, filtre ve yardımcı metin ölçeklerini tutarlı biçimde bir kademe büyüt.
+- [x] Lint, otomatik kontroller, tam build ve 1.920×950 / 390×844 gerçek tarayıcı kabulünü tamamla.
+
+**Tasarım sınırı:** Mevcut “Soft Celestial Otaku” kimliği, Rota karakteri, sayfa içerikleri ve bilgi mimarisi korunur. Bu aşama yeniden tasarım değil; mevcut görsel dilin hiyerarşi, yoğunluk, okunabilirlik ve responsive yerleşim kusurlarını gideren dar bir kalite turudur.
+
+**Uygulama sırası:** Çakışma ve taşmalar → alt gezinme güvenli alanı → mobil detay görseli → hero yoğunluğu → tipografi dengesi → gerçek ekran kabulü.
+
+**Tamamlanma ölçütü:** Katalog hero metni hiçbir hedef genişlikte Rota ile çakışmaz; Listem kontrolleri 390 px ekranda kesilmez; mobil detay ilk ekranında anime görseli görünür; sabit alt çubuk sayfa sonu içeriğini örtmez ve bütün rötuşlar yatay taşma veya erişilebilirlik gerilemesi üretmeden otomatik/gerçek tarayıcı kabulünü geçer.
+
 ## Sürekli bakım hattı
 
 - [ ] Supabase Free planının duraklama, yedekleme ve kurtarma sınırlarını düzenli olarak yeniden değerlendir.
@@ -294,6 +310,8 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün aşamalarının ardından düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
+
+23. aşama **görsel hiyerarşi ve responsive rötuşlar** yerelde tamamlandı; production yayını ve canlı kabulü bekliyor. Katalog masaüstü hero alanında Rota ayrı grid sütununa taşındı ve ölçülen metin/karakter çakışması kaldırıldı. Listem mobil istatistikleri 2×2, filtreleri kesilmesiz iki sütunlu düzene geçti; alt gezinme yüksekliği ile cihaz güvenli alanı birlikte hesaba katıldı. Mobil detay 176 px görsel bantla açılıyor; ana ve katalog hero alanları sıkılaştırıldı, ikincil metinler bir kademe büyütüldü. Tam otomatik kontrol 0 hata/uyarıyla, 7.709 sayfalık build 24,26 saniyede geçti. 1.920×950 katalog ile 390×844 ana/katalog/detay/Listem kabulünde yatay taşma yok (`scrollWidth = clientWidth`), tüm Listem kontrolleri ekran içinde, detay görseli ilk ekranda ve uygulama konsolu temizdir.
 
 22. aşama **gezinme sadeleştirmesi** production'da tamamlandı. Mevcut sayfalar ve URL'ler korunarak masaüstü üst menü dört ana durağa indirildi; keşif, kişisel liste ve günlük alt yolları erişilebilir açılır gruplarda toplandı. Mobil alt çubuğun beşli omurgası korunurken Menü yüzeyi yalnız beş ikincil durağı gösteriyor ve `/ara` bağlantısını tekrarlayan ayrı üst-bar düğmesi kaldırıldı. Açıklama metinleri masaüstünde 10 px, mobilde 9 px olarak son hâlini aldı. Tam kontrol ile 7.709 sayfalık build geçti; 1.920×950, 768×900 ve 390×844 yerel kabulü ile production masaüstü/mobil kabulünde menü değiştirme, dış tıklama, Escape/focus dönüşü, klavye açma, aktif durum, yatay taşma ve konsol kontrolleri temizdi. `5d6803a` production'a yayımlandı; Pages `32666401056`, CI `32666401141` ve CodeQL `32666401078` yeşildir.
 

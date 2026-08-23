@@ -483,9 +483,9 @@ body.design-otaku .catalogue-hero,
 body.design-otaku .discovery-hero { position: relative; }
 body.design-otaku .catalogue-hero::before { content: "DOKI DOKI"; position: absolute; z-index: -1; right: 0; bottom: -7px; color: rgba(255,127,145,.10); font-family: var(--display); font-size: clamp(56px,8vw,110px); font-weight: 950; letter-spacing: -.06em; transform: rotate(-3deg); }
 body.design-otaku .catalogue-hero::after { content: "✧"; position: absolute; right: 2%; top: 22px; color: var(--sky); font-size: 66px; font-weight: 900; transform: rotate(12deg); }
-body.design-otaku .catalogue-hero > p:not(.eyebrow) { color: var(--muted); }
+body.design-otaku .catalogue-hero > p:not(.eyebrow) { color: var(--muted); font-size: 14px; line-height: 1.72; }
 body.design-otaku .catalogue-hero__links a,
-body.design-otaku .discovery-switch a { border-color: var(--line); color: var(--lavender-deep); background: #fff; }
+body.design-otaku .discovery-switch a { border-color: var(--line); color: var(--lavender-deep); background: #fff; font-size: 10px; }
 body.design-otaku .catalogue-hero__links a:hover,
 body.design-otaku .discovery-switch a:hover,
 body.design-otaku .discovery-switch a.is-active { color: #fff; background: var(--lavender-deep); }
@@ -497,8 +497,8 @@ body.design-otaku .catalogue-search {
 body.design-otaku .catalogue-search:focus-within { border-color: var(--lavender-deep); box-shadow: 5px 5px 0 var(--lavender); }
 body.design-otaku .catalogue-search input { color: var(--ink); }
 body.design-otaku .catalogue-search input::placeholder { color: #9b92a7; }
-body.design-otaku .catalogue-selects label { border-color: var(--line); background: rgba(255,255,255,.78); }
-body.design-otaku .catalogue-selects select { color: var(--ink); }
+body.design-otaku .catalogue-selects label { border-color: var(--line); background: rgba(255,255,255,.78); font-size: 9px; }
+body.design-otaku .catalogue-selects select { color: var(--ink); font-size: 11px; }
 body.design-otaku .load-more { border: 2px solid var(--ink); color: var(--ink); background: var(--sun); box-shadow: 4px 4px 0 var(--ink); }
 body.design-otaku .facet-index a { border: 2px solid var(--ink) !important; color: var(--ink); background: #fff; box-shadow: 3px 3px 0 rgba(52,43,74,.16); }
 body.design-otaku .facet-index a:nth-child(4n+1) { background: #fff0f4; }
@@ -513,10 +513,10 @@ body.design-otaku .detail-hero { position: relative; }
 body.design-otaku .detail-hero::after { content: "STORY MODE ✦"; position: absolute; right: 0; bottom: 22px; padding: 7px 11px; border: 2px solid var(--ink); border-radius: 999px; color: var(--ink); background: var(--sun); box-shadow: 3px 3px 0 var(--ink); font-size: 7px; font-weight: 950; letter-spacing: .11em; transform: rotate(-2deg); }
 body.design-otaku .detail-deck,
 body.design-otaku .editorial-summary { color: var(--muted); }
-body.design-otaku .detail-alias { color: #9b92a7; }
+body.design-otaku .detail-alias { color: #8c8299; font-size: 10px; line-height: 1.55; }
 body.design-otaku .list-editor__start > button { color: #fff; background: var(--lavender-deep); box-shadow: 3px 3px 0 var(--ink); }
 body.design-otaku .list-editor__start > button.is-saved { color: var(--ink); border-color: var(--ink); background: var(--mint); }
-body.design-otaku .list-editor__start > span { color: var(--muted); }
+body.design-otaku .list-editor__start > span { color: var(--muted); font-size: 10px; line-height: 1.55; }
 body.design-otaku .list-editor__panel { border: 2px solid var(--ink); background: #fff; box-shadow: 5px 5px 0 var(--sakura); }
 body.design-otaku .list-editor select,
 body.design-otaku .list-editor input,
@@ -532,6 +532,28 @@ body.design-otaku .detail-section,
 body.design-otaku .detail-sidebar > div { border: 1px solid var(--line); background: rgba(255,255,255,.78); box-shadow: var(--shadow); }
 body.design-otaku .detail-studios a,
 body.design-otaku .detail-sidebar li a { color: var(--lavender-deep); }
+body.design-otaku .collection-picker > button { font-size: 10px; }
+body.design-otaku .journal-composer__intro { font-size: 11px; }
+
+@media (min-width: 1101px) {
+  body.design-otaku .catalogue-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 390px) 172px;
+    column-gap: 32px;
+  }
+  body.design-otaku .catalogue-hero .eyebrow { grid-column: 1 / -1; }
+  body.design-otaku .catalogue-hero h1 { grid-column: 1; }
+  body.design-otaku .catalogue-hero > p:not(.eyebrow),
+  body.design-otaku .catalogue-hero__links { grid-column: 2; }
+  .rota-companion--catalogue {
+    position: relative;
+    grid-column: 3;
+    grid-row: 2 / 4;
+    align-self: center;
+    justify-self: end;
+    inset: auto;
+    transform: rotate(4deg);
+  }
+}
 
 /* Anime detail: an open manga spread, not a database sheet */
 body.design-otaku .detail-manga-spread {
@@ -809,12 +831,19 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
 }
 
 @media (max-width: 760px) {
-  body.design-otaku { padding-bottom: 76px; }
+  body.design-otaku { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
   body.design-otaku .hero.home-hero,
   body.design-otaku .manifesto.fan-space { overflow-x: clip; }
+  body.design-otaku .hero.home-hero { min-height: 0; padding-block: 34px 38px; gap: 28px; }
+  body.design-otaku .home-hero .hero__lede { margin-block: 16px 19px; font-size: 14px; }
+  body.design-otaku .home-hero .feature-card { height: 420px; }
   body.design-otaku .site-header { background: rgba(255,249,244,.92); }
   body.design-otaku .brand .rota-mark { width: 38px; height: 38px; }
   body.design-otaku .mobile-nav {
+    right: 8px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    left: 8px;
+    height: 60px;
     border: 2px solid var(--ink);
     background: rgba(255,255,255,.93);
     box-shadow: 4px 5px 0 var(--ink);
@@ -825,6 +854,7 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .mobile-more.is-active > summary,
   body.design-otaku .mobile-more[open] > summary { color: #fff; background: var(--lavender-deep); }
   body.design-otaku .mobile-more__sheet {
+    bottom: calc(78px + env(safe-area-inset-bottom));
     border: 2px solid var(--ink);
     background: rgba(255, 249, 244, .98);
     box-shadow: 6px 7px 0 var(--ink);
@@ -838,9 +868,10 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .home-hero .feature-score { margin-right: 60px; }
   .rota-companion--hero { left: auto; right: -5px; top: 126px; bottom: auto; transform: scale(.72) rotate(5deg); transform-origin: right top; }
   .rota-companion--hero .rota-companion__bubble { max-width: 156px; }
-  body.design-otaku .catalogue-hero { padding-bottom: 145px; }
-  .rota-companion--catalogue { top: auto; right: -5px; bottom: 10px; transform: scale(.7) rotate(4deg); transform-origin: right bottom; }
-  .rota-companion--catalogue .rota-companion__bubble { max-width: 158px; }
+  body.design-otaku .catalogue-hero { padding-bottom: 96px; }
+  body.design-otaku .catalogue-hero > p:not(.eyebrow) { font-size: 12px; }
+  .rota-companion--catalogue { top: auto; right: -5px; bottom: -3px; transform: scale(.58) rotate(4deg); transform-origin: right bottom; }
+  .rota-companion--catalogue .rota-companion__bubble { max-width: 150px; }
   .hero-doodle--heart { right: -7px; }
   body.design-otaku .library-summary { box-shadow: 5px 5px 0 var(--lavender); }
   body.design-otaku .catalogue-strip.mood-grid { overflow-x: auto; }
@@ -848,18 +879,21 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   body.design-otaku .catalogue-hero::after { top: 6px; right: 0; font-size: 38px; }
   body.design-otaku .catalogue-hero::before { right: 0; bottom: 0; font-size: 51px; }
   body.design-otaku::after { display: none; }
-  body.design-otaku .detail-manga-spread { padding-block: 22px 64px; gap: 34px; }
-  body.design-otaku .detail-manga-spread::before { inset: -5px -5px 49% 8px; border-radius: 26px; }
+  body.design-otaku .detail-manga-spread { padding-block: 14px 58px; gap: 24px; }
+  body.design-otaku .detail-manga-spread::before { inset: -5px -5px 62% 8px; border-radius: 26px; }
   body.design-otaku .detail-manga-spread::after { right: 4px; bottom: 17px; }
   body.design-otaku .detail-manga-spread .detail-copy h1 { font-size: clamp(42px, 13vw, 58px); }
   .detail-chapter { margin-bottom: 15px; }
   .detail-chapter > * { padding-inline: 8px; }
   .detail-intro-panel { margin-top: 19px; padding: 16px 42px 16px 17px; }
-  .detail-art-wrap { width: calc(100% - 12px); transform: rotate(-.6deg); }
-  body.design-otaku .detail-art-wrap .detail-art { height: 470px; border-radius: 16px 16px 40px 16px; box-shadow: 7px 8px 0 var(--sakura), 10px 11px 0 var(--ink); }
-  .detail-volume { left: -11px; }
-  .detail-sfx { right: -8px; bottom: 48px; font-size: 25px; }
-  .rota-companion--detail { right: -14px; top: 52px; transform: scale(.72) rotate(6deg); }
+  .detail-art-wrap { order: -1; width: calc(100% - 8px); height: 176px; margin: 3px auto 8px; transform: rotate(-.45deg); }
+  .detail-art-wrap::before { inset: -8px 9px 9px -8px; border-radius: 15px 24px 16px 22px; }
+  body.design-otaku .detail-art-wrap .detail-art { height: 176px; border-radius: 15px 15px 30px 15px; box-shadow: 6px 7px 0 var(--sakura), 8px 9px 0 var(--ink); }
+  body.design-otaku .detail-art-wrap .detail-art > .art img { object-position: center 30%; }
+  .detail-volume { top: 12px; left: -7px; }
+  .detail-tape--bottom { display: none; }
+  .detail-sfx { right: 3px; bottom: 16px; font-size: 21px; }
+  .rota-companion--detail { right: -5px; top: 18px; transform: scale(.54) rotate(6deg); transform-origin: right top; }
   .rota-companion--detail .rota-companion__bubble { display: none; }
   .list-shelves { gap: 44px; }
   .list-shelf::after { right: -5px; left: -5px; bottom: -16px; }
@@ -876,7 +910,7 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .rota-companion--celebration { top: -78px; right: 53px; transform: scale(.58) rotate(-5deg); }
   .rota-companion--celebration .rota-companion__bubble { display: none; }
   body.design-otaku .my-list-hero::after { top: 55px; right: 0; font-size: 42px; }
-  body.design-otaku .my-list-hero { padding-bottom: 96px; }
+  body.design-otaku .my-list-hero { padding-bottom: 70px; }
   body.design-otaku .my-list-hero > p { padding-right: 0; }
   body.design-otaku .journal-hero::after { top: 55px; right: 0; font-size: 38px; }
   body.design-otaku .journal-hero { padding-bottom: 92px; }
@@ -884,8 +918,13 @@ body.design-otaku .site-footer__meta small { color: var(--muted); }
   .rota-companion--journal-hero { right: -4px; bottom: 2px; transform: scale(.62) rotate(4deg); transform-origin: right bottom; }
   .rota-companion--journal-hero .rota-companion__bubble { max-width: 158px; }
   body.design-otaku .journal-entry:nth-child(n) { transform: none; }
-  .rota-companion--list-hero { right: -4px; bottom: 2px; transform: scale(.62) rotate(4deg); transform-origin: right bottom; }
-  .rota-companion--list-hero .rota-companion__bubble { max-width: 164px; }
+  .rota-companion--list-hero { right: -4px; bottom: -5px; transform: scale(.54) rotate(4deg); transform-origin: right bottom; }
+  .rota-companion--list-hero .rota-companion__bubble { max-width: 158px; }
+  body.design-otaku .list-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; overflow: visible; border: 0; }
+  body.design-otaku .list-overview button { min-width: 0; min-height: 84px; }
+  body.design-otaku .list-filter { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; gap: 8px; }
+  body.design-otaku .list-filter button { min-height: 42px; display: flex; align-items: center; justify-content: space-between; }
+  body.design-otaku .list-filter button:first-child { grid-column: 1 / -1; }
   body.design-otaku .account-hero { grid-template-columns: 1fr; }
   body.design-otaku .account-hero::before { right: 10px; bottom: 4px; font-size: 60px; }
   .account-hero__badge { display: none; }
