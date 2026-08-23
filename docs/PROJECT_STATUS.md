@@ -46,6 +46,14 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 > tarihli satırlar onları geçersiz kılar. Güncel giriş yöntemi için yukarıdaki
 > **Kilitli kararlar** bölümüne bak.
 
+### 23 Ağustos 2026 — ajan liste bütünlüğü ve katalog kimlikleri production teslimi
+
+- `rota.katalogdaAra`, doğrulanmış `rota.listeyeEkle`, başlıklı/geçersiz kayıt ayrımlı `rota.listeyiOku` ve tombstone tabanlı `rota.listedenSil` canlı işlem kataloğuna alındı. Ekleme ucu public Rota kataloğunu sunucu tarafında yeniden doğruluyor; katalog erişilemezse yazmak yerine 503 ile kapalı kalıyor.
+- Rota'nın kalıcı iç `id` alanları kullanıcı bağlarını korumak için değiştirilmedi. 2.500 kaydın tamamında `kitsuId`, Kitsu mapping ilişkisinin sağladığı 2.195 kayıtta ayrıca açık `malId` canlıdır; 305 kayıt için dış kimlik uydurulmaz.
+- Gerçek Orbit ajan hattında “Naruto” araması `animeId: 20`, `kitsuId: 11`, `malId: 20` döndürdü. `ghost-acceptance-d6f8885` uydurma kimliği Orbit'te `site_action_failed`, Rota ucunda HTTP 400 ile reddedildi ve listeye yazılmadı.
+- Production listesinde katalog dışı kalan `7278`, `2` ve `15583` kimlikleri exact canlı okumayla belirlendi; üçü de `rota.listedenSil` üzerinden fiziksel DELETE yapılmadan tombstone'a alındı. Son okumada 8 geçerli kayıt ve sıfır geçersiz kayıt doğrulandı.
+- Özellik `3876ed0`, canlı katalog dizi biçimi regresyon düzeltmesi `d6f8885` ile main'e gönderildi; Supabase `orbit-eylem` iki commit sonrasında yeniden dağıtıldı. Son commit için Pages `32618901629`, CI `32618901742` ve CodeQL `32618901585` başarıyla tamamlandı.
+
 
 - 900 yapımlık aranabilir katalog, 900 detay sayfası, tür/stüdyo keşfi ve benzer yapım yolları.
 - Dört durumlu kişisel liste; bölüm ilerlemesi, puan ve kişisel not.
