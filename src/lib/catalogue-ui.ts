@@ -1,8 +1,14 @@
-export type CatalogueImage = {
-  tiny: string | null;
+/** Ekrana gerçekten çizilen poster boyutları. `AnimeArtwork` yalnız bu üçünü
+ * kullanıyor; tarayıcıya inen yük de bu yüzden yalnız bu üçünü taşıyor. */
+export type CataloguePoster = {
   small: string | null;
   medium: string | null;
   large: string;
+};
+
+/** Kitsu'nun tam görsel kümesi; derleme anındaki veride bulunuyor. */
+export type CatalogueImage = CataloguePoster & {
+  tiny: string | null;
   original: string;
 };
 
@@ -28,10 +34,21 @@ export type CatalogueAnime = {
   synonyms: string[];
   studios: string[];
   tags: string[];
-  sources: string[];
-  poster?: CatalogueImage & { provider: "kitsu" };
+  /* `sources` tarayıcı yüküne İNMİYOR: orada yalnız `.length` okunuyordu ve
+   * 7500 kaydın kaynak adresleri 0,31 MB tutuyor. Yerine `sourceCount` var.
+   * İkisinin de isteğe bağlı olması bu ayrımı tipte görünür kılıyor; okumanın
+   * tek doğru yolu `sourceSignal()`. */
+  sources?: string[];
+  sourceCount?: number;
+  poster?: CataloguePoster & { provider?: "kitsu" };
   cover?: CatalogueImage | null;
 };
+
+/** Kaç kaynağın bu animeyi doğruladığı. Tam veride dizi, tarayıcı yükünde sayı. */
+export function sourceSignal(anime: Pick<CatalogueAnime, "sources" | "sourceCount">): number {
+  return anime.sourceCount ?? anime.sources?.length ?? 0;
+}
+
 
 export const statusLabels: Record<string, string> = {
   FINISHED: "Tamamlandı",

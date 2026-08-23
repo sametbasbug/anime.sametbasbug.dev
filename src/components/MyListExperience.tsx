@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
+import { loadBrowserCatalogue } from "../lib/catalogue-loader";
 import { seasonLabels, typeLabels, visualFor } from "../lib/catalogue-ui";
 import {
   personalStatusLabels,
@@ -44,11 +45,7 @@ export default function MyListExperience({ dataVersion, catalogueSize }: Props) 
     refreshEntries();
     const unsubscribe = subscribeToPersonalList(refreshEntries);
 
-    fetch(`/data/catalogue.json?v=${encodeURIComponent(dataVersion)}`)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Catalogue request failed: ${response.status}`);
-        return response.json() as Promise<CatalogueAnime[]>;
-      })
+    loadBrowserCatalogue(dataVersion)
       .then((items) => {
         setCatalogue(items);
         setLoadState("ready");

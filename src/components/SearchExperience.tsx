@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
+import { loadBrowserCatalogue } from "../lib/catalogue-loader";
 import { displayTags, localizedTag, seasonLabels, statusLabels, typeLabels, visualFor } from "../lib/catalogue-ui";
 import AnimeArtwork from "./AnimeArtwork";
 
@@ -54,11 +55,7 @@ export default function SearchExperience({ dataVersion }: Props) {
     if (incoming) setQuery(incoming);
     if (incomingType && incomingType in typeLabels) setType(incomingType);
     if (incomingStatus && incomingStatus in statusLabels) setStatus(incomingStatus);
-    fetch(`/data/catalogue.json?v=${encodeURIComponent(dataVersion)}`)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Catalogue request failed: ${response.status}`);
-        return response.json() as Promise<CatalogueAnime[]>;
-      })
+    loadBrowserCatalogue(dataVersion)
       .then((data) => {
         setItems(data);
         setLoadState("ready");

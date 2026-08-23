@@ -337,6 +337,16 @@ body.design-otaku .home-hero .feature-score { margin-right: 54px; }
 .rota-companion__bandage { top: -8px; left: 24px; width: 28px; height: 12px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 3px; color: var(--coral); background: #fff7dc; font-size: 8px; transform: rotate(-9deg); }
 .rota-companion--hero { left: -146px; bottom: 23px; transform: rotate(-5deg); }
 .rota-companion--catalogue { top: 7px; right: 90px; transform: rotate(5deg); }
+/* 404 sayfası: yoldaş mutlak konumlanmıyor, ızgaranın normal bir üyesi.
+ * Varyantına kural yazılmadığında `.rota-companion`'ın varsayılan
+ * `position: absolute`'u onu başlığın üstüne bindiriyordu. */
+.rota-companion--notfound {
+  position: relative;
+  inset: auto;
+  justify-self: end;
+  align-self: center;
+  transform: rotate(4deg);
+}
 
 @keyframes rota-float { 50% { translate: 0 -7px; } }
 @keyframes rota-twinkle { 0%,100% { opacity: .45; transform: scale(.78) rotate(-8deg); } 50% { opacity: 1; transform: scale(1.2) rotate(8deg); } }

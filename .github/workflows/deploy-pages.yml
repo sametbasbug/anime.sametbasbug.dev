@@ -3,6 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Site statik: "şu anki sezon" ve "bu yıl" DERLEME anında hesaplanıyor.
+  # Kimse push etmezse ana sayfa yıl döndükten sonra da eski yılı güncel
+  # sanmaya devam eder. Günlük yeniden derleme bu kaymayı en fazla bir günle
+  # sınırlıyor; derleme ~25 saniye sürüyor, maliyeti bu güvencenin yanında
+  # önemsiz.
+  schedule:
+    - cron: "40 2 * * *"
   workflow_dispatch:
 
 permissions:

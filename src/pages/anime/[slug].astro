@@ -39,7 +39,9 @@ const secondaryTags = primaryTags.filter((tag) => !linkedGenreLabels.has(tag));
 const studioLinks = studiosForAnime(anime);
 const related = relatedAnime(anime);
 const editorial = editorialForAnime(anime.id);
-const usefulSources = anime.sources
+/* Derleme anındaki tam veri: `sources` burada her zaman var. Tipte isteğe
+ * bağlı çünkü tarayıcı yükü bu alanı taşımıyor. */
+const usefulSources = (anime.sources ?? [])
   .filter((source) => !source.includes("anilist.co"))
   .slice(0, 6);
 ---

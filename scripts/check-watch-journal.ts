@@ -10,6 +10,7 @@ import {
   writeWatchJournalEntry,
   type WatchJournalStore,
 } from "../src/lib/watch-journal";
+import { pagedSelect } from "./lib/fake-postgrest";
 
 class MemoryStorage {
   private values = new Map<string, string>();
@@ -56,7 +57,7 @@ const client = {
   from(table: string) {
     assert.equal(table, "watch_journal_entries");
     return {
-      select() { return { async eq() { return { data: remoteRows, error: null }; } }; },
+      select: pagedSelect(remoteRows),
       async upsert(rows: FakeRow[]) { accepted.push(...rows); return { error: null }; },
     };
   },

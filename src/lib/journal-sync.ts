@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { fetchAllUserRows } from "./cloud-paging";
 import {
   readWatchJournal,
   replaceWatchJournal,
@@ -121,13 +122,13 @@ async function uploadRows(client: SupabaseClient, rows: UploadJournalRow[]) {
 
 export async function syncWatchJournal(client: SupabaseClient, userId: string): Promise<JournalSyncResult> {
   const local = readWatchJournal();
-  const { data, error } = await client
-    .from("watch_journal_entries")
-    .select("id,anime_id,episode_start,episode_end,watched_on,note,client_created_at,client_updated_at,deleted_at")
-    .eq("user_id", userId);
-  if (error) throw error;
-
-  const remoteRows = (data ?? []) as CloudJournalRow[];
+  const remoteRows = await fetchAllUserRows<CloudJournalRow>(
+    client,
+    "watch_journal_entries",
+    "id,anime_id,episode_start,episode_end,watched_on,note,client_created_at,client_updated_at,deleted_at",
+    userId,
+    "id",
+  );
   const remoteById = new Map(remoteRows.map((row) => [row.id, row]));
   const ids = new Set([...Object.keys(local.entries), ...Object.keys(local.tombstones), ...remoteById.keys()]);
   const uploads: UploadJournalRow[] = [];

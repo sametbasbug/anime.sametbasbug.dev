@@ -1,0 +1,112 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import RotaCompanion from "../components/RotaCompanion";
+
+/* GitHub Pages, bulunmayan bir adreste depo kökündeki `404.html`'i sunar.
+ * Astro bu sayfayı tam olarak oraya basıyor; dosya yokken çıkan ekran
+ * GitHub'ın kendi kırık sayfasıydı ve ürünle hiçbir bağı yoktu. */
+const paths = [
+  { href: "/ara", label: "Anime ara", description: "Katalogda ada, türe veya stüdyoya göre gez" },
+  { href: "/sezonlar", label: "Sezon panosu", description: "Yeni başlayan ve devam edenler" },
+  { href: "/oneriler", label: "Bana seç", description: "Listenden çıkan açıklanabilir öneriler" },
+  { href: "/listem", label: "Listem", description: "Kendi rafına ve ilerlemene dön" },
+];
+---
+
+<BaseLayout
+  title="Bu rota bulunamadı — Equinox Rota"
+  description="Aradığın sayfa Equinox Rota'da yok. Katalog, sezon panosu veya kendi rafından devam edebilirsin."
+  robots="noindex,follow"
+>
+  <SiteHeader active="none" />
+  <main class="notfound-page">
+    <section class="notfound-hero">
+      <div>
+        <p class="eyebrow">404 · KAYIP BÖLÜM</p>
+        <h1>Bu rota <em>bulunamadı.</em></h1>
+        <p>Adres yanlış yazılmış ya da bu sayfa taşınmış olabilir. Rota seni kaybettiği yerden geri alsın.</p>
+      </div>
+      <RotaCompanion scene="catalogue" mood="curious" className="rota-companion--notfound" client:load />
+    </section>
+    <nav class="notfound-paths" aria-label="Önerilen yollar">
+      {paths.map((path) => (
+        <a href={path.href}>
+          <strong>{path.label}</strong>
+          <small>{path.description}</small>
+        </a>
+      ))}
+    </nav>
+  </main>
+</BaseLayout>
+
+<style>
+  .notfound-page {
+    width: var(--page);
+    margin: 0 auto;
+    padding: clamp(32px, 7vw, 72px) 0 clamp(64px, 10vw, 120px);
+    display: grid;
+    gap: clamp(28px, 5vw, 48px);
+  }
+
+  .notfound-hero {
+    display: grid;
+    gap: 24px;
+    align-items: center;
+    justify-items: start;
+  }
+
+  .notfound-hero h1 {
+    margin: 8px 0 16px;
+    font-family: var(--display);
+    font-size: clamp(2.4rem, 8vw, 4.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .notfound-hero h1 em {
+    font-style: normal;
+    color: var(--coral);
+  }
+
+  .notfound-hero > div > p:last-child {
+    max-width: 46ch;
+    color: var(--muted);
+  }
+
+  .notfound-paths {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  }
+
+  .notfound-paths a {
+    display: grid;
+    gap: 4px;
+    padding: 18px 20px;
+    border: 2px solid var(--ink);
+    border-radius: 20px;
+    background: var(--surface-raised);
+    box-shadow: var(--manga-shadow);
+    text-decoration: none;
+    color: inherit;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  .notfound-paths a:hover,
+  .notfound-paths a:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--ink);
+  }
+
+  .notfound-paths strong { font-size: 1.05rem; }
+  .notfound-paths small { color: var(--muted); }
+
+  @media (min-width: 860px) {
+    .notfound-hero { grid-template-columns: minmax(0, 1fr) auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .notfound-paths a { transition: none; }
+  }
+</style>

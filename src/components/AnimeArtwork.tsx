@@ -1,10 +1,10 @@
-import type { CatalogueImage } from "../lib/catalogue-ui";
+import type { CataloguePoster } from "../lib/catalogue-ui";
 
 type Props = {
   art: "moon" | "blade" | "city" | "signal" | "garden" | "ember";
   palette: string;
   compact?: boolean;
-  poster?: CatalogueImage;
+  poster?: CataloguePoster;
   title?: string;
   priority?: boolean;
 };

@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
+import { loadBrowserCatalogue } from "../lib/catalogue-loader";
 import { displayTags, seasonLabels, typeLabels } from "../lib/catalogue-ui";
 import {
   availableSeasonYears,
   seasonBoardItems,
   seasonCodes,
+  seasonForDate,
   type SeasonBoardView,
   type SeasonCode,
 } from "../lib/season-board";
@@ -54,16 +56,25 @@ export default function SeasonBoardExperience({ dataVersion, initialYear, initia
   const [genre, setGenre] = useState("ALL");
   const [personalOnly, setPersonalOnly] = useState(false);
 
+  /* Açılış sezonu sunucudan DERLEME anındaki tarihle geliyor; site statik
+   * olduğu için o değer bir sonraki dağıtıma kadar donuyor. Tarayıcı gerçek
+   * tarihi biliyor, o yüzden son sözü o söylüyor.
+   *
+   * Düzeltme yalnız kullanıcı henüz seçim yapmadıysa uygulanıyor: `initial*`
+   * ile aynı olan bir değer "dokunulmamış" demek. Aynı desen
+   * `YearbookExperience` içinde de var. */
+  useEffect(() => {
+    const now = seasonForDate(new Date());
+    setYear((value) => value === initialYear ? now.year : value);
+    setSeason((value) => value === initialSeason ? now.season : value);
+  }, [initialSeason, initialYear]);
+
   useEffect(() => {
     const refreshList = () => setEntries(readPersonalList().entries);
     refreshList();
     const unsubscribe = subscribeToPersonalList(refreshList);
 
-    fetch(`/data/catalogue.json?v=${encodeURIComponent(dataVersion)}`)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Catalogue request failed: ${response.status}`);
-        return response.json() as Promise<CatalogueAnime[]>;
-      })
+    loadBrowserCatalogue(dataVersion)
       .then((items) => { setCatalogue(items); setLoadState("ready"); })
       .catch(() => setLoadState("error"));
 

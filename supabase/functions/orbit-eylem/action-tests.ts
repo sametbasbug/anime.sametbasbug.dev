@@ -9,6 +9,7 @@ import {
 } from './collection-actions.ts';
 import { isJournalDate, presentJournalRows, validateJournalValues } from './journal-actions.ts';
 import { prepareListMutation, presentListRows } from './personal-list-actions.ts';
+import { REZERVASYON_ASIM_MS, rezervasyonKarari } from './idempotency.ts';
 
 const rawCatalogue = JSON.parse(await readFile('src/data/catalogue.json', 'utf8'));
 const catalogue = parseCatalogue(rawCatalogue);
@@ -175,5 +176,69 @@ assert.deepEqual(recommendationsOperation.input.properties.yol.enum, [
   'FOR_YOU', 'SHORT', 'MOVIE', 'ONE_SEASON', 'CALM', 'ENERGY', 'EMOTIONAL', 'MYSTERY',
 ]);
 assert.match(recommendationsOperation.summary, /yalnız Rota ile senkronize edilmiş/u);
+
+/* Tekrar koruması.
+ *
+ * Bu kararın yanlış olması, insanın günlüğüne çift satır yazmak ya da dürüst
+ * bir yeniden denemeyi kalıcı olarak reddetmek demek. Her dal sınanıyor. */
+const simdi = Date.parse('2026-08-24T12:00:00.000Z');
+const taze = new Date(simdi - 1_000).toISOString();
+const eski = new Date(simdi - REZERVASYON_ASIM_MS - 1_000).toISOString();
+
+assert.deepEqual(
+  rezervasyonKarari({ input_digest: 'aaa', output: { animeId: '20' }, started_at: taze }, 'aaa', simdi),
+  { karar: 'tekrar', output: { animeId: '20' } },
+  'tamamlanmış bir kayıt ilk çalışmanın cevabını döndürmeli',
+);
+
+assert.deepEqual(
+  rezervasyonKarari({ input_digest: 'bbb', output: null, started_at: taze }, 'aaa', simdi),
+  { karar: 'red', status: 409, mesaj: 'aynı Idempotency-Key farklı bir istekle kullanıldı' },
+  'aynı anahtar farklı gövdeyle geldiğinde çakışma bildirilmeli',
+);
+
+/* Gövde farkı, tamamlanmış bir kayıtta da tekrarı YENER: yoksa değiştirilmiş
+ * bir istek, eski isteğin cevabını almış olurdu. */
+assert.equal(
+  rezervasyonKarari({ input_digest: 'bbb', output: { animeId: '20' }, started_at: taze }, 'aaa', simdi).karar,
+  'red',
+  'gövde farkı tamamlanmış kayıtta da çakışma sayılmalı',
+);
+
+assert.deepEqual(
+  rezervasyonKarari({ input_digest: 'aaa', output: null, started_at: taze }, 'aaa', simdi),
+  { karar: 'red', status: 409, mesaj: 'aynı Idempotency-Key ile başlayan işlem sürüyor' },
+  'süren bir işlem devralınmamalı',
+);
+
+assert.deepEqual(
+  rezervasyonKarari({ input_digest: 'aaa', output: null, started_at: eski }, 'aaa', simdi),
+  { karar: 'devral' },
+  'terk edilmiş rezervasyon devralınabilmeli',
+);
+
+assert.equal(
+  rezervasyonKarari({ input_digest: 'aaa', output: null, started_at: 'bu bir tarih değil' }, 'aaa', simdi).karar,
+  'red',
+  'okunamayan zaman damgası devralmaya değil reddetmeye götürmeli',
+);
+
+assert.ok(REZERVASYON_ASIM_MS > 60_000,
+  'devralma eşiği, ucun azami çalışma süresinden uzun olmalı');
+
+/* Kapıdaki işlem kümesi ile yayımlanan katalog aynı olmak zorunda.
+ *
+ * Ayrıştıklarında iki yönde de sessiz bozulma olur: kataloğa eklenip kapıya
+ * eklenmeyen işlem 404 döner, kapıda olup katalogda olmayan işlemi ise Orbit
+ * hiç göremez. */
+const index = await readFile('supabase/functions/orbit-eylem/index.ts', 'utf8');
+const kapiKumesi = new Set(
+  [...index.matchAll(/case '(rota\.[A-Za-zÇĞİÖŞÜçğıöşü]+)':/gu)].map((eslesme) => eslesme[1]),
+);
+const katalogKumesi = new Set(
+  actionCatalogue.operations.map((operation: { operationId: string }) => operation.operationId),
+);
+assert.deepEqual([...kapiKumesi].sort(), [...katalogKumesi].sort(),
+  'index.ts dağıtımı ile orbit-actions.json aynı işlem kümesini taşımalı');
 
 console.log('Rota ajan sözleşmesi doğrulandı: liste, günlük, koleksiyon ve açıklanabilir kişisel öneriler hazır.');

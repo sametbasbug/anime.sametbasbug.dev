@@ -1,5 +1,5 @@
 import type { CatalogueAnime } from "./catalogue-ui.ts";
-import { localizedTag, typeLabels } from "./catalogue-ui.ts";
+import { localizedTag, sourceSignal, typeLabels } from "./catalogue-ui.ts";
 import type { PersonalListEntry } from "./personal-list.ts";
 import { studioLabel } from "./personal-statistics.ts";
 import type { WatchJournalEntry } from "./watch-journal.ts";
@@ -194,7 +194,7 @@ export function recommendAnime(
       const formatWeight = formatWeights.get(normalize(formatLabel)) ?? 0;
       const pathMatch = pathReason(anime, path);
       const quality = anime.score ? Math.max(0, anime.score - 6) : 0;
-      let score = quality * 1.5 + Math.min(anime.sources.length, 8) * 0.08;
+      let score = quality * 1.5 + Math.min(sourceSignal(anime), 8) * 0.08;
       const reasons: string[] = [];
 
       if (source === "PLANNED") {

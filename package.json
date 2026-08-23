@@ -29,7 +29,7 @@
     "dev": "astro dev",
     "build": "npm run check && astro build",
     "preview": "astro preview",
-    "check": "npm run catalogue:check && npm run content:check && npm run source:check && npm run dialogue:check && npm run sync:check && npm run journal:check && npm run collections:check && npm run discovery:check && npm run season:check && npm run yearbook:check && npm run auth:check && npm run agent:check && npm run community:check && npm run sharing:check && npm run statistics:check && npm run portability:check && astro check",
+    "check": "npm run catalogue:check && npm run payload:check && npm run content:check && npm run source:check && npm run dialogue:check && npm run sync:check && npm run journal:check && npm run collections:check && npm run discovery:check && npm run season:check && npm run yearbook:check && npm run auth:check && npm run agent:check && npm run community:check && npm run sharing:check && npm run statistics:check && npm run portability:check && astro check",
     "catalogue:check": "tsx scripts/check-kitsu-catalogue.ts",
     "kitsu:media-check": "node scripts/check-kitsu-media.mjs",
     "content:check": "node scripts/check-editorial.mjs",
@@ -48,10 +48,12 @@
     "community:check": "tsx scripts/check-community.ts",
     "sharing:check": "tsx scripts/check-profile-sharing.ts",
     "statistics:check": "tsx scripts/check-personal-statistics.ts",
-    "portability:check": "tsx scripts/check-list-portability.ts"
+    "portability:check": "tsx scripts/check-list-portability.ts",
+    "payload:check": "tsx scripts/check-catalogue-payload.ts"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",
+    "@astrojs/sitemap": "^3.7.3",
     "@supabase/supabase-js": "^2.112.3",
     "astro": "^7.2.2",
     "fast-xml-parser": "^5.11.0",

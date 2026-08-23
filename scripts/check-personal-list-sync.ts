@@ -8,6 +8,8 @@ import {
   type PersonalListStore,
 } from "../src/lib/personal-list";
 import { syncPersonalList } from "../src/lib/cloud-sync";
+import { CLOUD_MAX_ROWS, CloudPagingError } from "../src/lib/cloud-paging";
+import { pagedSelect } from "./lib/fake-postgrest";
 
 class MemoryStorage {
   private values = new Map<string, string>();
@@ -152,20 +154,14 @@ type FakeRow = Record<string, unknown>;
  * `rejectedIds` içindeki bir kayıt gönderime dahilse Supabase'in kısıt ihlali
  * yanıtını taklit eder: istek tümüyle reddedilir, tek satır bile olsa.
  */
-function createFakeClient(rows: unknown[], rejectedIds: string[] = [], errorCode = "23514") {
+function createFakeClient(rows: unknown[], rejectedIds: string[] = [], errorCode = "23514", serverMaxRows = 3) {
   const requests: FakeRow[][] = [];
   const accepted: FakeRow[] = [];
 
   const client = {
     from() {
       return {
-        select() {
-          return {
-            async eq() {
-              return { data: rows, error: null };
-            },
-          };
-        },
+        select: pagedSelect(rows, serverMaxRows),
         async upsert(batch: FakeRow[]) {
           requests.push(batch);
           if (batch.some((row) => rejectedIds.includes(row.anime_id as string))) {
@@ -187,13 +183,7 @@ function createStatefulFakeClient(initialRows: FakeRow[] = []) {
   const client = {
     from() {
       return {
-        select() {
-          return {
-            async eq() {
-              return { data: [...rows.values()].map((row) => structuredClone(row)), error: null };
-            },
-          };
-        },
+        select: pagedSelect(() => [...rows.values()].map((row) => structuredClone(row))),
         async upsert(batch: FakeRow[]) {
           for (const row of batch) rows.set(row.anime_id as string, structuredClone(row));
           return { error: null };
@@ -211,13 +201,7 @@ function createVersionGuardedFakeClient(initialRows: FakeRow[] = []) {
   const client = {
     from() {
       return {
-        select() {
-          return {
-            async eq() {
-              return { data: [...rows.values()].map((row) => structuredClone(row)), error: null };
-            },
-          };
-        },
+        select: pagedSelect(() => [...rows.values()].map((row) => structuredClone(row))),
         async upsert(batch: FakeRow[]) {
           for (const row of batch) {
             const animeId = row.anime_id as string;
@@ -518,5 +502,56 @@ assert.deepEqual(
   { downloaded: 1, uploaded: 0, rejected: [] },
 );
 assert.equal(readPersonalList().entries.concurrent.note, "Yeni sürüm");
+
+/* Sunucu tavanı ile sayfalama.
+ *
+ * Düzeltilen hata şuydu: sayfalamasız `select`, PostgREST'in `max-rows`
+ * tavanında sessizce kırpılıyordu. Sunucu hata vermediği için kırpma hiçbir
+ * yerde görünmüyor, eksik satırlar o cihazda bir daha hiç inmiyordu.
+ *
+ * Aşağıdaki sahte sunucu istek başına en fazla 3 satır döndürüyor; 17 satırın
+ * tamamının inmesi ancak sayfalama gerçekten çalışıyorsa mümkün. */
+const tavanliSatirlar = Array.from({ length: 17 }, (_, index) => ({
+  anime_id: `sayfali_${String(index).padStart(2, "0")}`,
+  status: "WATCHING",
+  progress: index,
+  score: null,
+  note: "",
+  client_updated_at: "2026-08-07T12:00:00+00:00",
+  deleted_at: null,
+}));
+
+const sayfalamaCihazi = new MemoryStorage();
+useDevice(sayfalamaCihazi);
+seedDevice(sayfalamaCihazi, { version: 2, entries: {}, tombstones: {} });
+
+const sayfali = createFakeClient(tavanliSatirlar);
+assert.deepEqual(
+  await syncPersonalList(sayfali.client as never, "user-1"),
+  { downloaded: 17, uploaded: 0, rejected: [] },
+  "sunucu tavanı sayfa başına 3 satırla sınırlıyken de 17 kaydın tamamı inmeli",
+);
+assert.equal(Object.keys(readPersonalList().entries).length, 17);
+assert.ok(readPersonalList().entries.sayfali_16, "son sayfadaki kayıt da inmeli");
+
+/* Güvenli okuma tavanı aşıldığında sessizce kırpmak yerine düşüyoruz. */
+const tasanSatirlar = Array.from({ length: CLOUD_MAX_ROWS + 10 }, (_, index) => ({
+  anime_id: `tasan_${index}`,
+  status: "WATCHING",
+  progress: 0,
+  score: null,
+  note: "",
+  client_updated_at: "2026-08-07T12:00:00+00:00",
+  deleted_at: null,
+}));
+/* Tavan testinde sayfa boyutu büyük: sınanan şey burada sayfalamanın
+ * mekaniği değil, sınıra varınca DURMAK. */
+const tasan = createFakeClient(tasanSatirlar, [], "23514", 5_000);
+await assert.rejects(
+  () => syncPersonalList(tasan.client as never, "user-1"),
+  CloudPagingError,
+  "güvenli okuma sınırı aşıldığında eşitleme eksik veriyle devam etmemeli",
+);
+
 
 console.log("Kişisel liste geçişi ve local-first senkronizasyonu doğrulandı.");

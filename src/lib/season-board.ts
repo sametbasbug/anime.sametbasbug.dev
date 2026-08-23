@@ -1,4 +1,4 @@
-import type { CatalogueAnime } from "./catalogue-ui";
+import { sourceSignal, type CatalogueAnime } from "./catalogue-ui";
 
 export const seasonCodes = ["WINTER", "SPRING", "SUMMER", "FALL"] as const;
 export type SeasonCode = (typeof seasonCodes)[number];
@@ -23,7 +23,7 @@ export function seasonIndex(year: number, season: SeasonCode) {
 }
 
 function qualityScore(anime: CatalogueAnime) {
-  return (anime.poster ? 18 : 0) + anime.sources.length * 2 + (anime.score ?? 0);
+  return (anime.poster ? 18 : 0) + sourceSignal(anime) * 2 + (anime.score ?? 0);
 }
 
 function uniqueByTitle(items: CatalogueAnime[]) {

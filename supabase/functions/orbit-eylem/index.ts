@@ -17,6 +17,7 @@ import {
   type AgentCatalogue,
 } from './catalogue.ts';
 import { prepareListMutation, presentListRows, type ListRow } from './personal-list-actions.ts';
+import { rezervasyonKarari, type RezervasyonSatiri } from './idempotency.ts';
 import {
   isJournalDate,
   presentJournalRows,
@@ -54,6 +55,20 @@ const LIST_DB_PAGE_SIZE = 1_000;
 const MAX_LIST_ROWS = 100_000;
 const DISCOVERY_PATHS = new Set<DiscoveryPath>([
   'FOR_YOU', 'SHORT', 'MOVIE', 'ONE_SEASON', 'CALM', 'ENERGY', 'EMOTIONAL', 'MYSTERY',
+]);
+/* Bilinen işlemler tek yerde. Önceden bu liste iki kez yazılıydı — biri
+ * katalog gerektirenler için, biri dağıtım merdiveninde — ve bilinmeyen bir
+ * işlemin durum kodu `rota.` önekine bakılarak tahmin ediliyordu: `rota.yok`
+ * 400, `baska.yok` 404 dönüyordu. İkisi de aynı şey, ikisi de 404. */
+const KATALOG_ISLEMLERI = new Set([
+  'rota.listeyeEkle', 'rota.listeyiOku', 'rota.katalogdaAra', 'rota.gunlugeEkle',
+  'rota.gunluguOku', 'rota.gunlukKaydiniDuzenle', 'rota.koleksiyonlariOku',
+  'rota.koleksiyonUyeliginiDegistir', 'rota.koleksiyonuSirala', 'rota.kisiselOneriler',
+]);
+const ISLEMLER = new Set([
+  ...KATALOG_ISLEMLERI,
+  'rota.listedenSil', 'rota.gunlukKaydiniSil', 'rota.koleksiyonOlustur',
+  'rota.koleksiyonuDuzenle', 'rota.koleksiyonuSil',
 ]);
 let catalogueCache: { value: AgentCatalogue; expiresAt: number } | null = null;
 
@@ -732,6 +747,155 @@ async function listedenSil(userId: string, input: Record<string, unknown>) {
   return { sonuc: { animeId, silindi: true } };
 }
 
+
+type IslemSonucu = { hata: string } | { sonuc: Record<string, unknown> };
+
+async function islemiCalistir(
+  operationId: string,
+  userId: string,
+  input: Record<string, unknown>,
+  catalogue: AgentCatalogue | null,
+): Promise<IslemSonucu> {
+  switch (operationId) {
+    case 'rota.listeyeEkle': return await listeyeEkle(userId, input, catalogue!);
+    case 'rota.listeyiOku': return await listeyiOku(userId, input, catalogue!);
+    case 'rota.listedenSil': return await listedenSil(userId, input);
+    case 'rota.katalogdaAra': return await katalogdaAra(input, catalogue!);
+    case 'rota.gunlugeEkle': return await gunlugeEkle(userId, input, catalogue!);
+    case 'rota.gunluguOku': return await gunluguOku(userId, input, catalogue!);
+    case 'rota.gunlukKaydiniDuzenle': return await gunlukKaydiniDuzenle(userId, input, catalogue!);
+    case 'rota.gunlukKaydiniSil': return await gunlukKaydiniSil(userId, input);
+    case 'rota.koleksiyonOlustur': return await koleksiyonOlustur(userId, input);
+    case 'rota.koleksiyonlariOku': return await koleksiyonlariOku(userId, input, catalogue!);
+    case 'rota.koleksiyonuDuzenle': return await koleksiyonuDuzenle(userId, input);
+    case 'rota.koleksiyonuSil': return await koleksiyonuSil(userId, input);
+    case 'rota.koleksiyonUyeliginiDegistir': return await koleksiyonUyeliginiDegistir(userId, input, catalogue!);
+    case 'rota.koleksiyonuSirala': return await koleksiyonuSirala(userId, input, catalogue!);
+    case 'rota.kisiselOneriler': return await kisiselOneriler(userId, input, catalogue!);
+    /* Buraya düşmek imkânsız: `ISLEMLER` kapıda kontrol ediliyor. Yine de
+     * sessiz kalmıyoruz — kümeye eklenip buraya eklenmeyen bir işlem, aksi
+     * halde tanımsız davranış olurdu. */
+    default: return { hata: `bilinmeyen işlem: ${operationId}` };
+  }
+}
+
+/** `orbit_action_log` satırının adresi; rezervasyonun üç adımında da aynı. */
+function kayitAdresi(userId: string, idempotencyKey: string): string {
+  return `orbit_action_log?user_id=eq.${userId}&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}`;
+}
+
+type Rezervasyon =
+  | { durum: 'rezerve' }
+  | { durum: 'tekrar'; output: unknown }
+  | { durum: 'red'; status: number; mesaj: string };
+
+/* Anahtarı ÖNCE rezerve ediyoruz, işi sonra yapıyoruz.
+ *
+ * Eski sıra —oku, çalış, yaz— arasında gerçek bir boşluk bırakıyordu: aynı
+ * anahtarla eşzamanlı gelen iki istek de "kayıt yok" görür ve ikisi de
+ * uygulardı. Yarışı burada uygulama kodu çözmüyor; birincil anahtar çakışması
+ * Postgres'te çözülüyor ve `ignore-duplicates` kaybedene boş dizi döndürüyor. */
+async function anahtariRezerveEt(
+  userId: string,
+  idempotencyKey: string,
+  operationId: string,
+  inputDigest: string,
+  kalanDeneme = 2,
+): Promise<Rezervasyon> {
+  const simdi = new Date().toISOString();
+  const acilis = await db('orbit_action_log?on_conflict=user_id,idempotency_key', {
+    method: 'POST',
+    headers: { prefer: 'resolution=ignore-duplicates,return=representation' },
+    body: JSON.stringify({
+      user_id: userId,
+      idempotency_key: idempotencyKey,
+      operation_id: operationId,
+      input_digest: inputDigest,
+      output: null,
+      started_at: simdi,
+    }),
+  });
+  if (!acilis.ok) {
+    console.error(`eylem kaydı açılamadı: ${acilis.status} ${(await acilis.text()).slice(0, 300)}`);
+    /* 503, çünkü sorun çağıranda değil. Tekrar korumasını kuramadan işe
+     * başlamak, korumayı hiç kurmamakla aynı şey olurdu. */
+    return { durum: 'red', status: 503, mesaj: 'eylem kaydı açılamadı' };
+  }
+  if (((await acilis.json()) as unknown[]).length > 0) return { durum: 'rezerve' };
+
+  const mevcut = await db(`${kayitAdresi(userId, idempotencyKey)}&select=input_digest,output,started_at`);
+  if (!mevcut.ok) {
+    console.error(`eylem kaydı okunamadı: ${mevcut.status} ${(await mevcut.text()).slice(0, 300)}`);
+    return { durum: 'red', status: 503, mesaj: 'eylem kaydı okunamadı' };
+  }
+  const satir = ((await mevcut.json()) as RezervasyonSatiri[])[0];
+  /* Satır insert ile select arasında silindi: ilk çalışma hata verip
+   * rezervasyonunu bıraktı. Bu bir tekrar değil, temiz bir yeniden deneme.
+   * Deneme sayısı sınırlı: sınırsız özyineleme, patolojik bir döngüde ucu
+   * kendi üstüne kapatırdı. */
+  if (!satir) {
+    if (kalanDeneme <= 0) return { durum: 'red', status: 503, mesaj: 'eylem kaydı rezerve edilemedi' };
+    return await anahtariRezerveEt(userId, idempotencyKey, operationId, inputDigest, kalanDeneme - 1);
+  }
+
+  const karar = rezervasyonKarari(satir, inputDigest, Date.now());
+  if (karar.karar !== 'devral') return karar.karar === 'tekrar'
+    ? { durum: 'tekrar', output: karar.output }
+    : { durum: 'red', status: karar.status, mesaj: karar.mesaj };
+
+  /* Terk edilmiş rezervasyonu devralıyoruz. `started_at` filtresi iyimser
+   * kilit: aynı anda başka biri devraldıysa bize satır dönmez. */
+  const devir = await db(
+    `${kayitAdresi(userId, idempotencyKey)}&output=is.null`
+    + `&started_at=eq.${encodeURIComponent(satir.started_at)}`,
+    {
+      method: 'PATCH',
+      headers: { prefer: 'return=representation' },
+      body: JSON.stringify({ started_at: simdi }),
+    },
+  );
+  if (!devir.ok) {
+    console.error(`eylem kaydı devralınamadı: ${devir.status} ${(await devir.text()).slice(0, 300)}`);
+    return { durum: 'red', status: 503, mesaj: 'eylem kaydı devralınamadı' };
+  }
+  return ((await devir.json()) as unknown[]).length > 0
+    ? { durum: 'rezerve' }
+    : { durum: 'red', status: 409, mesaj: 'aynı Idempotency-Key ile başlayan işlem sürüyor' };
+}
+
+/* İş yapılmadıysa anahtar YANMAMALI. Rezervasyonu tutmak, geçici bir hatadan
+ * sonra aynı anahtarla gelen dürüst bir yeniden denemeyi kalıcı olarak
+ * engellerdi. */
+async function rezervasyonuBirak(userId: string, idempotencyKey: string): Promise<void> {
+  const response = await db(`${kayitAdresi(userId, idempotencyKey)}&output=is.null`, { method: 'DELETE' });
+  if (!response.ok) {
+    console.error(`eylem rezervasyonu bırakılamadı: ${response.status} ${(await response.text()).slice(0, 300)}`);
+  }
+}
+
+async function rezervasyonuTamamla(
+  userId: string,
+  idempotencyKey: string,
+  output: Record<string, unknown>,
+): Promise<void> {
+  const response = await db(`${kayitAdresi(userId, idempotencyKey)}&output=is.null`, {
+    method: 'PATCH',
+    headers: { prefer: 'return=representation' },
+    body: JSON.stringify({ output }),
+  });
+  if (!response.ok || ((await response.json()) as unknown[]).length === 0) {
+    /* İş YAPILDI ama cevabı saklayamadık. Çağırana hata dönmek yanlış olurdu —
+     * yapılmış bir işi yapılmamış göstermek en kötü yalan. Ama sessiz de
+     * kalmıyoruz: bu satır, ileride "ajan aynı şeyi iki kez yaptı" diye gelen
+     * bir şikâyetin tek açıklaması. */
+    console.error(`eylem çıktısı saklanamadı: ${operationLogHatasi(response)} (${userId}/${idempotencyKey})`);
+  }
+}
+
+function operationLogHatasi(response: Response): string {
+  return response.ok ? 'rezervasyon satırı bulunamadı' : `HTTP ${response.status}`;
+}
+
 Deno.serve(async (request: Request): Promise<Response> => {
   if (request.method !== 'POST') return hata(405, 'yalnız POST');
   if (SUPABASE_URL.length === 0 || SERVICE_KEY.length === 0) {
@@ -776,85 +940,33 @@ Deno.serve(async (request: Request): Promise<Response> => {
     return hata(404, 'bu Orbit kimliği Rota\'da tanınmıyor');
   }
 
+  if (!ISLEMLER.has(operationId)) return hata(404, `bilinmeyen işlem: ${operationId}`);
+
   const inputDigest = await digest(JSON.stringify({ operationId, input }));
 
-  /* Tekrar mı? Aynı anahtar + aynı gövde ise ilk çalışmanın cevabı dönüyor. */
-  const gecmis = await db(
-    `orbit_action_log?user_id=eq.${userId}&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}`
-    + '&select=input_digest,output',
-  );
-  if (gecmis.ok) {
-    const satirlar = await gecmis.json() as Array<{ input_digest: string; output: unknown }>;
-    if (satirlar.length > 0) {
-      /* Aynı anahtar FARKLI gövdeyle geldi: bu bir tekrar değil, çakışma.
-       * Sessizce ilk cevabı döndürmek, ajanın yaptığını sandığı işin hiç
-       * yapılmaması olurdu. */
-      if (satirlar[0].input_digest !== inputDigest) {
-        return hata(409, 'aynı Idempotency-Key farklı bir istekle kullanıldı');
-      }
-      return json({ status: 'replayed', output: satirlar[0].output });
+  const rezervasyon = await anahtariRezerveEt(userId, idempotencyKey, operationId, inputDigest);
+  if (rezervasyon.durum === 'tekrar') return json({ status: 'replayed', output: rezervasyon.output });
+  if (rezervasyon.durum === 'red') return hata(rezervasyon.status, rezervasyon.mesaj);
+
+  try {
+    const catalogue = KATALOG_ISLEMLERI.has(operationId) ? await kataloguAl() : null;
+    if (KATALOG_ISLEMLERI.has(operationId) && !catalogue) {
+      await rezervasyonuBirak(userId, idempotencyKey);
+      return hata(503, 'Rota kataloğu şu anda doğrulanamıyor');
     }
+
+    const sonuc = await islemiCalistir(operationId, userId, input, catalogue);
+    if ('hata' in sonuc) {
+      await rezervasyonuBirak(userId, idempotencyKey);
+      return hata(400, sonuc.hata);
+    }
+
+    await rezervasyonuTamamla(userId, idempotencyKey, sonuc.sonuc);
+    return json({ status: 'applied', output: sonuc.sonuc });
+  } catch (error) {
+    /* Beklenmedik bir düşüşte de anahtarı bırakıyoruz; yoksa ajan aşım süresi
+     * dolana kadar aynı anahtarla hiçbir şey yapamazdı. */
+    await rezervasyonuBirak(userId, idempotencyKey);
+    throw error;
   }
-
-  const catalogueOperation = operationId === 'rota.listeyeEkle'
-    || operationId === 'rota.listeyiOku'
-    || operationId === 'rota.katalogdaAra'
-    || operationId === 'rota.gunlugeEkle'
-    || operationId === 'rota.gunluguOku'
-    || operationId === 'rota.gunlukKaydiniDuzenle'
-    || operationId === 'rota.koleksiyonlariOku'
-    || operationId === 'rota.koleksiyonUyeliginiDegistir'
-    || operationId === 'rota.koleksiyonuSirala'
-    || operationId === 'rota.kisiselOneriler';
-  const catalogue = catalogueOperation ? await kataloguAl() : null;
-  if (catalogueOperation && !catalogue) return hata(503, 'Rota kataloğu şu anda doğrulanamıyor');
-
-  type IslemSonucu = { hata: string } | { sonuc: Record<string, unknown> };
-  const sonuc: IslemSonucu = operationId === 'rota.listeyeEkle'
-    ? await listeyeEkle(userId, input, catalogue!)
-    : operationId === 'rota.listeyiOku'
-      ? await listeyiOku(userId, input, catalogue!)
-      : operationId === 'rota.katalogdaAra'
-        ? await katalogdaAra(input, catalogue!)
-        : operationId === 'rota.listedenSil'
-          ? await listedenSil(userId, input)
-          : operationId === 'rota.gunlugeEkle'
-            ? await gunlugeEkle(userId, input, catalogue!)
-            : operationId === 'rota.gunluguOku'
-              ? await gunluguOku(userId, input, catalogue!)
-              : operationId === 'rota.gunlukKaydiniDuzenle'
-                ? await gunlukKaydiniDuzenle(userId, input, catalogue!)
-                : operationId === 'rota.gunlukKaydiniSil'
-                  ? await gunlukKaydiniSil(userId, input)
-                  : operationId === 'rota.koleksiyonOlustur'
-                    ? await koleksiyonOlustur(userId, input)
-                    : operationId === 'rota.koleksiyonlariOku'
-                      ? await koleksiyonlariOku(userId, input, catalogue!)
-                      : operationId === 'rota.koleksiyonuDuzenle'
-                        ? await koleksiyonuDuzenle(userId, input)
-                        : operationId === 'rota.koleksiyonuSil'
-                          ? await koleksiyonuSil(userId, input)
-                          : operationId === 'rota.koleksiyonUyeliginiDegistir'
-                            ? await koleksiyonUyeliginiDegistir(userId, input, catalogue!)
-                            : operationId === 'rota.koleksiyonuSirala'
-                              ? await koleksiyonuSirala(userId, input, catalogue!)
-                              : operationId === 'rota.kisiselOneriler'
-                                ? await kisiselOneriler(userId, input, catalogue!)
-                                : { hata: `bilinmeyen işlem: ${operationId}` };
-
-  if ('hata' in sonuc) return hata(operationId.startsWith('rota.') ? 400 : 404, sonuc.hata);
-
-  await db('orbit_action_log', {
-    method: 'POST',
-    headers: { prefer: 'resolution=ignore-duplicates' },
-    body: JSON.stringify({
-      user_id: userId,
-      idempotency_key: idempotencyKey,
-      operation_id: operationId,
-      input_digest: inputDigest,
-      output: sonuc.sonuc,
-    }),
-  });
-
-  return json({ status: 'applied', output: sonuc.sonuc });
 });

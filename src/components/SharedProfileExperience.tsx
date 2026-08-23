@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { loadBrowserCatalogue } from "../lib/catalogue-loader";
 import AnimeArtwork from "./AnimeArtwork";
 import RotaCompanion from "./RotaCompanion";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
@@ -37,10 +38,7 @@ export default function SharedProfileExperience({ dataVersion }: Props) {
     let active = true;
     Promise.all([
       client.rpc("get_shared_profile", { p_share_token: token }),
-      fetch(`/data/catalogue.json?v=${encodeURIComponent(dataVersion)}`).then((response) => {
-        if (!response.ok) throw new Error(`Catalogue request failed: ${response.status}`);
-        return response.json() as Promise<CatalogueAnime[]>;
-      }),
+      loadBrowserCatalogue(dataVersion),
     ]).then(([profileResult, catalogueItems]) => {
       if (!active) return;
       if (profileResult.error) throw profileResult.error;

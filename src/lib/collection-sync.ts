@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { fetchAllUserRows } from "./cloud-paging";
 import {
   readPersonalCollections,
   replacePersonalCollections,
@@ -118,13 +119,13 @@ async function uploadRows(client: SupabaseClient, rows: UploadCollectionRow[]) {
 
 export async function syncPersonalCollections(client: SupabaseClient, userId: string): Promise<CollectionSyncResult> {
   const local = readPersonalCollections();
-  const { data, error } = await client
-    .from("personal_collections")
-    .select("id,name,description,color,anime_ids,client_created_at,client_updated_at,deleted_at")
-    .eq("user_id", userId);
-  if (error) throw error;
-
-  const remoteRows = (data ?? []) as CloudCollectionRow[];
+  const remoteRows = await fetchAllUserRows<CloudCollectionRow>(
+    client,
+    "personal_collections",
+    "id,name,description,color,anime_ids,client_created_at,client_updated_at,deleted_at",
+    userId,
+    "id",
+  );
   const remoteById = new Map(remoteRows.map((row) => [row.id, row]));
   const ids = new Set([...Object.keys(local.collections), ...Object.keys(local.tombstones), ...remoteById.keys()]);
   const uploads: UploadCollectionRow[] = [];

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { syncRotaData, type SyncResult } from "../lib/cloud-sync";
 import type { CatalogueAnime } from "../lib/catalogue-ui";
+import { loadBrowserCatalogue } from "../lib/catalogue-loader";
 import { readPersonalList, subscribeToPersonalList, type PersonalListEntry } from "../lib/personal-list";
 import { calculateRotaStatistics } from "../lib/personal-statistics";
 import { buildShareUrl } from "../lib/profile-sharing";
@@ -106,11 +107,7 @@ export default function AccountExperience({ dataVersion }: Props) {
 
   useEffect(() => {
     let active = true;
-    fetch(`/data/catalogue.json?v=${encodeURIComponent(dataVersion)}`)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Catalogue request failed: ${response.status}`);
-        return response.json() as Promise<CatalogueAnime[]>;
-      })
+    loadBrowserCatalogue(dataVersion)
       .then((items) => { if (active) setCatalogue(items); })
       .catch(() => {})
       .finally(() => { if (active) setCatalogueLoading(false); });

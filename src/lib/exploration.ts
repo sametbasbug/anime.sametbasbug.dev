@@ -1,4 +1,4 @@
-import { catalogue, type CatalogueAnime } from "./catalogue";
+import { catalogue, sourceSignal, type CatalogueAnime } from "./catalogue";
 
 export type GenreDefinition = {
   slug: string;
@@ -139,7 +139,7 @@ export function rankAnime(items: CatalogueAnime[]) {
     const bStatus = b.status === "FINISHED" ? 12 : b.status === "ONGOING" ? 10 : -6;
     const aScore = a.status === "UPCOMING" ? 0 : (a.score ?? 0);
     const bScore = b.status === "UPCOMING" ? 0 : (b.score ?? 0);
-    return (b.sources.length * 2 + bScore + bStatus) - (a.sources.length * 2 + aScore + aStatus);
+    return (sourceSignal(b) * 2 + bScore + bStatus) - (sourceSignal(a) * 2 + aScore + aStatus);
   });
 }
 
@@ -200,7 +200,7 @@ export function relatedAnime(anime: CatalogueAnime, limit = 6) {
       return { ...candidate, score, sharedGenres };
     })
     .filter(({ score, sharedGenres }) => score >= 6 && sharedGenres > 0)
-    .sort((a, b) => b.score - a.score || b.anime.sources.length - a.anime.sources.length || (b.anime.score ?? 0) - (a.anime.score ?? 0) || a.catalogueIndex - b.catalogueIndex)
+    .sort((a, b) => b.score - a.score || sourceSignal(b.anime) - sourceSignal(a.anime) || (b.anime.score ?? 0) - (a.anime.score ?? 0) || a.catalogueIndex - b.catalogueIndex)
     .slice(0, limit)
     .map(({ anime: candidate }) => candidate);
 }

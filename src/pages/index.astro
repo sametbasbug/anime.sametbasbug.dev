@@ -12,6 +12,7 @@ import {
   displayTags,
   preferredAliases,
   seasonLabels,
+  sourceSignal,
   typeLabels,
   visualFor,
   type CatalogueAnime,
@@ -25,7 +26,7 @@ function statusSelection(status: CatalogueAnime["status"]) {
   const seen = new Set<string>();
   return catalogue
     .filter((anime) => anime.season.year === currentYear && anime.status === status && ["TV", "ONA", "MOVIE"].includes(anime.type))
-    .sort((a, b) => (b.sources.length * 2 + (b.score ?? 0)) - (a.sources.length * 2 + (a.score ?? 0)))
+    .sort((a, b) => (sourceSignal(b) * 2 + (b.score ?? 0)) - (sourceSignal(a) * 2 + (a.score ?? 0)))
     .filter((anime) => {
       const key = anime.title.toLocaleLowerCase("tr-TR");
       if (seen.has(key)) return false;

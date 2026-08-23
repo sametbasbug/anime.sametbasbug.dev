@@ -6,6 +6,7 @@ import {
   type PersonalListStore,
   type PersonalStatus,
 } from "./personal-list";
+import { fetchAllUserRows } from "./cloud-paging";
 import { syncWatchJournal } from "./journal-sync";
 import { syncPersonalCollections } from "./collection-sync";
 
@@ -143,14 +144,15 @@ async function uploadRows(client: SupabaseClient, rows: UploadRow[]) {
 
 export async function syncPersonalList(client: SupabaseClient, userId: string): Promise<SyncResult> {
   const local = readPersonalList();
-  const { data, error } = await client
-    .from("personal_list_entries")
-    .select("anime_id,status,progress,score,note,client_updated_at,deleted_at")
-    .eq("user_id", userId);
-
-  if (error) throw error;
-
-  const remoteRows = (data ?? []) as CloudListRow[];
+  /* Sıralama `anime_id` üzerinden: `personal_list_entries` birincil anahtarı
+   * (user_id, anime_id) olduğu için bu sütun kullanıcı içinde benzersiz. */
+  const remoteRows = await fetchAllUserRows<CloudListRow>(
+    client,
+    "personal_list_entries",
+    "anime_id,status,progress,score,note,client_updated_at,deleted_at",
+    userId,
+    "anime_id",
+  );
   const remoteById = new Map(remoteRows.map((row) => [row.anime_id, row]));
   const animeIds = new Set([
     ...Object.keys(local.entries),

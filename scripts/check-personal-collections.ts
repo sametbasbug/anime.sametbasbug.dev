@@ -16,6 +16,7 @@ import {
   type PersonalCollectionsStore,
 } from "../src/lib/personal-collections";
 import { syncPersonalCollections } from "../src/lib/collection-sync";
+import { pagedSelect } from "./lib/fake-postgrest";
 
 class MemoryStorage {
   private values = new Map<string, string>();
@@ -120,7 +121,7 @@ const client = {
   from(table: string) {
     assert.equal(table, "personal_collections");
     return {
-      select() { return { async eq() { return { data: remoteRows, error: null }; } }; },
+      select: pagedSelect(remoteRows),
       async upsert(rows: FakeRow[]) { accepted.push(...rows); return { error: null }; },
     };
   },
