@@ -143,24 +143,64 @@ export function rankAnime(items: CatalogueAnime[]) {
   });
 }
 
-export function relatedAnime(anime: CatalogueAnime, limit = 6) {
-  const targetGenres = new Set(genresForAnime(anime).map((genre) => genre.slug));
-  const targetStudios = new Set(anime.studios.map(studioKey));
-  const targetTags = new Set(anime.tags.map((tag) => tag.toLocaleLowerCase("en-US")));
-  const titleKey = fold(anime.title);
+type RelatedProfile = {
+  anime: CatalogueAnime;
+  catalogueIndex: number;
+  titleKey: string;
+  genreSlugs: string[];
+  studioKeys: string[];
+  tagKeys: string[];
+};
 
-  return catalogue
-    .filter((candidate) => candidate.id !== anime.id && fold(candidate.title) !== titleKey)
+const relatedProfiles = new Map<string, RelatedProfile>();
+const relatedProfilesByGenre = new Map<string, RelatedProfile[]>();
+
+for (const [catalogueIndex, anime] of catalogue.entries()) {
+  const profile: RelatedProfile = {
+    anime,
+    catalogueIndex,
+    titleKey: fold(anime.title),
+    genreSlugs: genresForAnime(anime).map((genre) => genre.slug),
+    studioKeys: anime.studios.map(studioKey),
+    tagKeys: anime.tags.map((tag) => tag.toLocaleLowerCase("en-US")),
+  };
+  relatedProfiles.set(anime.id, profile);
+  for (const genreSlug of profile.genreSlugs) {
+    const profiles = relatedProfilesByGenre.get(genreSlug) ?? [];
+    profiles.push(profile);
+    relatedProfilesByGenre.set(genreSlug, profiles);
+  }
+}
+
+export function relatedAnime(anime: CatalogueAnime, limit = 6) {
+  const target = relatedProfiles.get(anime.id) ?? {
+    anime,
+    catalogueIndex: -1,
+    titleKey: fold(anime.title),
+    genreSlugs: genresForAnime(anime).map((genre) => genre.slug),
+    studioKeys: anime.studios.map(studioKey),
+    tagKeys: anime.tags.map((tag) => tag.toLocaleLowerCase("en-US")),
+  };
+  const targetGenres = new Set(target.genreSlugs);
+  const targetStudios = new Set(target.studioKeys);
+  const targetTags = new Set(target.tagKeys);
+  const candidates = new Map<string, RelatedProfile>();
+  for (const genreSlug of targetGenres) {
+    for (const profile of relatedProfilesByGenre.get(genreSlug) ?? []) candidates.set(profile.anime.id, profile);
+  }
+
+  return [...candidates.values()]
+    .filter((candidate) => candidate.anime.id !== anime.id && candidate.titleKey !== target.titleKey)
     .map((candidate) => {
-      const sharedGenres = genresForAnime(candidate).filter((genre) => targetGenres.has(genre.slug)).length;
-      const sharedStudios = candidate.studios.filter((studio) => targetStudios.has(studioKey(studio))).length;
-      const sharedTags = candidate.tags.filter((tag) => targetTags.has(tag.toLocaleLowerCase("en-US"))).length;
-      const yearDistance = Math.abs(candidate.season.year - anime.season.year);
-      const score = sharedGenres * 6 + sharedStudios * 5 + Math.min(sharedTags, 8) * .4 + (candidate.type === anime.type ? 1 : 0) + Math.max(0, 2 - yearDistance * .2);
-      return { candidate, score, sharedGenres, sharedTags };
+      const sharedGenres = candidate.genreSlugs.filter((genre) => targetGenres.has(genre)).length;
+      const sharedStudios = candidate.studioKeys.filter((studio) => targetStudios.has(studio)).length;
+      const sharedTags = candidate.tagKeys.filter((tag) => targetTags.has(tag)).length;
+      const yearDistance = Math.abs(candidate.anime.season.year - anime.season.year);
+      const score = sharedGenres * 6 + sharedStudios * 5 + Math.min(sharedTags, 8) * .4 + (candidate.anime.type === anime.type ? 1 : 0) + Math.max(0, 2 - yearDistance * .2);
+      return { ...candidate, score, sharedGenres };
     })
     .filter(({ score, sharedGenres }) => score >= 6 && sharedGenres > 0)
-    .sort((a, b) => b.score - a.score || b.candidate.sources.length - a.candidate.sources.length || (b.candidate.score ?? 0) - (a.candidate.score ?? 0))
+    .sort((a, b) => b.score - a.score || b.anime.sources.length - a.anime.sources.length || (b.anime.score ?? 0) - (a.anime.score ?? 0) || a.catalogueIndex - b.catalogueIndex)
     .slice(0, limit)
-    .map(({ candidate }) => candidate);
+    .map(({ anime: candidate }) => candidate);
 }

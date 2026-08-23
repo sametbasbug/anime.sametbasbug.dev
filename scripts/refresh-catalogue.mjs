@@ -10,10 +10,12 @@ import {
 
 const OUTPUT = resolve("src/data/catalogue.json");
 const SEED_OUTPUT = resolve("src/data/kitsu-catalogue-seed.json");
-const TARGET_ITEMS = 2_500;
+const TARGET_ITEMS = 7_500;
 const API_INCLUDE = "genres,categories,productions.company,mappings";
 const CURRENT_YEAR = new Date().getUTCFullYear();
 const RESEED = process.argv.includes("--reseed");
+// Kitsu 12725 advertises poster URLs whose tiny/original dahil every CDN variant returns HTTP 404.
+const BROKEN_KITSU_POSTER_IDS = new Set(["12725"]);
 
 const typeMap = new Map([
   ["tv", "TV"],
@@ -133,6 +135,7 @@ function imageSet(image) {
 }
 
 function normalizeResource(resource, includedIndex, identity) {
+  if (BROKEN_KITSU_POSTER_IDS.has(String(resource.id))) return null;
   const attributes = resource.attributes ?? {};
   const type = typeMap.get(String(attributes.subtype ?? "").toLocaleLowerCase("en-US"));
   const status = statusMap.get(String(attributes.status ?? "").toLocaleLowerCase("en-US"));
@@ -176,8 +179,22 @@ function normalizeResource(resource, includedIndex, identity) {
 async function fetchListing(parameters, requestedCount, label) {
   const data = [];
   const included = [];
-  const pages = Math.ceil(requestedCount / 20);
-  for (let page = 0; page < pages; page += 1) {
+  const first = await kitsuRequest("anime", {
+    ...parameters,
+    "page[limit]": 20,
+    "page[offset]": 0,
+    include: API_INCLUDE,
+  });
+  data.push(...first.data);
+  included.push(...(first.included ?? []));
+  const total = Math.min(requestedCount, first.meta?.count ?? requestedCount);
+  const pages = Math.ceil(total / 20);
+  let nextPage = 1;
+  let completedPages = 1;
+  process.stdout.write(`\r${label}: ${Math.min(data.length, total)}/${total}`);
+  const worker = async () => {
+    while (nextPage < pages) {
+      const page = nextPage++;
     const response = await kitsuRequest("anime", {
       ...parameters,
       "page[limit]": 20,
@@ -186,9 +203,11 @@ async function fetchListing(parameters, requestedCount, label) {
     });
     data.push(...response.data);
     included.push(...(response.included ?? []));
-    process.stdout.write(`\r${label}: ${data.length}/${Math.min(requestedCount, response.meta?.count ?? requestedCount)}`);
-    if (response.data.length < 20 || data.length >= (response.meta?.count ?? requestedCount)) break;
-  }
+      completedPages += 1;
+      process.stdout.write(`\r${label}: ${Math.min(completedPages * 20, total)}/${total}`);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(5, Math.max(0, pages - 1)) }, worker));
   process.stdout.write("\n");
   return { data, included };
 }
@@ -243,14 +262,13 @@ async function bootstrapSeed(existingCatalogue) {
     .filter(Boolean);
   console.log(`Fetching ${existingKitsuIds.length} directly mapped existing anime...`);
   const existingPayload = await fetchAnimeByIds(existingKitsuIds, { include: API_INCLUDE });
-  const popularPayload = await fetchListing({ sort: "-userCount" }, 2_000, "Popular anime");
-  const ratedPayload = await fetchListing({ sort: "-averageRating" }, 600, "Top-rated anime");
+  const popularPayload = await fetchListing({ sort: "-userCount" }, 9_000, "Popular anime");
   const recentPayloads = [];
   for (let year = CURRENT_YEAR - 2; year <= CURRENT_YEAR + 1; year += 1) {
-    recentPayloads.push(await fetchListing({ "filter[seasonYear]": year, sort: "-userCount" }, 400, `${year} anime`));
+    recentPayloads.push(await fetchListing({ "filter[seasonYear]": year, sort: "-userCount" }, 500, `${year} anime`));
   }
 
-  const merged = mergePayloads([existingPayload, popularPayload, ratedPayload, ...recentPayloads]);
+  const merged = mergePayloads([existingPayload, popularPayload, ...recentPayloads]);
   const includedIndex = indexIncluded(merged.included);
   const indexes = existingIdentityIndexes(existingCatalogue);
   const usedRotaIds = new Set();
@@ -261,6 +279,20 @@ async function bootstrapSeed(existingCatalogue) {
     if (!normalized) continue;
     if (identity) usedRotaIds.add(identity.rotaId);
     normalizedByKitsu.set(resource.id, normalized);
+  }
+
+  /* Bir upstream kayıt geçici olarak poster alanını kaybettiğinde mevcut sağlam
+   * Rota kaydını genişleme sırasında düşürmüyoruz. Bu yalnız --reseed yolunda
+   * çalışır; normal yenileme eksik Kitsu verisini hâlâ reddeder. */
+  let preservedSnapshotFallbacks = 0;
+  for (const anime of existingCatalogue.items) {
+    const kitsuId = String(anime.kitsuId ?? legacyKitsuId(anime) ?? "");
+    if (!kitsuId || BROKEN_KITSU_POSTER_IDS.has(kitsuId) || normalizedByKitsu.has(kitsuId) || !anime.poster?.large) continue;
+    normalizedByKitsu.set(kitsuId, anime);
+    preservedSnapshotFallbacks += 1;
+  }
+  if (preservedSnapshotFallbacks) {
+    console.log(`Preserved ${preservedSnapshotFallbacks} last-known-good existing anime during reseed.`);
   }
 
   const editorial = await readJson(resolve("src/data/editorial.json"));
@@ -288,12 +320,12 @@ async function bootstrapSeed(existingCatalogue) {
   add(preserved);
 
   const popular = [...normalized].sort((left, right) => right.userCount - left.userCount);
-  add(popular, 2_000);
+  add(popular, 6_500);
 
   const recent = normalized
     .filter((anime) => anime.season.year >= CURRENT_YEAR - 2)
     .sort((left, right) => right.season.year - left.season.year || right.userCount - left.userCount);
-  add(recent, 2_400);
+  add(recent, 7_200);
 
   const rated = [...normalized]
     .sort((left, right) => (right.score ?? 0) - (left.score ?? 0) || right.userCount - left.userCount);
@@ -311,12 +343,11 @@ async function bootstrapSeed(existingCatalogue) {
       generatedAt: new Date().toISOString(),
       targetCount: TARGET_ITEMS,
       preservedRotaIds: items.filter((anime) => existingOrder.has(anime.id)).length,
-      selection: "Poster-complete existing Rota matches, popular Kitsu titles, recent/upcoming seasons, then high-rated titles.",
+      preservedSnapshotFallbacks,
+      selection: "All existing Rota identities, then popular Kitsu titles, recent/upcoming seasons, and high-rated poster-complete titles.",
     },
     entries: items.map((anime) => ({ rotaId: anime.id, kitsuId: anime.kitsuId, slug: anime.slug })),
   };
-  await writeFile(SEED_OUTPUT, `${JSON.stringify(seed, null, 2)}\n`, "utf8");
-  console.log(`Wrote ${seed.entries.length} stable Kitsu identities to ${SEED_OUTPUT}.`);
   return { seed, payload: merged };
 }
 
@@ -334,15 +365,30 @@ const { seed, payload } = existingSeed
   : await bootstrapSeed(existingCatalogue);
 const includedIndex = indexIncluded(payload.included);
 const resourcesById = new Map(payload.data.map((resource) => [resource.id, resource]));
+const existingByKitsu = new Map(existingCatalogue.items.map((anime) => [String(anime.kitsuId), anime]));
 const items = [];
 const failures = [];
+let reseedSnapshotFallbacks = 0;
 for (const identity of seed.entries) {
   const resource = resourcesById.get(String(identity.kitsuId));
   if (!resource) {
+    const existing = RESEED ? existingByKitsu.get(String(identity.kitsuId)) : null;
+    if (existing?.poster?.large) {
+      items.push(existing);
+      reseedSnapshotFallbacks += 1;
+      continue;
+    }
     failures.push(`${identity.rotaId}: missing Kitsu ${identity.kitsuId}`);
     continue;
   }
-  const normalized = normalizeResource(resource, includedIndex, identity);
+  let normalized = normalizeResource(resource, includedIndex, identity);
+  if (!normalized && RESEED) {
+    const existing = existingByKitsu.get(String(identity.kitsuId));
+    if (!BROKEN_KITSU_POSTER_IDS.has(String(identity.kitsuId)) && existing?.poster?.large) {
+      normalized = existing;
+      reseedSnapshotFallbacks += 1;
+    }
+  }
   if (!normalized) {
     failures.push(`${identity.rotaId}: incomplete or missing poster (${identity.kitsuId})`);
     continue;
@@ -374,10 +420,15 @@ const output = {
     entryCount: items.length,
     posterCoverage: items.filter((anime) => anime.poster?.large).length,
     malIdCoverage: items.filter((anime) => anime.malId).length,
+    reseedSnapshotFallbacks,
     selection: seed.meta.selection,
   },
   items,
 };
 
+if (!existingSeed) {
+  await writeFile(SEED_OUTPUT, `${JSON.stringify(seed, null, 2)}\n`, "utf8");
+  console.log(`Wrote ${seed.entries.length} stable Kitsu identities to ${SEED_OUTPUT}.`);
+}
 await writeFile(OUTPUT, `${JSON.stringify(output)}\n`, "utf8");
 console.log(`Wrote ${items.length} Kitsu anime with ${output.meta.posterCoverage}/${items.length} poster coverage to ${OUTPUT}.`);

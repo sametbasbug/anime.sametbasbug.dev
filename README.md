@@ -9,7 +9,7 @@
 
 [![Equinox Rota — Türkçe anime keşif ve kişisel arşiv](./public/social/equinox-rota-share.png)](https://anime.sametbasbug.dev/)
 
-Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 2.500 yapımlık aranabilir katalog; açıklanabilir kişisel öneriler, kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
+Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-first bir web ürünüdür. 7.500 yapımlık aranabilir katalog; açıklanabilir kişisel öneriler, kişisel raflar, istatistikler, taşınabilir yedekler, paylaşılabilir profiller ve spoiler kontrollü topluluk incelemeleriyle birlikte çalışır. Video barındırmaz, korsan yayın bağlantısı sunmaz ve izinsiz veri toplamaz.
 
 **Canlı soft alpha:** [anime.sametbasbug.dev](https://anime.sametbasbug.dev/)
 
@@ -22,14 +22,14 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Yeni başlayan, devam eden ve yaklaşan yapımları kişisel planla buluşturan açıklanabilir `/sezonlar` panosu
 - Duruma göre çalışan anime kartı filtreleri
 - Proje içinde CSS ile üretilmiş özgün görsel kompozisyonlar
-- 2.500 yapımlık gerçek, aranabilir ve %100 posterli katalog
+- 7.500 yapımlık gerçek, aranabilir ve %100 posterli katalog
 - Başlık, alternatif ad, stüdyo, Türkçe tür etiketi ve yıla göre arama
 - Türkçe tür, format, yayın durumu ve sıralama filtreleri
 - 20 Türkçe tür keşif sayfası ve normalize edilmiş stüdyo sayfaları
 - Ortak tür, stüdyo, etiket, yıl ve formata göre üretilen benzer yapım önerileri
 - Puan, tür, stüdyo, format, liste ve günlük geçmişini yalnız tarayıcıda eşleştiren açıklanabilir `/oneriler` seçicisi; kısa, film, tek sezon ve ruh hâli yolları
 - Yayımlanmamış yapımları geriye alan, sonuç niteliği iyileştirilmiş arama sıralaması
-- Statik üretilmiş 2.500 anime detay sayfası
+- Statik üretilmiş 7.500 anime detay sayfası
 - Dört durumlu, tarayıcıda yerel olarak saklanan kişisel anime listesi
 - Bölüm ilerlemesi, 1–10 kişisel puan ve 600 karakterlik kişisel not
 - Bölüm aralığı, izleme tarihi ve kısa notlarla local-first izleme günlüğü; aylık özet ve takvim
@@ -85,7 +85,7 @@ Anime metadata, poster ve kapaklarının tek harici kaynağı [Kitsu](https://ki
 npm run data:refresh
 ```
 
-Komut kararlı `src/data/kitsu-catalogue-seed.json` seçkisini Kitsu API'den yeniden çeker, şemaya normalize eder ve ancak 2.500 kaydın tamamı geçerli bir Kitsu posteriyle geldiyse `src/data/catalogue.json` dosyasını yeniler. Timeout, sınırlı retry ve `Retry-After` desteği vardır; eksik veya postersiz yenileme mevcut sağlam katalogu ezmez. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur, detay sayfaları derleme sırasında statik oluşturulur. `npm run catalogue:check` veri sözleşmesini, `npm run kitsu:media-check` CDN erişimini denetler.
+Komut kararlı `src/data/kitsu-catalogue-seed.json` seçkisini Kitsu API'den sınırlı eşzamanlılıkla yeniden çeker, şemaya normalize eder ve ancak 7.500 kaydın tamamı geçerli bir Kitsu posteriyle geldiyse `src/data/catalogue.json` dosyasını yeniler. Timeout, sınırlı retry ve `Retry-After` desteği vardır; eksik veya postersiz yenileme mevcut sağlam katalogu ezmez. `--reseed` genişletmesi sırasında upstream'in geçici olarak postersiz döndürdüğü mevcut bir kimlik, son sağlam snapshot'tan korunur; URL yayımladığı hâlde bütün CDN varyantları doğrulanmış biçimde 404 olan kayıtlar seçkiye alınmaz. Arama verisi `/data/catalogue.json` üzerinden istemciye sunulur, detay sayfaları derleme sırasında statik oluşturulur. `npm run catalogue:check` veri sözleşmesini, `npm run kitsu:media-check` CDN erişimini denetler.
 
 Katalogdaki `id` Rota'nın kalıcı iç kimliğidir ve kullanıcı verisi bağlarını korumak için kaynak geçişlerinde yeniden numaralandırılmaz. `kitsuId` her kayıtta bulunur; Kitsu'nun açık mapping ilişkisinde varsa `malId` ayrıca yayımlanır. Bu alanlar birbirinin yerine kullanılmaz. Yalnız dış kimlik eşlemelerini poster/metadata snapshot'ına dokunmadan yenilemek için `npm run data:identities` kullanılabilir.
 
@@ -190,6 +190,8 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 16. ~~Kişisel koleksiyonlar~~ — local-first yönetim, yedek v3, sahip-kullanıcı senkronu ve izinli paylaşım kabulüyle tamamlandı
 17. ~~Sezon panosu~~ — izinli katalog verisi, kişisel plan eşleşmesi ve production kabulüyle tamamlandı
 18. ~~Rota yıllığı~~ — aylık/yıllık özet, açıklanabilir dönüm noktaları, cihaz içi gizlilik kontrollü paylaşım kartı ve production kabulüyle tamamlandı
+19. ~~Kitsu katalog geçişi~~ — tek sağlayıcı, 2.500 yapım ve %100 posterle production kabulüyle tamamlandı
+20. **Katalog genişletmesi** — 7.500 yapımlık yerel yayın adayı; production kabulü bekleniyor
 
 ## Sahiplik
 

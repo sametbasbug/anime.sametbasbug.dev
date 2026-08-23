@@ -1,6 +1,7 @@
 const API_BASE = "https://kitsu.io/api/edge";
 const USER_AGENT = "equinox-rota-catalogue-refresh/1.0";
 const MAX_ATTEMPTS = 3;
+const REQUEST_CONCURRENCY = 5;
 
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -50,17 +51,22 @@ export async function fetchAnimeByIds(ids, { include = "genres,productions.compa
   const uniqueIds = [...new Set(ids.map(String))];
   const result = [];
   const included = [];
-
-  for (let offset = 0; offset < uniqueIds.length; offset += 20) {
-    const batch = uniqueIds.slice(offset, offset + 20);
-    const response = await kitsuRequest("anime", {
-      "filter[id]": batch.join(","),
-      "page[limit]": 20,
-      include,
-    });
-    result.push(...response.data);
-    included.push(...(response.included ?? []));
-  }
+  const batches = [];
+  for (let offset = 0; offset < uniqueIds.length; offset += 20) batches.push(uniqueIds.slice(offset, offset + 20));
+  let nextBatch = 0;
+  const worker = async () => {
+    while (nextBatch < batches.length) {
+      const batch = batches[nextBatch++];
+      const response = await kitsuRequest("anime", {
+        "filter[id]": batch.join(","),
+        "page[limit]": 20,
+        include,
+      });
+      result.push(...response.data);
+      included.push(...(response.included ?? []));
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(REQUEST_CONCURRENCY, batches.length) }, worker));
 
   return { data: result, included };
 }

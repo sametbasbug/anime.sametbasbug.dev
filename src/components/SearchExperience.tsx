@@ -11,7 +11,14 @@ const fold = (value: string) => value
   .normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "");
 
-function relevance(anime: CatalogueAnime, query: string) {
+type SearchableAnime = {
+  anime: CatalogueAnime;
+  foldedTitle: string;
+  foldedSynonyms: string[];
+  haystack: string;
+};
+
+function relevance({ anime, foldedTitle, foldedSynonyms }: SearchableAnime, query: string) {
   if (!query) {
     const releasedBonus = anime.status === "FINISHED" ? 12 : anime.status === "ONGOING" ? 10 : -6;
     const currentBonus = anime.season.year >= 2024 && anime.season.year <= 2026 ? 2 : 0;
@@ -19,12 +26,11 @@ function relevance(anime: CatalogueAnime, query: string) {
     const popularity = anime.popularityRank ? Math.max(0, 12 - Math.log10(anime.popularityRank + 1) * 3) : 0;
     return score + releasedBonus + currentBonus + popularity;
   }
-  const title = fold(anime.title);
-  if (title === query) return 100;
-  if (title.startsWith(query)) return 80;
-  if (title.includes(query)) return 60;
-  if (anime.synonyms.some((item) => fold(item) === query)) return 55;
-  if (anime.synonyms.some((item) => fold(item).includes(query))) return 45;
+  if (foldedTitle === query) return 100;
+  if (foldedTitle.startsWith(query)) return 80;
+  if (foldedTitle.includes(query)) return 60;
+  if (foldedSynonyms.some((item) => item === query)) return 55;
+  if (foldedSynonyms.some((item) => item.includes(query))) return 45;
   const statusBonus = anime.status === "FINISHED" ? 10 : anime.status === "ONGOING" ? 8 : -8;
   const score = anime.status === "UPCOMING" ? 0 : (anime.score ?? 0);
   const popularity = anime.popularityRank ? Math.max(0, 8 - Math.log10(anime.popularityRank + 1) * 2) : 0;
@@ -66,31 +72,41 @@ export default function SearchExperience({ dataVersion }: Props) {
     items.flatMap((anime) => displayTags(anime.tags, 8)),
   )).sort((a, b) => a.localeCompare(b, "tr-TR")), [items]);
 
+  const searchIndex = useMemo<SearchableAnime[]>(() => items.map((anime) => {
+    const foldedTitle = fold(anime.title);
+    const foldedSynonyms = anime.synonyms.map(fold);
+    return {
+      anime,
+      foldedTitle,
+      foldedSynonyms,
+      haystack: fold([
+        anime.title,
+        ...anime.synonyms,
+        ...anime.studios,
+        ...anime.tags,
+        ...anime.tags.map(localizedTag),
+        String(anime.season.year),
+      ].join(" ")),
+    };
+  }), [items]);
+
   const results = useMemo(() => {
     const normalizedQuery = fold(query.trim());
-    return items
-      .filter((anime) => {
+    return searchIndex
+      .filter(({ anime, haystack }) => {
         if (type !== "ALL" && anime.type !== type) return false;
         if (status !== "ALL" && anime.status !== status) return false;
         if (genre !== "ALL" && !displayTags(anime.tags, 10).includes(genre)) return false;
-        if (!normalizedQuery) return true;
-        const haystack = fold([
-          anime.title,
-          ...anime.synonyms,
-          ...anime.studios,
-          ...anime.tags,
-          ...anime.tags.map(localizedTag),
-          String(anime.season.year),
-        ].join(" "));
-        return haystack.includes(normalizedQuery);
+        return !normalizedQuery || haystack.includes(normalizedQuery);
       })
       .sort((a, b) => {
-        if (sort === "SCORE") return (b.score ?? 0) - (a.score ?? 0);
-        if (sort === "NEWEST") return b.season.year - a.season.year || (b.score ?? 0) - (a.score ?? 0);
-        if (sort === "OLDEST") return a.season.year - b.season.year || (b.score ?? 0) - (a.score ?? 0);
+        if (sort === "SCORE") return (b.anime.score ?? 0) - (a.anime.score ?? 0);
+        if (sort === "NEWEST") return b.anime.season.year - a.anime.season.year || (b.anime.score ?? 0) - (a.anime.score ?? 0);
+        if (sort === "OLDEST") return a.anime.season.year - b.anime.season.year || (b.anime.score ?? 0) - (a.anime.score ?? 0);
         return relevance(b, normalizedQuery) - relevance(a, normalizedQuery);
-      });
-  }, [items, query, type, status, genre, sort]);
+      })
+      .map(({ anime }) => anime);
+  }, [searchIndex, query, type, status, genre, sort]);
 
   const visible = results.slice(0, visibleCount);
 

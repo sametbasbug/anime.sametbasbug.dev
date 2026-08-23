@@ -4,7 +4,7 @@ import rawSeed from "../src/data/kitsu-catalogue-seed.json";
 import rawEditorial from "../src/data/editorial.json";
 
 const items = rawCatalogue.items;
-const expectedCount = 2_500;
+const expectedCount = 7_500;
 const ids = new Set(items.map((anime) => anime.id));
 const slugs = new Set(items.map((anime) => anime.slug));
 const kitsuIds = new Set(items.map((anime) => anime.kitsuId));
