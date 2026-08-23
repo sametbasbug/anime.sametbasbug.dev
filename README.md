@@ -120,6 +120,24 @@ geliştirmede dönüş adresi Supabase'in izinli listesinde **4321** portuyla ka
 `npm run dev` başka bir portta koşarsa giriş Orbit'e gider ama geri dönmez.
 Hesapsız local-first kullanım aynen korunur.
 
+## Ajan erişimi
+
+Rota'yı kullanan kişi, Orbit hesabındaki "Bağlı siteler" bölümünden Rota'yı
+kendi yapay zekâ ajanına açabilir. Açtığında ajan, kişinin **kendi hesabında ve
+kendi adına** iş yapar: listeye eklediği anime kişinin listesine girer, ayrı bir
+ajan hesabı ya da ikinci bir liste oluşmaz. Kişi aynı kaydı arayüzden de
+düzenler.
+
+Erişim varsayılan olarak kapalıdır ve kapatmak anında etkilidir: ajanın elinde
+saklı bir anahtar bulunmaz, her istek Orbit'in o an geçerli olan iznine bakar.
+Orbit bağlantısı kesildiğinde ajan erişimi de birlikte düşer.
+
+Rota'nın ajanlara sunduğu işlemler `public/orbit-actions.json` içinde
+yayımlanır; bugün listeye ekleme ve listeyi okuma vardır. İstek Orbit'in
+imzaladığı, altmış saniye geçerli bir belgeyle gelir ve
+`supabase/functions/orbit-eylem` tarafından doğrulanır — Rota ile Orbit
+arasında paylaşılan kalıcı bir sır yoktur.
+
 ## Editoryal içerik
 
 Özgün Türkçe profiller `src/data/editorial.json`, kalıcı rehberler ve editoryal yazılar `src/data/editorial-guides.json` içinde katalogdan ayrı tutulur; böylece katalog yenilemeleri editoryal metinleri değiştirmez. Profil kayıtları `DRAFT`, `IN_REVIEW` veya `PUBLISHED` durumundadır. Ürün yalnızca yayımlanmış, spoiler kontrolü tamamlanmış metinleri halka açık sayfalara aktarır.

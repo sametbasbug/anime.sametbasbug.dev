@@ -1,6 +1,6 @@
 # Equinox Rota proje durumu
 
-Son güncelleme: 19 Ağustos 2026
+Son güncelleme: 23 Ağustos 2026
 
 Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ayrıntılı ürün sırası `ROADMAP.md`, hesap güvenlik modeli `docs/ACCOUNT_ARCHITECTURE.md` içindedir.
 
@@ -17,6 +17,20 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Hesap altyapısı: Supabase Auth + Postgres + sahip-kullanıcı RLS.
 - Giriş yöntemi: **Equinox Orbit** (Supabase'de `custom:orbit` OIDC sağlayıcısı, issuer `https://orbit.sametbasbug.dev`, PKCE). Google, Discord, e-posta/parola ve magic-link sunulmaz — Google sağlayıcısı Supabase'de de kapatıldı. Hesapsız local-first kullanım korunur. Tam yapılandırma: `docs/ACCOUNT_ARCHITECTURE.md`.
 - Kişisel liste: local-first, geriye uyumlu v2 kayıt ve silme tombstone'ları.
+- **Ajan erişimi (23 Ağustos 2026, canlı).** Kullanıcı, Orbit panelindeki
+  "Bağlı siteler" kartından Rota'yı ajanına açabilir; ajan o hesapta
+  **kullanıcının adına** iş yapar. Ayrı ajan hesabı veya ikinci bir liste
+  YOKTUR ve bu bilinçli bir üründür — yeni bir kullanıcı özelliği eklenirken
+  ajan tarafı da düşünülmeli, yoksa iki ayrı yetenek listesi doğar.
+
+  Yeni işlem eklemek Orbit'e kod girmeyi gerektirmez: Rota kendi kataloğunu
+  `public/orbit-actions.json` içinde yayımlar (Orbit 10 dakika önbellekler),
+  işi `supabase/functions/orbit-eylem` yapar. Adımlar ve şema dilinin sınırları
+  `AGENTS.md` → "Ajan erişimi" bölümünde. Kontratın tamamı
+  `orbit-project/docs/baglisite-ajan-eylemleri.md`.
+
+  Bugünkü işlemler: `rota.listeyeEkle`, `rota.listeyiOku`. Erişim varsayılan
+  kapalı, kapatmak anında etkili; ajanda saklı anahtar yok.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
 - **19. aşama Kitsu katalog geçişi production'da tamamlandı.** 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ canlıdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir.
