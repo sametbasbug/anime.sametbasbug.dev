@@ -1,0 +1,21 @@
+project_id = "rslltclzdfzwaxqtozmq"
+
+# Orbit'ten gelen ajan eylemlerini karşılayan uç.
+#
+# `verify_jwt = false` ZORUNLU ve bilinçli. Supabase'in varsayılan kapısı
+# `Authorization` başlığını KENDİ anahtarıyla imzalanmış bir token sanıyor;
+# oysa buradaki başlık Orbit'in ES256 imzalı eylem belgesini taşıyor. Varsayılan
+# açık kaldığında istek bizim kodumuz hiç çalışmadan
+# `UNAUTHORIZED_INVALID_JWT_FORMAT` ile düşüyor — canlıda ölçüldü.
+#
+# Bu uç "korumasız" demek DEĞİL: kapı Orbit'in imzası. Uç, imzayı JWKS
+# üzerinden doğruluyor, `iss`/`aud`/`exp` ve belgedeki işlemin gövdedekiyle
+# eşleştiğini kontrol ediyor, ve ancak ondan sonra insanın satırına yazıyor.
+# Doğrulama `functions/orbit-eylem/jwt.ts` içinde ve 14 vakayla gerçek
+# kriptoyla sınanıyor (`npm run agent:check`).
+#
+# Bu dosya depoda duruyor ki ayar bir sonraki dağıtımda unutulmasın:
+# `--no-verify-jwt` bayrağıyla yapılan tek seferlik bir dağıtım, bayrağı
+# yazmayan bir sonraki dağıtımda sessizce geri alınırdı.
+[functions.orbit-eylem]
+verify_jwt = false
