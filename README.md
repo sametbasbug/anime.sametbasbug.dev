@@ -179,7 +179,7 @@ Güncel devir özeti [`docs/PROJECT_STATUS.md`](./docs/PROJECT_STATUS.md), ayrı
 2. ~~Kişisel liste MVP'si~~ — tamamlandı
 3. ~~Türkçe editoryal içerik~~ — tamamlandı
 4. ~~Hesap ve kalıcı veri~~ — Orbit girişi, Supabase senkronizasyonu ve iki cihazlı kabul doğrulamasıyla tamamlandı
-5. MAL/AniList liste içe aktarma — resmî kullanıcı dosyalarıyla cihaz içi aktarım production kabulünde
+5. ~~MAL/AniList liste içe aktarma~~ — resmî kullanıcı dosyalarıyla cihaz içi aktarım ve production kabulüyle tamamlandı
 6. ~~Topluluk ve moderasyon~~ — production kabulüyle tamamlandı
 7. ~~Marka ve yayın~~ — **Equinox Rota** adıyla tamamlandı
 8. ~~Ürün deneyimi ve görsel sistem~~ — **Soft Celestial Otaku** yönüyle tamamlandı

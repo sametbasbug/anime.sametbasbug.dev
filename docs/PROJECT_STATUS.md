@@ -39,6 +39,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
 - **19. aşama Kitsu katalog geçişi production'da tamamlandı.** 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ canlıdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir.
 - **20. aşama katalog genişletmesi production'da tamamlandı.** Seçki 7.500 yapıma çıkarıldı; mevcut 2.500 Rota/Kitsu kimliği değişmeden korundu, tüm kayıtlarda poster ve 6.962 kayıtta MAL mapping vardır. Build ve istemci araması indekslendi; otomatik ve canlı kabul tamamlandı.
+- **5. aşama MAL/AniList liste içe aktarma production'da tamamlandı.** MAL XML/XML.GZ ve AniList GDPR JSON dosyaları yalnız cihazda ayrıştırılır; AniList API'si katalog kaynağı olarak kullanılmaz. 7.500 katalog kaydında 6.962 MAL ve 6.967 AniList mapping'i vardır; eşleşmeyen/belirsiz kayıtlar önizlemede ayrılır, daha yeni yerel kayıt ve tombstone korunur.
 
 ## Tamamlananlar
 
@@ -46,6 +47,13 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 > satırları yapıldıkları gün doğruydu ve olduğu gibi bırakıldı; 12 Ağustos 2026
 > tarihli satırlar onları geçersiz kılar. Güncel giriş yöntemi için yukarıdaki
 > **Kilitli kararlar** bölümüne bak.
+
+### 23 Ağustos 2026 — MAL/AniList liste içe aktarma production teslimi
+
+- MAL'in resmî XML/XML.GZ ve AniList hesap ayarlarındaki GDPR Data Download JSON biçimleri cihaz içi ayrıştırmaya eklendi. AniList'e gönderilmiş yazılı API başvurusunun katalog kaynağı iznine ait olduğu netleştirildi; kullanıcı dosyası içe aktarımı AniList API'sine istek atmaz.
+- Kitsu mapping ilişkisi katalogda 6.962 MAL ve 6.967 AniList kimliğini kalıcı Rota kimliklerine bağlıyor. Katalog dışı kayıtlar ile aynı dış kimliğe bağlanan birden çok anime sessizce seçilmez; önizlemede ayrı tutulur ve hayalet kayıt yazılmaz.
+- 10 MB/20.000 kayıt sınırı, açılmış GZIP boyut sınırı, biçim/alan doğrulaması, durum-ilerleme-puan-not dönüşümü ve açık onay kapısı uygulanır. Daha yeni yerel kayıt/tombstone üstün gelir; aynı dosyanın tekrar aktarımı etkisizdir.
+- Özellik `729b527` ile main'e gönderildi. Pages `32663270476`, CI `32663270423` ve CodeQL `32663270445` başarıyla tamamlandı. Canlı MAL ve AniList dosyaları bir eşleşen ile bir katalog dışı kaydı doğru önizledi; iki akış da iptal edildi ve mevcut liste değişmedi. 1.920 px ve 390×844 yerleşim taşmasız, uygulama konsolu temizdi.
 
 ### 23 Ağustos 2026 — ajan yetenek eşitliği production teslimi
 
@@ -126,7 +134,7 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 ## Açık işler
 
 1. Tamamlanan Kitsu kataloğunun tazeliğini ve media CDN erişimini sürekli bakım hattında izle; yeni ürün aşamasını ayrıca seç.
-2. AniList API başvurusunun e-posta yanıtını yalnız 5. aşamadaki kullanıcı listesi içe aktarma fizibilitesi için takip et; Kitsu katalog geçişini buna bağlama.
+2. AniList API başvurusunun e-posta yanıtını yalnız olası katalog kaynağı kullanımı için takip et; tamamlanan kullanıcı dosyası içe aktarımını veya Kitsu katalog hattını buna bağlama.
 3. Kitsu `48322` (The One Piece) güncel API yanıtında poster alanını geçici olarak kaybetmeye devam ediyor; reseed genişletmesi mevcut HTTP 200 CDN posterini son sağlam snapshot'tan koruyor. Normal yenileme eksik upstream verisinde yine kapalı kalır; sonraki katalog bakımında alanı yeniden kontrol et.
 3. ~~Google OAuth marka incelemesinin sonucunu takip et.~~ — düştü. Google girişi kaldırıldı ve Supabase sağlayıcısı kapatıldı, yani inceleme sonucunun Rota için bir etkisi kalmadı. Google Cloud'daki uygulama hâlâ duruyor; kullanılmadığı için kapatılıp kapatılmayacağı Nyx'in kararı.
 4. Supabase Free planın duraklama/yedek sınırlarını yeniden değerlendir; güvenlik, bağımlılık, katalog/poster tazeliği, erişilebilirlik ve performans bakımını sürdür.
@@ -134,9 +142,9 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 
 ## Sıradaki ürün işleri
 
-20. aşama **katalog genişletmesi** production kabulüyle tamamlandı. Sıradaki ürün aşaması henüz seçilmedi; sürekli bakım hattı ve ayrı 5. aşama MAL/AniList içe aktarma fizibilitesi beklemede.
+1–21. aşamalar production kabulüyle tamamlandı. Sıradaki ürün aşaması henüz seçilmedi; sürekli bakım hattı sürüyor.
 
-Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. 5. aşamadaki MAL/AniList içe aktarma fizibilitesi, 19. aşamadaki katalog kaynağı değişiminden ayrı kalır.
+Genel sosyal akış, takipçi sistemi veya mesajlaşma ürünün sıradaki yönü değildir. Tamamlanan MAL/AniList kullanıcı dosyası içe aktarımı, Kitsu katalog kaynağından ve olası AniList katalog izninden ayrı kalır.
 
 ## 19 Ağustos 2026 — 19. aşama yerel yayın adayı
 

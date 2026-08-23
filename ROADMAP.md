@@ -59,14 +59,14 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Kullanıcı güvenli biçimde giriş yapabilir ve kişisel arşivine farklı cihazlardan erişebilir.
 
-### 5. MAL/AniList liste içe aktarma — başladı
+### 5. MAL/AniList liste içe aktarma — tamamlandı
 
 - [x] MAL'in resmî XML/XML.GZ ve AniList'in kullanıcı veri dışa aktarma biçimlerini güncel örneklerle doğrula.
 - [x] Dış kimlikleri kalıcı Rota kimliklerine eşle; belirsiz veya katalog dışı kayıtları sessizce uydurmak yerine önizlemede ayır.
 - [x] Dosyayı tarayıcıda, Rota sunucusuna veya üçüncü tarafa yüklemeden ayrıştır; biçim, boyut, kayıt ve alan sınırlarını uygula.
 - [x] Durum, ilerleme, puan ve notu mevcut taşınabilirlik katmanına dönüştür; kullanıcı onayından önce hiçbir kaydı değiştirme.
 - [x] Daha yeni yerel kayıt/tombstone üstünlüğünü koruyan birleşimi, tekrar içe aktarmayı ve kısmi eşleşmeyi otomatik test et.
-- [ ] Masaüstü/mobil önizleme ve production kabulünü tamamla.
+- [x] Masaüstü/mobil önizleme ve production kabulünü tamamla.
 
 **Kaynak sınırı:** AniList'e gönderilen yazılı API başvurusu kullanıcı listesi içe aktarma için değil, AniList'i Rota'nın anime katalog kaynağı yapmak içindi. Katalog artık Kitsu API/CDN ile çalıştığından cevapsız kalan bu başvuru 5. aşamayı bloke etmez. İçe aktarma kullanıcının kendi resmî dışa aktarma dosyası üzerinden yapılır; AniList API'si katalog kaynağı olarak eklenmez ve MAL scrape edilmez.
 
@@ -276,13 +276,13 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 - [ ] Supabase Free planının duraklama, yedekleme ve kurtarma sınırlarını düzenli olarak yeniden değerlendir.
 - [ ] Bağımlılık, CodeQL, RLS/RPC ve veri taşınabilirliği kontrollerini sürdür.
 - [ ] Katalog/poster tazeliğini, kırık bağlantıları, erişilebilirliği ve temel performansı periyodik olarak denetle.
-- [ ] AniList'in yazılı yanıtını takip et; izin ve koşullar netleşmeden 5. aşama entegrasyonuna dokunma.
+- [ ] AniList'in yazılı yanıtını yalnız olası katalog kaynağı kullanımı için takip et; izin ve koşullar netleşmeden AniList API'sini katalog kaynağı yapma.
 
 Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün aşamalarının ardından düşük riskli, dar turlar hâlinde yürütülür.
 
 ## Şu anki çalışma
 
-5. aşama **MAL/AniList liste içe aktarma** başladı. Eski AniList e-posta bekleyişinin katalog kaynağı iznine ait olduğu netleştirildi; kullanıcıya ait resmî dışa aktarma dosyalarıyla cihaz içi içe aktarma bundan bağımsızdır. İlk dilim resmî MAL XML/XML.GZ ve AniList kullanıcı veri biçimini doğrulayacak, ardından kalıcı Rota kimliği eşleme ve değişikliksiz önizleme katmanını kuracaktır.
+5. aşama **MAL/AniList liste içe aktarma** production'da tamamlandı. MAL XML/XML.GZ ile AniList GDPR JSON dosyaları yalnız cihazda ayrıştırılıyor; Kitsu'nun MAL/AniList mapping'leri kalıcı Rota kimliklerine bağlanıyor. Katalog dışı ve belirsiz kayıtlar önizlemede ayrılıyor, daha yeni yerel kayıt/tombstone korunuyor ve açık onaydan önce liste değişmiyor. `729b527` production'a yayımlandı; Pages `32663270476`, CI `32663270423` ve CodeQL `32663270445` yeşildir. Canlı MAL ve AniList önizlemelerinde bir eşleşen ile bir katalog dışı kayıt doğru ayrıldı; iki kabul de iptal edilerek mevcut liste değişmeden bırakıldı. 1.920 px ve 390×844 görünüm taşmasız, konsol temizdi.
 
 21. aşama **ajan yetenek eşitliği** production'da tamamlandı. Liste API eşitliği, izleme günlüğü CRUD'si, özel koleksiyon CRUD/üyelik/sıralaması ile sekiz açıklanabilir kişisel öneri yolu ve nazik hatırlatmalar 15 işlemlik canlı kataloğa alındı. Migration'lar ve `orbit-eylem` sürüm 6 dağıtıldı; gerçek Orbit çağrılarında sayfalama/not/puan temizleme/bölüm sınırı, günlük ve koleksiyon zincirleri ile test verisini tombstone'a alıp özgün liste durumunu geri yükleme kabulü geçti. Özellik `3f85bdc`, edge paketleme düzeltmesi `19b25a2`; Pages `32659453057`, CI `32659453063` ve CodeQL `32659453054` yeşildir.
 
@@ -290,7 +290,7 @@ Bakım hattı bağımsız bir özellik aşaması değildir; tamamlanan ürün a�
 
 23 Ağustos ajan liste bütünlüğü turu production'da tamamlandı: ajanlar anime adını `rota.katalogdaAra` ile gerçek Rota kimliğine çözüyor, ekleme canlı katalog doğrulamasından geçiyor, liste okuma başlıklarla birlikte katalog dışı kayıtları ayırıyor ve silme tombstone ile cihazlar arasında yakınsıyor. O turdaki production kataloğu 2.500 Kitsu kimliğinin yanında Kitsu'nun sunduğu 2.195 MAL eşlemesini ayrı alan olarak yayımlıyordu; kalıcı Rota kimlikleri ve kullanıcı bağları yeniden numaralandırılmadı. `3876ed0` ile `d6f8885` production'a yayımlandı; son Pages `32618901629`, CI `32618901742` ve CodeQL `32618901585` yeşil tamamlandı. Canlı kabulde adla Naruto araması geçti, uydurma kimlik reddedildi ve üç eski hayalet kayıt tombstone'a alınarak geçersiz kayıt sayısı sıfırlandı.
 
-İlk dört aşama ile 6–20. aşamalar tamamlandı. 20. aşama **katalog genişletmesi** `2215368` ile production'a yayımlandı: 7.500/7.500 posterli katalog, korunan 2.500 mevcut kimlik, 6.962 MAL eşleşmesi ve indeksli build/arama yolları otomatik ve canlı kabulden geçti. 5. aşamadaki MAL/AniList kullanıcı listesi içe aktarma işi bu katalog genişletmesinden ayrıdır ve beklemede kalır.
+1–21. aşamaların tamamı production kabulüyle kapandı. 5. aşamadaki kullanıcı dosyası içe aktarımı AniList API katalog izninden bağımsızdır; katalog kaynağı Kitsu olarak kalır. Yeni ürün aşaması henüz seçilmedi, sürekli bakım hattı sürer.
 
 18. aşama tamamlandı: `/yillik`, günlükteki gerçek kayıtlardan ay veya yıl bazında bölüm, anime, bilinen süre, aktif gün, izleme ritmi, tür/stüdyo/puan öne çıkanları ve kişisel dönüm noktaları üretir. “Final” yalnız seçili dönemde son bölümü görülen ve bugün de `Tamamladım` durumundaki yapımlarda sayılır; geçmiş durum değişiklikleri tahmin edilmez. Veri azlığında sakin erken dönem veya boş durum gösterilir. Paylaşım kartı varsayılan kapalıdır, cihazda PNG üretilir ve anime adları için ikinci bir açık izin ister; kişisel not, hesap kimliği, tombstone veya senkronizasyon alanı karta girmez. `yearbook:check`, tam kontrol, 1.144 sayfalık build, bağımlılık denetimi ve 1.920×950 ile 390×844 yerel tarayıcı kabulü geçti. `237f460` production'a yayımlandı; Pages `32174487842`, CI `32174487772` ve CodeQL `32174487667` başarıyla tamamlandı. Canlı `/yillik` masaüstü/mobil görünüm, aylık geçiş, varsayılan kapalı kart, yatay taşma, kırık görsel ve temiz uygulama konsolu kontrollerini geçti.
 
