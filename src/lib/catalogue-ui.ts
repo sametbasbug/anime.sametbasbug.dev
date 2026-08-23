@@ -13,6 +13,9 @@ export type CatalogueAnime = {
   anilistId?: string | null;
   slug: string;
   title: string;
+  titleEnglish?: string | null;
+  titleRomaji?: string | null;
+  titleNative?: string | null;
   type: string;
   episodes: number;
   status: string;

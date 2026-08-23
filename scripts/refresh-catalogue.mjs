@@ -134,14 +134,35 @@ function imageSet(image) {
   };
 }
 
-function normalizeResource(resource, includedIndex, identity) {
+function cleanTitle(value) {
+  const title = String(value ?? "").normalize("NFKC").trim();
+  return title || null;
+}
+
+function localizedTitles(attributes) {
+  const titles = attributes.titles ?? {};
+  const canonical = cleanTitle(attributes.canonicalTitle);
+  const english = cleanTitle(titles.en)
+    ?? cleanTitle(titles.en_us)
+    ?? cleanTitle(titles.en_gb)
+    ?? cleanTitle(titles.en_uk);
+  return {
+    canonical,
+    english,
+    romaji: cleanTitle(titles.en_jp),
+    native: cleanTitle(titles.ja_jp),
+  };
+}
+
+function normalizeResource(resource, includedIndex, identity, posterFallback = null) {
   if (BROKEN_KITSU_POSTER_IDS.has(String(resource.id))) return null;
   const attributes = resource.attributes ?? {};
+  const titles = localizedTitles(attributes);
   const type = typeMap.get(String(attributes.subtype ?? "").toLocaleLowerCase("en-US"));
   const status = statusMap.get(String(attributes.status ?? "").toLocaleLowerCase("en-US"));
   const season = seasonFromDate(attributes.startDate);
-  const poster = imageSet(attributes.posterImage);
-  if (!attributes.canonicalTitle || !type || !status || !season || !poster || attributes.nsfw === true) return null;
+  const poster = imageSet(attributes.posterImage) ?? posterFallback;
+  if (!titles.canonical || !type || !status || !season || !poster || attributes.nsfw === true) return null;
 
   const scoreValue = Number(attributes.averageRating);
   const score = Number.isFinite(scoreValue) ? Math.round(scoreValue) / 10 : null;
@@ -156,7 +177,10 @@ function normalizeResource(resource, includedIndex, identity) {
     malId: externalIdFor(resource, includedIndex, "myanimelist/anime"),
     anilistId: externalIdFor(resource, includedIndex, "anilist/anime"),
     slug,
-    title: attributes.canonicalTitle,
+    title: titles.english ?? titles.canonical,
+    titleEnglish: titles.english,
+    titleRomaji: titles.romaji,
+    titleNative: titles.native,
     type,
     episodes: Number.isFinite(episodeCount) && episodeCount > 0 ? episodeCount : 0,
     status,
@@ -167,7 +191,8 @@ function normalizeResource(resource, includedIndex, identity) {
     ratingRank: Number.isFinite(Number(attributes.ratingRank)) ? Number(attributes.ratingRank) : null,
     userCount: Number.isFinite(Number(attributes.userCount)) ? Number(attributes.userCount) : 0,
     synonyms: kitsuTitles(resource)
-      .filter((title) => title !== attributes.canonicalTitle)
+      .map(cleanTitle)
+      .filter((title) => title && title !== (titles.english ?? titles.canonical))
       .slice(0, 24),
     studios: studiosFor(resource, includedIndex),
     tags: tagsFor(resource, includedIndex),
@@ -370,6 +395,7 @@ const existingByKitsu = new Map(existingCatalogue.items.map((anime) => [String(a
 const items = [];
 const failures = [];
 let reseedSnapshotFallbacks = 0;
+let posterSnapshotFallbacks = 0;
 for (const identity of seed.entries) {
   const resource = resourcesById.get(String(identity.kitsuId));
   if (!resource) {
@@ -382,9 +408,14 @@ for (const identity of seed.entries) {
     failures.push(`${identity.rotaId}: missing Kitsu ${identity.kitsuId}`);
     continue;
   }
-  let normalized = normalizeResource(resource, includedIndex, identity);
+  const existing = existingByKitsu.get(String(identity.kitsuId));
+  const upstreamPoster = imageSet(resource.attributes?.posterImage);
+  const posterFallback = !upstreamPoster && existing?.poster?.provider === "kitsu" && existing.poster.large
+    ? existing.poster
+    : null;
+  let normalized = normalizeResource(resource, includedIndex, identity, posterFallback);
+  if (normalized && posterFallback) posterSnapshotFallbacks += 1;
   if (!normalized && RESEED) {
-    const existing = existingByKitsu.get(String(identity.kitsuId));
     if (!BROKEN_KITSU_POSTER_IDS.has(String(identity.kitsuId)) && existing?.poster?.large) {
       normalized = existing;
       reseedSnapshotFallbacks += 1;
@@ -422,7 +453,11 @@ const output = {
     posterCoverage: items.filter((anime) => anime.poster?.large).length,
     malIdCoverage: items.filter((anime) => anime.malId).length,
     anilistIdCoverage: items.filter((anime) => anime.anilistId).length,
+    titleEnglishCoverage: items.filter((anime) => anime.titleEnglish).length,
+    titleRomajiCoverage: items.filter((anime) => anime.titleRomaji).length,
+    titleNativeCoverage: items.filter((anime) => anime.titleNative).length,
     reseedSnapshotFallbacks,
+    posterSnapshotFallbacks,
     selection: seed.meta.selection,
   },
   items,

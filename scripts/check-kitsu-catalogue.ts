@@ -10,6 +10,9 @@ const slugs = new Set(items.map((anime) => anime.slug));
 const kitsuIds = new Set(items.map((anime) => anime.kitsuId));
 const malMapped = items.filter((anime) => anime.malId !== null);
 const anilistMapped = items.filter((anime) => anime.anilistId !== null);
+const englishTitles = items.filter((anime) => anime.titleEnglish);
+const romajiTitles = items.filter((anime) => anime.titleRomaji);
+const nativeTitles = items.filter((anime) => anime.titleNative);
 
 assert.equal(rawCatalogue.meta.provider, "Kitsu");
 assert.equal(rawCatalogue.meta.entryCount, expectedCount);
@@ -20,9 +23,19 @@ assert.equal(slugs.size, expectedCount, "Anime slugs must be unique");
 assert.equal(kitsuIds.size, expectedCount, "Kitsu IDs must be unique");
 assert.equal(rawCatalogue.meta.malIdCoverage, malMapped.length);
 assert.equal(rawCatalogue.meta.anilistIdCoverage, anilistMapped.length);
+assert.equal(rawCatalogue.meta.titleEnglishCoverage, englishTitles.length);
+assert.equal(rawCatalogue.meta.titleRomajiCoverage, romajiTitles.length);
+assert.equal(rawCatalogue.meta.titleNativeCoverage, nativeTitles.length);
+assert.ok(Number.isInteger(rawCatalogue.meta.posterSnapshotFallbacks));
+assert.ok(rawCatalogue.meta.posterSnapshotFallbacks >= 0);
 
 for (const anime of items) {
   assert.ok(anime.id && anime.kitsuId && anime.slug && anime.title);
+  assert.ok(anime.titleEnglish === null || typeof anime.titleEnglish === "string");
+  assert.ok(anime.titleRomaji === null || typeof anime.titleRomaji === "string");
+  assert.ok(anime.titleNative === null || typeof anime.titleNative === "string");
+  if (anime.titleEnglish) assert.equal(anime.title, anime.titleEnglish, `${anime.id} must prefer its English title`);
+  assert.ok(!anime.synonyms.includes(anime.title), `${anime.id} repeats its display title as a synonym`);
   assert.ok(anime.malId === null || /^\d+$/.test(anime.malId));
   assert.ok(anime.anilistId === null || /^\d+$/.test(anime.anilistId));
   assert.ok(["TV", "MOVIE", "OVA", "ONA", "SPECIAL"].includes(anime.type));
@@ -66,5 +79,10 @@ const essentialKitsuIds = [
 for (const kitsuId of essentialKitsuIds) {
   assert.ok(kitsuIds.has(kitsuId), `Essential anime is missing from the catalogue: Kitsu ${kitsuId}`);
 }
+
+const demonSlayer = items.find((anime) => anime.kitsuId === "41370");
+assert.equal(demonSlayer?.title, "Demon Slayer: Kimetsu no Yaiba");
+assert.equal(demonSlayer?.titleRomaji, "Kimetsu no Yaiba");
+assert.ok(demonSlayer?.synonyms.includes("Kimetsu no Yaiba"));
 
 console.log(`Kitsu kataloğu doğrulandı: ${items.length} anime, ${items.length}/${items.length} poster, ${malMapped.length} MAL ve ${anilistMapped.length} AniList eşlemesi, ${rawEditorial.entries.length} editoryal bağ.`);

@@ -21,6 +21,9 @@ assert.equal(findCatalogueAnime(catalogue, 'this-anime-does-not-exist'), null,
 assert.equal(findCatalogueAnime(catalogue, '20')?.title, 'Naruto');
 assert.equal(searchCatalogue(catalogue, 'Naruto', 10)[0]?.id, '20');
 assert.equal(searchCatalogue(catalogue, 'kitsu:11', 10)[0]?.id, '20');
+assert.equal(findCatalogueAnime(catalogue, '38000')?.title, 'Demon Slayer: Kimetsu no Yaiba');
+assert.ok(searchCatalogue(catalogue, 'Demon Slayer: Kimetsu no Yaiba', 10).some((anime) => anime.id === '38000'));
+assert.ok(searchCatalogue(catalogue, 'Kimetsu no Yaiba', 10).some((anime) => anime.id === '38000'));
 
 const malCatalogue = parseCatalogue({
   items: [{

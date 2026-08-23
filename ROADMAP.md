@@ -300,6 +300,20 @@ Bu belge, Samet ile Nyx'in 6 Ağustos 2026'da onayladığı ürün sırasını k
 
 **Tamamlanma ölçütü:** Katalog hero metni hiçbir hedef genişlikte Rota ile çakışmaz; Listem kontrolleri 390 px ekranda kesilmez; mobil detay ilk ekranında anime görseli görünür; sabit alt çubuk sayfa sonu içeriğini örtmez ve bütün rötuşlar yatay taşma veya erişilebilirlik gerilemesi üretmeden otomatik/gerçek tarayıcı kabulünü geçer.
 
+### 24. İngilizce-varsayılan anime başlıkları — production kabulü bekleniyor
+
+- [x] Kitsu'nun dil etiketli İngilizce, romanize ve özgün başlıklarını normalize katalog şemasında ayrı alanlar olarak koru.
+- [x] Görünen ana başlığı İngilizce mevcutsa İngilizce, yoksa Kitsu canonical/romanize başlık olacak biçimde tek ve deterministik kuralla üret.
+- [x] Mevcut 7.500 Rota kimliğini, Kitsu eşleşmesini ve kalıcı anime URL/slug değerlerini değiştirmeden katalog snapshot'ını yenile.
+- [x] Arama ve ajan katalog aramasında İngilizce, romanize, özgün ve kısaltılmış başlıkların birlikte bulunabilirliğini koru.
+- [x] Kart, detay, liste, günlük, koleksiyon, öneri, sezon, yıllık, paylaşım ve SEO yüzeylerinin ortak İngilizce-varsayılan başlığı kullandığını doğrula.
+- [x] Katalog sözleşmesi, otomatik kontroller, tam build ve 1.920×950 / 390×844 gerçek tarayıcı kabulünü tamamla.
+- [ ] Production yayınını ve yayın sonrası canlı kabulü tamamla.
+
+**Veri sınırı:** Kitsu tek harici anime metadata kaynağı olarak kalır. İngilizce başlık `titles.en`/`titles.en_us` alanlarından alınır; bulunmadığında ad tahmini yapılmaz ve mevcut canonical/romanize değer güvenli fallback olur. Başlık tercihi Rota kimliklerini, kullanıcı kayıt bağlarını veya var olan URL'leri yeniden üretmez.
+
+**Tamamlanma ölçütü:** İngilizce karşılığı bulunan yapımlar bütün Rota yüzeylerinde İngilizce ana başlıkla görünür; karşılığı bulunmayanlar boş veya uydurma ad üretmeden mevcut başlığa düşer. Bütün başlık varyantları aranabilir kalır, 7.500 kimlik/slug birebir korunur ve otomatik/gerçek tarayıcı kabulünde regresyon oluşmaz.
+
 ## Sürekli bakım hattı
 
 - [ ] Supabase Free planının duraklama, yedekleme ve kurtarma sınırlarını düzenli olarak yeniden değerlendir.

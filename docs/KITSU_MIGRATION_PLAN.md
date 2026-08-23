@@ -54,8 +54,11 @@ Bu ayrım sayesinde veri kaynağı Kitsu'ya geçerken kullanıcı veritabanında
 | Rota alanı | Kitsu karşılığı | Dönüşüm |
 | --- | --- | --- |
 | `kitsuId` | anime ID | String olarak saklanır. |
-| `title` | canonical/tercih edilen başlık | Boş olamaz. |
-| `synonyms` | İngilizce, Japonca, romanize ve kısaltılmış başlıklar | Tekilleştirilir ve ürün sınırına kırpılır. |
+| `title` | İngilizce başlık → canonical fallback | İngilizce karşılık varsa ana başlık olur; yoksa Kitsu canonical değeri kullanılır ve boş olamaz. |
+| `titleEnglish` | `titles.en` / bölgesel İngilizce alanı | Varsa korunur; bulunmadığında `null`, tahmin yoktur. |
+| `titleRomaji` | `titles.en_jp` | Varsa romanize Japonca başlık olarak korunur. |
+| `titleNative` | `titles.ja_jp` | Varsa özgün Japonca başlık olarak korunur. |
+| `synonyms` | Canonical, İngilizce, Japonca, romanize ve kısaltılmış başlıklar | Görünen ana başlık çıkarılarak tekilleştirilir ve ürün sınırına kırpılır. |
 | `type` | subtype | Rota'nın `TV`, `MOVIE`, `OVA`, `ONA`, `SPECIAL` değerlerine eşlenir. |
 | `status` | status | `FINISHED`, `ONGOING`, `UPCOMING` değerlerine normalize edilir. |
 | `episodes` | episode count | Bilinmiyorsa `0`; kişisel ilerleme sınırı uydurulmaz. |
