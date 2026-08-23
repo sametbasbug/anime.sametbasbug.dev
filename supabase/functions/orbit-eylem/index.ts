@@ -25,6 +25,13 @@ function json(body: unknown, status = 200): Response {
 }
 
 function hata(status: number, mesaj: string): Response {
+  /* Her reddetme loglanıyor.
+   *
+   * Orbit, sitenin hata GÖVDESİNİ ajana taşımıyor — bilerek, çünkü içinde ne
+   * olduğunu bilmediği bir metni kendi cevabı gibi göstermek olurdu. Doğru
+   * karar ama teşhisi kör bırakıyor: canlıda "site 400 döndü" görülüyor,
+   * sebebi görülmüyordu. Sebebi buraya yazıyoruz. */
+  console.error(`orbit-eylem reddetti: ${status} ${mesaj}`);
   return json({ error: mesaj }, status);
 }
 
@@ -51,7 +58,10 @@ async function orbitKullanicisi(subject: string): Promise<string | null> {
     method: 'POST',
     body: JSON.stringify({ p_subject: subject }),
   });
-  if (!response.ok) return null;
+  if (!response.ok) {
+    console.error(`kimlik eşlemesi başarısız: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    return null;
+  }
   const value = await response.json();
   return typeof value === 'string' && value.length > 0 ? value : null;
 }
@@ -91,7 +101,10 @@ async function listeyeEkle(userId: string, input: Record<string, unknown>) {
     headers: { prefer: 'resolution=merge-duplicates,return=representation' },
     body: JSON.stringify(satir),
   });
-  if (!response.ok) return { hata: `liste yazılamadı (${response.status})` };
+  if (!response.ok) {
+    console.error(`liste yazılamadı: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    return { hata: `liste yazılamadı (${response.status})` };
+  }
 
   return { sonuc: { animeId, durum, yeniKayit } };
 }
@@ -107,7 +120,10 @@ async function listeyiOku(userId: string, input: Record<string, unknown>) {
     `personal_list_entries?user_id=eq.${userId}&deleted_at=is.null${durumFiltre}`
     + `&select=anime_id,status,progress,score&order=client_updated_at.desc&limit=${limit}`,
   );
-  if (!response.ok) return { hata: `liste okunamadı (${response.status})` };
+  if (!response.ok) {
+    console.error(`liste okunamadı: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    return { hata: `liste okunamadı (${response.status})` };
+  }
   const kayitlar = await response.json() as Array<Record<string, unknown>>;
   return {
     sonuc: {
