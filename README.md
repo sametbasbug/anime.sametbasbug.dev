@@ -135,10 +135,12 @@ saklı bir anahtar bulunmaz, her istek Orbit'in o an geçerli olan iznine bakar.
 Orbit bağlantısı kesildiğinde ajan erişimi de birlikte düşer.
 
 Rota'nın ajanlara sunduğu işlemler `public/orbit-actions.json` içinde
-yayımlanır; bugün katalogda arama, doğrulanmış listeye ekleme, listeyi okuma
-ve tombstone ile listeden silme vardır. Ajan ham kimlik tahmin etmez; arama
-sonucundaki Rota `animeId` değerini kullanır ve ekleme ucu bu kimliği canlı
-katalogdan tekrar doğrular. İstek Orbit'in
+yayımlanır. Canlı katalog; doğrulanmış liste yönetimi, izleme günlüğü,
+özel koleksiyonlar ve senkronize geçmişten açıklanabilir kişisel öneriler için
+15 işlem taşır. Ajan ham kimlik tahmin etmez; arama sonucundaki Rota `animeId`
+değerini kullanır ve yazma uçları bu kimliği canlı katalogdan tekrar doğrular.
+Silme işlemleri fiziksel DELETE yerine cihaz eşitlemesini koruyan tombstone
+üretir. İstek Orbit'in
 imzaladığı, altmış saniye geçerli bir belgeyle gelir ve
 `supabase/functions/orbit-eylem` tarafından doğrulanır — Rota ile Orbit
 arasında paylaşılan kalıcı bir sır yoktur.

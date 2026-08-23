@@ -29,12 +29,12 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
   `AGENTS.md` → "Ajan erişimi" bölümünde. Kontratın tamamı
   `orbit-project/docs/baglisite-ajan-eylemleri.md`.
 
-  Bugünkü işlemler: `rota.katalogdaAra`, `rota.listeyeEkle`,
-  `rota.listeyiOku`, `rota.listedenSil`. Ekleme canlı katalog kimliğiyle
-  yeniden doğrulanır; uydurma kimlikler veritabanına ulaşmadan reddedilir.
-  Liste okuma başlıkları döndürür ve geçmişte oluşmuş geçersiz kimlikleri ayrı
-  bildirir. Silme, cihaz eşitlemesini koruyan tombstone güncellemesidir. Erişim varsayılan
-  kapalı, kapatmak anında etkili; ajanda saklı anahtar yok.
+  Canlı katalog 15 işlem taşır: katalog arama; liste, izleme günlüğü ve özel
+  koleksiyon yönetimi; senkronize geçmişten sekiz açıklanabilir kişisel öneri
+  yolu ile nazik hatırlatmalar. Anime kimlikleri canlı katalogla yeniden
+  doğrulanır; günlük ilerlemesi atomik ve yalnız ileri, silmeler cihaz
+  eşitlemesini koruyan tombstone güncellemesidir. Erişim varsayılan kapalı,
+  kapatmak anında etkili; ajanda saklı anahtar yok.
 - Proje sahipliği: Nyx. Hemera 7 Ağustos 2026'dan itibaren teknik tarafta dahildir; ürün, içerik ve tasarımda son söz Nyx'tedir.
 - Tasarım yönü: **Soft Celestial Otaku** — açık kawaii manga editoryali ve kişisel anime köşesi; kanonik brif `docs/DESIGN_DIRECTION.md` içindedir.
 - **19. aşama Kitsu katalog geçişi production'da tamamlandı.** 2.500 yapımlık katalog, %100 Kitsu posteri, 797 korunmuş eski Rota kimliği ve 50/50 editoryal bağ canlıdır. Kanonik uygulama ve kabul kaydı `docs/KITSU_MIGRATION_PLAN.md` içindedir.
@@ -46,6 +46,14 @@ Bu dosya, yeni bir çalışma oturumunda başlanacak kanonik durum özetidir. Ay
 > satırları yapıldıkları gün doğruydu ve olduğu gibi bırakıldı; 12 Ağustos 2026
 > tarihli satırlar onları geçersiz kılar. Güncel giriş yöntemi için yukarıdaki
 > **Kilitli kararlar** bölümüne bak.
+
+### 23 Ağustos 2026 — ajan yetenek eşitliği production teslimi
+
+- Liste okumasına özel not, gerçek toplam ve sayfalama; liste yazımına puan temizleme ve katalog bölüm sınırı eklendi. Günlük ekleme/okuma/düzenleme/tombstone silme ile liste ilerlemesini yalnız ileri taşıyan atomik RPC production'a uygulandı.
+- Özel koleksiyonlar oluşturma/okuma/düzenleme/tombstone silme, gerçek katalog kimliğiyle anime ekleme-çıkarma ve eksiksiz üyelik doğrulamalı sıralamayla ajanlara açıldı. `service_role` fiziksel koleksiyon DELETE yetkisi almıyor.
+- `rota.kisiselOneriler`, tarayıcıdaki mevcut motoru paylaşarak sekiz keşif yolu ve nazik hatırlatmaları yalnız buluta senkronize liste/günlük kayıtlarından üretiyor. Canlı işlem kataloğu 4'ten 15'e çıktı.
+- Gerçek Orbit kabulünde liste sayfalama/not alanı, puan temizleme, bölüm-aşımı reddi, günlük CRUD ve koleksiyon create/edit/add/order/remove/delete zinciri geçti. Geçici günlük ile koleksiyon tombstone'a alındı; Cowboy Bebop listesi özgün `PLANNED / 0` durumuna döndürüldü ve aktif test koleksiyonu/günlüğü sıfırlandı.
+- Özellik `3f85bdc`, edge paketleme düzeltmesi `19b25a2` ile main'e gönderildi. Supabase migration'ları ve `orbit-eylem` sürüm 6 canlıdır; Pages `32659453057`, CI `32659453063` ve CodeQL `32659453054` başarıyla tamamlandı.
 
 ### 23 Ağustos 2026 — 7.500 yapımlık katalog production teslimi
 
