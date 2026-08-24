@@ -786,6 +786,37 @@ async function islemiCalistir(
   }
 }
 
+/* 30 günlük saklama, pg_cron OLMADAN.
+ *
+ * `202608240001` migration'ı `orbit_action_log_temizle()` fonksiyonunu kuruyor
+ * ve pg_cron varsa günlük zamanlıyor. Bu projede pg_cron KURULU DEĞİL (panelde
+ * doğrulandı), yani zamanlayan bir şey yoktu ve tablo süresiz büyüyordu.
+ *
+ * Çözüm eklenti eklemek yerine işi buraya almak: her ajan eyleminde küçük bir
+ * olasılıkla temizlik çağrılıyor. Trafiğe bağlı olduğu için tam saatinde
+ * çalışmıyor ama saklama süresi zaten 30 gün — bir günlük kayma önemsiz.
+ *
+ * Bedeli: isteklerin ~%2'si temizliği bekliyor. `created_at` indeksli ve
+ * silinecek satır çoğu zaman yok, o yüzden gecikme ölçülebilir değil. İşi
+ * cevaptan SONRAYA atmak (waitUntil) gecikmeyi büsbütün kaldırırdı ama burada
+ * sınayamadığım bir çalışma zamanı API'sine dal açardı; basit olan tercih
+ * edildi. */
+const TEMIZLIK_OLASILIGI = 1 / 50;
+
+async function saklamaSuresiniUygula(): Promise<void> {
+  if (Math.random() >= TEMIZLIK_OLASILIGI) return;
+  try {
+    const response = await db('rpc/orbit_action_log_temizle', { method: 'POST', body: '{}' });
+    const govde = (await response.text()).slice(0, 200);
+    if (!response.ok) console.error(`eylem kaydı temizliği başarısız: ${response.status} ${govde}`);
+    else console.log(`eylem kaydı temizliği: ${govde} satır silindi`);
+  } catch (error) {
+    /* Temizlik ASLA isteği düşürmemeli. Bu bir bakım işi; ajanın yaptığı işin
+     * başarısı buna bağlı değil ve olmamalı. */
+    console.error(`eylem kaydı temizliği atlandı: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
 /** `orbit_action_log` satırının adresi; rezervasyonun üç adımında da aynı. */
 function kayitAdresi(userId: string, idempotencyKey: string): string {
   return `orbit_action_log?user_id=eq.${userId}&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}`;
@@ -969,6 +1000,7 @@ Deno.serve(async (request: Request): Promise<Response> => {
     }
 
     await rezervasyonuTamamla(userId, idempotencyKey, sonuc.sonuc);
+    await saklamaSuresiniUygula();
     return json({ status: 'applied', output: sonuc.sonuc });
   } catch (error) {
     /* Beklenmedik bir düşüşte de anahtarı bırakıyoruz; yoksa ajan aşım süresi

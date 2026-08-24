@@ -47,6 +47,21 @@ hali; şema kanıtı ikisinin aynı işi yaptığını gösteriyor.
 işaretlendi. `202608240001` işaretlenmedi; o gerçekten uygulanmamıştı ve
 normal `db push` ile gitti.
 
+## Saklama süresi pg_cron olmadan işletiliyor
+
+`202608240001` migration'ı `orbit_action_log_temizle()` fonksiyonunu kuruyor ve
+pg_cron varsa günlük zamanlıyor. Bu projede **pg_cron kurulu değil** (panelde
+doğrulandı: Integrations → Cron "Install integration" düğmesiyle duruyor,
+`select count(*) from pg_extension where extname='pg_cron'` sıfır dönüyor).
+Migration bu durumda düşmüyor, `RAISE WARNING` basıp geçiyor.
+
+Zamanlamayı Edge Function üstlendi: `orbit-eylem` her başarılı ajan eyleminde
+1/50 olasılıkla `orbit_action_log_temizle()` çağırıyor. Eklenti eklemeden,
+yeni bir sır veya harici zamanlayıcı kurmadan saklama süresi işliyor.
+
+pg_cron ileride kurulursa migration'daki `do $$` bloğu yeniden çalıştırılarak
+zamanlama kurulabilir; o zaman Edge Function'daki çağrı kaldırılmalı.
+
 ## Bundan sonra
 
 Yeni migration'ları CLI ile üret (`supabase migration new <ad>`) ki isim
