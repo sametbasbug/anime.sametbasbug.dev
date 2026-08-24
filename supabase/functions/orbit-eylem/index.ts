@@ -8,6 +8,13 @@
  *
  * Yazılan satırlar insanın KENDİ satırları. Ayrı ajan listesi yok; ajan
  * insanın adına yazıyor ve insan aynı kaydı tarayıcıdan da düzenleyebiliyor.
+ *
+ * DAĞITIM SIRASI ÖNEMLİ: bu sürüm `orbit_action_log.started_at` kolonunu
+ * kullanıyor ve o kolonu `202608240001_orbit_action_log_reservation.sql`
+ * ekliyor. Migration UYGULANMADAN dağıtılırsa rezervasyon yazması düşer ve
+ * bütün ajan eylemleri 503 döner — veri bozulmaz ama uç tümüyle durur.
+ * Önce `supabase db push`, sonra `supabase functions deploy orbit-eylem
+ * --no-verify-jwt`.
  */
 import { verifyOrbitActionToken } from './jwt.ts';
 import {
