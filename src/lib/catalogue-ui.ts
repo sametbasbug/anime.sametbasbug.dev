@@ -44,7 +44,21 @@ export type CatalogueAnime = {
   cover?: CatalogueImage | null;
 };
 
-/** Kaç kaynağın bu animeyi doğruladığı. Tam veride dizi, tarayıcı yükünde sayı. */
+/**
+ * Kaç kaynağın bu animeyi doğruladığı. Tam veride dizi, tarayıcı yükünde sayı.
+ *
+ * DİKKAT: bugün bu değer HER kayıtta 1. `refresh-catalogue.mjs` alanı tek
+ * elemanlı sabit bir diziyle dolduruyor (`[https://kitsu.app/anime/<id>]`),
+ * yani katalog tek kaynaklı. Sonucu şu: bu sayıyı kalite işareti gibi kullanan
+ * beş sıralama ifadesi (ana sayfa seçkisi, sezon panosu kalite skoru, tür ve
+ * stüdyo sıralaması, kişisel öneriler) herkese aynı sabiti ekliyor ve
+ * sıralamayı HİÇ etkilemiyor.
+ *
+ * Terim bilerek duruyor: katalog yeniden çok kaynaklı hale gelirse (MAL ve
+ * AniList ayrı kaynak olarak yazılırsa) kendiliğinden canlanır. Ama okurken
+ * "çok kaynaklı olanlar öne çıkıyor" diye anlaşılmasın — bugün öyle bir şey
+ * olmuyor.
+ */
 export function sourceSignal(anime: Pick<CatalogueAnime, "sources" | "sourceCount">): number {
   return anime.sourceCount ?? anime.sources?.length ?? 0;
 }
