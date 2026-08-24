@@ -4,7 +4,7 @@ Katkılar; ürün sınırına, veri lisanslarına ve Rota'nın görsel diline uy
 
 ## Yerel kurulum
 
-Gereksinimler: Node.js 22.12 veya üzeri ve npm 10 veya üzeri.
+Gereksinimler: Node.js 26 veya üzeri ve npm 10 veya üzeri.
 
 ```bash
 git clone https://github.com/sametbasbug/anime.sametbasbug.dev.git

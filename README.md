@@ -58,7 +58,7 @@ Equinox Rota, Türkçe anime keşfi, takibi ve kişisel arşivi için local-firs
 - Astro 7
 - React 19
 - TypeScript strict mode
-- Node.js 24 LTS (CI ve production build)
+- Node.js 26 (CI ve production build)
 - Supabase Auth + Postgres + RLS (hesap ve kullanıcı verisi)
 - Sıfır UI framework bağımlılığı; görsel sistem proje içinde
 
@@ -76,7 +76,7 @@ npm run build
 
 Yerel geliştirme adresi varsayılan olarak `http://localhost:4321` olur. Supabase değerleri olmadan hesap özellikleri güvenli biçimde devre dışı kalır; katalog ve local-first kişisel liste çalışmaya devam eder. Katalog yenilemek için `npm run data:refresh`, yalnız editoryal doğrulama için `npm run content:check` kullanılabilir.
 
-CI, pull request ve `main` push'larında Node.js 24 üzerinde `npm ci` ile tam static build alır. Production deploy yalnız `main` üzerinden GitHub Pages'e yapılır.
+CI, pull request ve `main` push'larında Node.js 26 üzerinde `npm ci` ile tam static build alır. Production deploy yalnız `main` üzerinden GitHub Pages'e yapılır.
 
 ## Katalog verisi
 
