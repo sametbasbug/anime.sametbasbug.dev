@@ -21,9 +21,14 @@ updates:
           - minor
           - patch
     ignore:
+      # Tür paketi, kodun gerçekten koştuğu Node sürümünü tarif etmeli:
+      # CI ve deploy Node 24 kullanıyor (bkz. .github/workflows/*.yml).
+      # Bu major, ancak oradaki sürüm birlikte yükseltilirse yükseltilir.
       - dependency-name: "@types/node"
         update-types:
           - version-update:semver-major
+      # TypeScript major'ı astro check ve @astrojs/check ile birlikte
+      # elden denenir; otomatik PR'la gelmesi istenmiyor.
       - dependency-name: typescript
         update-types:
           - version-update:semver-major
