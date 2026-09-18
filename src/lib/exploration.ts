@@ -1,3 +1,4 @@
+import rawRelatedAnime from "../data/related-anime.json";
 import { catalogue, sourceSignal, type CatalogueAnime } from "./catalogue";
 
 export type GenreDefinition = {
@@ -172,7 +173,7 @@ for (const [catalogueIndex, anime] of catalogue.entries()) {
   }
 }
 
-export function relatedAnime(anime: CatalogueAnime, limit = 6) {
+export function computeRelatedAnime(anime: CatalogueAnime, limit = 6) {
   const target = relatedProfiles.get(anime.id) ?? {
     anime,
     catalogueIndex: -1,
@@ -203,4 +204,14 @@ export function relatedAnime(anime: CatalogueAnime, limit = 6) {
     .sort((a, b) => b.score - a.score || sourceSignal(b.anime) - sourceSignal(a.anime) || (b.anime.score ?? 0) - (a.anime.score ?? 0) || a.catalogueIndex - b.catalogueIndex)
     .slice(0, limit)
     .map(({ anime: candidate }) => candidate);
+}
+
+const relatedAnimeIds = rawRelatedAnime.items as Record<string, string[]>;
+
+export function relatedAnime(anime: CatalogueAnime, limit = 6) {
+  const ids = relatedAnimeIds[anime.id] ?? [];
+  return ids
+    .slice(0, limit)
+    .map((id) => relatedProfiles.get(id)?.anime)
+    .filter((candidate): candidate is CatalogueAnime => Boolean(candidate));
 }

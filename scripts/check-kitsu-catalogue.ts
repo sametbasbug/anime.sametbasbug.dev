@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import rawCatalogue from "../src/data/catalogue.json";
 import rawSeed from "../src/data/kitsu-catalogue-seed.json";
 import rawEditorial from "../src/data/editorial.json";
+import rawRelatedAnime from "../src/data/related-anime.json";
 
 const items = rawCatalogue.items;
 const expectedCount = 7_500;
@@ -28,6 +29,22 @@ assert.equal(rawCatalogue.meta.titleRomajiCoverage, romajiTitles.length);
 assert.equal(rawCatalogue.meta.titleNativeCoverage, nativeTitles.length);
 assert.ok(Number.isInteger(rawCatalogue.meta.posterSnapshotFallbacks));
 assert.ok(rawCatalogue.meta.posterSnapshotFallbacks >= 0);
+
+assert.equal(
+  rawRelatedAnime.catalogueGeneratedAt,
+  rawCatalogue.meta.generatedAt,
+  "Related-anime cache must match the current catalogue generation",
+);
+assert.equal(Object.keys(rawRelatedAnime.items).length, expectedCount, "Related-anime cache must cover every catalogue item");
+for (const [animeId, relatedIds] of Object.entries(rawRelatedAnime.items)) {
+  assert.ok(ids.has(animeId), `Related-anime cache contains an unknown source ID: ${animeId}`);
+  assert.ok(Array.isArray(relatedIds) && relatedIds.length <= 6, `${animeId} has an invalid related-anime list`);
+  assert.equal(new Set(relatedIds).size, relatedIds.length, `${animeId} repeats a related anime`);
+  for (const relatedId of relatedIds) {
+    assert.notEqual(relatedId, animeId, `${animeId} cannot recommend itself`);
+    assert.ok(ids.has(relatedId), `${animeId} references an unknown related anime: ${relatedId}`);
+  }
+}
 
 for (const anime of items) {
   assert.ok(anime.id && anime.kitsuId && anime.slug && anime.title);
