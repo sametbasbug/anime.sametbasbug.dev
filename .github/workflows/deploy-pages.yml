@@ -3,13 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  # Site statik: "şu anki sezon" ve "bu yıl" DERLEME anında hesaplanıyor.
-  # Kimse push etmezse ana sayfa yıl döndükten sonra da eski yılı güncel
-  # sanmaya devam eder. Günlük yeniden derleme bu kaymayı en fazla bir günle
-  # sınırlıyor; derleme ~25 saniye sürüyor, maliyeti bu güvencenin yanında
-  # önemsiz.
+  # Site statik: ana sayfadaki "şu anki sezon" ve "bu yıl" değerleri DERLEME
+  # anında hesaplanıyor. Kimse push etmezse bu değerler eski kalabileceği için
+  # ayın 1'i ve 16'sında taze build alıyoruz; push'lar zaten ayrıca deploy eder.
   schedule:
-    - cron: "40 2 * * *"
+    - cron: "40 2 1,16 * *"
   workflow_dispatch:
 
 permissions:
@@ -41,7 +39,14 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Build
-        run: npm run build
+        # Scheduled runs rebuild an already-tested main SHA only to refresh
+        # build-time date values. Push/manual runs keep the full quality gate.
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            npm run build:site
+          else
+            npm run build
+          fi
         env:
           PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
